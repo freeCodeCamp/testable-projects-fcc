@@ -3,7 +3,7 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         library: 'FCC_Global',
-        path: __dirname + '/build',
+        path: __dirname + '/local_test/js',
         filename: "bundle.js"
     },
     module: {

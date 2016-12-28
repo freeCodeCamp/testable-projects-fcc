@@ -83,8 +83,36 @@ var FCC_Global =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	(function () {
+	  var mocha_cdn = document.createElement('script');
+	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
+	  document.head.appendChild(mocha_cdn);
+	})();
+
+	// When the document is fully loaded,
+	// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
+	(0, _jquery2.default)(document).ready(function () {
+	  var mochaCheck = setInterval(function () {
+	    return runCheck();
+	  }, 50);
+	  function runCheck() {
+	    try {
+	      if (mocha) {
+	        clearInterval(mochaCheck);
+	        mocha.setup("bdd");
+	        var testDiv = document.createElement("div");
+	        testDiv.style.position = "inherit";
+	        testDiv.innerHTML = _starter_HTML2.default;
+	        document.body.appendChild(testDiv);
+	      };
+	    } catch (err) {
+	      console.warn('mocha not loaded yet');
+	    };
+	  };
+	  runCheck();
+	});
+
 	// Setup Mocha and initialize
-	mocha.setup("bdd");
 	var assert = exports.assert = _chai2.default.assert;
 	var testRunner = null;
 	var requestTimeout = 3000;
@@ -263,16 +291,7 @@ var FCC_Global =
 	  testRunner.on("fail", hasFailed);
 	  testRunner.on("test end", updateProgress);
 	  testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
-	}
-
-	// When the document is fully loaded,
-	// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
-	(0, _jquery2.default)(document).ready(function () {
-	  var testDiv = document.createElement("div");
-	  testDiv.style.position = "inherit";
-	  testDiv.innerHTML = _starter_HTML2.default;
-	  document.body.appendChild(testDiv);
-	});
+	};
 
 /***/ },
 /* 1 */
