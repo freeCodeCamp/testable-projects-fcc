@@ -69,21 +69,32 @@ var FCC_Global =
 
 	var _chai2 = _interopRequireDefault(_chai);
 
-	var _starter_HTML = __webpack_require__(42);
+	var _test_CSS = __webpack_require__(42);
 
-	var _starter_HTML2 = _interopRequireDefault(_starter_HTML);
+	var _test_CSS2 = _interopRequireDefault(_test_CSS);
 
-	var _drumMachineTests = __webpack_require__(43);
+	var _mocha_CSS = __webpack_require__(43);
+
+	var _mocha_CSS2 = _interopRequireDefault(_mocha_CSS);
+
+	var _drumMachineTests = __webpack_require__(44);
 
 	var _drumMachineTests2 = _interopRequireDefault(_drumMachineTests);
 
-	var _markdownPreviewerTests = __webpack_require__(44);
+	var _markdownPreviewerTests = __webpack_require__(45);
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var assert = exports.assert = _chai2.default.assert;
+	var requestTimeout = 3000;
+
+	// load mocha
 	(function () {
+	  // write mocha CSS to page head
+	  document.write('<style>' + _mocha_CSS2.default + '</style>');
+	  // add a script tag to load mocha JS from a CDN
 	  var mocha_cdn = document.createElement('script');
 	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
 	  document.head.appendChild(mocha_cdn);
@@ -102,7 +113,7 @@ var FCC_Global =
 	        mocha.setup("bdd");
 	        var testDiv = document.createElement("div");
 	        testDiv.style.position = "inherit";
-	        testDiv.innerHTML = _starter_HTML2.default;
+	        testDiv.innerHTML = _test_CSS2.default;
 	        document.body.appendChild(testDiv);
 	      };
 	    } catch (err) {
@@ -111,11 +122,6 @@ var FCC_Global =
 	  };
 	  runCheck();
 	});
-
-	// Setup Mocha and initialize
-	var assert = exports.assert = _chai2.default.assert;
-	var testRunner = null;
-	var requestTimeout = 3000;
 
 	// Utility Functions:
 
@@ -215,12 +221,11 @@ var FCC_Global =
 	}
 
 	function FCCInitTestRunner() {
+	  var testRunner = null;
 	  // empty the mocha tag in case of rerun
 	  document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
-
 	  // empty the test suite in the mocha object
 	  mocha.suite.suites = [];
-
 	  // create tests
 	  switch (project_name) {
 	    case "random-quote-machine":
@@ -253,8 +258,7 @@ var FCC_Global =
 	    case 'technical-docs-page':
 	      createTechnicalDocsPageTests();
 	      break;
-	  }
-
+	  };
 	  // save the number of tests in the selected suite
 	  var nbTests = 0;
 	  mocha.suite.eachTest(function (_) {
@@ -263,7 +267,6 @@ var FCC_Global =
 	  var nbTestsExecuted = 0;
 	  var nbPassed = 0;
 	  var nbFailed = 0;
-
 	  var hasPassed = function hasPassed(_) {
 	    return nbPassed++;
 	  };
@@ -283,8 +286,7 @@ var FCC_Global =
 	    testRunner.removeListener("fail", hasFailed);
 	    testRunner.removeListener("test end", updateProgress);
 	    testRunner.removeListener("end", updateEnd);
-	  }
-
+	  };
 	  // Run the test suite
 	  testRunner = mocha.run();
 	  testRunner.on("pass", hasPassed);
@@ -18834,12 +18836,24 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var test_HTML = "\n  <style>\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n  </style>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\"\n          onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
+	var test_CSS = "\n  <style>\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n  </style>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\"\n          onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
 
-	exports.default = test_HTML;
+	exports.default = test_CSS;
 
 /***/ },
 /* 43 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var mocha_CSS = "@charset \"utf-8\";#mocha .test .html-error,#mocha .test pre{float:left;clear:left;word-wrap:break-word}#mocha ul,#mocha-stats li{list-style:none}#mocha h1,#mocha h2,body{margin:0}#mocha{font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;margin:60px 50px}#mocha li,#mocha ul{margin:0;padding:0}#mocha .suite,#mocha .test{margin-left:15px}#mocha h1{margin-top:15px;font-size:1em;font-weight:200}#mocha h1 a{text-decoration:none;color:inherit}#mocha h1 a:hover{text-decoration:underline}#mocha .suite .suite h1{margin-top:0;font-size:.8em}#mocha .hidden{display:none}#mocha h2{font-size:12px;font-weight:400;cursor:pointer}#mocha .test{overflow:hidden}#mocha .test.pending:hover h2::after{content:'(pending)';font-family:arial,sans-serif}#mocha .test.pass.medium .duration{background:#c09853}#mocha .test.pass.slow .duration{background:#b94a48}#mocha .test.pass::before{content:'\u2713';font-size:12px;display:block;float:left;margin-right:5px;color:#00d6b2}#mocha .test.pass .duration{font-size:9px;margin-left:5px;padding:2px 5px;color:#fff;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);box-shadow:inset 0 1px 1px rgba(0,0,0,.2);-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}#mocha .test.pass.fast .duration{display:none}#mocha .test.pending{color:#0b97c4}#mocha .test.pending::before{content:'\u25E6';color:#0b97c4}#mocha .test.fail{color:#c00}#mocha .test.fail pre{color:#000}#mocha .test.fail::before{content:'\u2716';font-size:12px;display:block;float:left;margin-right:5px;color:#c00}#mocha .test pre.error{color:#c00;max-height:300px;overflow:auto}#mocha .test .html-error{overflow:auto;color:#000;line-height:1.5;display:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px solid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:calc(100% - 42px);max-height:300px;border-bottom-color:#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}#mocha .test .html-error pre.error{border:none;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:0;-moz-box-shadow:0;box-shadow:0;padding:0;margin:18px 0 0;max-height:none}#mocha .test pre{display:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px solid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:calc(100% - 42px);border-bottom-color:#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}#mocha .test h2{position:relative}#mocha .test a.replay{position:absolute;top:3px;right:0;text-decoration:none;vertical-align:middle;display:block;width:15px;height:15px;line-height:15px;text-align:center;background:#eee;font-size:15px;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;-webkit-transition:opacity .2s;-moz-transition:opacity .2s;-o-transition:opacity .2s;transition:opacity .2s;opacity:.3;color:#888}#mocha .test:hover a.replay{opacity:1}#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{display:none}#mocha-report.pending .test.pass.pending{display:block}#mocha-error{color:#c00;font-size:1.5em;font-weight:100;letter-spacing:1px}#mocha-stats{position:fixed;top:15px;right:10px;font-size:12px;margin:0;color:#888;z-index:1}#mocha-stats .progress{float:right;padding-top:0;height:auto;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:initial}#mocha-stats em{color:#000}#mocha-stats a{text-decoration:none;color:inherit}#mocha-stats a:hover{border-bottom:1px solid #eee}#mocha-stats li{display:inline-block;margin:0 5px;padding-top:11px}#mocha-stats canvas{width:40px;height:40px}#mocha code .comment{color:#ddd}#mocha code .init{color:#2f6fad}#mocha code .string{color:#5890ad}#mocha code .keyword{color:#8a6343}#mocha code .number{color:#2f6fad}@media screen and (max-device-width:480px){#mocha{margin:60px 0}#mocha #stats{position:absolute}}/*# sourceMappingURL=mocha.min.css.map */";
+	exports.default = mocha_CSS;
+
+/***/ },
+/* 44 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -18950,7 +18964,7 @@ var FCC_Global =
 	} // END createDrumMachineTests()
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
