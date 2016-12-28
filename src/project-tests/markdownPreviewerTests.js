@@ -28,18 +28,18 @@ export default function createMarkdownPreviewerTests() {
     describe('#Tests', function() {
       
       it('1. I can see a <textarea> element with corresponding id="editor".', function() {
-        assert.isNotNull(editor, '#editor is not defined ');
-        assert.strictEqual(editor.nodeName, 'TEXTAREA', '#editor should be a <textarea> element ');
+        FCC_Global.assert.isNotNull(editor, '#editor is not defined ');
+        FCC_Global.assert.strictEqual(editor.nodeName, 'TEXTAREA', '#editor should be a <textarea> element ');
       });
       
       it('2. I can see an element with corresponding id="preview".', function() {
-        assert.isNotNull(preview, '#preview is not defined ');
+        FCC_Global.assert.isNotNull(preview, '#preview is not defined ');
       });
       
       it('3. When I enter text into the #editor element, the #preview element is updated as I type to ' +
          'display the content of the textarea.', function() {
         triggerChange('a');
-        assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type ' +
+        FCC_Global.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type ' +
         'into #editor (should update on every keyup) ');
       });
       
@@ -47,20 +47,20 @@ export default function createMarkdownPreviewerTests() {
          'HTML to #preview as I type (Hint: You don\'t need to parse Markdown yourself - you can ' +
          'import the Marked library for this: https://cdnjs.com/libraries/marked).', function() {
         triggerChange('');
-        assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered ' +
+        FCC_Global.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered ' +
                            'by marked.js ');
         triggerChange('testing');
-        assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', 'The markdown in #editor is not ' +
+        FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', 'The markdown in #editor is not ' +
                            'being interpreted  correctly and/or rendered into #preview ');
         triggerChange(editor.value + ' and...');
-        assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', 'The markdown in #editor ' +
+        FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', 'The markdown in #editor ' +
                            'is not being interpreted  correctly and/or rendered into #preview ');
         triggerChange('# h1 \n## h2');
-        assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', 'The ' +
+        FCC_Global.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', 'The ' +
                            'markdown in #editor is not being interpreted  correctly and/or ' +
                            'rendered into #preview ');
         triggerChange('**bold**');
-        assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', 'The markdown ' +
+        FCC_Global.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', 'The markdown ' +
                            'in #editor is not being interpreted  correctly and/or rendered ' +
                            'into #preview ');
       });
@@ -68,8 +68,8 @@ export default function createMarkdownPreviewerTests() {
       it('4. When my markdown previewer first loads, the #editor field should contain valid default ' +
          'markdown that provides a brief description of the project and demonstrates the ' +
          'previewer\'s capabilities.', function() {
-        assert.notStrictEqual(markdownOnLoad, undefined);
-        assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
+        FCC_Global.assert.notStrictEqual(markdownOnLoad, undefined);
+        FCC_Global.assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
       });
       
       it('5. When my markdown previewer first loads, the default text in the #editor field should ' +
@@ -79,24 +79,24 @@ export default function createMarkdownPreviewerTests() {
         triggerChange(markdownOnLoad);
         const markdown = editor.value;
         
-        assert.notStrictEqual(markdown.search(/#\s.+/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 
                               'write some markdown representing an <h1> '); // h1  
-        assert.notStrictEqual(markdown.search(/##\s.+/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 
                               'write some markdown representing an <h2> '); // h2
-        assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 
                               'write some markdown representing an <a> '); // link
-        assert.notStrictEqual(markdown.search(/`.+`/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 
                               'write some markdown representing inline <code> '); // inline code
-        assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 
                               'write some markdown representing a codeblock, i.e. ' +
                               '<pre><code>...</code></pre> '); // codeblock
-        assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 
                               'write some markdown representing an <li> item '); // ol or ul list item
-        assert.notStrictEqual(markdown.search(/>\s.+/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 
                               'write some markdown representing an <h1> '); // blockquote
-        assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 
                               'write some markdown representing an <h1> '); // image
-        assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 
+        FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 
                               'write some markdown representing an <h1> '); // bold text        
       });
       
@@ -104,28 +104,28 @@ export default function createMarkdownPreviewerTests() {
          'should be rendered as HTML in the #preview element.', function() {
         triggerChange(markdownOnLoad);
         console.log(previewOnLoad)
-        assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
-        assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render ' +
+        FCC_Global.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
+        FCC_Global.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render ' +
                            'correctly on window load ');
         const markdown = editor.value;
         
-        assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1,
                         '#preview does not contain at least one <h1> ');
-        assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1,
                         '#preview does not contain at least one <h2> ');
-        assert.isAtLeast(document.querySelectorAll('#preview a').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview a').length, 1,
                         '#preview does not contain at least one <a> ');
-        assert.isAtLeast(document.querySelectorAll('#preview code').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview code').length, 1,
                         '#preview does not contain at least one <code> ');
-        assert.isAtLeast(document.querySelectorAll('#preview pre').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview pre').length, 1,
                         '#preview does not contain at least one <pre> ');
-        assert.isAtLeast(document.querySelectorAll('#preview li').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview li').length, 1,
                         '#preview does not contain at least one <li> ');
-        assert.isAtLeast(document.querySelectorAll('#preview blockquote').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview blockquote').length, 1,
                         '#preview does not contain at least one <blockquote> ');
-        assert.isAtLeast(document.querySelectorAll('#preview img').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1,
                         '#preview does not contain at least one <img> ');
-        assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1,
+        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1,
                         '#preview does not contain at least one <strong> ');
         
         // then check a couple of elements to make sure the present elements 
@@ -137,7 +137,7 @@ export default function createMarkdownPreviewerTests() {
         document.querySelectorAll('#preview h1').forEach( h1 => {
           if (h1.innerText === h1Text) h1Match.push(h1);
         });
-        assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element ' +
+        FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element ' +
         'represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
         
         // find mathcing H2 element 
@@ -146,7 +146,7 @@ export default function createMarkdownPreviewerTests() {
         document.querySelectorAll('#preview h2').forEach( h2 => {
           if (h2.innerText === h2Text) h2Match.push(h2);
         });
-        assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element ' +
+        FCC_Global.assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element ' +
         'represented by the markdown in the #editor field with the inner text ' + h2Text + ' ');
         
       });
@@ -157,7 +157,7 @@ export default function createMarkdownPreviewerTests() {
         const linksWithTarget_Blank = [];
         links.forEach( a => {
           if (a.hasAttribute('target')) {
-            assert.strictEqual(a.target, '_blank');
+            FCC_Global.assert.strictEqual(a.target, '_blank');
           }
         });
 
