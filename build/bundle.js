@@ -18968,7 +18968,7 @@ var FCC_Global =
 	      if (preview.innerHTML === str) {
 	        return;
 	      } else {
-	        (0, _jquery2.default)('#editor').trigger(jQuery.Event('keyup', { which: 13 })); // must be keyup to live preview
+	        (0, _jquery2.default)('#editor').trigger(_jquery2.default.Event('keyup', { which: 13 })); // must be keyup to live preview
 	        if (preview.innerHTML === str) {
 	          return;
 	        }
