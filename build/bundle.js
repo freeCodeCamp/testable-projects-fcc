@@ -92,7 +92,6 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var assert = exports.assert = _chai2.default.assert;
-	var requestTimeout = 3000;
 
 	// load mocha
 	(function () {

@@ -8,7 +8,6 @@ import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests
 import createCalculatorTests from './project-tests/calculatorTests.js';
 
 export const assert = chai.assert;
-const requestTimeout = 3000;
 
 // load mocha
 (function() {
