@@ -18932,7 +18932,7 @@ var FCC_Global =
 
 /***/ },
 /* 44 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -18940,6 +18940,13 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createMarkdownPreviewerTests;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function createMarkdownPreviewerTests() {
 
 	  describe('Markdown Previewer tests', function () {
@@ -18961,7 +18968,7 @@ var FCC_Global =
 	      if (preview.innerHTML === str) {
 	        return;
 	      } else {
-	        FCC_Global.$('#editor').trigger(jQuery.Event('keyup', { which: 13 })); // must be keyup to live preview
+	        (0, _jquery2.default)('#editor').trigger(jQuery.Event('keyup', { which: 13 })); // must be keyup to live preview
 	        if (preview.innerHTML === str) {
 	          return;
 	        }

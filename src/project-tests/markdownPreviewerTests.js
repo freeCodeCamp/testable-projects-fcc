@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default function createMarkdownPreviewerTests() {
   
   describe('Markdown Previewer tests', function() {
@@ -18,7 +20,7 @@ export default function createMarkdownPreviewerTests() {
       if (preview.innerHTML === str) {
         return;
       } else {
-        FCC_Global.$('#editor').trigger(jQuery.Event('keyup', {which: 13})); // must be keyup to live preview
+        $('#editor').trigger(jQuery.Event('keyup', {which: 13})); // must be keyup to live preview
         if (preview.innerHTML === str) {
           return; 
         } 
