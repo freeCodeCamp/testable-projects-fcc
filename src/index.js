@@ -3,6 +3,7 @@ import $ from 'jquery';
 import chai from 'chai';
 import starter_HTML from './starter_HTML';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
+import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 
 // Setup Mocha and initialize
 mocha.setup("bdd");
@@ -10,16 +11,7 @@ export const assert = chai.assert;
 let testRunner = null;
 const requestTimeout = 3000;
 
-// Utility Functions
-export function testHorizontallyCentered(elName){
-  const centeredElement = document.getElementsByClassName(elName)[0];
-  const actualSideGap = centeredElement.offsetLeft;
-  const centeredElementWidth = centeredElement.clientWidth;
-  const gapExpectedWidth = (window.innerWidth-centeredElementWidth)/2;
-  const delta = gapExpectedWidth - actualSideGap; 
-  console.log(gapExpectedWidth, actualSideGap, delta);
-  return delta < 3 && delta > -3; 
-}
+// Utility Functions:
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed){
@@ -81,13 +73,35 @@ export function FCCResetTests(suite) {
   suite.suites.forEach(FCCResetTests);
 }
 
-// run tests hotkeys
+// HotKeys
 const map = [];
 onkeydown = onkeyup = function(e){
+  const modal = document.getElementById('fcc_test_message-box');
   e = e || window.event; 
   map[e.keyCode] = e.type == 'keydown';
-  if(map[17] && map[16] && map[13]) { 
-    FCCRerunTests();
+  if(map[17] && map[16] && map[13]) { // run tests: Ctrl + Shift + Enter 
+    if (project_name === 'markdown-previewer') {
+      alertOnce();
+      return;
+    } else {
+      FCCRerunTests();
+    }
+  } else if (map[17] && map[16] && map[84]) { // open/close modal: Ctrl + Shift + T
+    if (modal.classList.contains("fcc_test_message-box-hidden")) {
+      FCCOpenTestModal() 
+    } else {
+      FCCCloseTestModal();
+    }
+  }
+}
+
+export function alertOnce() { // hotkey interferes w/ markdown tests, disable and alert
+  var alerted = sessionStorage.getItem('alerted') || false;
+  if (alerted) {
+    return;
+  } else {
+    alert('Run-Test hotkey disabled for this project, please use mouse.');
+    sessionStorage.setItem('alerted', true);
   }
 }
 
@@ -120,6 +134,15 @@ export function FCCInitTestRunner(){
       break;
     case 'product-landing-page':
       createProductLandingPageTests();
+      break;
+    case 'survey-form':
+      createSurveyFormTests();
+      break;
+    case 'markdown-previewer':
+      createMarkdownPreviewerTests();
+      break;
+    case 'technical-docs-page':
+      createTechnicalDocsPageTests();
       break;
   }
   
