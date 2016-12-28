@@ -1,12 +1,19 @@
 
 import $ from 'jquery';
 import chai from 'chai';
-import starter_HTML from './starter_HTML';
+import test_CSS from './assets/test_CSS';
+import mocha_CSS from './assets/mocha_CSS';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 
-// dynamically add a script to the HTML head to load mocha
+export const assert = chai.assert;
+const requestTimeout = 3000;
+
+// load mocha
 (function() {
+  // write mocha CSS to page head
+  document.write(`<style>${mocha_CSS}</style>`);
+  // add a script tag to load mocha JS from a CDN
   var mocha_cdn = document.createElement('script');
   mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
   document.head.appendChild(mocha_cdn);
@@ -23,7 +30,7 @@ $(document).ready(function() {
         mocha.setup("bdd");
         const testDiv = document.createElement("div");
         testDiv.style.position = "inherit";
-        testDiv.innerHTML = starter_HTML;
+        testDiv.innerHTML = test_CSS;
         document.body.appendChild(testDiv);
       };
     } catch (err) {
@@ -32,11 +39,6 @@ $(document).ready(function() {
   };
   runCheck();
 });
-
-// Setup Mocha and initialize
-export const assert = chai.assert;
-let testRunner = null;
-const requestTimeout = 3000;
 
 // Utility Functions:
 
@@ -133,12 +135,11 @@ export function alertOnce() { // hotkey interferes w/ markdown tests, disable an
 }
 
 export function FCCInitTestRunner(){
+  let testRunner = null;
   // empty the mocha tag in case of rerun
   document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
-  
   // empty the test suite in the mocha object
   mocha.suite.suites = [];
-  
   // create tests
   switch (project_name) {
     case "random-quote-machine":
@@ -171,15 +172,13 @@ export function FCCInitTestRunner(){
     case 'technical-docs-page':
       createTechnicalDocsPageTests();
       break;
-  }
-  
+  };
   // save the number of tests in the selected suite
   let nbTests = 0;
   mocha.suite.eachTest( _ => nbTests++);
   let nbTestsExecuted = 0;
   let nbPassed = 0;
   let nbFailed = 0;
-  
   const hasPassed = _ => nbPassed++;
   const hasFailed = _ => nbFailed++;
   const updateProgress= _ => FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
@@ -191,8 +190,7 @@ export function FCCInitTestRunner(){
     testRunner.removeListener("fail", hasFailed);
     testRunner.removeListener("test end", updateProgress);
     testRunner.removeListener("end", updateEnd);
-  }
-  
+  };
   // Run the test suite
   testRunner = mocha.run();
   testRunner.on("pass", hasPassed);
