@@ -6,6 +6,7 @@ import mocha_CSS from './assets/mocha_CSS';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 import createCalculatorTests from './project-tests/calculatorTests.js';
+import createPomodoroClockTests from './project-tests/pomodoroTests.js';
 
 export const assert = chai.assert;
 
