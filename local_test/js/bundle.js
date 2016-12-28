@@ -83,6 +83,7 @@ var FCC_Global =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// dynamically add a script to the HTML head to load mocha
 	(function () {
 	  var mocha_cdn = document.createElement('script');
 	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');

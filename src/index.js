@@ -5,6 +5,7 @@ import starter_HTML from './starter_HTML';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 
+// dynamically add a script to the HTML head to load mocha
 (function() {
   var mocha_cdn = document.createElement('script');
   mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
