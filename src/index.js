@@ -7,6 +7,11 @@ import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 import createCalculatorTests from './project-tests/calculatorTests.js';
 import createPomodoroClockTests from './project-tests/pomodoroTests.js';
+import createTributePageTests from './project-tests/tributePageTests.js';
+import createPortfolioTests from './project-tests/portfolioTests.js';
+import createProductLandingPageTests from './project-tests/productLandingPageTests.js';
+import createSurveyFormTests from './project-tests/surveyFormTests.js';
+import createTechnicalDocsPageTests from './project-tests/technicalDocsTests.js';
 
 export const assert = chai.assert;
 
@@ -174,6 +179,7 @@ export function FCCInitTestRunner(){
       createTechnicalDocsPageTests();
       break;
   };
+  
   // save the number of tests in the selected suite
   let nbTests = 0;
   mocha.suite.eachTest( _ => nbTests++);

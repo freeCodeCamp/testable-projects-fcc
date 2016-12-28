@@ -93,6 +93,26 @@ var FCC_Global =
 
 	var _pomodoroTests2 = _interopRequireDefault(_pomodoroTests);
 
+	var _tributePageTests = __webpack_require__(48);
+
+	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
+
+	var _portfolioTests = __webpack_require__(49);
+
+	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
+
+	var _productLandingPageTests = __webpack_require__(50);
+
+	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
+
+	var _surveyFormTests = __webpack_require__(51);
+
+	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
+
+	var _technicalDocsTests = __webpack_require__(52);
+
+	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var assert = exports.assert = _chai2.default.assert;
@@ -245,27 +265,28 @@ var FCC_Global =
 	      (0, _pomodoroTests2.default)();
 	      break;
 	    case "tribute-page":
-	      createTributePageTests();
+	      (0, _tributePageTests2.default)();
 	      break;
 	    case "drum-machine":
 	      (0, _drumMachineTests2.default)();
 	      break;
 	    case "portfolio":
-	      createPortfolioTests();
+	      (0, _portfolioTests2.default)();
 	      break;
 	    case 'product-landing-page':
-	      createProductLandingPageTests();
+	      (0, _productLandingPageTests2.default)();
 	      break;
 	    case 'survey-form':
-	      createSurveyFormTests();
+	      (0, _surveyFormTests2.default)();
 	      break;
 	    case 'markdown-previewer':
 	      (0, _markdownPreviewerTests2.default)();
 	      break;
 	    case 'technical-docs-page':
-	      createTechnicalDocsPageTests();
+	      (0, _technicalDocsTests2.default)();
 	      break;
 	  };
+
 	  // save the number of tests in the selected suite
 	  var nbTests = 0;
 	  mocha.suite.eachTest(function (_) {
@@ -19759,6 +19780,672 @@ var FCC_Global =
 	    }); // END #Tests
 	  }); // END #PomodoroClockTests
 	} // END createPomodoroClockTests()
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createTributePageTests;
+	function createTributePageTests() {
+
+	  function getParentElement(domNode) {
+	    var parent = document.getElementById(domNode).parentElement.id;
+	    return parent;
+	  }
+
+	  function getPropValue(el, prop) {
+	    return window.getComputedStyle(el).getPropertyValue(prop);
+	  }
+
+	  describe("#Tribute Page tests", function () {
+
+	    describe("#Content", function () {
+	      it('1. My tribute page should have a main <div> element with corresponding id="main", which contains ' + 'all other elements.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("main"));
+	        FCC_Global.assert(document.querySelectorAll("#main div, #main a, #main h1, #main img").length, 'div with id="main" ' + 'must contain other elements');
+	      });
+
+	      it('2. I should see an <h1> element with corresponding id="title", which contains a string (i.e. text) ' + 'that describes the subject of the tribute page (e.g. "Dr. Norman Borlaug").', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("title"));
+	        var titleText = document.getElementById("title").innerText;
+	        FCC_Global.assert.isAbove(titleText.length, 0, "Element does not contain any text");
+	      });
+
+	      it('3. I should see a <div> element with corresponding id="img-div".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("img-div"));
+	      });
+
+	      it('4. Within the "img-div" element, I should see an <img> element with a corresponding ' + 'id="image".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("image"));
+	        var imageParent = getParentElement('image');
+	        FCC_Global.assert.strictEqual('img-div', imageParent, 'Element is not a child of id="img-div".');
+	      });
+
+	      it('5. Within the "img-div" element, I should see an element with a corresponding id="img-caption" ' + 'that contains textual content describing the image shown in "img-div".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("img-caption"));
+	        var captionParent = getParentElement('img-caption');
+	        FCC_Global.assert.strictEqual('img-div', captionParent, "Element is not a child of id='img-div'");
+	        var captionContents = document.getElementById('img-caption').innerText;
+	        FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content");
+	      });
+
+	      it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' + 'describing the subject of the tribute page. HINT: You must give your <a> element an attribute of target and set it to "_blank" in order for your link to open in a new tab.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
+	        var infoContents = document.getElementById('tribute-info').innerText;
+	        FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content");
+	      });
+
+	      it('7. I should see an <a> element with a corresponding id="tribute-link", which links to an outside site ' + 'that contains additional information about the subject of the tribute page. HINT: You must give your element an attribute of target and set it to "_blank" in order for your link to open in a new tab (i.e. target="_blank").', function () {
+	        var tributeLink = document.getElementById('tribute-link');
+	        FCC_Global.assert.isNotNull(tributeLink);
+	        FCC_Global.assert(tributeLink.hasAttribute('href'), '<a> element with id="tribute-link" must contain an href attribute');
+	        FCC_Global.assert(tributeLink.hasAttribute('target'), '<a> element with id="tribute-link" must contain a target attribute');
+	        FCC_Global.assert.strictEqual(tributeLink.getAttribute('target'), '_blank', 'The target attribute should be set to "_blank", in order for the link to open in a new tab.');
+	      });
+	    }); // END #Content
+
+	    describe('#Layout', function () {
+
+	      it('1. The <img> element should responsively resize, relative to the width of its parent element, without ' + 'exceeding its original size.', function () {
+	        var img = document.getElementById('image');
+	        var maxWidthValue = getPropValue(img, 'max-width');
+	        FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property');
+	      });
+
+	      it('2. The <img> element should be centered within its parent element.', function () {
+	        var img = document.getElementById('image'),
+	            imgParent = document.getElementById(getParentElement('image')),
+	            imgWidth = getPropValue(img, 'width'),
+	            parentWidth = getPropValue(imgParent, 'width');
+	        var difference = parseFloat(parentWidth) - parseFloat(imgWidth);
+	        // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value. 
+	        // this test might only work on full page view!
+	        var totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
+	        FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 5, 'Image is not centered');
+	      });
+	    }); // END #Layout
+	  }); // END #TributePageTests
+	} // END createTributePageTests()
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createPortfolioTests;
+	function createPortfolioTests() {
+
+	  describe('#Portfolio tests', function () {
+
+	    describe('#Content', function () {
+	      it('1. My portfolio should have a Welcome section with an id of \"welcome-section\".', function () {
+	        assert.isNotNull(document.getElementById('welcome-section'));
+	      });
+
+	      it('2. The welcome section should have an h1 element that contains text.', function () {
+	        var welcome = document.getElementById('welcome-section');
+
+	        assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
+
+	        assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper name ');
+	      });
+
+	      it('3. My portfolio should have a projects section with an id of \"projects\".', function () {
+	        assert.isNotNull(document.getElementById('projects'));
+	      });
+
+	      it('4. The projects section should contain at least one element with a class of \"project-tile\" to hold a project.', function () {
+	        assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
+	      });
+
+	      it('5. The projects section should contain at least one link to a project.', function () {
+	        assert.isAbove(document.querySelectorAll('#projects a').length, 0);
+	      });
+
+	      it('6. My portfolio should have a navbar with an id of \"navbar\".', function () {
+	        var navbar = document.getElementById('navbar');
+
+	        assert.isNotNull(navbar);
+	      });
+
+	      it('7. The navbar should contain at least one link that I can click on to navigate to different sections of the page.', function () {
+	        assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
+
+	        var links = document.querySelectorAll('#navbar a');
+
+	        for (var i = 0; i < links.length; i++) {
+	          links[i].click();
+
+	          if (window.scrollY) {
+	            // if the window's y position is not 0, clicking a link made it move
+	            assert.ok(true);
+	            window.scroll(0, 0);
+	            return;
+	          }
+	        }
+
+	        // move window to bottom
+	        window.scroll(0, document.body.scrollHeight);
+	        var bottomPositionY = window.scrollY;
+
+	        for (var i = 0; i < links.length; i++) {
+	          links[i].click();
+
+	          var distanceFromBottom = bottomPositionY - window.scrollY;
+
+	          if (distanceFromBottom) {
+	            // if distance from bottom is not 0, clicking a link made it move
+	            assert.ok(true);
+	            window.scroll(0, 0);
+	            return;
+	          }
+	        }
+
+	        // none of the links changed the scroll position
+	        window.scroll(0, 0);
+	        assert.isOk(false, 'At least one navbar link should move the page position when clicked ');
+	      });
+
+	      it('8. My portfolio should have a link with an id of \"profile-link\", which opens my GitHub or FCC profile in a new tab.', function () {
+	        var profileLink = document.getElementById('profile-link');
+
+	        assert.isNotNull(profileLink);
+
+	        assert.equal(profileLink.nodeName, 'A');
+
+	        assert.strictEqual(profileLink.hasAttribute('target'), true, '#profile-link should have a target attribute ');
+
+	        assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
+	      });
+	    }); // END #Content
+
+	    describe('#Layout', function () {
+
+	      it('1. My portfolio should have at least one media query.', function () {
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                assert.isOk(true);
+	                return;
+	              }
+	            }
+	          }
+	        }
+	        // if no media query is detected, test fails
+	        assert.isOk(false, "No media queries detected ");
+	      });
+
+	      it('2. The height of the welcome section should be equal to the height of the viewport.', function () {
+	        assert.equal(document.getElementById('welcome-section').offsetHeight, document.documentElement.clientHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
+	      });
+
+	      it('3. The navbar should always be at the top of the viewport.', function () {
+	        var navbar = document.getElementById('navbar');
+	        assert.approximately(navbar.getBoundingClientRect().top, 0, 15), 'Navbar\'s parent should be body and it should be at the top of the viewport ';
+	        window.scroll(0, 500);
+	        assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
+	        window.scroll(0, 0);
+	      });
+	    }); // END #Layout
+	  }); // END #PortfolioTests
+	} // END createPortfolioTests()
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createProductLandingPageTests;
+	function createProductLandingPageTests() {
+	  describe("#Product Landing Page tests", function () {
+
+	    describe("#Content", function () {
+
+	      it('1. My product landing page should have a <header> element with corresponding id="header".', function () {
+	        assert.isNotNull(document.getElementById("header"), '#header is not defined ');
+	      });
+
+	      it('2. I can see an image within the #header element with a corresponding id="header-img".', function () {
+	        var img = document.getElementById("header-img");
+	        assert.isNotNull(img, '#header-img is not defined ');
+	        assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
+	        assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header ');
+	        assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
+	        assert.include(img.src, 'http', "The src attribute\'s value should be a url (http...) ");
+	      });
+
+	      it('3. Within the <header> element I can see a <nav> element with corresponding id="nav-bar".', function () {
+	        assert.isNotNull(document.getElementById("nav-bar"), '#nav-bar is not defined ');
+	        assert.strictEqual(document.getElementById("nav-bar").nodeName, 'NAV', 'The #nav-bar element is not a <nav> element ');
+	        assert.strictEqual(document.querySelectorAll('#header #nav-bar').length, 1, '#nav-bar is not a child of #header ');
+	      });
+
+	      it('4. I can see at least three clickable elements inside the nav element, each with the class "nav-link".', function () {
+	        assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" within the #nav-bar element ');
+	      });
+
+	      it('5. When I click a .nav-link button in the nav element, I am taken to the corresponding section of the landing page.', function () {
+	        var navLinks = document.querySelectorAll('#nav-bar .nav-link');
+	        assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ');
+	        navLinks.forEach(function (link) {
+	          assert.isNotNull(link);
+	          assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
+	          var linkDestination = link.getAttribute('href').slice(1);
+	          assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element ');
+	        });
+	      });
+
+	      it('6. I can watch an embedded product video with id="video".', function () {
+	        var video = document.getElementById("video");
+	        assert.isNotNull(video, '#video is not defined ');
+	        assert(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
+	        assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
+	      });
+
+	      it('7. My landing page has a <form> element with a corresponding id="form".', function () {
+	        assert.isNotNull(document.getElementById('form'), '#form is not defined ');
+	        assert.strictEqual(document.getElementById('form').nodeName, 'FORM', '#form should be a <form> element ');
+	      });
+
+	      it('8. Within the form, there is an <input> field with id="email" where I can enter an email address.', function () {
+	        assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        assert.strictEqual(document.querySelectorAll('#form #email').length, 1, '#email should be a child of the #form element ');
+	        assert.strictEqual(document.getElementById("email").nodeName, 'INPUT', '#email should be an <input> element ');
+	      });
+
+	      it('9. The #email input field should have placeholder text to let the user know what the field is for.', function () {
+	        assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true, 'The input field does not have placehoder text ');
+	        assert.isAbove(document.getElementById("email").getAttribute('placeholder').length, 0, 'The placeholder attribute should have some text ');
+	      });
+
+	      it('10. The #email input field uses HTML5 validation to confirm that the entered text is an email address.', function () {
+	        var emailField = document.getElementById("email");
+	        assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        assert.strictEqual(emailField.type, "email", "Email field should use HTML5 validation ");
+	      });
+
+	      it('11. Within the form, there is a submit <input> with corresponding id="submit".', function () {
+	        var submitButton = document.getElementById("submit");
+	        assert.isNotNull(submitButton, '#submit is not defined ');
+	        assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
+	        assert.strictEqual(submitButton.nodeName, 'INPUT', '#email should be an <input> element ');
+	        assert.strictEqual(submitButton.type, 'submit', 'The input type is incorrect ');
+	      });
+
+	      it('12. When I click the #submit button, the email is submitted to a static page (use this mock URL: https://www.freecodecamp.com/email-submit) that confirms the email address was entered (and that it posted successfully).', function () {
+	        var emailField = document.getElementById("email");
+	        var form = document.getElementById('form');
+	        var submitButton = document.getElementById('submit');
+	        assert.isNotNull(submitButton, '#submit is not defined ');
+	        assert.strictEqual(form.hasAttribute('action'), true, 'The #form should have an action attribute ');
+	        assert.include(form.action, 'http', "The action attribute\'s value should be a url (http...) ");
+	        assert.strictEqual(emailField.hasAttribute('name'), true, 'The #email input should have a name attribute ');
+	        assert.strictEqual(emailField.name, "email", 'The name attribute should have a value of "email" ');
+	      });
+	    }); // END #Content
+
+	    describe('#Layout', function () {
+	      it('1. The <header> element with id="header" should always be at the top of the viewport.', function () {
+	        var header = document.getElementById('header');
+
+	        assert.approximately(header.getBoundingClientRect().top, 0, 15, '#header\'s parent should be body and it should be at the top of the viewport ');
+
+	        window.scroll(0, 500);
+	        assert.approximately(header.getBoundingClientRect().top, 0, 15, '#header should be at the top of the viewport even after scrolling ');
+	        window.scroll(0, 0);
+	      });
+
+	      it('2. My product landing page should have at least one media query.', function () {
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                assert.isOk(true);
+	                return;
+	              }
+	            }
+	          }
+	        }
+	        // if no media query is detected, test fails
+	        assert.isOk(false, "No media queries detected ");
+	      });
+
+	      it('3. My product landing page should utilize CSS flexbox at least once.', function () {
+	        // loop through all associated stylesheets and look for display of flex
+	        var flexCount = [];
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'flex' || document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'inline-flex') {
+	                flexCount.push(1);
+	              }
+	            }
+	          }
+	        }
+	        // our test suite uses a display of flex, so we need to count how many times its used 
+	        // and confirm that its more than once. If we just detect one instance, its ours. 
+	        assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex anywhere in your CSS ');
+	      });
+	    }); // END #Layout
+	  }); // END #ProductLadingPageTests
+	} // END createProductLandingPageTests()
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createSurveyFormTests;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function createSurveyFormTests() {
+	  /**
+	  Returns the number of elements that are selectable
+	  **/
+	  function getNumActive(elems) {
+	    var numActive = 0;
+	    for (var i = 0; i < elems.length; i++) {
+	      var el = elems[i];
+	      if (!el.disabled) {
+	        numActive++;
+	      }
+	    }
+	    return numActive;
+	  }
+
+	  describe("Survey Form tests", function () {
+	    describe("#Content", function () {
+
+	      it('1. I can see a title with id="title" in H1 sized text.', function () {
+	        var title = document.getElementById('title');
+	        FCC_Global.assert.isNotNull(title, "There should be an element with id='title '");
+	        FCC_Global.assert.strictEqual(title.tagName, "H1", "#title should be in H1 sized text ");
+	        FCC_Global.assert.isAbove(title.innerText.length, 0, '#title should contain some text ');
+	      });
+
+	      it('2. I can see a short explanation with id="description" in P sized text.', function () {
+	        var description = document.getElementById('description');
+	        FCC_Global.assert.isNotNull(description, "There should be an element with id='description' ");
+	        FCC_Global.assert.strictEqual(description.tagName, "P", "#description should be in P sized text ");
+	        FCC_Global.assert.isAbove(description.innerText.length, 0, '#description should contain some text ');
+	      });
+
+	      it('3. I am required to enter my name in a field with id="name".', function () {
+	        var name = document.getElementById("name");
+	        FCC_Global.assert.isNotNull(name, 'There should be an input text field with id="name" ');
+	        FCC_Global.assert.strictEqual(name.type, "text", 'input field with id="name" should be a text field ');
+	        FCC_Global.assert.isOk(name.required, "Name input field should be required ");
+	      });
+
+	      it('4. I am required to enter an email in a field with id="email".', function () {
+	        var email = document.getElementById("email");
+	        FCC_Global.assert.isNotNull(email, "There should be an input text field with id='email' ");
+	        FCC_Global.assert.isOk(email.required, "Email input field should be required ");
+	      });
+
+	      it('5. If I enter an email that is not formatted correctly, I will see an HTML5 validation error.', function () {
+	        var email = document.getElementById("email");
+	        FCC_Global.assert.strictEqual(email.type, "email", "Email field should be HTML5 validated ");
+	      });
+
+	      it('6. I can enter a number in a field with id="number".', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.isNotNull(number, "There should be an input text field with id='number' ");
+	      });
+
+	      it('7. If I enter non-numbers in a number field, I will see an HTML5 validation error.', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.strictEqual(number.type, "number", "Number field should be HTML5 validated ");
+	      });
+
+	      it('8. If I enter numbers outside the range of the number field, I will see an HTML5 validation error.', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.isNotNaN(parseInt(number.min), "Minimum number should be defined ");
+	        FCC_Global.assert.isNotNaN(parseInt(number.max), "Maximum number should be defined ");
+	      });
+
+	      it('9. For the name, email, and number input fields, I can see corresponding labels that describe the purpose of each field with the following ids: id="name-label", id="email-label", and id="number-label".', function () {
+	        var nameLabel = document.getElementById('name-label');
+	        var emailLabel = document.getElementById('email-label');
+	        var numberLabel = document.getElementById('number-label');
+	        FCC_Global.assert.isNotNull(nameLabel, "#name-label is not defined ");
+	        FCC_Global.assert.strictEqual(nameLabel.nodeName, 'LABEL', '#name-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(nameLabel.innerText.length, 0, '#name-label should contain some text ');
+	        FCC_Global.assert.isNotNull(emailLabel, "#email-label is not defined ");
+	        FCC_Global.assert.strictEqual(emailLabel.nodeName, 'LABEL', '#email-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(emailLabel.innerText.length, 0, '#email-label should contain some text ');
+	        FCC_Global.assert.isNotNull(numberLabel, "#number-label is not defined ");
+	        FCC_Global.assert.strictEqual(numberLabel.nodeName, 'LABEL', '#number-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(numberLabel.innerText.length, 0, '#number-label should contain some text ');
+	      });
+
+	      it('10. For the name, email, and number input fields, I can see placeholder text that gives me a description or instructions for each field.', function () {
+	        FCC_Global.assert.strictEqual(document.getElementById('name').hasAttribute('placeholder'), true, 'The name input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('name').placeholder.length, 0, 'The name input field\'s placeholder attribute should have a value of some text ');
+	        FCC_Global.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The email input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('email').placeholder.length, 0, 'The email input field\'s placeholder attribute should have a value of some text ');
+	        FCC_Global.assert.strictEqual(document.getElementById('number').hasAttribute('placeholder'), true, 'The number input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have a value of some text ');
+	      });
+
+	      it('11. I can select an option from a dropdown.', function () {
+	        var selects = document.getElementsByTagName('select');
+	        FCC_Global.assert.isAtLeast(selects.length, 1, "There should be at least 1 select field ");
+	        for (var i = 0; i < selects.length; i++) {
+	          var select = selects[i];
+	          FCC_Global.assert.isAtLeast(getNumActive(select.options), 1, "Select should contain at least 1 selectable option ");
+	        }
+	      });
+
+	      it('12. I can select a field from a series of radio buttons.', function () {
+	        var radioButtons = (0, _jquery2.default)(":radio");
+	        FCC_Global.assert.isAtLeast(radioButtons.length, 1, "There should be at least 1 radio button ");
+	        FCC_Global.assert.isAtLeast(getNumActive(radioButtons), 1, "Select should contain at least 1 active radio button ");
+	      });
+
+	      it('13. I can select several fields from a series of checkboxes.', function () {
+	        var checkboxes = (0, _jquery2.default)(":checkbox");
+	        FCC_Global.assert.isAtLeast(checkboxes.length, 1, "There should be at least 1 checkbox ");
+	        FCC_Global.assert.isAtLeast(getNumActive(checkboxes), 1, "There should be at least 1 active checkbox ");
+	      });
+
+	      it('14. I am presented with a <textarea> at the end for additional comments.', function () {
+	        var textareas = document.getElementsByTagName('textarea');
+	        FCC_Global.assert.isAtLeast(textareas.length, 1, "There should be at least 1 <textarea> ");
+	      });
+	    }); // END #Content
+	  }); // END Survery Form tests
+	} // END createSurveyFormTests()
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createTechnicalDocsPageTests;
+	function createTechnicalDocsPageTests() {
+
+	  var classArray = function classArray(className) {
+	    return Array.from(document.getElementsByClassName(className));
+	  };
+
+	  describe("Technical Documentation Page tests", function () {
+	    describe('#Content', function () {
+	      it('1. I can see an <article> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
+	        FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "ARTICLE", "The 'main-doc' element should be an <article> ");
+	      });
+
+	      it('2. Within the #main-doc <article> element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
+	        var classQty = classArray('main-section').length;
+	        var typeQty = classArray('main-section').filter(function (el) {
+	          return el.nodeName === 'SECTION';
+	        });
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#main-doc .main-section').length, 0, 'There are no .main-section ' + 'elements within #main-doc ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#main-doc .main-section').length, 5, 'There are not at least ' + '5 elements with the class of "main-section" ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('.main-section').length, document.querySelectorAll('#main-doc .main-section').length, 'All of the page\'s .main-section elements should be ' + 'within #main-doc ');
+	        FCC_Global.assert.strictEqual(typeQty.length, classQty, 'Not all of the elements with the class of "main-section" are ' + '<section> elements ');
+	      });
+
+	      it('3. The first element within each .main-section should be a <header> element which contains text that ' + 'describes the topic of that section.', function () {
+	        var classQty = document.getElementsByClassName('main-section').length;
+	        var firstChildHeaderQty = classArray('main-section').filter(function (el) {
+	          return el.firstElementChild.nodeName === 'HEADER';
+	        });
+	        var mustContainText = classArray('main-section').filter(function (el) {
+	          return el.firstElementChild.innerText.length > 0;
+	        });
+	        FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
+	        FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' " + "have a <header> element as a first element child ");
+	        FCC_Global.assert.strictEqual(mustContainText.length, classQty, "Not all first-child <header> elements within " + "'main-section' elements contain text ");
+	      });
+
+	      it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' + 'text of each <header> contained within it. Any spaces should be replaced with underscores (e.g. The ' + '<section> that contains the header "Javascript and Java" should have a corresponding ' + 'id="Javascript_and_Java").', function () {
+	        var mainSections = classArray('main-section');
+	        FCC_Global.assert.isAbove(mainSections.length, 0, 'No elements with the class "main-section" are defined ');
+	        var headerText = mainSections.map(function (el, i) {
+	          return [][i] = el.firstElementChild.innerText.replace(/\s/g, '_');
+	        });
+	        var mainSectionIDs = mainSections.map(function (el, i) {
+	          return [][i] = el.id;
+	        });
+	        var remainder = headerText.filter(function (str) {
+	          return mainSectionIDs.indexOf(str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t ' + 'forget to replace spaces with underscores!) : ' + remainder + ' ');
+	      });
+
+	      it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, "There are not at least 10 <p> " + "elements throughout all of the elements with the class of 'main-section' ");
+	        // WANTED THE TEST TO BE AS FOLLOWS BUT COULD NOT FIND A WAY TO TEST FOR ELEMENTS WITH CLASS OF MAIN-SECTION
+	        // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WIHTOUT ADDITIONAL EXTERNAL DEPENDENCIES):
+	        // Each "main-section" should contain at least one <p> element with textual content.
+	      });
+
+	      it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, "There are not at least 5 <code> " + "elements throughout all of the elemnts with the class of 'main-section' ");
+	      });
+
+	      it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, "There are not " + "at least 5 <li> elements throughout all of the elemnts with the class of 'main-section' ");
+	      });
+
+	      it('8. I can see a <nav> element with a corresponding id="navbar".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('navbar'), "There is no element with the id of 'navbar'.");
+	        FCC_Global.assert.strictEqual(document.getElementById('navbar').nodeName, "NAV", 'The element with the id of ' + '"navbar" is not a <nav> element ');
+	      });
+
+	      it('9. The first element within the navbar should be a <header> which contains text that describes the topic ' + 'of the technical documentation.', function () {
+	        FCC_Global.assert.strictEqual(document.getElementById('navbar').firstElementChild.nodeName, 'HEADER', 'The first ' + 'element within #navbar should be a <header> ');
+	      });
+
+	      it('10. Additionally, the navbar should contain link (<a>) elements with the class of "nav-link". There ' + 'should be one for every element with the class "main-section".', function () {
+	        var mainSectionQty = document.querySelectorAll('#main-doc .main-section').length;
+	        var navLinkQty = document.querySelectorAll('#navbar .nav-link').length;
+	        var typeQty = classArray('nav-link').filter(function (el) {
+	          return el.nodeName === 'A';
+	        });
+	        FCC_Global.assert.isAbove(navLinkQty, 0, 'The element with the id of "navbar" does not contain any elements with the ' + 'class of "nav-link" ');
+	        FCC_Global.assert.strictEqual(navLinkQty, mainSectionQty, 'There should be one .nav-link for every element ' + 'with the class of "main-section", and every .nav-link should be within #navbar ');
+	        FCC_Global.assert.strictEqual(typeQty.length, navLinkQty, 'Not all of the elements with the class of "nav-link" are ' + '<a> elements ');
+	      });
+
+	      it('11. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
+	        FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
+	        var headerText = classArray('main-section').map(function (el, i) {
+	          return [][i] = el.firstElementChild.innerText;
+	        });
+	        var linkText = classArray('nav-link').map(function (el, i) {
+	          return [][i] = /[^\n\t\f\r\v]+/.exec(el.innerText)[0];
+	        });
+	        // use indexOf instead of matching index for index, in case for some reason they have them out of order
+	        var remainder = headerText.filter(function (str) {
+	          return linkText.indexOf(str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(remainder.length, 0, 'Check that these headers have corresponding .nav-link elements and ' + 'be mindful of case! : ' + remainder + ' ');
+	      });
+
+	      it('12. When I click on a navbar element, the page should navigate to the corresponding section of the ' + '"main-doc" element (e.g. If I click on a "nav-link" element that contains the text "Hello world", the page ' + 'navigates to a <section> element that has that id and contains the corresponding <header>.', function () {
+	        var navLinkQty = document.getElementsByClassName('nav-link').length;
+	        FCC_Global.assert.isAbove(navLinkQty, 0, 'No elements with the class "nav-link" have been defined ');
+	        var hasHref = classArray('nav-link').filter(function (el) {
+	          return el.hasAttribute('href');
+	        });
+	        var hrefValues = classArray('nav-link').map(function (el, i) {
+	          return [][i] = el.getAttribute('href');
+	        });
+	        var mainSectionIDs = classArray('main-section').map(function (el, i) {
+	          return [][i] = el.id;
+	        });
+	        var missingHrefValues = mainSectionIDs.filter(function (str) {
+	          return hrefValues.indexOf('#' + str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(hasHref.length, navLinkQty, 'Every .nav-link does not have an href attribute.');
+	        FCC_Global.assert.strictEqual(missingHrefValues.length, 0, 'Every .nav-link should have an href value ' + 'that links it to its corresponding .main-section (e.g. href="#Introduction"). Check that these ' + '.main-section ids have corresponding href values : ' + missingHrefValues + ' ');
+	      });
+	    }); // END #Content
+
+	    describe('#Layout', function () {
+	      it('1. On regular sized devices (laptops, desktops), the element with id="navbar" should be shown on the left side of the screen and should always be visible to the user.', function () {
+	        var windowWidth = document.documentElement.clientWidth || window.innerWidth;
+	        FCC_Global.assert.isAbove(windowWidth, 850, 'Please run this test in a larger window (before any media queries) ');
+	        var navbar = document.getElementById('navbar');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10);
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10);
+	        window.scroll(0, 1000);
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10);
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10);
+	        window.scroll(0, 0);
+	      });
+
+	      it('2. My Technical Documentation page should use at least one media query.', function () {
+	        var queryRules = '';
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                FCC_Global.assert.isOk(true);
+	                return;
+	              }
+	            }
+	          }
+	        }
+	        FCC_Global.assert.isOk(false, 'No media queries detected ');
+	      });
+	    }); // END #Layout
+	  }); // end Technical Docs Page Tests
+	} // end createTechnicalDocsPageTests()
 
 /***/ }
 /******/ ]);
