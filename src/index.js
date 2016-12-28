@@ -5,6 +5,7 @@ import test_CSS from './assets/test_CSS';
 import mocha_CSS from './assets/mocha_CSS';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
+import createCalculatorTests from './project-tests/calculatorTests.js';
 
 export const assert = chai.assert;
 const requestTimeout = 3000;
