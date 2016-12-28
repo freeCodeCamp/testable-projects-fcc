@@ -1,4 +1,4 @@
-const test_HTML = `
+const test_CSS = `
   <style>
     .fcc_test_message-box-rerun-button {
       position: fixed;
@@ -188,4 +188,4 @@ const test_HTML = `
     <div class="fcc_test_message-box-close-fixed" onclick="FCC_Global.FCCCloseTestModal()"></div>
   </div>`
 
-  export default test_HTML;
+  export default test_CSS;
