@@ -5,8 +5,35 @@ import starter_HTML from './starter_HTML';
 import createDrumMachineTests from './project-tests/drumMachineTests.js';
 import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
 
+// dynamically add a script to the HTML head to load mocha
+(function() {
+  var mocha_cdn = document.createElement('script');
+  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
+  document.head.appendChild(mocha_cdn);
+})();
+
+// When the document is fully loaded,
+// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
+$(document).ready(function() {
+  let mochaCheck = setInterval(() => runCheck(), 50);
+  function runCheck() {
+    try {    
+      if (mocha) {
+        clearInterval(mochaCheck);
+        mocha.setup("bdd");
+        const testDiv = document.createElement("div");
+        testDiv.style.position = "inherit";
+        testDiv.innerHTML = starter_HTML;
+        document.body.appendChild(testDiv);
+      };
+    } catch (err) {
+      console.warn('mocha not loaded yet');
+    };
+  };
+  runCheck();
+});
+
 // Setup Mocha and initialize
-mocha.setup("bdd");
 export const assert = chai.assert;
 let testRunner = null;
 const requestTimeout = 3000;
@@ -172,13 +199,6 @@ export function FCCInitTestRunner(){
   testRunner.on("fail", hasFailed);
   testRunner.on("test end", updateProgress);
   testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
-}
+};
 
-// When the document is fully loaded,
-// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
-$(document).ready(function() {
-  const testDiv = document.createElement("div");
-  testDiv.style.position = "inherit";
-  testDiv.innerHTML = starter_HTML;
-  document.body.appendChild(testDiv);
-});
+
