@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import jquery from 'jquery';
 
 export default function createMarkdownPreviewerTests() {
   
