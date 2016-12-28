@@ -11,7 +11,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "jquery": "^3.1.1"
+    "html-webpack-externals-plugin": "^2.2.1",
+    "html-webpack-plugin": "^2.24.1",
+    "jquery": "^3.1.1",
+    "scriptjs": "^2.5.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
