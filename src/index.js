@@ -31,6 +31,14 @@ export const assert = chai.assert;
 // When the document is fully loaded,
 // create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
 $(document).ready(function() {
+  
+  // check for chrome
+  const isChrome = !!window.chrome && !!window.chrome.webstore;
+  if (isChrome === false) {
+    alert('Test Suite Compatible in Chrome Only');
+  }
+
+  // check mocha is loaded and populate test suite
   let mochaCheck = setInterval(() => runCheck(), 50);
   function runCheck() {
     try {    

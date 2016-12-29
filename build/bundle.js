@@ -142,6 +142,14 @@ var FCC_Global =
 	// When the document is fully loaded,
 	// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
 	(0, _jquery2.default)(document).ready(function () {
+
+	  // check for chrome
+	  var isChrome = !!window.chrome && !!window.chrome.webstore;
+	  if (isChrome === false) {
+	    alert('Test Suite Compatible in Chrome Only');
+	  }
+
+	  // check mocha is loaded and populate test suite
 	  var mochaCheck = setInterval(function () {
 	    return runCheck();
 	  }, 50);
