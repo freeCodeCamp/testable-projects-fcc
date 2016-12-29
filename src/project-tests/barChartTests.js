@@ -36,7 +36,7 @@ export default function createBarChartTests() {
         FCC_Global.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ')
       })
       
-      it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and gdp values.', function(){
+      it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values.', function(){
         const bars = document.getElementsByClassName('bar');
         FCC_Global.assert.isAtLeast(bars.length, 1,  'no elements with the class of "bar" are detected ');
         for(var i = 0; i < bars.length; i++) {

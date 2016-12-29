@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import each from 'jquery';
 
 export default function createScatterPlotTests() {
   describe('#ScatterPlotTests', function() {
