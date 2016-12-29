@@ -110,7 +110,7 @@ export default function createBarChartTests() {
           // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
           // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
           // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-          if($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden'){
+          if($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.display === 'none'){
             return 'hidden'
           } else {
             return 'visible'
@@ -130,14 +130,14 @@ export default function createBarChartTests() {
           // timeout is used to accomodate tooltip transitions
           setTimeout( _ => {
             if(getToolTipStatus(tooltip) !== 'visible') {
-              reject(new Error('Tooltip should be visible when mouse is on a bar '))
+              reject('Tooltip should be visible when mouse is on a bar ');
             }
 
             // remove mouse from bar and check if tooltip is hidden again
             randomBar.dispatchEvent(new MouseEvent('mouseout'));
             setTimeout( _ => {
               if(getToolTipStatus(tooltip) !== 'hidden') {
-                reject(new Error('Tooltip should be hidden when mouse is not on a bar '))
+                reject('Tooltip should be hidden when mouse is not on a bar ');
               } else {
                 resolve()
               }
