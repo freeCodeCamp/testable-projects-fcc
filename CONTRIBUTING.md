@@ -17,7 +17,7 @@ OR
 ```javascript
 `FCC_Global.FCCInitTestRunner()`
 ```
-- Be sure to run `npm build` to create a new bundle before you add, commit, and push your changes.
+- Be sure to run `npm run build` to create a new bundle before you add, commit, and push your changes.
 
 ### For fixing test suite bugs / adding new test suites
 - All tests suites should use only existing dependencies (Mocha, Chai, jQuery).
@@ -34,7 +34,7 @@ OR
 - Run `npm start` to start watching your files for changes 
 - Then in another terminal tab, run `live-server` in the `local_test` directory
 - This will allow you to see your changes as you make them
-- Your changes will not be saved to the bundle until you run `npm build`
+- Your changes will not be saved to the bundle until you run `npm run build`
 - As a less desireable alternative, you can push your changes to your fork of this repo and utilize rawgit.com for a CDN style link that you can use to populate the test suite in CodePen or wherever else (use the right hand, non-production link).
 
 ### For adding functionality to the test suite itself
