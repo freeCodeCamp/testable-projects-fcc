@@ -1,13 +1,22 @@
 
 import $ from 'jquery';
 import chai from 'chai';
-import test_CSS from './assets/test_CSS';
+import test_suite_skeleton from './assets/test_suite_skeleton';
 import mocha_CSS from './assets/mocha_CSS';
-import createDrumMachineTests from './project-tests/drumMachineTests.js';
-import createMarkdownPreviewerTests from './project-tests/markdownPreviewerTests.js';
+import createDrumMachineTests from './project-tests/drum-machine-tests.js';
+import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests.js';
+import createCalculatorTests from './project-tests/calculator-tests.js';
+import createPomodoroClockTests from './project-tests/pomodoro-clock-tests.js';
+import createTributePageTests from './project-tests/tribute-page-tests.js';
+import createPortfolioTests from './project-tests/portfolio-tests.js';
+import createProductLandingPageTests from './project-tests/product-landing-page-tests.js';
+import createSurveyFormTests from './project-tests/survey-form-tests.js';
+import createTechnicalDocsPageTests from './project-tests/technical-docs-tests.js';
+import createBarChartTests from './project-tests/bar-chart-tests.js';
+import createScatterPlotTests from './project-tests/scatter-plot-tests.js';
+import createRandomQuoteMachineTests from './project-tests/quote-machine-tests.js';
 
 export const assert = chai.assert;
-const requestTimeout = 3000;
 
 // load mocha
 (function() {
@@ -22,6 +31,14 @@ const requestTimeout = 3000;
 // When the document is fully loaded,
 // create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
 $(document).ready(function() {
+
+  // check for chrome
+  const isChrome = !!window.chrome && !!window.chrome.webstore;
+  if (isChrome === false) {
+    alert('Test Suite Compatible with Chrome Only');
+  }
+
+  // check mocha is loaded and populate test suite
   let mochaCheck = setInterval(() => runCheck(), 50);
   function runCheck() {
     try {    
@@ -30,7 +47,7 @@ $(document).ready(function() {
         mocha.setup("bdd");
         const testDiv = document.createElement("div");
         testDiv.style.position = "inherit";
-        testDiv.innerHTML = test_CSS;
+        testDiv.innerHTML = test_suite_skeleton;
         document.body.appendChild(testDiv);
       };
     } catch (err) {
@@ -40,7 +57,7 @@ $(document).ready(function() {
   runCheck();
 });
 
-// Utility Functions:
+// UTILITY FUNCTIONS:
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed){
@@ -172,7 +189,14 @@ export function FCCInitTestRunner(){
     case 'technical-docs-page':
       createTechnicalDocsPageTests();
       break;
+    case 'bar-chart':   
+      createBarChartTests();
+      break;
+    case 'scatter-plot':
+      createScatterPlotTests();
+      break;
   };
+  
   // save the number of tests in the selected suite
   let nbTests = 0;
   mocha.suite.eachTest( _ => nbTests++);
