@@ -20583,7 +20583,7 @@ var FCC_Global =
 	    });
 
 	    it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function () {
-	      var firstRequestTimeout = 10;
+	      var firstRequestTimeout = 100;
 	      var secondRequestTimeout = 2000;
 	      this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
 

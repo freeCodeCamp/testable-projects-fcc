@@ -100,7 +100,7 @@ export default function createBarChartTests() {
       })
       
       it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function() {
-        const firstRequestTimeout = 10;
+        const firstRequestTimeout = 100;
         const secondRequestTimeout = 2000;
         this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
         
