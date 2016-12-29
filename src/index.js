@@ -1,7 +1,7 @@
 
 import $ from 'jquery';
 import chai from 'chai';
-import test_CSS from './assets/test_CSS';
+import test_suite_skeleton from './assets/test_suite_skeleton';
 import mocha_CSS from './assets/mocha_CSS';
 import createDrumMachineTests from './project-tests/drum-machine-tests.js';
 import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests.js';
@@ -47,7 +47,7 @@ $(document).ready(function() {
         mocha.setup("bdd");
         const testDiv = document.createElement("div");
         testDiv.style.position = "inherit";
-        testDiv.innerHTML = test_CSS;
+        testDiv.innerHTML = test_suite_skeleton;
         document.body.appendChild(testDiv);
       };
     } catch (err) {
@@ -57,7 +57,7 @@ $(document).ready(function() {
   runCheck();
 });
 
-// Utility Functions:
+// UTILITY FUNCTIONS:
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed){

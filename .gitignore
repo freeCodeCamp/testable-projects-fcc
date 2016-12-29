@@ -35,3 +35,14 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# local_test directory
+local_test/*
+!local_test/js
+local_test/js/*
+!local_test/css
+local_test/css/*
+!local_test/index.html
+
+# local test code
+localTestCode.html
