@@ -20779,8 +20779,8 @@ var FCC_Global =
 	          var mins = timeArr[0];
 	          var secs = timeArr[1];
 	          var date = new Date(0, 0, 0, 0, mins, secs, 0);
-	          assert.isAtLeast(date, MIN_TIME, "y axis labels are below the range of the actual data ");
-	          assert.isAtMost(date, MAX_TIME, "y axis labels are above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(date, MIN_TIME, "y axis labels are below the range of the actual data ");
+	          FCC_Global.assert.isAtMost(date, MAX_TIME, "y axis labels are above the range of the actual data ");
 	        });
 	      });
 
