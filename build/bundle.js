@@ -69,15 +69,9 @@ var FCC_Global =
 
 	var _chai2 = _interopRequireDefault(_chai);
 
-<<<<<<< HEAD
-	var _test_CSS = __webpack_require__(42);
-
-	var _test_CSS2 = _interopRequireDefault(_test_CSS);
-=======
 	var _test_suite_skeleton = __webpack_require__(42);
 
 	var _test_suite_skeleton2 = _interopRequireDefault(_test_suite_skeleton);
->>>>>>> upstream/master
 
 	var _mocha_CSS = __webpack_require__(43);
 
@@ -134,10 +128,6 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var assert = exports.assert = _chai2.default.assert;
-<<<<<<< HEAD
-	var requestTimeout = 3000;
-=======
->>>>>>> upstream/master
 
 	// load mocha
 	(function () {
@@ -170,11 +160,7 @@ var FCC_Global =
 	        mocha.setup("bdd");
 	        var testDiv = document.createElement("div");
 	        testDiv.style.position = "inherit";
-<<<<<<< HEAD
-	        testDiv.innerHTML = _test_CSS2.default;
-=======
 	        testDiv.innerHTML = _test_suite_skeleton2.default;
->>>>>>> upstream/master
 	        document.body.appendChild(testDiv);
 	      };
 	    } catch (err) {
@@ -184,11 +170,7 @@ var FCC_Global =
 	  runCheck();
 	});
 
-<<<<<<< HEAD
-	// Utility Functions:
-=======
 	// UTILITY FUNCTIONS:
->>>>>>> upstream/master
 
 	// Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 	function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
@@ -323,9 +305,6 @@ var FCC_Global =
 	    case 'technical-docs-page':
 	      (0, _technicalDocsTests2.default)();
 	      break;
-<<<<<<< HEAD
-	  };
-=======
 	    case 'bar-chart':
 	      (0, _barChartTests2.default)();
 	      break;
@@ -334,7 +313,6 @@ var FCC_Global =
 	      break;
 	  };
 
->>>>>>> upstream/master
 	  // save the number of tests in the selected suite
 	  var nbTests = 0;
 	  mocha.suite.eachTest(function (_) {
@@ -18912,15 +18890,9 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-<<<<<<< HEAD
-	var test_CSS = "\n  <style>\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n  </style>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\"\n          onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
-
-	exports.default = test_CSS;
-=======
 	var test_suite_skeleton = "\n  <style>\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n  </style>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\"\n          onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
 
 	exports.default = test_suite_skeleton;
->>>>>>> upstream/master
 
 /***/ },
 /* 43 */
