@@ -42,7 +42,7 @@ export default function createScatterPlotTests() {
         }  
       });
       
-      it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data', function() {
+      it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function() {
         const MIN_X_VALUE = MIN_YEAR;
         const MAX_X_VALUE = MAX_YEAR;
         
@@ -117,6 +117,7 @@ export default function createScatterPlotTests() {
         const xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
         const MIN_YEAR = 1994;
         const MAX_YEAR = 2016;
+        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ")
         xAxisTickLabels.forEach( label => {
           FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, "x axis labels are below the range of the actual data ");
           FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, "x axis labels are above the range of the actual data ");
@@ -127,6 +128,7 @@ export default function createScatterPlotTests() {
         const yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
         const MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
         const MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
+        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
         yAxisTickLabels.forEach( label => {
           var timeArr = label.textContent.split(":");
           var mins = timeArr[0];
