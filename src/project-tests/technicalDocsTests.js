@@ -144,15 +144,14 @@ export default function createTechnicalDocsPageTests() {
           if(document.styleSheets[i].cssRules !== null) {
             for(var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
               if(document.styleSheets[i].cssRules[j].type === 4) {
-                // FCC_Global.assert.isOk(true);
-                // return;
+                // push query rules to empty array
                 queryRules.push(document.styleSheets[i].cssRules[j]);
               } 
             }
           } 
         }
-        console.log(queryRules);
-        // FCC_Global.assert.isOk(false, 'No media queries detected ');
+        // there is one media query in Mocha.css, so must detect more than 1 query
+        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
       });
     }); // END #Layout
   }); // end Technical Docs Page Tests

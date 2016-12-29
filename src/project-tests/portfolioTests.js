@@ -90,19 +90,20 @@ export default function createPortfolioTests() {
     describe('#Layout', function() {
 
       it('1. My portfolio should have at least one media query.', function() {
+        let queryRules = [];
         // loop through all associated stylesheets and look for media query
         for(var i = 0; i < document.styleSheets.length; i++) {  
           if(document.styleSheets[i].cssRules !== null) {
             for(var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
               if(document.styleSheets[i].cssRules[j].type === 4) {
-                FCC_Global.assert.isOk(true);
-                return;
-              }
+                // push query rules to empty array
+                queryRules.push(document.styleSheets[i].cssRules[j]);
+              } 
             }
-          }
+          } 
         }
-        // if no media query is detected, test fails
-        FCC_Global.assert.isOk(false, "No media queries detected ");
+        // there is one media query in Mocha.css, so must detect more than 1 query
+        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
       });
       
       it('2. The height of the welcome section should be equal to the height of the viewport.', function() {
