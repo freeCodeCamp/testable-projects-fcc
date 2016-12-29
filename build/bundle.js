@@ -89,9 +89,9 @@ var FCC_Global =
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroTests = __webpack_require__(47);
+	var _pomodoroClockTests = __webpack_require__(47);
 
-	var _pomodoroTests2 = _interopRequireDefault(_pomodoroTests);
+	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
 	var _tributePageTests = __webpack_require__(48);
 
@@ -274,7 +274,7 @@ var FCC_Global =
 	      (0, _calculatorTests2.default)();
 	      break;
 	    case "pomodoro-clock":
-	      (0, _pomodoroTests2.default)();
+	      (0, _pomodoroClockTests2.default)();
 	      break;
 	    case "tribute-page":
 	      (0, _tributePageTests2.default)();
@@ -20940,7 +20940,7 @@ var FCC_Global =
 	        });
 	      });
 
-	      it("8. When the #new-quote element is clicked, my quote machine should fetch a new quote and display it in the #text element.", function (done) {
+	      it("8. When the #new-quote button is clicked, my quote machine should fetch a new quote and display it in the #text element.", function (done) {
 	        this.timeout(requestTimeout + 1000);
 	        var prevText = document.getElementById("text").innerText;
 	        document.getElementById("new-quote").click();
@@ -20954,7 +20954,7 @@ var FCC_Global =
 	        }, requestTimeout);
 	      });
 
-	      it("9. My quote machine should fetch the new quote\'s author when the #new-quote element is clicked and display it in the #author element.", function (done) {
+	      it("9. My quote machine should fetch the new quote\'s author when the #new-quote button is clicked and display it in the #author element.", function (done) {
 	        this.timeout(requestTimeout + 1000);
 	        var prevAuth = document.getElementById("author").innerText;
 	        document.getElementById("new-quote").click();
@@ -20968,7 +20968,7 @@ var FCC_Global =
 	        }, requestTimeout);
 	      });
 
-	      it('10. I can tweet the current quote by clicking on the #tweet-quote button. This button should use the "twitter.com/intent/tweet" path and tweet the current quote.', function () {
+	      it('10. I can tweet the current quote by clicking on the #tweet-quote button. This button should use the "twitter.com/intent/tweet" path to tweet the current quote.', function () {
 	        this.timeout(requestTimeout + 1000);
 	        FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote button must have an href attribute ');
 	        var href = document.getElementById("tweet-quote").href;
