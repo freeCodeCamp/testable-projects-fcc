@@ -144,7 +144,7 @@ export default function createScatterPlotTests() {
       });
        
       it('14. I can mouse over any dot and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function() {
-        const firstRequestTimeout = 10;
+        const firstRequestTimeout = 100;
         const secondRequestTimeout = 2000;
         this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
         FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
@@ -173,14 +173,14 @@ export default function createScatterPlotTests() {
           // timeout is used to accomodate tooltip transitions
           setTimeout( _ => {
             if(getToolTipStatus(tooltip) !== 'visible') {
-              reject(new Error('Tooltip should be visible when mouse is on a dot '))
+              reject('Tooltip should be visible when mouse is on a dot ');
             }
 
             // remove mouse from cell and check if tooltip is hidden again
             randomDot.dispatchEvent(new MouseEvent('mouseout'));
             setTimeout( _ => {
               if(getToolTipStatus(tooltip) !== 'hidden') {
-                reject(new Error('Tooltip should be hidden when mouse is not on a dot '))
+                reject('Tooltip should be hidden when mouse is not on a dot ');
               } else {
                 resolve()
               }
