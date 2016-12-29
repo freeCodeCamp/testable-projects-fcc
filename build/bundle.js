@@ -146,7 +146,7 @@ var FCC_Global =
 	  // check for chrome
 	  var isChrome = !!window.chrome && !!window.chrome.webstore;
 	  if (isChrome === false) {
-	    alert('Test Suite Compatible in Chrome Only');
+	    alert('Test Suite Compatible with Chrome Only');
 	  }
 
 	  // check mocha is loaded and populate test suite
