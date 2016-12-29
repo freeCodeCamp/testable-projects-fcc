@@ -12,6 +12,8 @@ import createPortfolioTests from './project-tests/portfolioTests.js';
 import createProductLandingPageTests from './project-tests/productLandingPageTests.js';
 import createSurveyFormTests from './project-tests/surveyFormTests.js';
 import createTechnicalDocsPageTests from './project-tests/technicalDocsTests.js';
+import createBarChartTests from './project-tests/barChartTests.js';
+import createScatterPlotTests from './project-tests/scatterPlotTests.js';
 
 export const assert = chai.assert;
 
@@ -177,6 +179,12 @@ export function FCCInitTestRunner(){
       break;
     case 'technical-docs-page':
       createTechnicalDocsPageTests();
+      break;
+    case 'bar-chart':   
+      createBarChartTests();
+      break;
+    case 'scatter-plot':
+      createScatterPlotTests();
       break;
   };
   
