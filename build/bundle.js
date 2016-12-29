@@ -20693,13 +20693,14 @@ var FCC_Global =
 	      it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function () {
 	        var MIN_X_VALUE = MIN_YEAR;
 	        var MAX_X_VALUE = MAX_YEAR;
-	        (0, _jquery2.default)(".dot").each(function () {
+	        var dots = document.getElementsByClassName('dot');
+	        dots.forEach(function (dot) {
 
-	          FCC_Global.assert.isAtLeast((0, _jquery2.default)(this).context.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data ");
-	          FCC_Global.assert.isAtMost((0, _jquery2.default)(this).context.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(dot.context.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data ");
+	          FCC_Global.assert.isAtMost(dot.context.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data ");
 
 	          //compare just the minutes for a good approximation
-	          var yDate = new Date((0, _jquery2.default)(this).context.getAttribute("data-yvalue"));
+	          var yDate = new Date(dot.context.getAttribute("data-yvalue"));
 	          FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, "The minutes data-yvalue of a dot is below the range of the actual minutes data ");
 	          FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, "The minutes data-yvalue of a dot is above the range of the actual minutes data ");
 	        });

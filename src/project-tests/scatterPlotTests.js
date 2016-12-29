@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import each from 'jquery';
 
 export default function createScatterPlotTests() {
   describe('#ScatterPlotTests', function() {
@@ -39,13 +38,14 @@ export default function createScatterPlotTests() {
       it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function() {
         const MIN_X_VALUE = MIN_YEAR;
         const MAX_X_VALUE = MAX_YEAR;
-        $(".dot").each(function(){
+        const dots = document.getElementsByClassName('dot');
+        dots.forEach( dot => {
           
-          FCC_Global.assert.isAtLeast($(this).context.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data " )
-          FCC_Global.assert.isAtMost($(this).context.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data " )
+          FCC_Global.assert.isAtLeast(dot.context.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data " )
+          FCC_Global.assert.isAtMost(dot.context.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data " )
           
           //compare just the minutes for a good approximation
-          var yDate = new Date($(this).context.getAttribute("data-yvalue"));
+          var yDate = new Date(dot.context.getAttribute("data-yvalue"));
           FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, "The minutes data-yvalue of a dot is below the range of the actual minutes data " )
           FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, "The minutes data-yvalue of a dot is above the range of the actual minutes data " ) 
         });
