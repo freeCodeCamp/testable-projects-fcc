@@ -20456,6 +20456,7 @@ var FCC_Global =
 	            }
 	          }
 	        }
+	        console.log(queryRules);
 	        // FCC_Global.assert.isOk(false, 'No media queries detected ');
 	      });
 	    }); // END #Layout
