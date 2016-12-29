@@ -14,6 +14,7 @@ import createSurveyFormTests from './project-tests/surveyFormTests.js';
 import createTechnicalDocsPageTests from './project-tests/technicalDocsTests.js';
 import createBarChartTests from './project-tests/barChartTests.js';
 import createScatterPlotTests from './project-tests/scatterPlotTests.js';
+import createRandomQuoteMachineTests from './project-tests/quoteMachineTests.js';
 
 export const assert = chai.assert;
 
