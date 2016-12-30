@@ -143,6 +143,7 @@ var FCC_Global =
 	// When the document is fully loaded,
 	// create the "Tests" button and the corresponding modal window, jquery required)
 	(0, _jquery2.default)(document).ready(function () {
+	  var project_name = '';
 	  // check for chrome
 	  var isChrome = !!window.chrome && !!window.chrome.webstore;
 	  if (isChrome === false) {
@@ -173,7 +174,7 @@ var FCC_Global =
 	// UTILITY FUNCTIONS:
 
 	function selectProject(project) {
-	  var project_name = project;
+	  project_name = project;
 	  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
 	  console.log('working');
 	}
