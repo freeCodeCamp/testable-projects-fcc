@@ -186,7 +186,8 @@ const test_suite_skeleton = `
   </style>
       <div id="fcc_test_selector_modal">
         <p>Please select the correct project from the dropdown below:</p>
-        <select name="Test Suite Selector" id="test-suite-selector" onchange="FCC_Global.selectProject(this.value)">
+        <select name="Test Suite Selector" id="test-suite-selector" onchange="selectProject(this.value)">
+          <option value="">- - -</option>
           <option value="tribute-page">Tribute Page</option>
           <option value="portfolio">Personal Portfolio</option>
           <option value="survey-form">Survey Form</option>
