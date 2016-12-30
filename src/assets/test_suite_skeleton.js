@@ -186,7 +186,7 @@ const test_suite_skeleton = `
   </style>
       <div id="fcc_test_selector_modal">
         <p>Please select the correct project from the dropdown below:</p>
-        <select name="Test Suite Selector" id="test-suite-selector" onchange="selectProject(this.value)">
+        <select name="Test Suite Selector" id="test-suite-selector" onchange="FCC_Global.selectProject(this.value)">
           <option value="">- - -</option>
           <option value="tribute-page">Tribute Page</option>
           <option value="portfolio">Personal Portfolio</option>
@@ -205,8 +205,7 @@ const test_suite_skeleton = `
       <div class="fcc_test_message-box-rerun-button" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
         Run Tests
       </div>
-  <button id="fcc_test_button" type="button" class="fcc_test_btn-default"
-          onclick="FCC_Global.FCCOpenTestModal()">
+  <button id="fcc_test_button" type="button" class="fcc_test_btn-default" title="CTRL + SHIFT + T" onclick="FCC_Global.FCCOpenTestModal()">
     ...
   </button>
   <div id="fcc_test_message-box" class="fcc_test_message-box-hidden" onclick="FCC_Global.FCCclickOutsideToCloseModal(event)">
