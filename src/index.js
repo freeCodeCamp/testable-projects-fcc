@@ -31,7 +31,7 @@ export const assert = chai.assert;
 // When the document is fully loaded,
 // create the "Tests" button and the corresponding modal window, jquery required)
 $(document).ready(function() {
-  let project_name = '';
+  //let project_name = '';
   // check for chrome
   const isChrome = !!window.chrome && !!window.chrome.webstore;
   if (isChrome === false) {
@@ -59,11 +59,12 @@ $(document).ready(function() {
 
 // UTILITY FUNCTIONS:
 
-export function selectProject(project) {
-  project_name = project;
-  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
-  console.log('working');
-}
+// DONT DELETE - COMING BACK TO THIS!!!
+// export function selectProject(project) {
+//   project_name = project;
+//   document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
+//   console.log('working');
+// }
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed){
