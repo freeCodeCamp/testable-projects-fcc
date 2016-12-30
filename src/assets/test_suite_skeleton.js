@@ -165,7 +165,42 @@ const test_suite_skeleton = `
       content: "X";
       line-height: 30px;
     }
+    #fcc_test_selector_modal {
+      width: 450px;
+      height: 130px;
+      padding: 20px;
+      top: 50%;
+      left: 50%;
+      margin-top: -65px;
+      margin-left: -225px;
+      text-align: center;
+      position: absolute;
+      box-sizing: border-box;
+      border: 1px solid black;
+      background-color: grey;
+      z-index: 10000;
+    }
+    .fcc_test_selector_modal_hidden {
+      display: none;
+    } 
   </style>
+      <div id="fcc_test_selector_modal">
+        <p>Please select the correct project from the dropdown below:</p>
+        <select name="Test Suite Selector" id="test-suite-selector" onchange="FCC_Global.selectProject(this.value)">
+          <option value="tribute-page">Tribute Page</option>
+          <option value="portfolio">Personal Portfolio</option>
+          <option value="survey-form">Survey Form</option>
+          <option value="product-landing-page">Product Landing Page</option>
+          <option value="technical-docs-page">Technical Documentation Page</option>
+          <option value="random-quote-machine">Random Quote Machine</option>
+          <option value="markdown-previewer">Markdown Previewer</option>
+          <option value="drum-machine">Drum Machine</option>
+          <option value="pomodoro-clock">Pomodoro Clock</option>
+          <option value="javascript-calculator">Javascript Calculator</option>  
+          <option value="bar-chart">Bar Chart</option>
+          <option value="scatter-plot">Scatter Plot</option>
+        </select>
+      </div>
       <div class="fcc_test_message-box-rerun-button" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
         Run Tests
       </div>
