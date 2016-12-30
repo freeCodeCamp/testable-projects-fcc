@@ -59,7 +59,6 @@ var FCC_Global =
 	exports.FCCRerunTests = FCCRerunTests;
 	exports.FCCResetTests = FCCResetTests;
 	exports.alertOnce = alertOnce;
-	exports.selectProject = selectProject;
 	exports.FCCInitTestRunner = FCCInitTestRunner;
 
 	var _jquery = __webpack_require__(1);
@@ -141,7 +140,7 @@ var FCC_Global =
 	})();
 
 	// When the document is fully loaded,
-	// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
+	// create the "Tests" button and the corresponding modal window, jquery required)
 	(0, _jquery2.default)(document).ready(function () {
 	  var project_name = void 0;
 	  // check for chrome
@@ -169,6 +168,11 @@ var FCC_Global =
 	    };
 	  };
 	  runCheck();
+	  function selectProject(project) {
+	    project_name = project;
+	    document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
+	    console.log('working');
+	  }
 	});
 
 	// UTILITY FUNCTIONS:
@@ -266,11 +270,6 @@ var FCC_Global =
 	    alert('Run-Test hotkey disabled for this project, please use mouse.');
 	    sessionStorage.setItem('alerted', true);
 	  }
-	}
-
-	function selectProject(project) {
-	  project_name = project;
-	  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
 	}
 
 	function FCCInitTestRunner() {

@@ -29,7 +29,7 @@ export const assert = chai.assert;
 })();
 
 // When the document is fully loaded,
-// create the "Tests" button and the corresponding modal window (bootstrap(js/css) and jquery required)
+// create the "Tests" button and the corresponding modal window, jquery required)
 $(document).ready(function() {
   let project_name;
   // check for chrome
@@ -55,6 +55,11 @@ $(document).ready(function() {
     };
   };
   runCheck();
+  function selectProject(project) {
+    project_name = project;
+    document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
+    console.log('working');
+  }
 });
 
 // UTILITY FUNCTIONS:
@@ -149,11 +154,6 @@ export function alertOnce() { // hotkey interferes w/ markdown tests, disable an
     alert('Run-Test hotkey disabled for this project, please use mouse.');
     sessionStorage.setItem('alerted', true);
   }
-}
-
-export function selectProject(project) {
-  project_name = project;
-  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
 }
 
 export function FCCInitTestRunner(){
