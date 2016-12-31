@@ -2,21 +2,23 @@
 import $ from 'jquery';
 import chai from 'chai';
 import test_suite_skeleton from './assets/test_suite_skeleton';
+import test_suite_skeleton_init from './assets/test_suite_skeleton_init';
 import mocha_CSS from './assets/mocha_CSS';
-import createDrumMachineTests from './project-tests/drum-machine-tests.js';
-import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests.js';
-import createCalculatorTests from './project-tests/calculator-tests.js';
-import createPomodoroClockTests from './project-tests/pomodoro-clock-tests.js';
-import createTributePageTests from './project-tests/tribute-page-tests.js';
-import createPortfolioTests from './project-tests/portfolio-tests.js';
-import createProductLandingPageTests from './project-tests/product-landing-page-tests.js';
-import createSurveyFormTests from './project-tests/survey-form-tests.js';
-import createTechnicalDocsPageTests from './project-tests/technical-docs-tests.js';
-import createBarChartTests from './project-tests/bar-chart-tests.js';
-import createScatterPlotTests from './project-tests/scatter-plot-tests.js';
-import createRandomQuoteMachineTests from './project-tests/quote-machine-tests.js';
+import createDrumMachineTests from './project-tests/drum-machine-tests';
+import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests';
+import createCalculatorTests from './project-tests/calculator-tests';
+import createPomodoroClockTests from './project-tests/pomodoro-clock-tests';
+import createTributePageTests from './project-tests/tribute-page-tests';
+import createPortfolioTests from './project-tests/portfolio-tests';
+import createProductLandingPageTests from './project-tests/product-landing-page-tests';
+import createSurveyFormTests from './project-tests/survey-form-tests';
+import createTechnicalDocsPageTests from './project-tests/technical-docs-tests';
+import createBarChartTests from './project-tests/bar-chart-tests';
+import createScatterPlotTests from './project-tests/scatter-plot-tests';
+import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 
 export const assert = chai.assert;
+export let project_selector;
 
 // load mocha
 (function() {
@@ -47,7 +49,12 @@ $(document).ready(function() {
         mocha.setup("bdd");
         const testDiv = document.createElement("div");
         testDiv.style.position = "inherit";
-        testDiv.innerHTML = test_suite_skeleton;
+        let selected = localStorage.getItem('selected');
+        if (selected === null && typeof project_name === 'undefined') {
+          testDiv.innerHTML = test_suite_skeleton_init;
+        } else {
+          testDiv.innerHTML = test_suite_skeleton;
+        }
         document.body.appendChild(testDiv);
       };
     } catch (err) {
@@ -59,12 +66,16 @@ $(document).ready(function() {
 
 // UTILITY FUNCTIONS:
 
-// DONT DELETE - COMING BACK TO THIS!!!
-// export function selectProject(project) {
-//   project_name = project;
-//   document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
-//   console.log('working');
-// }
+export function selectProject(project) {
+  FCC_Global.project_selector = project;
+  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
+  localStorage.setItem('selected', true);
+  localStorage.setItem('project', project);
+}
+
+export function resetSelection() {
+  document.getElementById('fcc_test_selector_modal').classList.remove('fcc_test_selector_modal_hidden');
+}
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed){
@@ -99,7 +110,7 @@ export function FCCCloseTestModal(){
 $(document).keyup(function(e) {
   e = e || window.event;
   if (e.keyCode == 27) { 
-    FCCCloseTestModal();
+    FCCCloseTestModal() || document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
   }
 });
 
@@ -107,7 +118,7 @@ $(document).keyup(function(e) {
 export function FCCclickOutsideToCloseModal(e) {
   if(e.target.id === 'fcc_test_message-box') {
     FCCCloseTestModal();
-  }
+  } 
 }
 
 export function FCCRerunTests(){
@@ -165,7 +176,7 @@ export function FCCInitTestRunner(){
   // empty the test suite in the mocha object
   mocha.suite.suites = [];
   // create tests
-  switch (project_name) {
+  switch (FCC_Global.project_selector || localStorage.getItem('project') || project_name) {
     case "random-quote-machine":
       createRandomQuoteMachineTests();
       break;

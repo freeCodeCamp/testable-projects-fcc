@@ -1,5 +1,6 @@
-const test_suite_skeleton = `
+const test_suite_skeleton_init = `
   <style>
+    @import url("https://fonts.googleapis.com/css?family=Russo+One");
     .fcc_test_message-box-rerun-button {
       position: fixed;
       height: 30px;
@@ -185,7 +186,7 @@ const test_suite_skeleton = `
       display: none;
     } 
   </style>
-      <div id="fcc_test_selector_modal" class="fcc_test_selector_modal_hidden">
+      <div id="fcc_test_selector_modal">
         <p>Please select the correct project from the dropdown below:</p>
         <select name="Test Suite Selector" id="test-suite-selector" onchange="FCC_Global.selectProject(this.value)">
           <option value="">- - -</option>
@@ -226,4 +227,4 @@ const test_suite_skeleton = `
     <div class="fcc_test_message-box-close-fixed" onclick="FCC_Global.FCCCloseTestModal()"></div>
   </div>`
 
-  export default test_suite_skeleton;
+  export default test_suite_skeleton_init;
