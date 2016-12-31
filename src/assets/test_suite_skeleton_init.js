@@ -181,6 +181,7 @@ const test_suite_skeleton_init = `
       background-color: grey;
       z-index: 10000;
       box-shadow: 1px 1px 10px 1000px rgba(0, 0, 0, 0.7);
+      font-family: "Russo One", sans-serif;
     }
     .fcc_test_selector_modal_hidden {
       display: none;
