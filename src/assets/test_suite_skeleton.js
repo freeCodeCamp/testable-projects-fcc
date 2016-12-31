@@ -186,6 +186,9 @@ const test_suite_skeleton = `
     .fcc_test_selector_modal_hidden {
       display: none;
     } 
+    select {
+      margin: 20px;
+    }
   </style>
       <div id="fcc_test_selector_modal" class="fcc_test_selector_modal_hidden">
         <p>Please select the correct project from the dropdown below:</p>
