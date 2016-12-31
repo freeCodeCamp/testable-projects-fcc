@@ -50,7 +50,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.random_key = exports.project_selector = exports.assert = undefined;
+	exports.project_selector = exports.assert = undefined;
 	exports.selectProject = selectProject;
 	exports.resetSelection = resetSelection;
 	exports.FCCUpdateTestResult = FCCUpdateTestResult;
@@ -135,8 +135,6 @@ var FCC_Global =
 
 	var assert = exports.assert = _chai2.default.assert;
 	var project_selector = exports.project_selector = void 0;
-	var random_key = exports.random_key = Math.floor(Math.random() * 90000) + 10000;
-	FCC_Global.random_key = FCC_Global.random_key.toString();
 
 	// load mocha
 	(function () {
@@ -169,7 +167,7 @@ var FCC_Global =
 	        mocha.setup("bdd");
 	        var testDiv = document.createElement("div");
 	        testDiv.style.position = "inherit";
-	        var selected = localStorage.getItem(FCC_Global.random_key);
+	        var selected = localStorage.getItem('selected');
 	        if (selected === null && typeof project_name === 'undefined') {
 	          testDiv.innerHTML = _test_suite_skeleton_init2.default;
 	        } else {
@@ -189,7 +187,7 @@ var FCC_Global =
 	function selectProject(project) {
 	  FCC_Global.project_selector = project;
 	  document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
-	  localStorage.setItem(FCC_Global.random_key, true);
+	  localStorage.setItem('selected', true);
 	  localStorage.setItem('project', project);
 	}
 
