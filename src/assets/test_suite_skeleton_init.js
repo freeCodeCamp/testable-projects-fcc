@@ -168,11 +168,11 @@ const test_suite_skeleton_init = `
     }
     #fcc_test_selector_modal {
       width: 450px;
-      height: 180px;
+      height: 170px;
       padding: 20px;
       top: 50%;
       left: 50%;
-      margin-top: -90px;
+      margin-top: -85px;
       margin-left: -225px;
       text-align: center;
       position: absolute;
@@ -186,6 +186,9 @@ const test_suite_skeleton_init = `
     .fcc_test_selector_modal_hidden {
       display: none;
     } 
+    select {
+      margin: 20px;
+    }
   </style>
       <div id="fcc_test_selector_modal">
         <p>Please select the correct project from the dropdown below:</p>
