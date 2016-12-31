@@ -189,6 +189,11 @@ const test_suite_skeleton = `
     select {
       margin: 20px;
     }
+    #fcc_reset_project {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
   </style>
       <div id="fcc_test_selector_modal" class="fcc_test_selector_modal_hidden">
         <p>Please select the correct project from the dropdown below:</p>
