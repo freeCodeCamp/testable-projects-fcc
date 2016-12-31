@@ -19,6 +19,8 @@ import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 
 export const assert = chai.assert;
 export let project_selector;
+export let random_key = Math.floor(Math.random()*90000) + 10000;
+FCC_Global.random_key = FCC_Global.random_key.toString();
 
 // load mocha
 (function() {
@@ -49,7 +51,7 @@ $(document).ready(function() {
         mocha.setup("bdd");
         const testDiv = document.createElement("div");
         testDiv.style.position = "inherit";
-        let selected = localStorage.getItem('selected');
+        let selected = localStorage.getItem(FCC_Global.random_key);
         if (selected === null && typeof project_name === 'undefined') {
           testDiv.innerHTML = test_suite_skeleton_init;
         } else {
@@ -69,7 +71,7 @@ $(document).ready(function() {
 export function selectProject(project) {
   FCC_Global.project_selector = project;
   document.getElementById('fcc_test_selector_modal').classList.add('fcc_test_selector_modal_hidden');
-  localStorage.setItem('selected', true);
+  localStorage.setItem(FCC_Global.random_key, true);
   localStorage.setItem('project', project);
 }
 
