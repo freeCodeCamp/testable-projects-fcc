@@ -127,7 +127,11 @@ var FCC_Global =
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _quoteMachineTests = __webpack_require__(56);
+	var _choroplethTests = __webpack_require__(56);
+
+	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
+
+	var _quoteMachineTests = __webpack_require__(57);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
@@ -333,6 +337,9 @@ var FCC_Global =
 	      break;
 	    case 'scatter-plot':
 	      (0, _scatterPlotTests2.default)();
+	      break;
+	    case 'choropleth':
+	      (0, _choroplethTests2.default)();
 	      break;
 	  };
 
@@ -18913,7 +18920,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var test_suite_skeleton = "\n  <style>\n    @import url(\"https://fonts.googleapis.com/css?family=Russo+One\");\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n    #fcc_test_selector_modal {\n      width: 450px;\n      height: 170px;\n      padding: 20px;\n      top: 50%;\n      left: 50%;\n      margin-top: -85px;\n      margin-left: -225px;\n      text-align: center;\n      position: absolute;\n      box-sizing: border-box;\n      border: 1px solid black;\n      background-color: grey;\n      z-index: 10000;\n      box-shadow: 1px 1px 10px 1000px rgba(0, 0, 0, 0.7);\n      font-family: \"Russo One\", sans-serif;\n    }\n    .fcc_test_selector_modal_hidden {\n      display: none;\n    } \n    select {\n      margin: 20px;\n    }\n    #fcc_reset_project {\n      position: fixed;\n      bottom: 0;\n      left: 0;\n    }\n  </style>\n      <div id=\"fcc_test_selector_modal\" class=\"fcc_test_selector_modal_hidden\">\n        <p>Please select the correct project from the dropdown below:</p>\n        <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n          <option value=\"\">- - -</option>\n          <option value=\"tribute-page\">Tribute Page</option>\n          <option value=\"portfolio\">Personal Portfolio</option>\n          <option value=\"survey-form\">Survey Form</option>\n          <option value=\"product-landing-page\">Product Landing Page</option>\n          <option value=\"technical-docs-page\">Technical Documentation Page</option>\n          <option value=\"random-quote-machine\">Random Quote Machine</option>\n          <option value=\"markdown-previewer\">Markdown Previewer</option>\n          <option value=\"drum-machine\">Drum Machine</option>\n          <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n          <option value=\"javascript-calculator\">Javascript Calculator</option>  \n          <option value=\"bar-chart\">Bar Chart</option>\n          <option value=\"scatter-plot\">Scatter Plot</option>\n        </select>\n        <p>ESC to close</p>\n      </div>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <button id=\"fcc_reset_project\" onclick=\"FCC_Global.resetSelection()\">Reset Project Selection</button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
+	var test_suite_skeleton = "\n  <style>\n    @import url(\"https://fonts.googleapis.com/css?family=Russo+One\");\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n    #fcc_test_selector_modal {\n      width: 450px;\n      height: 170px;\n      padding: 20px;\n      top: 50%;\n      left: 50%;\n      margin-top: -85px;\n      margin-left: -225px;\n      text-align: center;\n      position: absolute;\n      box-sizing: border-box;\n      border: 1px solid black;\n      background-color: grey;\n      z-index: 10000;\n      box-shadow: 1px 1px 10px 1000px rgba(0, 0, 0, 0.7);\n      font-family: \"Russo One\", sans-serif;\n    }\n    .fcc_test_selector_modal_hidden {\n      display: none;\n    } \n    select {\n      margin: 20px;\n    }\n    #fcc_reset_project {\n      position: fixed;\n      bottom: 0;\n      left: 0;\n    }\n  </style>\n      <div id=\"fcc_test_selector_modal\" class=\"fcc_test_selector_modal_hidden\">\n        <p>Please select the correct project from the dropdown below:</p>\n        <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n          <option value=\"\">- - -</option>\n          <option value=\"tribute-page\">Tribute Page</option>\n          <option value=\"portfolio\">Personal Portfolio</option>\n          <option value=\"survey-form\">Survey Form</option>\n          <option value=\"product-landing-page\">Product Landing Page</option>\n          <option value=\"technical-docs-page\">Technical Documentation Page</option>\n          <option value=\"random-quote-machine\">Random Quote Machine</option>\n          <option value=\"markdown-previewer\">Markdown Previewer</option>\n          <option value=\"drum-machine\">Drum Machine</option>\n          <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n          <option value=\"javascript-calculator\">Javascript Calculator</option>  \n          <option value=\"bar-chart\">Bar Chart</option>\n          <option value=\"scatter-plot\">Scatter Plot</option>\n          <option value=\"choropleth\">Choropleth</option>\n        </select>\n        <p>ESC to close</p>\n      </div>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <button id=\"fcc_reset_project\" onclick=\"FCC_Global.resetSelection()\">Reset Project Selection</button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
 
 	exports.default = test_suite_skeleton;
 
@@ -18926,7 +18933,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var test_suite_skeleton_init = "\n  <style>\n    @import url(\"https://fonts.googleapis.com/css?family=Russo+One\");\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n    #fcc_test_selector_modal {\n      width: 450px;\n      height: 170px;\n      padding: 20px;\n      top: 50%;\n      left: 50%;\n      margin-top: -85px;\n      margin-left: -225px;\n      text-align: center;\n      position: absolute;\n      box-sizing: border-box;\n      border: 1px solid black;\n      background-color: grey;\n      z-index: 10000;\n      box-shadow: 1px 1px 10px 1000px rgba(0, 0, 0, 0.7);\n      font-family: \"Russo One\", sans-serif;\n    }\n    .fcc_test_selector_modal_hidden {\n      display: none;\n    } \n    select {\n      margin: 20px;\n    }\n    #fcc_reset_project {\n      position: fixed;\n      bottom: 0;\n      left: 0;\n    }\n  </style>\n      <div id=\"fcc_test_selector_modal\">\n        <p>Please select the correct project from the dropdown below:</p>\n        <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n          <option value=\"\">- - -</option>\n          <option value=\"tribute-page\">Tribute Page</option>\n          <option value=\"portfolio\">Personal Portfolio</option>\n          <option value=\"survey-form\">Survey Form</option>\n          <option value=\"product-landing-page\">Product Landing Page</option>\n          <option value=\"technical-docs-page\">Technical Documentation Page</option>\n          <option value=\"random-quote-machine\">Random Quote Machine</option>\n          <option value=\"markdown-previewer\">Markdown Previewer</option>\n          <option value=\"drum-machine\">Drum Machine</option>\n          <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n          <option value=\"javascript-calculator\">Javascript Calculator</option>  \n          <option value=\"bar-chart\">Bar Chart</option>\n          <option value=\"scatter-plot\">Scatter Plot</option>\n        </select>\n        <p>ESC to close</p>\n      </div>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <button id=\"fcc_reset_project\" onclick=\"FCC_Global.resetSelection()\">Reset Project Selection</button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
+	var test_suite_skeleton_init = "\n  <style>\n    @import url(\"https://fonts.googleapis.com/css?family=Russo+One\");\n    .fcc_test_message-box-rerun-button {\n      position: fixed;\n      height: 30px;\n      width: 140px;\n      z-index: 100000;\n      top: 10px; \n      left: 10px; \n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      text-align: center;\n      line-height: 30px;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      padding: 10px 0 !important;\n      transition: all .3s;\n      box-sizing: content-box !important;\n      /*visibility: hidden;*/\n    }\n    .fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      color: white;\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed; \n      left: 10px;\n      top: 70px;\n      z-index: 100000;\n      height: initial;\n      width: 140px;\n      padding: 15px;\n      border: none;\n      outline: none;\n      border-radius: 4px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);;\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n\n    #fcc_test_message-box {\n      font-size: 20px;\n      font-family: Arial, sans-serif;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8);\n      transition: all .5s;\n      z-index: 100001;\n      overflow: auto;\n    }\n    \n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n    \n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black;\n      background-color: white;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto;\n      text-align: initial;\n      border-radius: 10px;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      height: 60px;\n      flex: none;\n      box-sizing: border-box;\n      padding: 10px;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px;\n      line-height: 40px;\n      margin-left: 10px;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n    }\n    \n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245);\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial;\n      text-align: initial;\n    }\n\n    div {\n      position: static;\n    }\n\n    .fcc_test_message-box-close-fixed {\n      position: fixed;\n      top: 10px;\n      right: 10px;\n      height: 30px;\n      width: 30px;\n      border-radius: 50%;\n      border: 3px solid grey;\n      text-align: center;\n      transition: all .4s;\n    }\n    .fcc_test_message-box-close-fixed:after {\n      color: grey;\n      font-family: Arial, sans-serif;\n      font-size: 30px;\n      font weight: bold;\n      content: \"X\";\n      line-height: 30px;\n    }\n    #fcc_test_selector_modal {\n      width: 450px;\n      height: 170px;\n      padding: 20px;\n      top: 50%;\n      left: 50%;\n      margin-top: -85px;\n      margin-left: -225px;\n      text-align: center;\n      position: absolute;\n      box-sizing: border-box;\n      border: 1px solid black;\n      background-color: grey;\n      z-index: 10000;\n      box-shadow: 1px 1px 10px 1000px rgba(0, 0, 0, 0.7);\n      font-family: \"Russo One\", sans-serif;\n    }\n    .fcc_test_selector_modal_hidden {\n      display: none;\n    } \n    select {\n      margin: 20px;\n    }\n    #fcc_reset_project {\n      position: fixed;\n      bottom: 0;\n      left: 0;\n    }\n  </style>\n      <div id=\"fcc_test_selector_modal\">\n        <p>Please select the correct project from the dropdown below:</p>\n        <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n          <option value=\"\">- - -</option>\n          <option value=\"tribute-page\">Tribute Page</option>\n          <option value=\"portfolio\">Personal Portfolio</option>\n          <option value=\"survey-form\">Survey Form</option>\n          <option value=\"product-landing-page\">Product Landing Page</option>\n          <option value=\"technical-docs-page\">Technical Documentation Page</option>\n          <option value=\"random-quote-machine\">Random Quote Machine</option>\n          <option value=\"markdown-previewer\">Markdown Previewer</option>\n          <option value=\"drum-machine\">Drum Machine</option>\n          <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n          <option value=\"javascript-calculator\">Javascript Calculator</option>  \n          <option value=\"bar-chart\">Bar Chart</option>\n          <option value=\"scatter-plot\">Scatter Plot</option>\n          <option value=\"choropleth\">Choropleth</option>\n        </select>\n        <p>ESC to close</p>\n      </div>\n      <div class=\"fcc_test_message-box-rerun-button\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </div>\n  <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n    ...\n  </button>\n  <button id=\"fcc_reset_project\" onclick=\"FCC_Global.resetSelection()\">Reset Project Selection</button>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\"></div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n    <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n  </div>";
 
 	exports.default = test_suite_skeleton_init;
 
@@ -20911,6 +20918,147 @@ var FCC_Global =
 
 /***/ },
 /* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createChoroplethTests;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function createChoroplethTests() {
+
+	  // returns a random index number
+	  function getRandomIndex(max) {
+	    return Math.floor(Math.random() * max);
+	  }
+
+	  describe('#ChoroplethTests', function () {
+
+	    describe('#Content', function () {
+
+	      it('1. My choropleth should have a title with a corresponding id="title"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title"');
+	      });
+
+	      it('2. My choropleth should have a description with a corresponding id="description"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id="description"');
+	      });
+	      it('3. My choropleth should have areas with a corresponding class="area" that represent the data', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.area').length, 0, "Could not find any elements with class=\"area\"");
+	      });
+	      it('4. There should be at least 4 different fill colors used for the areas', function () {
+	        var areas = document.querySelectorAll('.area');
+	        var uniqueColors = [];
+
+	        for (var i = 0; i < areas.length; i++) {
+	          var areaColor = areas[i].style.fill || areas[i].getAttribute('fill');
+
+	          // if the current color isn't in the uniqueColors arr, push it
+	          if (uniqueColors.indexOf(areaColor) === -1) {
+	            uniqueColors.push(areaColor);
+	          }
+	        }
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the areas');
+	      });
+
+	      it('5. Each area will have the properties "data-fips" and "data-income" containing their corresponding fips and income values', function () {
+	        var areas = document.querySelectorAll('.area');
+	        FCC_Global.assert.isAbove(areas.length, 0, "Could not find any elements with a class=\"area\"");
+
+	        for (var i = 0; i < areas.length; i++) {
+	          var area = areas[i];
+	          FCC_Global.assert.isNotNull(area.getAttribute("data-fips"), "Could not find property 'data-fips' in area");
+	          FCC_Global.assert.isNotNull(area.getAttribute("data-income"), "Could not find property 'data-income' in area");
+	        }
+	      });
+
+	      it('6. My choropleth should have an area for each provided data point', function () {
+	        var areas = document.querySelectorAll('.area');
+
+	        // fix to match final data set
+	        FCC_Global.assert.equal(areas.length, 3142);
+	      });
+	      it('9. My choropleth should have a legend with corresponding id="legend"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend"');
+	      });
+
+	      it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function () {
+
+	        var firstRequestTimeout = 100;
+	        var secondRequestTimeout = 2000;
+	        this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+
+	        function getToolTipStatus(tooltip) {
+	          // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
+	          // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
+	          // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+	          if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
+	            return 'hidden';
+	          } else {
+	            return 'visible';
+	          }
+	        }
+
+	        var tooltip = document.getElementById('tooltip');
+
+	        var areas = document.querySelectorAll('.area');
+
+	        // place mouse on random bar and check if tooltip is visible
+	        var randomIndex = getRandomIndex(areas.length);
+	        var randomArea = areas[randomIndex];
+	        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+
+	        // promise is used to prevent test from ending prematurely
+	        return new Promise(function (resolve, reject) {
+	          // timeout is used to accomodate tooltip transitions
+	          setTimeout(function (_) {
+	            if (getToolTipStatus(tooltip) !== 'visible') {
+	              reject(new Error('Tooltip should be visible when mouse is on an area'));
+	            }
+
+	            // remove mouse from cell and check if tooltip is hidden again
+	            randomArea.dispatchEvent(new MouseEvent('mouseout'));
+	            setTimeout(function (_) {
+	              if (getToolTipStatus(tooltip) !== 'hidden') {
+	                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
+	              } else {
+	                resolve();
+	              }
+	            }, secondRequestTimeout);
+	          }, firstRequestTimeout);
+	        });
+	      });
+
+	      //       1. My choropleth should have a title with a corresponding id="title"
+	      //       2. My choropleth should have a description with a corresponding id="description"
+	      //       3. My choropleth should have cells with a corresponding class="cell" that represent the data
+	      //       4. There should be at least 4 different fill colors used for the cells
+	      //       5. Each cell will have the properties "data-county", "data-state", "data-????" containing their corresponding county, state, and ??? values
+	      //       6. My choropleth should have an area for each provided data point
+	      //       6. The data-income" of each cell should be within the range of the data
+	      //       7. My choropleth should have cells that align with the corresponding ??? - don’t know how to word this.  Need more tests to test accuracy of choropleth
+
+	      //       7a. The cells should have data-??? values that match the sample data
+	      //       7a. The cells should have data-??? values that match the sample data of that cell’s data-county and data-state. Something like that
+
+	      //       8. My choropleth should have a legend with corresponding id="legend"
+	      //       9. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell
+	      //       10. My tooltip should have a "data-???" property that corresponds to the given year of the active cell
+	    });
+	  });
+	}
+
+/***/ },
+/* 57 */
 /***/ function(module, exports) {
 
 	"use strict";

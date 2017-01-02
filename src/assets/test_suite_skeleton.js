@@ -211,6 +211,7 @@ const test_suite_skeleton = `
           <option value="javascript-calculator">Javascript Calculator</option>  
           <option value="bar-chart">Bar Chart</option>
           <option value="scatter-plot">Scatter Plot</option>
+          <option value="choropleth">Choropleth</option>
         </select>
         <p>ESC to close</p>
       </div>
