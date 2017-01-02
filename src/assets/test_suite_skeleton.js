@@ -130,6 +130,7 @@ const test_suite_skeleton = `
             background-color: rgba(255, 255, 204, 0.6);
             z-index: 99997;
             font-family: Russo One, Arial, sans-serif;
+            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
         }
         input[type=checkbox]:checked ~ #fcc_foldout_menu {
             left: 0;
@@ -204,6 +205,7 @@ const test_suite_skeleton = `
             box-sizing: content-box !important;
             z-index: 0;
             cursor: pointer;
+            box-shadow: 1px 1px 4px black;
         }
         #fcc_test_message-box-rerun-button {
             top: 90px;
@@ -270,6 +272,7 @@ const test_suite_skeleton = `
             background-color: rgba(255, 255, 204, 0.6);
             padding: 3px 5px;
             border-radius: 5px;
+            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
         }
     </style>
     <span id="fcc_test_suite_indicator"></span>
