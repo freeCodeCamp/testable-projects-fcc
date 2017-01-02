@@ -323,6 +323,7 @@ const test_suite_skeleton = `
                 <option value="javascript-calculator">Javascript Calculator</option>  
                 <option value="bar-chart">Bar Chart</option>
                 <option value="scatter-plot">Scatter Plot</option>
+                <option value="choropleth">Choropleth</option>
             </select>
             <button id="fcc_test_message-box-rerun-button" type="button" class="fcc_foldout_buttons" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
                 Run Tests
