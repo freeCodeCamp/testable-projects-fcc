@@ -127,7 +127,7 @@ const test_suite_skeleton = `
             width: 320px;
             height: 195px;
             border-bottom-right-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 204, 0.6);
             z-index: 99997;
             font-family: Russo One, Arial, sans-serif;
         }
@@ -267,7 +267,7 @@ const test_suite_skeleton = `
             top: 15px;
             right: 20px;
             font-size: 12px;
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 204, 0.6);
             padding: 3px 5px;
             border-radius: 5px;
         }
