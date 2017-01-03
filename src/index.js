@@ -61,6 +61,7 @@ $(document).ready(function() {
 
 // UTILITY FUNCTIONS:
 
+// select project dropdown
 export function selectProject(project) {
   FCC_Global.project_selector = project;
   let project_titleCase = project.replace(/-/g,' ').split(' ');
@@ -69,6 +70,19 @@ export function selectProject(project) {
   document.getElementById('fcc_test_suite_indicator').innerHTML = 'FCC Test Suite: ' + project_titleCase;
   localStorage.setItem('project_titleCase', project_titleCase);
   localStorage.setItem('project_selector', project);
+}
+
+// hamburger menu transformation
+export function hamburger_transform() {
+  if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
+    document.getElementById('hamburger_top').classList.remove('transform_top');
+    document.getElementById('hamburger_middle').classList.remove('transform_middle');
+    document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
+  } else {
+    document.getElementById('hamburger_top').classList.add('transform_top');
+    document.getElementById('hamburger_middle').classList.add('transform_middle');
+    document.getElementById('hamburger_bottom').classList.add('transform_bottom');
+  }
 }
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
@@ -89,12 +103,14 @@ export function FCCUpdateTestProgress(nbTests, nbTestsExecuted){
   button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
 }
 
+// open main modal
 export function FCCOpenTestModal(){
   const modal = document.getElementById('fcc_test_message-box');
   modal.classList.remove("fcc_test_message-box-hidden");
   modal.classList.add("fcc_test_message-box-shown");
 }
 
+// close main modal
 export function FCCCloseTestModal(){
   const modal = document.getElementById('fcc_test_message-box');
   modal.classList.remove("fcc_test_message-box-shown");
@@ -116,6 +132,7 @@ export function FCCclickOutsideToCloseModal(e) {
   } 
 }
 
+// run tests
 export function FCCRerunTests(){
   const button = document.getElementById('fcc_test_button');
   button.innerHTML = `Testing`;
@@ -124,6 +141,7 @@ export function FCCRerunTests(){
   FCCInitTestRunner();
 }
 
+// reset tests
 export function FCCResetTests(suite) {
   suite.tests.forEach(function(t) {
     delete t.state;
@@ -156,7 +174,8 @@ onkeydown = onkeyup = function(e){
   }
 }
 
-export function alertOnce() { // hotkey interferes w/ markdown tests, disable and alert
+// hotkey interferes w/ markdown tests, disable and alert
+export function alertOnce() { 
   var alerted = sessionStorage.getItem('alerted') || false;
   if (alerted) {
     return;
@@ -166,6 +185,7 @@ export function alertOnce() { // hotkey interferes w/ markdown tests, disable an
   }
 }
 
+// init tests
 export function FCCInitTestRunner(){
   let testRunner = null;
   // empty the mocha tag in case of rerun

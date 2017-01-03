@@ -1,6 +1,6 @@
 const test_suite_skeleton = `
     <style>
-        @import url("https://fonts.googleapis.com/css?family=Russo+One");
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
         #fcc_test_message-box {
             font-size: 20px;
             font-family: Arial, sans-serif;
@@ -123,18 +123,19 @@ const test_suite_skeleton = `
         #fcc_foldout_menu {
             position: absolute;
             top: 0;
-            left: -9999px;
+            left: -320px;
             width: 320px;
             height: 195px;
             border-bottom-right-radius: 5px;
             background-color: rgba(255, 255, 204, 0.6);
             z-index: 99997;
-            font-family: Russo One, Arial, sans-serif;
+            font-family: Noto Sans, arial, sans-serif;
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
+            transition: .5s;
         }
         input[type=checkbox]:checked ~ #fcc_foldout_menu {
             left: 0;
-            transition: 800ms;
+            transition: .5s ease-in-out;
         }
         #fcc_foldout_menu_inner {
             position: relative;
@@ -156,9 +157,8 @@ const test_suite_skeleton = `
             left: 20px;
             z-index: 99998;   
         }
-        #fcc_hamburger,
-        #fcc_hamburger:before,
-        #fcc_hamburger:after {
+
+        .fcc_hamburger {
             position: relative;
             width: 25px;
             height: 3px;
@@ -166,25 +166,42 @@ const test_suite_skeleton = `
             background: black;
             border-radius: 5px;
             content: '';
+            transform-origin: 4px 0px;
+            transition: transform 0.4s ease, opacity 0.55s ease;
         }
-        #fcc_hamburger:before {
+        #hamburger_top {
             position: absolute;
             top: -6px;
+            transform-origin: 0% 80%;
         }
-        #fcc_hamburger:after {
+        #hamburger_bottom {
             position: absolute;
             bottom: -6px;
+            transform-origin: 20% 80%;
+        }
+        .transform_top {
+            opacity: 1;
+            transform: rotate(45deg) translate(-2px, -1px);
+        }
+        .transform_middle {
+            opacity: 0;
+            transform: rotate(0deg) scale(0.2, 0.2);
+        }
+        .transform_bottom {
+            opacity: 1;
+            transform: rotate(-45deg) translate(-1px, -1px);
         }
 
         #fcc_foldout_menu label {
-            top: 40px;
+            top: 38px;
             left: 20px;
             position: absolute;
         }
         #fcc_foldout_menu select {
-            top: 63px;
+            top: 61px;
             left: 18px;
             position: absolute;
+            font-family: Noto Sans, Arial, sans-serif;
         }
 
         .fcc_foldout_buttons {
@@ -206,9 +223,10 @@ const test_suite_skeleton = `
             z-index: 0;
             cursor: pointer;
             box-shadow: 1px 1px 4px black;
+            font-family: Noto Sans, arial, sans-serif;
         }
         #fcc_test_message-box-rerun-button {
-            top: 90px;
+            top: 88px;
             transition: all .3s;    
         }
         #fcc_test_message-box-rerun-button:hover {
@@ -216,7 +234,7 @@ const test_suite_skeleton = `
             background-color: black;
         }
         #fcc_test_button {
-            top: 140px;
+            top: 138px;
         }
         .fcc_test_btn-default {
             background-color: rgba(128, 128, 128, 0.7);
@@ -233,7 +251,7 @@ const test_suite_skeleton = `
 
         #fcc_legend {
             position: absolute;
-            top: 97px;
+            top: 95px;
             left: 160px;
             height: 400px;
             width: 125px;
@@ -273,13 +291,16 @@ const test_suite_skeleton = `
             padding: 3px 5px;
             border-radius: 5px;
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
+            font-family: Noto Sans, arial, sans-serif;
         }
     </style>
     <span id="fcc_test_suite_indicator"></span>
     <div id="fcc_foldout_toggler">
-        <span id="fcc_hamburger"></span>    
+        <span id="hamburger_top" class="fcc_hamburger"></span>    
+        <span id="hamburger_middle" class="fcc_hamburger"></span>  
+        <span id="hamburger_bottom" class="fcc_hamburger"></span>      
     </div>
-    <input type="checkbox" id="toggle" title="CTRL + SHIFT + O">
+    <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox" title="CTRL + SHIFT + O">
     <div id="fcc_foldout_menu">
         <div id="fcc_foldout_menu_inner">
             <label for="test-suite-selector">Select Test Suite: </label>
