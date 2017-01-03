@@ -282,6 +282,11 @@ const test_suite_skeleton = `
             display: inline-block;
         }
 
+        #fcc_test_suite_indicator_wrapper {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+        }
         #fcc_test_suite_indicator {
             position: fixed;
             top: 15px;
@@ -294,7 +299,7 @@ const test_suite_skeleton = `
             font-family: Noto Sans, arial, sans-serif;
         }
     </style>
-    <span id="fcc_test_suite_indicator"></span>
+    <div id="fcc_test_suite_indicator_wrapper"></div>
     <div id="fcc_foldout_toggler">
         <span id="hamburger_top" class="fcc_hamburger"></span>    
         <span id="hamburger_middle" class="fcc_hamburger"></span>  
@@ -345,6 +350,6 @@ const test_suite_skeleton = `
             </div>
         </div>
         <div class="fcc_test_message-box-close-fixed" onclick="FCC_Global.FCCCloseTestModal()"></div>
-    </div>`
+    </div>`;
 
 export default test_suite_skeleton;
