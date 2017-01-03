@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import householdIncomeData from '../data/household_income.json';
 export default function createChoroplethTests() {
 
   // returns a random index number
@@ -52,9 +53,55 @@ export default function createChoroplethTests() {
         // fix to match final data set
         FCC_Global.assert.equal(areas.length, 3142)
       })
+      it('7.  The cells should have data-??? values that match the sample data', function(){
+        const areas = document.querySelectorAll('.area');
+        var uniqueFips = [];
+        for(var i=0; i< areas.length; i++){
+          var fips = areas[i].getAttribute('data-fips');  
+          // if the current color isn't in the uniqueColors arr, push it 
+          if(uniqueFips.indexOf(fips) === -1){
+             uniqueFips.push(fips);
+          }  
+        }
+        FCC_Global.assert.equal(uniqueFips.length, 3142, "Fips values should be unique")
+    
+        
+        const householdIncomeDataFips = householdIncomeData.map((ele) => {
+          return ele['fips']
+        })
+        
+        
+        //check if the fips is in the sample data
+        for(var j = 0; j < uniqueFips.length; j++) {
+          console.log('unique fip: ', +uniqueFips[j]);
+          console.log('test: ', householdIncomeDataFips.indexOf(+uniqueFips[j]))
+
+          FCC_Global.assert.notEqual(householdIncomeDataFips.indexOf(+uniqueFips[j]), -1, "Fips value not found in sample data")
+        }
+        //check if the fips matches the right income
+        
+
+        // fix to match final data set
+        //FCC_Global.assert.equal(areas.length, 3142)
+      })
       it('9. My choropleth should have a legend with corresponding id="legend"', function(){
         FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend"');
       })
+      it('9. There should be at least 4 different fill colors used for the legend', function(){
+        const rects = document.querySelectorAll('#legend rect');
+        var uniqueColors = [];
+      
+        for(var i = 0; i < rects.length; i++) {
+          var areaColor = rects[i].style.fill || rects[i].getAttribute('fill');
+          
+          // if the current color isn't in the uniqueColors arr, push it 
+          if(uniqueColors.indexOf(areaColor) === -1){
+             uniqueColors.push(areaColor);
+          }
+        }
+        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend');
+      })
+      
 
       it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function(){
 
@@ -103,7 +150,24 @@ export default function createChoroplethTests() {
           }, firstRequestTimeout)
         })
       })
+      it('11. My tooltip should have a \"data-income\" property that corresponds to the given income of the active area', function() {
+        const tooltip = document.getElementById('tooltip');            
+        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-income"), 'Could not find property \"data-income\" in tooltip');
 
+        const areas = document.querySelectorAll('.area');
+
+        const randomIndex = getRandomIndex(areas.length);
+
+        var randomArea = areas[randomIndex];        
+
+        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+
+        FCC_Global.assert.equal(tooltip.getAttribute('data-income'), randomArea.getAttribute('data-income'), 'Tooltip\'s \"data-income\" property should be equal to the active areas\'s \"data-income\" property');
+        
+        //clear out tooltip
+        randomArea.dispatchEvent(new MouseEvent('mouseoff'));
+                
+      })
 //       1. My choropleth should have a title with a corresponding id="title"
 //       2. My choropleth should have a description with a corresponding id="description"
 //       3. My choropleth should have cells with a corresponding class="cell" that represent the data
