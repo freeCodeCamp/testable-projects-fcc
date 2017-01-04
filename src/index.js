@@ -16,7 +16,7 @@ import createScatterPlotTests from './project-tests/scatter-plot-tests';
 import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 
 export const assert = chai.assert;
-export let project_selector;
+//export let project_selector;
 
 // load mocha
 (function() {
@@ -49,8 +49,11 @@ $(document).ready(function() {
                 testDiv.innerHTML = test_suite_skeleton;
                 document.body.appendChild(testDiv);
                 let project_titleCase = localStorage.getItem('project_titleCase');
-                document.getElementById('placeholder').innerHTML = project_titleCase === null ? project_name.replace(/-/g, ' ') : project_titleCase;
-                document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = project_titleCase === null ? `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_name.replace(/-/g, ' ')}</span>` : `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
+                document.getElementById('placeholder').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '- - -' : 
+                                                                   typeof project_name === 'undefined' ? project_titleCase : project_name.replace(/-/g, ' ');
+                document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '' : 
+                                                                                        typeof project_name === 'undefined' ? `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>` : 
+                                                                                        `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_name.replace(/-/g, ' ')}</span>`;
             };
         } catch (err) {
             console.warn('mocha not loaded yet');
@@ -63,26 +66,12 @@ $(document).ready(function() {
 
 // select project dropdown
 export function selectProject(project) {
-    FCC_Global.project_selector = project;
-    let project_titleCase = project.replace(/-/g, ' ').split(' ');
-    project_titleCase = project_titleCase.map(word => word.charAt(0).toUpperCase() + word.substr(1));
-    project_titleCase = project_titleCase.join(' ');
+    // store project_selector for initTestRunner function
+    localStorage.setItem('project_selector', project);
+    // create & store pretty-print project name for display in indicator div
+    let project_titleCase = project.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
     document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
     localStorage.setItem('project_titleCase', project_titleCase);
-    localStorage.setItem('project_selector', project);
-}
-
-// hamburger menu transformation
-export function hamburger_transform() {
-    if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
-        document.getElementById('hamburger_top').classList.remove('transform_top');
-        document.getElementById('hamburger_middle').classList.remove('transform_middle');
-        document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
-    } else {
-        document.getElementById('hamburger_top').classList.add('transform_top');
-        document.getElementById('hamburger_middle').classList.add('transform_middle');
-        document.getElementById('hamburger_bottom').classList.add('transform_bottom');
-    }
 }
 
 // Updates the button color and text on the target project, to show how many tests passed and how many failed. 
@@ -135,7 +124,10 @@ export function FCCclickOutsideToCloseModal(e) {
 // run tests
 export function FCCRerunTests() {
     const button = document.getElementById('fcc_test_button');
-    button.innerHTML = `Testing`;
+    button.innerHTML = typeof project_name === 'undefined' && 
+    localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
+    button.title = typeof project_name === 'undefined' && 
+    localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
     button.classList = ["fcc_foldout_buttons"];
     button.classList.add("fcc_test_btn-default");
     FCCInitTestRunner();
@@ -150,7 +142,7 @@ export function FCCResetTests(suite) {
     suite.suites.forEach(FCCResetTests);
 }
 
-// HotKeys
+// shortcut keys
 const map = [];
 onkeydown = onkeyup = function(e) {
     const modal = document.getElementById('fcc_test_message-box');
@@ -174,14 +166,27 @@ onkeydown = onkeyup = function(e) {
     }
 }
 
-// hotkey interferes w/ markdown tests, disable and alert
+// shortcuts interfere w/ markdown tests, disable and alert
 export function alertOnce() {
-    var alerted = sessionStorage.getItem('alerted') || false;
+    const alerted = sessionStorage.getItem('alerted') || false;
     if (alerted) {
         return;
     } else {
         alert('Run-Test hotkey disabled for this project, please use mouse.');
         sessionStorage.setItem('alerted', true);
+    }
+}
+
+// hamburger menu transformation
+export function hamburger_transform() {
+    if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
+        document.getElementById('hamburger_top').classList.remove('transform_top');
+        document.getElementById('hamburger_middle').classList.remove('transform_middle');
+        document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
+    } else {
+        document.getElementById('hamburger_top').classList.add('transform_top');
+        document.getElementById('hamburger_middle').classList.add('transform_middle');
+        document.getElementById('hamburger_bottom').classList.add('transform_bottom');
     }
 }
 
@@ -192,8 +197,10 @@ export function FCCInitTestRunner() {
     document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
     // empty the test suite in the mocha object
     mocha.suite.suites = [];
+    // check for hard-coded project selector (for our example projects)
+    const hardCoded_project_name = typeof project_name === 'undefined' ? null : project_name;
     // create tests
-    switch (FCC_Global.project_selector || localStorage.getItem('project_selector') || project_name) {
+    switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
         case "random-quote-machine":
             createRandomQuoteMachineTests();
             break;
