@@ -262,6 +262,7 @@ const test_suite_skeleton = `
             width: 125px;
             vertical-align: top;
             text-align: left !important;
+            font-size: 15px;
         }
         #fcc_legend_wrapper span {
             height: 15px;
