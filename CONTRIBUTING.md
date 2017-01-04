@@ -29,7 +29,8 @@ OR
 
 ### To test your code locally:
 - Import the project you are creating the test suite for into the `local_test` directory:
-	- Include the JS & CSS (if using SCSS or LESS, compile down to CSS first) in the folders we have provided in `local_test/`.
+	- Create folders for your code, i.e. JS, CSS, etc. (NOTE: even if your project does not have JS, you **MUST** create a folder called **JS** - this is where bundle.js will be created).
+	- Include the JS & CSS (if using SCSS or LESS, compile down to CSS first) in the folders you created in `local_test/`.
 	- Modify index.html to point to your files and include any other external resources you need (e.g. React, jQuery, D3, FontAwesome, etc.).
 - Run `npm start` to start watching your files for changes.
 - Then, in another terminal tab navigate into the `local_test` directory and run `live-server`.
