@@ -200,6 +200,7 @@ const test_suite_skeleton = `
             top: 38px;
             left: 20px;
             position: absolute;
+            font-size: 15px !important;
         }
         #fcc_foldout_menu select {
             top: 61px;
