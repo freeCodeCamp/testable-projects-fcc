@@ -55,32 +55,45 @@ export default function createChoroplethTests() {
       })
       it('7.  The cells should have data-??? values that match the sample data', function(){
         const areas = document.querySelectorAll('.area');
-        var uniqueFips = [];
+        var uniqueFipsFromChoropleth = [];
+        var incomesFromChoropleth = [];
         for(var i=0; i< areas.length; i++){
           var fips = areas[i].getAttribute('data-fips');  
           // if the current color isn't in the uniqueColors arr, push it 
-          if(uniqueFips.indexOf(fips) === -1){
-             uniqueFips.push(fips);
+          if(uniqueFipsFromChoropleth.indexOf(fips) === -1){
+             uniqueFipsFromChoropleth.push(+fips);
+             incomesFromChoropleth.push(areas[i].getAttribute('data-income'));
           }  
         }
-        FCC_Global.assert.equal(uniqueFips.length, 3142, "Fips values should be unique")
+        FCC_Global.assert.equal(uniqueFipsFromChoropleth.length, 3142, "Fips values should be unique")
     
         
         const householdIncomeDataFips = householdIncomeData.map((ele) => {
-          return ele['fips']
+          return +ele['fips']
         })
-        
-        
-        //check if the fips is in the sample data
-        for(var j = 0; j < uniqueFips.length; j++) {
-          console.log('unique fip: ', +uniqueFips[j]);
-          console.log('test: ', householdIncomeDataFips.indexOf(+uniqueFips[j]))
-
-          FCC_Global.assert.notEqual(householdIncomeDataFips.indexOf(+uniqueFips[j]), -1, "Fips value not found in sample data")
+              
+        //check if the fips in the sample data exist on the choropleth
+        for(var j = 0; j < householdIncomeDataFips.length; j++) {
+          
+          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(+householdIncomeDataFips[j]), -1, "Choropleth does not contain all sample data fips")
         }
-        //check if the fips matches the right income
         
-
+        //check if the fips from choropleth matches the right income
+        for(var j = 0; j < uniqueFipsFromChoropleth.length; j++) {
+          var fips = uniqueFipsFromChoropleth[j];
+          var income = incomesFromChoropleth[j];
+          var result = householdIncomeData.filter(function( data ) {
+            return data.fips == fips;
+          });
+          
+          if(result[0]){
+            FCC_Global.assert.equal(result[0].household_income, income, "Income from choropleth does not match income from sample data")
+          }
+          else{
+            console.log("fips from choropleth not found in sample data");
+          }
+        }
+        
         // fix to match final data set
         //FCC_Global.assert.equal(areas.length, 3142)
       })
