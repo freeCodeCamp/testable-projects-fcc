@@ -315,6 +315,7 @@ const test_suite_skeleton = `
                 <option value="scatter-plot">D3: Scatter Plot</option>
                 <option value="heat-map">D3: Heat Map</option>
                 <option value="choropleth">D3: Choropleth</option>
+                <option value="tree-map">D3: Tree Map</option>
             </select>
             <button id="fcc_test_message-box-rerun-button" type="button" class="fcc_foldout_buttons" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
                 Run Tests
