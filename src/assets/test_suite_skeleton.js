@@ -1,9 +1,12 @@
 const test_suite_skeleton = `
     <style>
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+        /* TEST/MESSAGE CENTER CSS */ 
+
         #fcc_test_message-box {
-            font-size: 20px;
-            font-family: Arial, sans-serif;
+            font-size: 20px !important;
+            font-family: Noto Sans, arial, sans-serif !important;
             position: fixed;
             left: 0;
             bottom: 0;
@@ -33,7 +36,7 @@ const test_suite_skeleton = `
             background-color: white;
             top: 10vh;
             width: 80%;
-            margin: 0 auto;
+            margin: 0 auto !important;
             text-align: initial;
             border-radius: 10px;
             display: flex;
@@ -44,8 +47,8 @@ const test_suite_skeleton = `
             position: relative;
             height: 60px;
             flex: none;
-            box-sizing: border-box;
-            padding: 10px;
+            box-sizing: border-box !important;
+            padding: 10px !important;
         }
         .fcc_test_message-box-header {
             border-bottom: 1px solid rgb(229,229,229);
@@ -53,9 +56,9 @@ const test_suite_skeleton = `
     
         .fcc_test_message-box-header .title {
             float: left;
-            font-size: 30px;
-            line-height: 40px;
-            margin-left: 10px;
+            font-size: 30px !important;
+            line-height: 40px !important;
+            margin-left: 10px !important;
         }
 
         .fcc_test_message-box-body {
@@ -72,7 +75,7 @@ const test_suite_skeleton = `
             background-color: white;
             border: 1px solid rgb(229,229,229);
             border-radius: 4px;
-            padding: 10px 20px;
+            padding: 10px 20px !important;
             transition: all .3s;
         }
         .fcc_test_message-box-close-btn:hover {
@@ -81,7 +84,7 @@ const test_suite_skeleton = `
         }
 
         #mocha {
-            margin: 10px;
+            margin: 10px !important;
         }
         #mocha .test pre {
             background-color: rgb(245, 245, 245);
@@ -91,7 +94,7 @@ const test_suite_skeleton = `
         }
         #mocha ul {
             max-width: initial;
-            margin: initial;
+            margin: initial !important;
             text-align: initial;
         }
 
@@ -112,14 +115,15 @@ const test_suite_skeleton = `
         }
         .fcc_test_message-box-close-fixed:after {
             color: grey;
-            font-family: Arial, sans-serif;
-            font-size: 30px;
+            font-family: Noto Sans, arial, sans-serif !important;
+            font-size: 30px !important;
             font weight: bold;
             content: "X";
-            line-height: 30px;
+            line-height: 30px !important;
         }
 
-        
+        /* FOLDOUT MENU CSS */
+
         #fcc_foldout_menu {
             position: absolute;
             top: 0;
@@ -129,7 +133,7 @@ const test_suite_skeleton = `
             border-bottom-right-radius: 5px;
             background-color: rgba(255, 255, 204, 0.6);
             z-index: 99997;
-            font-family: Noto Sans, arial, sans-serif;
+            font-family: Noto Sans, arial, sans-serif !important;
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
             transition: .5s;
         }
@@ -196,12 +200,13 @@ const test_suite_skeleton = `
             top: 38px;
             left: 20px;
             position: absolute;
+            font-size: 15px !important;
         }
         #fcc_foldout_menu select {
             top: 61px;
             left: 18px;
             position: absolute;
-            font-family: Noto Sans, Arial, sans-serif;
+            font-family: Noto Sans, Arial, sans-serif !important;
         }
 
         .fcc_foldout_buttons {
@@ -209,10 +214,10 @@ const test_suite_skeleton = `
             left: 20px;
             height: 20px;
             width: 110px;
-            padding: 10px;
+            padding: 10px !important;
             display: block; 
-            font-size: 15px;
-            line-height: 15px;
+            font-size: 15px !important;
+            line-height: 15px !important;
             text-align: center;
             border: none;
             outline: none;
@@ -223,7 +228,7 @@ const test_suite_skeleton = `
             z-index: 0;
             cursor: pointer;
             box-shadow: 1px 1px 4px black;
-            font-family: Noto Sans, arial, sans-serif;
+            font-family: Noto Sans, arial, sans-serif !important;
         }
         #fcc_test_message-box-rerun-button {
             top: 88px;
@@ -249,23 +254,25 @@ const test_suite_skeleton = `
             background-color: rgba(81, 211, 81, 0.9);
         }
 
-        #fcc_legend {
+        #fcc_legend_wrapper {
             position: absolute;
             top: 95px;
             left: 160px;
             height: 400px;
             width: 125px;
             vertical-align: top;
+            text-align: left !important;
+            font-size: 15px;
         }
-        #fcc_legend span {
+        #fcc_legend_wrapper span {
             height: 15px;
-            margin-top: 6px;
-            font-size: 12px;
+            margin-top: 6px !important;
+            font-size: 12px  !important;
         }
         .key {
             height: 15px;
             width: 15px;
-            margin: 5px;
+            margin: 5px !important;
             vertical-align: top;
         }
         .key:first-of-type {
@@ -291,12 +298,12 @@ const test_suite_skeleton = `
             position: fixed;
             top: 15px;
             right: 20px;
-            font-size: 12px;
+            font-size: 12px !important;
             background-color: rgba(255, 255, 204, 0.6);
-            padding: 3px 5px;
+            padding: 3px 5px !important;
             border-radius: 5px;
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
-            font-family: Noto Sans, arial, sans-serif;
+            font-family: Noto Sans, arial, sans-serif !important;
         }
     </style>
     <div id="fcc_test_suite_indicator_wrapper"></div>
@@ -331,7 +338,7 @@ const test_suite_skeleton = `
             <button id="fcc_test_button" type="button" class="fcc_foldout_buttons fcc_test_btn-default" title="CTRL + SHIFT + T" onclick="FCC_Global.FCCOpenTestModal()">
                 Tests
             </button>
-            <div id="fcc_legend">
+            <div id="fcc_legend_wrapper">
                     <div class="fcc_legend key"></div><span class="fcc_legend">Test(s) Failed</span>  
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Passed</span>
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Executing</span>
