@@ -11,15 +11,15 @@ export default function createChoroplethTests() {
 
     describe('#Content', function() {
 
-      it('1. My choropleth should have a title with a corresponding id=\"title\"', function() {
+      it('1. My Choropleth should have a title with a corresponding id=\"title\"', function() {
         FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\"');
       })
 
-      it('2. My choropleth should have a description with a corresponding id=\"description\"', function() {
+      it('2. My Choropleth should have a description with a corresponding id=\"description\"', function() {
         FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\"');
       })
 
-      it('3. My choropleth should have counties with a corresponding class=\"county\" that represent the data', function() {
+      it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function() {
          FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\"");
       })
 
@@ -50,10 +50,9 @@ export default function createChoroplethTests() {
         }
       })
 
-      it('6. My choropleth should have a county for each provided data point', function(){
+      it('6. My Choropleth should have a county for each provided data point', function(){
         const counties = document.querySelectorAll('.county');
 
-        // fix to match final data set
         FCC_Global.assert.equal(counties.length, educationData.length)
       })
 
@@ -72,16 +71,16 @@ export default function createChoroplethTests() {
           uniqueFipsFromChoropleth.push(+fips); 
         }    
 
-        // iterate through each data point and make sure all given data appears on the choropleth, and that the choropleth doesn't contain extra data                      
+        // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data                      
         for(var j = 0; j < educationData.length; j++) {
-          // test that every value in the sample data is in the choropleth
+          // test that every value in the sample data is in the Choropleth
           FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data")
           
-          // test that every value in the choropleth is in the sample data
+          // test that every value in the Choropleth is in the sample data
           FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data")
         }
 
-        // check if the counties on the choropleth have data-education values that correspond to the correct data-fips value
+        // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
         for(var k = 0; k < counties.length; k++) {
           var countyFips = +counties[k].getAttribute('data-fips');
           var countyEducation = counties[k].getAttribute('data-education');
@@ -96,7 +95,7 @@ export default function createChoroplethTests() {
         }
       })
 
-      it('8. My choropleth should have a legend with a corresponding id=\"legend\"', function(){
+      it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function(){
         FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\"');
       })
 
