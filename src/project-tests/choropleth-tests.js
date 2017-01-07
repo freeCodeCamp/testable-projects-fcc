@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import householdIncomeData from '../data/household_income.json';
+import educationData from '../data/education.json';
 export default function createChoroplethTests() {
 
   // returns a random index number
@@ -11,117 +11,117 @@ export default function createChoroplethTests() {
 
     describe('#Content', function() {
 
-      it('1. My choropleth should have a title with a corresponding id="title"', function() {
-        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title"');
+      it('1. My choropleth should have a title with a corresponding id=\"title\"', function() {
+        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\"');
       })
 
-      it('2. My choropleth should have a description with a corresponding id="description"', function() {
-        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id="description"');
+      it('2. My choropleth should have a description with a corresponding id=\"description\"', function() {
+        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\"');
       })
-      it('3. My choropleth should have areas with a corresponding class="area" that represent the data', function() {
-         FCC_Global.assert.isAbove(document.querySelectorAll('.area').length, 0, "Could not find any elements with class=\"area\"");
+
+      it('3. My choropleth should have counties with a corresponding class=\"county\" that represent the data', function() {
+         FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\"");
       })
-      it('4. There should be at least 4 different fill colors used for the areas', function(){
-        const areas = document.querySelectorAll('.area');
+
+      it('4. There should be at least 4 different fill colors used for the counties', function(){
+        const counties = document.querySelectorAll('.county');
         var uniqueColors = [];
 
-        for(var i = 0; i < areas.length; i++) {
-          var areaColor = areas[i].style.fill || areas[i].getAttribute('fill');
+        for(var i = 0; i < counties.length; i++) {
+          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
 
           // if the current color isn't in the uniqueColors arr, push it
-          if(uniqueColors.indexOf(areaColor) === -1){
-             uniqueColors.push(areaColor);
+          if(uniqueColors.indexOf(countyColor) === -1) {
+             uniqueColors.push(countyColor);
           }
         }
-        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the areas');
+
+        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties');
       })
 
-      it('5. Each area will have the properties "data-fips" and "data-income" containing their corresponding fips and income values', function(){
-        const areas = document.querySelectorAll('.area');
-        FCC_Global.assert.isAbove(areas.length, 0, "Could not find any elements with a class=\"area\"");
+      it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function(){
+        const counties = document.querySelectorAll('.county');
+        FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\"");
 
-        for(var i=0; i<areas.length; i++){
-          var area = areas[i];
-          FCC_Global.assert.isNotNull(area.getAttribute("data-fips"), "Could not find property 'data-fips' in area")
-          FCC_Global.assert.isNotNull(area.getAttribute("data-income"), "Could not find property 'data-income' in area")
+        for(var i=0; i<counties.length; i++){
+          var county = counties[i];
+          FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county")
+          FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county")
         }
       })
 
-      it('6. My choropleth should have an area for each provided data point', function(){
-        const areas = document.querySelectorAll('.area');
+      it('6. My choropleth should have a county for each provided data point', function(){
+        const counties = document.querySelectorAll('.county');
 
         // fix to match final data set
-        FCC_Global.assert.equal(areas.length, 3142)
+        FCC_Global.assert.equal(counties.length, educationData.length)
       })
-      it('7.  The cells should have data-??? values that match the sample data', function(){
-        const areas = document.querySelectorAll('.area');
+
+      it('7. The counties should have data-fips and data-education values that match the sample data', function(){
+        const counties = document.querySelectorAll('.county');
+        const educationDataFips = educationData.map(item => {
+          return item.fips
+        });
         var uniqueFipsFromChoropleth = [];
-        var incomesFromChoropleth = [];
-        for(var i=0; i< areas.length; i++){
-          var fips = areas[i].getAttribute('data-fips');  
-          // if the current color isn't in the uniqueColors arr, push it 
-          if(uniqueFipsFromChoropleth.indexOf(fips) === -1){
-             uniqueFipsFromChoropleth.push(+fips);
-             incomesFromChoropleth.push(areas[i].getAttribute('data-income'));
-          }  
-        }
-        FCC_Global.assert.equal(uniqueFipsFromChoropleth.length, 3142, "Fips values should be unique")
-    
-        
-        const householdIncomeDataFips = householdIncomeData.map((ele) => {
-          return +ele['fips']
-        })
-              
-        //check if the fips in the sample data exist on the choropleth
-        for(var j = 0; j < householdIncomeDataFips.length; j++) {
+
+        // check for any duplicate fips values
+        for(var i = 0; i < counties.length; i++) {
+          var fips = counties[i].getAttribute('data-fips');
+
+          FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values");
+          uniqueFipsFromChoropleth.push(+fips); 
+        }    
+
+        // iterate through each data point and make sure all given data appears on the choropleth, and that the choropleth doesn't contain extra data                      
+        for(var j = 0; j < educationData.length; j++) {
+          // test that every value in the sample data is in the choropleth
+          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data")
           
-          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(+householdIncomeDataFips[j]), -1, "Choropleth does not contain all sample data fips")
+          // test that every value in the choropleth is in the sample data
+          FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data")
         }
-        
-        //check if the fips from choropleth matches the right income
-        for(var j = 0; j < uniqueFipsFromChoropleth.length; j++) {
-          var fips = uniqueFipsFromChoropleth[j];
-          var income = incomesFromChoropleth[j];
-          var result = householdIncomeData.filter(function( data ) {
-            return data.fips == fips;
-          });
-          
-          if(result[0]){
-            FCC_Global.assert.equal(result[0].household_income, income, "Income from choropleth does not match income from sample data")
-          }
-          else{
-            console.log("fips from choropleth not found in sample data");
-          }
+
+        // check if the counties on the choropleth have data-education values that correspond to the correct data-fips value
+        for(var k = 0; k < counties.length; k++) {
+          var countyFips = +counties[k].getAttribute('data-fips');
+          var countyEducation = counties[k].getAttribute('data-education');
+
+          // get the index of the object in the sample data with a fips that matches the current county
+          var sampleIndex = educationData.findIndex(item => {
+            return item.fips === countyFips
+          })
+          var sampleEducation = educationData[sampleIndex].bachelorsOrHigher;
+
+          FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match")
         }
-        
-        // fix to match final data set
-        //FCC_Global.assert.equal(areas.length, 3142)
       })
-      it('9. My choropleth should have a legend with corresponding id="legend"', function(){
-        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend"');
+
+      it('8. My choropleth should have a legend with a corresponding id=\"legend\"', function(){
+        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\"');
       })
+
       it('9. There should be at least 4 different fill colors used for the legend', function(){
         const rects = document.querySelectorAll('#legend rect');
         var uniqueColors = [];
       
         for(var i = 0; i < rects.length; i++) {
-          var areaColor = rects[i].style.fill || rects[i].getAttribute('fill');
+          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
           
           // if the current color isn't in the uniqueColors arr, push it 
-          if(uniqueColors.indexOf(areaColor) === -1){
-             uniqueColors.push(areaColor);
+          if(uniqueColors.indexOf(rectColor) === -1){
+             uniqueColors.push(rectColor);
           }
         }
         FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend');
       })
       
 
-      it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function(){
+      it('10. When I mouse over a county, a \"div\" element with a corresponding id=\"tooltip\" should become visible', function(){
 
         const firstRequestTimeout = 100;
         const secondRequestTimeout = 2000;
         this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id=\"tooltip\"');
 
         function getToolTipStatus(tooltip) {
           // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
@@ -136,12 +136,12 @@ export default function createChoroplethTests() {
 
         const tooltip = document.getElementById('tooltip');
 
-        const areas = document.querySelectorAll('.area');
+        const counties = document.querySelectorAll('.county');
 
         // place mouse on random bar and check if tooltip is visible
-        const randomIndex = getRandomIndex(areas.length);
-        var randomArea = areas[randomIndex];
-        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+        const randomIndex = getRandomIndex(counties.length);
+        var randomCounty = counties[randomIndex];
+        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
         // promise is used to prevent test from ending prematurely
         return new Promise((resolve, reject) => {
@@ -152,7 +152,7 @@ export default function createChoroplethTests() {
             }
 
             // remove mouse from cell and check if tooltip is hidden again
-            randomArea.dispatchEvent(new MouseEvent('mouseout'));
+            randomCounty.dispatchEvent(new MouseEvent('mouseout'));
             setTimeout( _ => {
               if(getToolTipStatus(tooltip) !== 'hidden') {
                 reject(new Error('Tooltip should be hidden when mouse is not on an area'))
@@ -163,40 +163,23 @@ export default function createChoroplethTests() {
           }, firstRequestTimeout)
         })
       })
-      it('11. My tooltip should have a \"data-income\" property that corresponds to the given income of the active area', function() {
+      it('11. My tooltip should have a \"data-education\" property that corresponds to the given education of the active county', function() {
         const tooltip = document.getElementById('tooltip');            
-        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-income"), 'Could not find property \"data-income\" in tooltip');
+        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-education"), 'Could not find property \"data-education\" in tooltip');
 
-        const areas = document.querySelectorAll('.area');
+        const counties = document.querySelectorAll('.county');
 
-        const randomIndex = getRandomIndex(areas.length);
+        const randomIndex = getRandomIndex(counties.length);
 
-        var randomArea = areas[randomIndex];        
+        var randomCounty = counties[randomIndex];        
 
-        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
-        FCC_Global.assert.equal(tooltip.getAttribute('data-income'), randomArea.getAttribute('data-income'), 'Tooltip\'s \"data-income\" property should be equal to the active areas\'s \"data-income\" property');
+        FCC_Global.assert.equal(tooltip.getAttribute('data-education'), randomCounty.getAttribute('data-education'), 'Tooltip\'s \"data-education\" property should be equal to the active county\'s \"data-education\" property');
         
         //clear out tooltip
-        randomArea.dispatchEvent(new MouseEvent('mouseoff'));
-                
+        randomCounty.dispatchEvent(new MouseEvent('mouseoff'));       
       })
-//       1. My choropleth should have a title with a corresponding id="title"
-//       2. My choropleth should have a description with a corresponding id="description"
-//       3. My choropleth should have cells with a corresponding class="cell" that represent the data
-//       4. There should be at least 4 different fill colors used for the cells
-//       5. Each cell will have the properties "data-county", "data-state", "data-????" containing their corresponding county, state, and ??? values
-//       6. My choropleth should have an area for each provided data point
-//       6. The data-income" of each cell should be within the range of the data
-//       7. My choropleth should have cells that align with the corresponding ??? - don’t know how to word this.  Need more tests to test accuracy of choropleth
-
-//       7a. The cells should have data-??? values that match the sample data
-//       7a. The cells should have data-??? values that match the sample data of that cell’s data-county and data-state. Something like that
-
-//       8. My choropleth should have a legend with corresponding id="legend"
-//       9. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell
-//       10. My tooltip should have a "data-???" property that corresponds to the given year of the active cell
-
     });
 
   });

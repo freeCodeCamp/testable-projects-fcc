@@ -20939,9 +20939,9 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _household_income = __webpack_require__(56);
+	var _education = __webpack_require__(56);
 
-	var _household_income2 = _interopRequireDefault(_household_income);
+	var _education2 = _interopRequireDefault(_education);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20956,114 +20956,116 @@ var FCC_Global =
 
 	    describe('#Content', function () {
 
-	      it('1. My choropleth should have a title with a corresponding id="title"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title"');
+	      it('1. My choropleth should have a title with a corresponding id=\"title\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\"');
 	      });
 
-	      it('2. My choropleth should have a description with a corresponding id="description"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id="description"');
+	      it('2. My choropleth should have a description with a corresponding id=\"description\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\"');
 	      });
-	      it('3. My choropleth should have areas with a corresponding class="area" that represent the data', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.area').length, 0, "Could not find any elements with class=\"area\"");
+
+	      it('3. My choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\"");
 	      });
-	      it('4. There should be at least 4 different fill colors used for the areas', function () {
-	        var areas = document.querySelectorAll('.area');
+
+	      it('4. There should be at least 4 different fill colors used for the counties', function () {
+	        var counties = document.querySelectorAll('.county');
 	        var uniqueColors = [];
 
-	        for (var i = 0; i < areas.length; i++) {
-	          var areaColor = areas[i].style.fill || areas[i].getAttribute('fill');
+	        for (var i = 0; i < counties.length; i++) {
+	          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
 
 	          // if the current color isn't in the uniqueColors arr, push it
-	          if (uniqueColors.indexOf(areaColor) === -1) {
-	            uniqueColors.push(areaColor);
+	          if (uniqueColors.indexOf(countyColor) === -1) {
+	            uniqueColors.push(countyColor);
 	          }
 	        }
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the areas');
+
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties');
 	      });
 
-	      it('5. Each area will have the properties "data-fips" and "data-income" containing their corresponding fips and income values', function () {
-	        var areas = document.querySelectorAll('.area');
-	        FCC_Global.assert.isAbove(areas.length, 0, "Could not find any elements with a class=\"area\"");
+	      it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
+	        var counties = document.querySelectorAll('.county');
+	        FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\"");
 
-	        for (var i = 0; i < areas.length; i++) {
-	          var area = areas[i];
-	          FCC_Global.assert.isNotNull(area.getAttribute("data-fips"), "Could not find property 'data-fips' in area");
-	          FCC_Global.assert.isNotNull(area.getAttribute("data-income"), "Could not find property 'data-income' in area");
+	        for (var i = 0; i < counties.length; i++) {
+	          var county = counties[i];
+	          FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county");
+	          FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county");
 	        }
 	      });
 
-	      it('6. My choropleth should have an area for each provided data point', function () {
-	        var areas = document.querySelectorAll('.area');
+	      it('6. My choropleth should have a county for each provided data point', function () {
+	        var counties = document.querySelectorAll('.county');
 
 	        // fix to match final data set
-	        FCC_Global.assert.equal(areas.length, 3142);
+	        FCC_Global.assert.equal(counties.length, _education2.default.length);
 	      });
-	      it('7.  The cells should have data-??? values that match the sample data', function () {
-	        var areas = document.querySelectorAll('.area');
-	        var uniqueFipsFromChoropleth = [];
-	        var incomesFromChoropleth = [];
-	        for (var i = 0; i < areas.length; i++) {
-	          var fips = areas[i].getAttribute('data-fips');
-	          // if the current color isn't in the uniqueColors arr, push it 
-	          if (uniqueFipsFromChoropleth.indexOf(fips) === -1) {
-	            uniqueFipsFromChoropleth.push(+fips);
-	            incomesFromChoropleth.push(areas[i].getAttribute('data-income'));
-	          }
-	        }
-	        FCC_Global.assert.equal(uniqueFipsFromChoropleth.length, 3142, "Fips values should be unique");
 
-	        var householdIncomeDataFips = _household_income2.default.map(function (ele) {
-	          return +ele['fips'];
+	      it('7. The counties should have data-fips and data-education values that match the sample data', function () {
+	        var counties = document.querySelectorAll('.county');
+	        var educationDataFips = _education2.default.map(function (item) {
+	          return item.fips;
 	        });
+	        var uniqueFipsFromChoropleth = [];
 
-	        //check if the fips in the sample data exist on the choropleth
-	        for (var j = 0; j < householdIncomeDataFips.length; j++) {
+	        // check for any duplicate fips values
+	        for (var i = 0; i < counties.length; i++) {
+	          var fips = counties[i].getAttribute('data-fips');
 
-	          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(+householdIncomeDataFips[j]), -1, "Choropleth does not contain all sample data fips");
+	          FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values");
+	          uniqueFipsFromChoropleth.push(+fips);
 	        }
 
-	        //check if the fips from choropleth matches the right income
-	        for (var j = 0; j < uniqueFipsFromChoropleth.length; j++) {
-	          var fips = uniqueFipsFromChoropleth[j];
-	          var income = incomesFromChoropleth[j];
-	          var result = _household_income2.default.filter(function (data) {
-	            return data.fips == fips;
+	        // iterate through each data point and make sure all given data appears on the choropleth, and that the choropleth doesn't contain extra data                      
+	        for (var j = 0; j < _education2.default.length; j++) {
+	          // test that every value in the sample data is in the choropleth
+	          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data");
+
+	          // test that every value in the choropleth is in the sample data
+	          FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data");
+	        }
+
+	        // check if the counties on the choropleth have data-education values that correspond to the correct data-fips value
+	        for (var k = 0; k < counties.length; k++) {
+	          var countyFips = +counties[k].getAttribute('data-fips');
+	          var countyEducation = counties[k].getAttribute('data-education');
+
+	          // get the index of the object in the sample data with a fips that matches the current county
+	          var sampleIndex = _education2.default.findIndex(function (item) {
+	            return item.fips === countyFips;
 	          });
+	          var sampleEducation = _education2.default[sampleIndex].bachelorsOrHigher;
 
-	          if (result[0]) {
-	            FCC_Global.assert.equal(result[0].household_income, income, "Income from choropleth does not match income from sample data");
-	          } else {
-	            console.log("fips from choropleth not found in sample data");
-	          }
+	          FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match");
 	        }
+	      });
 
-	        // fix to match final data set
-	        //FCC_Global.assert.equal(areas.length, 3142)
+	      it('8. My choropleth should have a legend with a corresponding id=\"legend\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\"');
 	      });
-	      it('9. My choropleth should have a legend with corresponding id="legend"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend"');
-	      });
+
 	      it('9. There should be at least 4 different fill colors used for the legend', function () {
 	        var rects = document.querySelectorAll('#legend rect');
 	        var uniqueColors = [];
 
 	        for (var i = 0; i < rects.length; i++) {
-	          var areaColor = rects[i].style.fill || rects[i].getAttribute('fill');
+	          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
 
 	          // if the current color isn't in the uniqueColors arr, push it 
-	          if (uniqueColors.indexOf(areaColor) === -1) {
-	            uniqueColors.push(areaColor);
+	          if (uniqueColors.indexOf(rectColor) === -1) {
+	            uniqueColors.push(rectColor);
 	          }
 	        }
 	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend');
 	      });
 
-	      it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function () {
+	      it('10. When I mouse over a county, a \"div\" element with a corresponding id=\"tooltip\" should become visible', function () {
 
 	        var firstRequestTimeout = 100;
 	        var secondRequestTimeout = 2000;
 	        this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+	        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id=\"tooltip\"');
 
 	        function getToolTipStatus(tooltip) {
 	          // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
@@ -21078,12 +21080,12 @@ var FCC_Global =
 
 	        var tooltip = document.getElementById('tooltip');
 
-	        var areas = document.querySelectorAll('.area');
+	        var counties = document.querySelectorAll('.county');
 
 	        // place mouse on random bar and check if tooltip is visible
-	        var randomIndex = getRandomIndex(areas.length);
-	        var randomArea = areas[randomIndex];
-	        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+	        var randomIndex = getRandomIndex(counties.length);
+	        var randomCounty = counties[randomIndex];
+	        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
 	        // promise is used to prevent test from ending prematurely
 	        return new Promise(function (resolve, reject) {
@@ -21094,7 +21096,7 @@ var FCC_Global =
 	            }
 
 	            // remove mouse from cell and check if tooltip is hidden again
-	            randomArea.dispatchEvent(new MouseEvent('mouseout'));
+	            randomCounty.dispatchEvent(new MouseEvent('mouseout'));
 	            setTimeout(function (_) {
 	              if (getToolTipStatus(tooltip) !== 'hidden') {
 	                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
@@ -21105,38 +21107,23 @@ var FCC_Global =
 	          }, firstRequestTimeout);
 	        });
 	      });
-	      it('11. My tooltip should have a \"data-income\" property that corresponds to the given income of the active area', function () {
+	      it('11. My tooltip should have a \"data-education\" property that corresponds to the given education of the active county', function () {
 	        var tooltip = document.getElementById('tooltip');
-	        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-income"), 'Could not find property \"data-income\" in tooltip');
+	        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-education"), 'Could not find property \"data-education\" in tooltip');
 
-	        var areas = document.querySelectorAll('.area');
+	        var counties = document.querySelectorAll('.county');
 
-	        var randomIndex = getRandomIndex(areas.length);
+	        var randomIndex = getRandomIndex(counties.length);
 
-	        var randomArea = areas[randomIndex];
+	        var randomCounty = counties[randomIndex];
 
-	        randomArea.dispatchEvent(new MouseEvent('mouseover'));
+	        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
-	        FCC_Global.assert.equal(tooltip.getAttribute('data-income'), randomArea.getAttribute('data-income'), 'Tooltip\'s \"data-income\" property should be equal to the active areas\'s \"data-income\" property');
+	        FCC_Global.assert.equal(tooltip.getAttribute('data-education'), randomCounty.getAttribute('data-education'), 'Tooltip\'s \"data-education\" property should be equal to the active county\'s \"data-education\" property');
 
 	        //clear out tooltip
-	        randomArea.dispatchEvent(new MouseEvent('mouseoff'));
+	        randomCounty.dispatchEvent(new MouseEvent('mouseoff'));
 	      });
-	      //       1. My choropleth should have a title with a corresponding id="title"
-	      //       2. My choropleth should have a description with a corresponding id="description"
-	      //       3. My choropleth should have cells with a corresponding class="cell" that represent the data
-	      //       4. There should be at least 4 different fill colors used for the cells
-	      //       5. Each cell will have the properties "data-county", "data-state", "data-????" containing their corresponding county, state, and ??? values
-	      //       6. My choropleth should have an area for each provided data point
-	      //       6. The data-income" of each cell should be within the range of the data
-	      //       7. My choropleth should have cells that align with the corresponding ??? - don’t know how to word this.  Need more tests to test accuracy of choropleth
-
-	      //       7a. The cells should have data-??? values that match the sample data
-	      //       7a. The cells should have data-??? values that match the sample data of that cell’s data-county and data-state. Something like that
-
-	      //       8. My choropleth should have a legend with corresponding id="legend"
-	      //       9. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell
-	      //       10. My tooltip should have a "data-???" property that corresponds to the given year of the active cell
 	    });
 	  });
 	}
@@ -21146,18848 +21133,18859 @@ var FCC_Global =
 /***/ function(module, exports) {
 
 	module.exports = [
-	 {
-	   "fips": 1001,
-	   "state": "AL",
-	   "area_name": "Autauga County",
-	   "household_income": 54366
-	 },
-	 {
-	   "fips": 1003,
-	   "state": "AL",
-	   "area_name": "Baldwin County",
-	   "household_income": 49626
-	 },
-	 {
-	   "fips": 1005,
-	   "state": "AL",
-	   "area_name": "Barbour County",
-	   "household_income": 34971
-	 },
-	 {
-	   "fips": 1007,
-	   "state": "AL",
-	   "area_name": "Bibb County",
-	   "household_income": 39546
-	 },
-	 {
-	   "fips": 1009,
-	   "state": "AL",
-	   "area_name": "Blount County",
-	   "household_income": 45567
-	 },
-	 {
-	   "fips": 1011,
-	   "state": "AL",
-	   "area_name": "Bullock County",
-	   "household_income": 26580
-	 },
-	 {
-	   "fips": 1013,
-	   "state": "AL",
-	   "area_name": "Butler County",
-	   "household_income": 32512
-	 },
-	 {
-	   "fips": 1015,
-	   "state": "AL",
-	   "area_name": "Calhoun County",
-	   "household_income": 41123
-	 },
-	 {
-	   "fips": 1017,
-	   "state": "AL",
-	   "area_name": "Chambers County",
-	   "household_income": 34116
-	 },
-	 {
-	   "fips": 1019,
-	   "state": "AL",
-	   "area_name": "Cherokee County",
-	   "household_income": 38013
-	 },
-	 {
-	   "fips": 1021,
-	   "state": "AL",
-	   "area_name": "Chilton County",
-	   "household_income": 41450
-	 },
-	 {
-	   "fips": 1023,
-	   "state": "AL",
-	   "area_name": "Choctaw County",
-	   "household_income": 35049
-	 },
-	 {
-	   "fips": 1025,
-	   "state": "AL",
-	   "area_name": "Clarke County",
-	   "household_income": 36620
-	 },
-	 {
-	   "fips": 1027,
-	   "state": "AL",
-	   "area_name": "Clay County",
-	   "household_income": 35940
-	 },
-	 {
-	   "fips": 1029,
-	   "state": "AL",
-	   "area_name": "Cleburne County",
-	   "household_income": 40418
-	 },
-	 {
-	   "fips": 1031,
-	   "state": "AL",
-	   "area_name": "Coffee County",
-	   "household_income": 46931
-	 },
-	 {
-	   "fips": 1033,
-	   "state": "AL",
-	   "area_name": "Colbert County",
-	   "household_income": 43057
-	 },
-	 {
-	   "fips": 1035,
-	   "state": "AL",
-	   "area_name": "Conecuh County",
-	   "household_income": 29101
-	 },
-	 {
-	   "fips": 1037,
-	   "state": "AL",
-	   "area_name": "Coosa County",
-	   "household_income": 34679
-	 },
-	 {
-	   "fips": 1039,
-	   "state": "AL",
-	   "area_name": "Covington County",
-	   "household_income": 36149
-	 },
-	 {
-	   "fips": 1041,
-	   "state": "AL",
-	   "area_name": "Crenshaw County",
-	   "household_income": 34445
-	 },
-	 {
-	   "fips": 1043,
-	   "state": "AL",
-	   "area_name": "Cullman County",
-	   "household_income": 39922
-	 },
-	 {
-	   "fips": 1045,
-	   "state": "AL",
-	   "area_name": "Dale County",
-	   "household_income": 41940
-	 },
-	 {
-	   "fips": 1047,
-	   "state": "AL",
-	   "area_name": "Dallas County",
-	   "household_income": 26602
-	 },
-	 {
-	   "fips": 1049,
-	   "state": "AL",
-	   "area_name": "DeKalb County",
-	   "household_income": 36241
-	 },
-	 {
-	   "fips": 1051,
-	   "state": "AL",
-	   "area_name": "Elmore County",
-	   "household_income": 54298
-	 },
-	 {
-	   "fips": 1053,
-	   "state": "AL",
-	   "area_name": "Escambia County",
-	   "household_income": 37077
-	 },
-	 {
-	   "fips": 1055,
-	   "state": "AL",
-	   "area_name": "Etowah County",
-	   "household_income": 39904
-	 },
-	 {
-	   "fips": 1057,
-	   "state": "AL",
-	   "area_name": "Fayette County",
-	   "household_income": 35664
-	 },
-	 {
-	   "fips": 1059,
-	   "state": "AL",
-	   "area_name": "Franklin County",
-	   "household_income": 33881
-	 },
-	 {
-	   "fips": 1061,
-	   "state": "AL",
-	   "area_name": "Geneva County",
-	   "household_income": 34425
-	 },
-	 {
-	   "fips": 1063,
-	   "state": "AL",
-	   "area_name": "Greene County",
-	   "household_income": 26504
-	 },
-	 {
-	   "fips": 1065,
-	   "state": "AL",
-	   "area_name": "Hale County",
-	   "household_income": 33315
-	 },
-	 {
-	   "fips": 1067,
-	   "state": "AL",
-	   "area_name": "Henry County",
-	   "household_income": 39930
-	 },
-	 {
-	   "fips": 1069,
-	   "state": "AL",
-	   "area_name": "Houston County",
-	   "household_income": 40124
-	 },
-	 {
-	   "fips": 1071,
-	   "state": "AL",
-	   "area_name": "Jackson County",
-	   "household_income": 36923
-	 },
-	 {
-	   "fips": 1073,
-	   "state": "AL",
-	   "area_name": "Jefferson County",
-	   "household_income": 44852
-	 },
-	 {
-	   "fips": 1075,
-	   "state": "AL",
-	   "area_name": "Lamar County",
-	   "household_income": 34553
-	 },
-	 {
-	   "fips": 1077,
-	   "state": "AL",
-	   "area_name": "Lauderdale County",
-	   "household_income": 41324
-	 },
-	 {
-	   "fips": 1079,
-	   "state": "AL",
-	   "area_name": "Lawrence County",
-	   "household_income": 41574
-	 },
-	 {
-	   "fips": 1081,
-	   "state": "AL",
-	   "area_name": "Lee County",
-	   "household_income": 41256
-	 },
-	 {
-	   "fips": 1083,
-	   "state": "AL",
-	   "area_name": "Limestone County",
-	   "household_income": 51175
-	 },
-	 {
-	   "fips": 1085,
-	   "state": "AL",
-	   "area_name": "Lowndes County",
-	   "household_income": 30675
-	 },
-	 {
-	   "fips": 1087,
-	   "state": "AL",
-	   "area_name": "Macon County",
-	   "household_income": 28518
-	 },
-	 {
-	   "fips": 1089,
-	   "state": "AL",
-	   "area_name": "Madison County",
-	   "household_income": 58833
-	 },
-	 {
-	   "fips": 1091,
-	   "state": "AL",
-	   "area_name": "Marengo County",
-	   "household_income": 32977
-	 },
-	 {
-	   "fips": 1093,
-	   "state": "AL",
-	   "area_name": "Marion County",
-	   "household_income": 37707
-	 },
-	 {
-	   "fips": 1095,
-	   "state": "AL",
-	   "area_name": "Marshall County",
-	   "household_income": 36536
-	 },
-	 {
-	   "fips": 1097,
-	   "state": "AL",
-	   "area_name": "Mobile County",
-	   "household_income": 42943
-	 },
-	 {
-	   "fips": 1099,
-	   "state": "AL",
-	   "area_name": "Monroe County",
-	   "household_income": 34733
-	 },
-	 {
-	   "fips": 1101,
-	   "state": "AL",
-	   "area_name": "Montgomery County",
-	   "household_income": 43054
-	 },
-	 {
-	   "fips": 1103,
-	   "state": "AL",
-	   "area_name": "Morgan County",
-	   "household_income": 45082
-	 },
-	 {
-	   "fips": 1105,
-	   "state": "AL",
-	   "area_name": "Perry County",
-	   "household_income": 27403
-	 },
-	 {
-	   "fips": 1107,
-	   "state": "AL",
-	   "area_name": "Pickens County",
-	   "household_income": 31933
-	 },
-	 {
-	   "fips": 1109,
-	   "state": "AL",
-	   "area_name": "Pike County",
-	   "household_income": 31844
-	 },
-	 {
-	   "fips": 1111,
-	   "state": "AL",
-	   "area_name": "Randolph County",
-	   "household_income": 36939
-	 },
-	 {
-	   "fips": 1113,
-	   "state": "AL",
-	   "area_name": "Russell County",
-	   "household_income": 35585
-	 },
-	 {
-	   "fips": 1115,
-	   "state": "AL",
-	   "area_name": "St. Clair County",
-	   "household_income": 50571
-	 },
-	 {
-	   "fips": 1117,
-	   "state": "AL",
-	   "area_name": "Shelby County",
-	   "household_income": 69432
-	 },
-	 {
-	   "fips": 1119,
-	   "state": "AL",
-	   "area_name": "Sumter County",
-	   "household_income": 25413
-	 },
-	 {
-	   "fips": 1121,
-	   "state": "AL",
-	   "area_name": "Talladega County",
-	   "household_income": 39999
-	 },
-	 {
-	   "fips": 1123,
-	   "state": "AL",
-	   "area_name": "Tallapoosa County",
-	   "household_income": 36779
-	 },
-	 {
-	   "fips": 1125,
-	   "state": "AL",
-	   "area_name": "Tuscaloosa County",
-	   "household_income": 46892
-	 },
-	 {
-	   "fips": 1127,
-	   "state": "AL",
-	   "area_name": "Walker County",
-	   "household_income": 37245
-	 },
-	 {
-	   "fips": 1129,
-	   "state": "AL",
-	   "area_name": "Washington County",
-	   "household_income": 41321
-	 },
-	 {
-	   "fips": 1131,
-	   "state": "AL",
-	   "area_name": "Wilcox County",
-	   "household_income": 24035
-	 },
-	 {
-	   "fips": 1133,
-	   "state": "AL",
-	   "area_name": "Winston County",
-	   "household_income": 35528
-	 },
-	 {
-	   "fips": 2013,
-	   "state": "AK",
-	   "area_name": "Aleutians East Borough",
-	   "household_income": 55462
-	 },
-	 {
-	   "fips": 2016,
-	   "state": "AK",
-	   "area_name": "Aleutians West Census Area",
-	   "household_income": 68387
-	 },
-	 {
-	   "fips": 2020,
-	   "state": "AK",
-	   "area_name": "Anchorage Borough/municipality",
-	   "household_income": 75200
-	 },
-	 {
-	   "fips": 2050,
-	   "state": "AK",
-	   "area_name": "Bethel Census Area",
-	   "household_income": 45808
-	 },
-	 {
-	   "fips": 2060,
-	   "state": "AK",
-	   "area_name": "Bristol Bay Borough",
-	   "household_income": 75364
-	 },
-	 {
-	   "fips": 2068,
-	   "state": "AK",
-	   "area_name": "Denali Borough",
-	   "household_income": 69692
-	 },
-	 {
-	   "fips": 2070,
-	   "state": "AK",
-	   "area_name": "Dillingham Census Area",
-	   "household_income": 51082
-	 },
-	 {
-	   "fips": 2090,
-	   "state": "AK",
-	   "area_name": "Fairbanks North Star Borough",
-	   "household_income": 67801
-	 },
-	 {
-	   "fips": 2100,
-	   "state": "AK",
-	   "area_name": "Haines Borough",
-	   "household_income": 67260
-	 },
-	 {
-	   "fips": 2105,
-	   "state": "AK",
-	   "area_name": "Hoonah-Angoon Census Area",
-	   "household_income": 51687
-	 },
-	 {
-	   "fips": 2110,
-	   "state": "AK",
-	   "area_name": "Juneau Borough/city",
-	   "household_income": 80835
-	 },
-	 {
-	   "fips": 2122,
-	   "state": "AK",
-	   "area_name": "Kenai Peninsula Borough",
-	   "household_income": 62532
-	 },
-	 {
-	   "fips": 2130,
-	   "state": "AK",
-	   "area_name": "Ketchikan Gateway Borough",
-	   "household_income": 57776
-	 },
-	 {
-	   "fips": 2150,
-	   "state": "AK",
-	   "area_name": "Kodiak Island Borough",
-	   "household_income": 67972
-	 },
-	 {
-	   "fips": 2158,
-	   "state": "AK",
-	   "area_name": "Kusilvak Census Area",
-	   "household_income": 30877
-	 },
-	 {
-	   "fips": 2164,
-	   "state": "AK",
-	   "area_name": "Lake and Peninsula Borough",
-	   "household_income": 45570
-	 },
-	 {
-	   "fips": 2170,
-	   "state": "AK",
-	   "area_name": "Matanuska-Susitna Borough",
-	   "household_income": 73981
-	 },
-	 {
-	   "fips": 2180,
-	   "state": "AK",
-	   "area_name": "Nome Census Area",
-	   "household_income": 47160
-	 },
-	 {
-	   "fips": 2185,
-	   "state": "AK",
-	   "area_name": "North Slope Borough",
-	   "household_income": 75682
-	 },
-	 {
-	   "fips": 2188,
-	   "state": "AK",
-	   "area_name": "Northwest Arctic Borough",
-	   "household_income": 65192
-	 },
-	 {
-	   "fips": 2195,
-	   "state": "AK",
-	   "area_name": "Petersburg Borough",
-	   "household_income": 56655
-	 },
-	 {
-	   "fips": 2198,
-	   "state": "AK",
-	   "area_name": "Prince of Wales-Hyder Census Area",
-	   "household_income": 43245
-	 },
-	 {
-	   "fips": 2220,
-	   "state": "AK",
-	   "area_name": "Sitka Borough/city",
-	   "household_income": 65765
-	 },
-	 {
-	   "fips": 2230,
-	   "state": "AK",
-	   "area_name": "Skagway Municipality",
-	   "household_income": 69170
-	 },
-	 {
-	   "fips": 2240,
-	   "state": "AK",
-	   "area_name": "Southeast Fairbanks Census Area",
-	   "household_income": 59641
-	 },
-	 {
-	   "fips": 2261,
-	   "state": "AK",
-	   "area_name": "Valdez-Cordova Census Area",
-	   "household_income": 73998
-	 },
-	 {
-	   "fips": 2275,
-	   "state": "AK",
-	   "area_name": "Wrangell Borough/city",
-	   "household_income": 52201
-	 },
-	 {
-	   "fips": 2282,
-	   "state": "AK",
-	   "area_name": "Yakutat Borough/city",
-	   "household_income": 52595
-	 },
-	 {
-	   "fips": 2290,
-	   "state": "AK",
-	   "area_name": "Yukon-Koyukuk Census Area",
-	   "household_income": 36708
-	 },
-	 {
-	   "fips": 4001,
-	   "state": "AZ",
-	   "area_name": "Apache County",
-	   "household_income": 32366
-	 },
-	 {
-	   "fips": 4003,
-	   "state": "AZ",
-	   "area_name": "Cochise County",
-	   "household_income": 45025
-	 },
-	 {
-	   "fips": 4005,
-	   "state": "AZ",
-	   "area_name": "Coconino County",
-	   "household_income": 48653
-	 },
-	 {
-	   "fips": 4007,
-	   "state": "AZ",
-	   "area_name": "Gila County",
-	   "household_income": 37677
-	 },
-	 {
-	   "fips": 4009,
-	   "state": "AZ",
-	   "area_name": "Graham County",
-	   "household_income": 46046
-	 },
-	 {
-	   "fips": 4011,
-	   "state": "AZ",
-	   "area_name": "Greenlee County",
-	   "household_income": 59416
-	 },
-	 {
-	   "fips": 4012,
-	   "state": "AZ",
-	   "area_name": "La Paz County",
-	   "household_income": 32533
-	 },
-	 {
-	   "fips": 4013,
-	   "state": "AZ",
-	   "area_name": "Maricopa County",
-	   "household_income": 53929
-	 },
-	 {
-	   "fips": 4015,
-	   "state": "AZ",
-	   "area_name": "Mohave County",
-	   "household_income": 37704
-	 },
-	 {
-	   "fips": 4017,
-	   "state": "AZ",
-	   "area_name": "Navajo County",
-	   "household_income": 35457
-	 },
-	 {
-	   "fips": 4019,
-	   "state": "AZ",
-	   "area_name": "Pima County",
-	   "household_income": 45871
-	 },
-	 {
-	   "fips": 4021,
-	   "state": "AZ",
-	   "area_name": "Pinal County",
-	   "household_income": 49876
-	 },
-	 {
-	   "fips": 4023,
-	   "state": "AZ",
-	   "area_name": "Santa Cruz County",
-	   "household_income": 37465
-	 },
-	 {
-	   "fips": 4025,
-	   "state": "AZ",
-	   "area_name": "Yavapai County",
-	   "household_income": 44145
-	 },
-	 {
-	   "fips": 4027,
-	   "state": "AZ",
-	   "area_name": "Yuma County",
-	   "household_income": 39700
-	 },
-	 {
-	   "fips": 5001,
-	   "state": "AR",
-	   "area_name": "Arkansas County",
-	   "household_income": 36409
-	 },
-	 {
-	   "fips": 5003,
-	   "state": "AR",
-	   "area_name": "Ashley County",
-	   "household_income": 36176
-	 },
-	 {
-	   "fips": 5005,
-	   "state": "AR",
-	   "area_name": "Baxter County",
-	   "household_income": 37873
-	 },
-	 {
-	   "fips": 5007,
-	   "state": "AR",
-	   "area_name": "Benton County",
-	   "household_income": 57408
-	 },
-	 {
-	   "fips": 5009,
-	   "state": "AR",
-	   "area_name": "Boone County",
-	   "household_income": 39779
-	 },
-	 {
-	   "fips": 5011,
-	   "state": "AR",
-	   "area_name": "Bradley County",
-	   "household_income": 32734
-	 },
-	 {
-	   "fips": 5013,
-	   "state": "AR",
-	   "area_name": "Calhoun County",
-	   "household_income": 39493
-	 },
-	 {
-	   "fips": 5015,
-	   "state": "AR",
-	   "area_name": "Carroll County",
-	   "household_income": 36964
-	 },
-	 {
-	   "fips": 5017,
-	   "state": "AR",
-	   "area_name": "Chicot County",
-	   "household_income": 29541
-	 },
-	 {
-	   "fips": 5019,
-	   "state": "AR",
-	   "area_name": "Clark County",
-	   "household_income": 38504
-	 },
-	 {
-	   "fips": 5021,
-	   "state": "AR",
-	   "area_name": "Clay County",
-	   "household_income": 33826
-	 },
-	 {
-	   "fips": 5023,
-	   "state": "AR",
-	   "area_name": "Cleburne County",
-	   "household_income": 40555
-	 },
-	 {
-	   "fips": 5025,
-	   "state": "AR",
-	   "area_name": "Cleveland County",
-	   "household_income": 43201
-	 },
-	 {
-	   "fips": 5027,
-	   "state": "AR",
-	   "area_name": "Columbia County",
-	   "household_income": 37495
-	 },
-	 {
-	   "fips": 5029,
-	   "state": "AR",
-	   "area_name": "Conway County",
-	   "household_income": 42348
-	 },
-	 {
-	   "fips": 5031,
-	   "state": "AR",
-	   "area_name": "Craighead County",
-	   "household_income": 42851
-	 },
-	 {
-	   "fips": 5033,
-	   "state": "AR",
-	   "area_name": "Crawford County",
-	   "household_income": 43466
-	 },
-	 {
-	   "fips": 5035,
-	   "state": "AR",
-	   "area_name": "Crittenden County",
-	   "household_income": 35455
-	 },
-	 {
-	   "fips": 5037,
-	   "state": "AR",
-	   "area_name": "Cross County",
-	   "household_income": 38597
-	 },
-	 {
-	   "fips": 5039,
-	   "state": "AR",
-	   "area_name": "Dallas County",
-	   "household_income": 34018
-	 },
-	 {
-	   "fips": 5041,
-	   "state": "AR",
-	   "area_name": "Desha County",
-	   "household_income": 33028
-	 },
-	 {
-	   "fips": 5043,
-	   "state": "AR",
-	   "area_name": "Drew County",
-	   "household_income": 36801
-	 },
-	 {
-	   "fips": 5045,
-	   "state": "AR",
-	   "area_name": "Faulkner County",
-	   "household_income": 51436
-	 },
-	 {
-	   "fips": 5047,
-	   "state": "AR",
-	   "area_name": "Franklin County",
-	   "household_income": 40404
-	 },
-	 {
-	   "fips": 5049,
-	   "state": "AR",
-	   "area_name": "Fulton County",
-	   "household_income": 33347
-	 },
-	 {
-	   "fips": 5051,
-	   "state": "AR",
-	   "area_name": "Garland County",
-	   "household_income": 40621
-	 },
-	 {
-	   "fips": 5053,
-	   "state": "AR",
-	   "area_name": "Grant County",
-	   "household_income": 46067
-	 },
-	 {
-	   "fips": 5055,
-	   "state": "AR",
-	   "area_name": "Greene County",
-	   "household_income": 42572
-	 },
-	 {
-	   "fips": 5057,
-	   "state": "AR",
-	   "area_name": "Hempstead County",
-	   "household_income": 33136
-	 },
-	 {
-	   "fips": 5059,
-	   "state": "AR",
-	   "area_name": "Hot Spring County",
-	   "household_income": 37831
-	 },
-	 {
-	   "fips": 5061,
-	   "state": "AR",
-	   "area_name": "Howard County",
-	   "household_income": 37336
-	 },
-	 {
-	   "fips": 5063,
-	   "state": "AR",
-	   "area_name": "Independence County",
-	   "household_income": 41085
-	 },
-	 {
-	   "fips": 5065,
-	   "state": "AR",
-	   "area_name": "Izard County",
-	   "household_income": 32744
-	 },
-	 {
-	   "fips": 5067,
-	   "state": "AR",
-	   "area_name": "Jackson County",
-	   "household_income": 32427
-	 },
-	 {
-	   "fips": 5069,
-	   "state": "AR",
-	   "area_name": "Jefferson County",
-	   "household_income": 35927
-	 },
-	 {
-	   "fips": 5071,
-	   "state": "AR",
-	   "area_name": "Johnson County",
-	   "household_income": 34923
-	 },
-	 {
-	   "fips": 5073,
-	   "state": "AR",
-	   "area_name": "Lafayette County",
-	   "household_income": 32225
-	 },
-	 {
-	   "fips": 5075,
-	   "state": "AR",
-	   "area_name": "Lawrence County",
-	   "household_income": 34916
-	 },
-	 {
-	   "fips": 5077,
-	   "state": "AR",
-	   "area_name": "Lee County",
-	   "household_income": 28006
-	 },
-	 {
-	   "fips": 5079,
-	   "state": "AR",
-	   "area_name": "Lincoln County",
-	   "household_income": 37644
-	 },
-	 {
-	   "fips": 5081,
-	   "state": "AR",
-	   "area_name": "Little River County",
-	   "household_income": 37691
-	 },
-	 {
-	   "fips": 5083,
-	   "state": "AR",
-	   "area_name": "Logan County",
-	   "household_income": 36391
-	 },
-	 {
-	   "fips": 5085,
-	   "state": "AR",
-	   "area_name": "Lonoke County",
-	   "household_income": 54459
-	 },
-	 {
-	   "fips": 5087,
-	   "state": "AR",
-	   "area_name": "Madison County",
-	   "household_income": 39158
-	 },
-	 {
-	   "fips": 5089,
-	   "state": "AR",
-	   "area_name": "Marion County",
-	   "household_income": 33181
-	 },
-	 {
-	   "fips": 5091,
-	   "state": "AR",
-	   "area_name": "Miller County",
-	   "household_income": 40877
-	 },
-	 {
-	   "fips": 5093,
-	   "state": "AR",
-	   "area_name": "Mississippi County",
-	   "household_income": 33577
-	 },
-	 {
-	   "fips": 5095,
-	   "state": "AR",
-	   "area_name": "Monroe County",
-	   "household_income": 30682
-	 },
-	 {
-	   "fips": 5097,
-	   "state": "AR",
-	   "area_name": "Montgomery County",
-	   "household_income": 34597
-	 },
-	 {
-	   "fips": 5099,
-	   "state": "AR",
-	   "area_name": "Nevada County",
-	   "household_income": 30935
-	 },
-	 {
-	   "fips": 5101,
-	   "state": "AR",
-	   "area_name": "Newton County",
-	   "household_income": 35895
-	 },
-	 {
-	   "fips": 5103,
-	   "state": "AR",
-	   "area_name": "Ouachita County",
-	   "household_income": 34971
-	 },
-	 {
-	   "fips": 5105,
-	   "state": "AR",
-	   "area_name": "Perry County",
-	   "household_income": 40556
-	 },
-	 {
-	   "fips": 5107,
-	   "state": "AR",
-	   "area_name": "Phillips County",
-	   "household_income": 28171
-	 },
-	 {
-	   "fips": 5109,
-	   "state": "AR",
-	   "area_name": "Pike County",
-	   "household_income": 36893
-	 },
-	 {
-	   "fips": 5111,
-	   "state": "AR",
-	   "area_name": "Poinsett County",
-	   "household_income": 35851
-	 },
-	 {
-	   "fips": 5113,
-	   "state": "AR",
-	   "area_name": "Polk County",
-	   "household_income": 33127
-	 },
-	 {
-	   "fips": 5115,
-	   "state": "AR",
-	   "area_name": "Pope County",
-	   "household_income": 39909
-	 },
-	 {
-	   "fips": 5117,
-	   "state": "AR",
-	   "area_name": "Prairie County",
-	   "household_income": 39896
-	 },
-	 {
-	   "fips": 5119,
-	   "state": "AR",
-	   "area_name": "Pulaski County",
-	   "household_income": 45698
-	 },
-	 {
-	   "fips": 5121,
-	   "state": "AR",
-	   "area_name": "Randolph County",
-	   "household_income": 37761
-	 },
-	 {
-	   "fips": 5123,
-	   "state": "AR",
-	   "area_name": "St. Francis County",
-	   "household_income": 30489
-	 },
-	 {
-	   "fips": 5125,
-	   "state": "AR",
-	   "area_name": "Saline County",
-	   "household_income": 55915
-	 },
-	 {
-	   "fips": 5127,
-	   "state": "AR",
-	   "area_name": "Scott County",
-	   "household_income": 33202
-	 },
-	 {
-	   "fips": 5129,
-	   "state": "AR",
-	   "area_name": "Searcy County",
-	   "household_income": 31765
-	 },
-	 {
-	   "fips": 5131,
-	   "state": "AR",
-	   "area_name": "Sebastian County",
-	   "household_income": 39907
-	 },
-	 {
-	   "fips": 5133,
-	   "state": "AR",
-	   "area_name": "Sevier County",
-	   "household_income": 37014
-	 },
-	 {
-	   "fips": 5135,
-	   "state": "AR",
-	   "area_name": "Sharp County",
-	   "household_income": 32101
-	 },
-	 {
-	   "fips": 5137,
-	   "state": "AR",
-	   "area_name": "Stone County",
-	   "household_income": 30010
-	 },
-	 {
-	   "fips": 5139,
-	   "state": "AR",
-	   "area_name": "Union County",
-	   "household_income": 40841
-	 },
-	 {
-	   "fips": 5141,
-	   "state": "AR",
-	   "area_name": "Van Buren County",
-	   "household_income": 32975
-	 },
-	 {
-	   "fips": 5143,
-	   "state": "AR",
-	   "area_name": "Washington County",
-	   "household_income": 45589
-	 },
-	 {
-	   "fips": 5145,
-	   "state": "AR",
-	   "area_name": "White County",
-	   "household_income": 42044
-	 },
-	 {
-	   "fips": 5147,
-	   "state": "AR",
-	   "area_name": "Woodruff County",
-	   "household_income": 29969
-	 },
-	 {
-	   "fips": 5149,
-	   "state": "AR",
-	   "area_name": "Yell County",
-	   "household_income": 37080
-	 },
-	 {
-	   "fips": 6001,
-	   "state": "CA",
-	   "area_name": "Alameda County",
-	   "household_income": 76996
-	 },
-	 {
-	   "fips": 6003,
-	   "state": "CA",
-	   "area_name": "Alpine County",
-	   "household_income": 53003
-	 },
-	 {
-	   "fips": 6005,
-	   "state": "CA",
-	   "area_name": "Amador County",
-	   "household_income": 54610
-	 },
-	 {
-	   "fips": 6007,
-	   "state": "CA",
-	   "area_name": "Butte County",
-	   "household_income": 42302
-	 },
-	 {
-	   "fips": 6009,
-	   "state": "CA",
-	   "area_name": "Calaveras County",
-	   "household_income": 53321
-	 },
-	 {
-	   "fips": 6011,
-	   "state": "CA",
-	   "area_name": "Colusa County",
-	   "household_income": 48006
-	 },
-	 {
-	   "fips": 6013,
-	   "state": "CA",
-	   "area_name": "Contra Costa County",
-	   "household_income": 80338
-	 },
-	 {
-	   "fips": 6015,
-	   "state": "CA",
-	   "area_name": "Del Norte County",
-	   "household_income": 41419
-	 },
-	 {
-	   "fips": 6017,
-	   "state": "CA",
-	   "area_name": "El Dorado County",
-	   "household_income": 70235
-	 },
-	 {
-	   "fips": 6019,
-	   "state": "CA",
-	   "area_name": "Fresno County",
-	   "household_income": 43338
-	 },
-	 {
-	   "fips": 6021,
-	   "state": "CA",
-	   "area_name": "Glenn County",
-	   "household_income": 43755
-	 },
-	 {
-	   "fips": 6023,
-	   "state": "CA",
-	   "area_name": "Humboldt County",
-	   "household_income": 40581
-	 },
-	 {
-	   "fips": 6025,
-	   "state": "CA",
-	   "area_name": "Imperial County",
-	   "household_income": 38737
-	 },
-	 {
-	   "fips": 6027,
-	   "state": "CA",
-	   "area_name": "Inyo County",
-	   "household_income": 49267
-	 },
-	 {
-	   "fips": 6029,
-	   "state": "CA",
-	   "area_name": "Kern County",
-	   "household_income": 47451
-	 },
-	 {
-	   "fips": 6031,
-	   "state": "CA",
-	   "area_name": "Kings County",
-	   "household_income": 44490
-	 },
-	 {
-	   "fips": 6033,
-	   "state": "CA",
-	   "area_name": "Lake County",
-	   "household_income": 36333
-	 },
-	 {
-	   "fips": 6035,
-	   "state": "CA",
-	   "area_name": "Lassen County",
-	   "household_income": 49995
-	 },
-	 {
-	   "fips": 6037,
-	   "state": "CA",
-	   "area_name": "Los Angeles County",
-	   "household_income": 55686
-	 },
-	 {
-	   "fips": 6039,
-	   "state": "CA",
-	   "area_name": "Madera County",
-	   "household_income": 43171
-	 },
-	 {
-	   "fips": 6041,
-	   "state": "CA",
-	   "area_name": "Marin County",
-	   "household_income": 94549
-	 },
-	 {
-	   "fips": 6043,
-	   "state": "CA",
-	   "area_name": "Mariposa County",
-	   "household_income": 47781
-	 },
-	 {
-	   "fips": 6045,
-	   "state": "CA",
-	   "area_name": "Mendocino County",
-	   "household_income": 42840
-	 },
-	 {
-	   "fips": 6047,
-	   "state": "CA",
-	   "area_name": "Merced County",
-	   "household_income": 43818
-	 },
-	 {
-	   "fips": 6049,
-	   "state": "CA",
-	   "area_name": "Modoc County",
-	   "household_income": 39172
-	 },
-	 {
-	   "fips": 6051,
-	   "state": "CA",
-	   "area_name": "Mono County",
-	   "household_income": 59181
-	 },
-	 {
-	   "fips": 6053,
-	   "state": "CA",
-	   "area_name": "Monterey County",
-	   "household_income": 57428
-	 },
-	 {
-	   "fips": 6055,
-	   "state": "CA",
-	   "area_name": "Napa County",
-	   "household_income": 71063
-	 },
-	 {
-	   "fips": 6057,
-	   "state": "CA",
-	   "area_name": "Nevada County",
-	   "household_income": 57118
-	 },
-	 {
-	   "fips": 6059,
-	   "state": "CA",
-	   "area_name": "Orange County",
-	   "household_income": 76061
-	 },
-	 {
-	   "fips": 6061,
-	   "state": "CA",
-	   "area_name": "Placer County",
-	   "household_income": 75689
-	 },
-	 {
-	   "fips": 6063,
-	   "state": "CA",
-	   "area_name": "Plumas County",
-	   "household_income": 47964
-	 },
-	 {
-	   "fips": 6065,
-	   "state": "CA",
-	   "area_name": "Riverside County",
-	   "household_income": 56877
-	 },
-	 {
-	   "fips": 6067,
-	   "state": "CA",
-	   "area_name": "Sacramento County",
-	   "household_income": 55803
-	 },
-	 {
-	   "fips": 6069,
-	   "state": "CA",
-	   "area_name": "San Benito County",
-	   "household_income": 68166
-	 },
-	 {
-	   "fips": 6071,
-	   "state": "CA",
-	   "area_name": "San Bernardino County",
-	   "household_income": 51951
-	 },
-	 {
-	   "fips": 6073,
-	   "state": "CA",
-	   "area_name": "San Diego County",
-	   "household_income": 66034
-	 },
-	 {
-	   "fips": 6075,
-	   "state": "CA",
-	   "area_name": "San Francisco County/city",
-	   "household_income": 83788
-	 },
-	 {
-	   "fips": 6077,
-	   "state": "CA",
-	   "area_name": "San Joaquin County",
-	   "household_income": 51527
-	 },
-	 {
-	   "fips": 6079,
-	   "state": "CA",
-	   "area_name": "San Luis Obispo County",
-	   "household_income": 61775
-	 },
-	 {
-	   "fips": 6081,
-	   "state": "CA",
-	   "area_name": "San Mateo County",
-	   "household_income": 100806
-	 },
-	 {
-	   "fips": 6083,
-	   "state": "CA",
-	   "area_name": "Santa Barbara County",
-	   "household_income": 62116
-	 },
-	 {
-	   "fips": 6085,
-	   "state": "CA",
-	   "area_name": "Santa Clara County",
-	   "household_income": 97219
-	 },
-	 {
-	   "fips": 6087,
-	   "state": "CA",
-	   "area_name": "Santa Cruz County",
-	   "household_income": 64257
-	 },
-	 {
-	   "fips": 6089,
-	   "state": "CA",
-	   "area_name": "Shasta County",
-	   "household_income": 43661
-	 },
-	 {
-	   "fips": 6091,
-	   "state": "CA",
-	   "area_name": "Sierra County",
-	   "household_income": 47293
-	 },
-	 {
-	   "fips": 6093,
-	   "state": "CA",
-	   "area_name": "Siskiyou County",
-	   "household_income": 38641
-	 },
-	 {
-	   "fips": 6095,
-	   "state": "CA",
-	   "area_name": "Solano County",
-	   "household_income": 67106
-	 },
-	 {
-	   "fips": 6097,
-	   "state": "CA",
-	   "area_name": "Sonoma County",
-	   "household_income": 66949
-	 },
-	 {
-	   "fips": 6099,
-	   "state": "CA",
-	   "area_name": "Stanislaus County",
-	   "household_income": 50917
-	 },
-	 {
-	   "fips": 6101,
-	   "state": "CA",
-	   "area_name": "Sutter County",
-	   "household_income": 51827
-	 },
-	 {
-	   "fips": 6103,
-	   "state": "CA",
-	   "area_name": "Tehama County",
-	   "household_income": 40782
-	 },
-	 {
-	   "fips": 6105,
-	   "state": "CA",
-	   "area_name": "Trinity County",
-	   "household_income": 34961
-	 },
-	 {
-	   "fips": 6107,
-	   "state": "CA",
-	   "area_name": "Tulare County",
-	   "household_income": 42360
-	 },
-	 {
-	   "fips": 6109,
-	   "state": "CA",
-	   "area_name": "Tuolumne County",
-	   "household_income": 49476
-	 },
-	 {
-	   "fips": 6111,
-	   "state": "CA",
-	   "area_name": "Ventura County",
-	   "household_income": 74967
-	 },
-	 {
-	   "fips": 6113,
-	   "state": "CA",
-	   "area_name": "Yolo County",
-	   "household_income": 54509
-	 },
-	 {
-	   "fips": 6115,
-	   "state": "CA",
-	   "area_name": "Yuba County",
-	   "household_income": 41403
-	 },
-	 {
-	   "fips": 8001,
-	   "state": "CO",
-	   "area_name": "Adams County",
-	   "household_income": 59316
-	 },
-	 {
-	   "fips": 8003,
-	   "state": "CO",
-	   "area_name": "Alamosa County",
-	   "household_income": 38140
-	 },
-	 {
-	   "fips": 8005,
-	   "state": "CO",
-	   "area_name": "Arapahoe County",
-	   "household_income": 65359
-	 },
-	 {
-	   "fips": 8007,
-	   "state": "CO",
-	   "area_name": "Archuleta County",
-	   "household_income": 44508
-	 },
-	 {
-	   "fips": 8009,
-	   "state": "CO",
-	   "area_name": "Baca County",
-	   "household_income": 36294
-	 },
-	 {
-	   "fips": 8011,
-	   "state": "CO",
-	   "area_name": "Bent County",
-	   "household_income": 35424
-	 },
-	 {
-	   "fips": 8013,
-	   "state": "CO",
-	   "area_name": "Boulder County",
-	   "household_income": 71546
-	 },
-	 {
-	   "fips": 8014,
-	   "state": "CO",
-	   "area_name": "Broomfield County/city",
-	   "household_income": 85885
-	 },
-	 {
-	   "fips": 8015,
-	   "state": "CO",
-	   "area_name": "Chaffee County",
-	   "household_income": 48840
-	 },
-	 {
-	   "fips": 8017,
-	   "state": "CO",
-	   "area_name": "Cheyenne County",
-	   "household_income": 52273
-	 },
-	 {
-	   "fips": 8019,
-	   "state": "CO",
-	   "area_name": "Clear Creek County",
-	   "household_income": 69115
-	 },
-	 {
-	   "fips": 8021,
-	   "state": "CO",
-	   "area_name": "Conejos County",
-	   "household_income": 33998
-	 },
-	 {
-	   "fips": 8023,
-	   "state": "CO",
-	   "area_name": "Costilla County",
-	   "household_income": 27882
-	 },
-	 {
-	   "fips": 8025,
-	   "state": "CO",
-	   "area_name": "Crowley County",
-	   "household_income": 32570
-	 },
-	 {
-	   "fips": 8027,
-	   "state": "CO",
-	   "area_name": "Custer County",
-	   "household_income": 48368
-	 },
-	 {
-	   "fips": 8029,
-	   "state": "CO",
-	   "area_name": "Delta County",
-	   "household_income": 45283
-	 },
-	 {
-	   "fips": 8031,
-	   "state": "CO",
-	   "area_name": "Denver County/city",
-	   "household_income": 54872
-	 },
-	 {
-	   "fips": 8033,
-	   "state": "CO",
-	   "area_name": "Dolores County",
-	   "household_income": 44235
-	 },
-	 {
-	   "fips": 8035,
-	   "state": "CO",
-	   "area_name": "Douglas County",
-	   "household_income": 107250
-	 },
-	 {
-	   "fips": 8037,
-	   "state": "CO",
-	   "area_name": "Eagle County",
-	   "household_income": 76661
-	 },
-	 {
-	   "fips": 8039,
-	   "state": "CO",
-	   "area_name": "Elbert County",
-	   "household_income": 83603
-	 },
-	 {
-	   "fips": 8041,
-	   "state": "CO",
-	   "area_name": "El Paso County",
-	   "household_income": 59286
-	 },
-	 {
-	   "fips": 8043,
-	   "state": "CO",
-	   "area_name": "Fremont County",
-	   "household_income": 41385
-	 },
-	 {
-	   "fips": 8045,
-	   "state": "CO",
-	   "area_name": "Garfield County",
-	   "household_income": 62529
-	 },
-	 {
-	   "fips": 8047,
-	   "state": "CO",
-	   "area_name": "Gilpin County",
-	   "household_income": 64752
-	 },
-	 {
-	   "fips": 8049,
-	   "state": "CO",
-	   "area_name": "Grand County",
-	   "household_income": 59379
-	 },
-	 {
-	   "fips": 8051,
-	   "state": "CO",
-	   "area_name": "Gunnison County",
-	   "household_income": 48940
-	 },
-	 {
-	   "fips": 8053,
-	   "state": "CO",
-	   "area_name": "Hinsdale County",
-	   "household_income": 51241
-	 },
-	 {
-	   "fips": 8055,
-	   "state": "CO",
-	   "area_name": "Huerfano County",
-	   "household_income": 32750
-	 },
-	 {
-	   "fips": 8057,
-	   "state": "CO",
-	   "area_name": "Jackson County",
-	   "household_income": 45073
-	 },
-	 {
-	   "fips": 8059,
-	   "state": "CO",
-	   "area_name": "Jefferson County",
-	   "household_income": 70687
-	 },
-	 {
-	   "fips": 8061,
-	   "state": "CO",
-	   "area_name": "Kiowa County",
-	   "household_income": 42310
-	 },
-	 {
-	   "fips": 8063,
-	   "state": "CO",
-	   "area_name": "Kit Carson County",
-	   "household_income": 46394
-	 },
-	 {
-	   "fips": 8065,
-	   "state": "CO",
-	   "area_name": "Lake County",
-	   "household_income": 46765
-	 },
-	 {
-	   "fips": 8067,
-	   "state": "CO",
-	   "area_name": "La Plata County",
-	   "household_income": 60658
-	 },
-	 {
-	   "fips": 8069,
-	   "state": "CO",
-	   "area_name": "Larimer County",
-	   "household_income": 57659
-	 },
-	 {
-	   "fips": 8071,
-	   "state": "CO",
-	   "area_name": "Las Animas County",
-	   "household_income": 39625
-	 },
-	 {
-	   "fips": 8073,
-	   "state": "CO",
-	   "area_name": "Lincoln County",
-	   "household_income": 41248
-	 },
-	 {
-	   "fips": 8075,
-	   "state": "CO",
-	   "area_name": "Logan County",
-	   "household_income": 45439
-	 },
-	 {
-	   "fips": 8077,
-	   "state": "CO",
-	   "area_name": "Mesa County",
-	   "household_income": 50106
-	 },
-	 {
-	   "fips": 8079,
-	   "state": "CO",
-	   "area_name": "Mineral County",
-	   "household_income": 51257
-	 },
-	 {
-	   "fips": 8081,
-	   "state": "CO",
-	   "area_name": "Moffat County",
-	   "household_income": 56193
-	 },
-	 {
-	   "fips": 8083,
-	   "state": "CO",
-	   "area_name": "Montezuma County",
-	   "household_income": 44163
-	 },
-	 {
-	   "fips": 8085,
-	   "state": "CO",
-	   "area_name": "Montrose County",
-	   "household_income": 46336
-	 },
-	 {
-	   "fips": 8087,
-	   "state": "CO",
-	   "area_name": "Morgan County",
-	   "household_income": 47631
-	 },
-	 {
-	   "fips": 8089,
-	   "state": "CO",
-	   "area_name": "Otero County",
-	   "household_income": 33043
-	 },
-	 {
-	   "fips": 8091,
-	   "state": "CO",
-	   "area_name": "Ouray County",
-	   "household_income": 57242
-	 },
-	 {
-	   "fips": 8093,
-	   "state": "CO",
-	   "area_name": "Park County",
-	   "household_income": 58487
-	 },
-	 {
-	   "fips": 8095,
-	   "state": "CO",
-	   "area_name": "Phillips County",
-	   "household_income": 47006
-	 },
-	 {
-	   "fips": 8097,
-	   "state": "CO",
-	   "area_name": "Pitkin County",
-	   "household_income": 73274
-	 },
-	 {
-	   "fips": 8099,
-	   "state": "CO",
-	   "area_name": "Prowers County",
-	   "household_income": 39184
-	 },
-	 {
-	   "fips": 8101,
-	   "state": "CO",
-	   "area_name": "Pueblo County",
-	   "household_income": 41382
-	 },
-	 {
-	   "fips": 8103,
-	   "state": "CO",
-	   "area_name": "Rio Blanco County",
-	   "household_income": 63184
-	 },
-	 {
-	   "fips": 8105,
-	   "state": "CO",
-	   "area_name": "Rio Grande County",
-	   "household_income": 40593
-	 },
-	 {
-	   "fips": 8107,
-	   "state": "CO",
-	   "area_name": "Routt County",
-	   "household_income": 66846
-	 },
-	 {
-	   "fips": 8109,
-	   "state": "CO",
-	   "area_name": "Saguache County",
-	   "household_income": 31227
-	 },
-	 {
-	   "fips": 8111,
-	   "state": "CO",
-	   "area_name": "San Juan County",
-	   "household_income": 40006
-	 },
-	 {
-	   "fips": 8113,
-	   "state": "CO",
-	   "area_name": "San Miguel County",
-	   "household_income": 59603
-	 },
-	 {
-	   "fips": 8115,
-	   "state": "CO",
-	   "area_name": "Sedgwick County",
-	   "household_income": 44562
-	 },
-	 {
-	   "fips": 8117,
-	   "state": "CO",
-	   "area_name": "Summit County",
-	   "household_income": 68352
-	 },
-	 {
-	   "fips": 8119,
-	   "state": "CO",
-	   "area_name": "Teller County",
-	   "household_income": 62380
-	 },
-	 {
-	   "fips": 8121,
-	   "state": "CO",
-	   "area_name": "Washington County",
-	   "household_income": 45784
-	 },
-	 {
-	   "fips": 8123,
-	   "state": "CO",
-	   "area_name": "Weld County",
-	   "household_income": 61501
-	 },
-	 {
-	   "fips": 8125,
-	   "state": "CO",
-	   "area_name": "Yuma County",
-	   "household_income": 46838
-	 },
-	 {
-	   "fips": 9001,
-	   "state": "CT",
-	   "area_name": "Fairfield County",
-	   "household_income": 85336
-	 },
-	 {
-	   "fips": 9003,
-	   "state": "CT",
-	   "area_name": "Hartford County",
-	   "household_income": 65809
-	 },
-	 {
-	   "fips": 9005,
-	   "state": "CT",
-	   "area_name": "Litchfield County",
-	   "household_income": 73413
-	 },
-	 {
-	   "fips": 9007,
-	   "state": "CT",
-	   "area_name": "Middlesex County",
-	   "household_income": 76365
-	 },
-	 {
-	   "fips": 9009,
-	   "state": "CT",
-	   "area_name": "New Haven County",
-	   "household_income": 60387
-	 },
-	 {
-	   "fips": 9011,
-	   "state": "CT",
-	   "area_name": "New London County",
-	   "household_income": 65813
-	 },
-	 {
-	   "fips": 9013,
-	   "state": "CT",
-	   "area_name": "Tolland County",
-	   "household_income": 78653
-	 },
-	 {
-	   "fips": 9015,
-	   "state": "CT",
-	   "area_name": "Windham County",
-	   "household_income": 57547
-	 },
-	 {
-	   "fips": 10001,
-	   "state": "DE",
-	   "area_name": "Kent County",
-	   "household_income": 54271
-	 },
-	 {
-	   "fips": 10003,
-	   "state": "DE",
-	   "area_name": "New Castle County",
-	   "household_income": 64632
-	 },
-	 {
-	   "fips": 10005,
-	   "state": "DE",
-	   "area_name": "Sussex County",
-	   "household_income": 53316
-	 },
-	 {
-	   "fips": 12001,
-	   "state": "FL",
-	   "area_name": "Alachua County",
-	   "household_income": 44325
-	 },
-	 {
-	   "fips": 12003,
-	   "state": "FL",
-	   "area_name": "Baker County",
-	   "household_income": 47121
-	 },
-	 {
-	   "fips": 12005,
-	   "state": "FL",
-	   "area_name": "Bay County",
-	   "household_income": 44800
-	 },
-	 {
-	   "fips": 12007,
-	   "state": "FL",
-	   "area_name": "Bradford County",
-	   "household_income": 39980
-	 },
-	 {
-	   "fips": 12009,
-	   "state": "FL",
-	   "area_name": "Brevard County",
-	   "household_income": 47973
-	 },
-	 {
-	   "fips": 12011,
-	   "state": "FL",
-	   "area_name": "Broward County",
-	   "household_income": 51485
-	 },
-	 {
-	   "fips": 12013,
-	   "state": "FL",
-	   "area_name": "Calhoun County",
-	   "household_income": 35256
-	 },
-	 {
-	   "fips": 12015,
-	   "state": "FL",
-	   "area_name": "Charlotte County",
-	   "household_income": 43242
-	 },
-	 {
-	   "fips": 12017,
-	   "state": "FL",
-	   "area_name": "Citrus County",
-	   "household_income": 36383
-	 },
-	 {
-	   "fips": 12019,
-	   "state": "FL",
-	   "area_name": "Clay County",
-	   "household_income": 58539
-	 },
-	 {
-	   "fips": 12021,
-	   "state": "FL",
-	   "area_name": "Collier County",
-	   "household_income": 58403
-	 },
-	 {
-	   "fips": 12023,
-	   "state": "FL",
-	   "area_name": "Columbia County",
-	   "household_income": 38484
-	 },
-	 {
-	   "fips": 12027,
-	   "state": "FL",
-	   "area_name": "DeSoto County",
-	   "household_income": 36945
-	 },
-	 {
-	   "fips": 12029,
-	   "state": "FL",
-	   "area_name": "Dixie County",
-	   "household_income": 32121
-	 },
-	 {
-	   "fips": 12031,
-	   "state": "FL",
-	   "area_name": "Duval County",
-	   "household_income": 46013
-	 },
-	 {
-	   "fips": 12033,
-	   "state": "FL",
-	   "area_name": "Escambia County",
-	   "household_income": 46139
-	 },
-	 {
-	   "fips": 12035,
-	   "state": "FL",
-	   "area_name": "Flagler County",
-	   "household_income": 51556
-	 },
-	 {
-	   "fips": 12037,
-	   "state": "FL",
-	   "area_name": "Franklin County",
-	   "household_income": 36788
-	 },
-	 {
-	   "fips": 12039,
-	   "state": "FL",
-	   "area_name": "Gadsden County",
-	   "household_income": 35849
-	 },
-	 {
-	   "fips": 12041,
-	   "state": "FL",
-	   "area_name": "Gilchrist County",
-	   "household_income": 40788
-	 },
-	 {
-	   "fips": 12043,
-	   "state": "FL",
-	   "area_name": "Glades County",
-	   "household_income": 38783
-	 },
-	 {
-	   "fips": 12045,
-	   "state": "FL",
-	   "area_name": "Gulf County",
-	   "household_income": 38419
-	 },
-	 {
-	   "fips": 12047,
-	   "state": "FL",
-	   "area_name": "Hamilton County",
-	   "household_income": 31734
-	 },
-	 {
-	   "fips": 12049,
-	   "state": "FL",
-	   "area_name": "Hardee County",
-	   "household_income": 35371
-	 },
-	 {
-	   "fips": 12051,
-	   "state": "FL",
-	   "area_name": "Hendry County",
-	   "household_income": 38494
-	 },
-	 {
-	   "fips": 12053,
-	   "state": "FL",
-	   "area_name": "Hernando County",
-	   "household_income": 40094
-	 },
-	 {
-	   "fips": 12055,
-	   "state": "FL",
-	   "area_name": "Highlands County",
-	   "household_income": 35787
-	 },
-	 {
-	   "fips": 12057,
-	   "state": "FL",
-	   "area_name": "Hillsborough County",
-	   "household_income": 50758
-	 },
-	 {
-	   "fips": 12059,
-	   "state": "FL",
-	   "area_name": "Holmes County",
-	   "household_income": 35651
-	 },
-	 {
-	   "fips": 12061,
-	   "state": "FL",
-	   "area_name": "Indian River County",
-	   "household_income": 47548
-	 },
-	 {
-	   "fips": 12063,
-	   "state": "FL",
-	   "area_name": "Jackson County",
-	   "household_income": 36876
-	 },
-	 {
-	   "fips": 12065,
-	   "state": "FL",
-	   "area_name": "Jefferson County",
-	   "household_income": 40205
-	 },
-	 {
-	   "fips": 12067,
-	   "state": "FL",
-	   "area_name": "Lafayette County",
-	   "household_income": 38071
-	 },
-	 {
-	   "fips": 12069,
-	   "state": "FL",
-	   "area_name": "Lake County",
-	   "household_income": 46895
-	 },
-	 {
-	   "fips": 12071,
-	   "state": "FL",
-	   "area_name": "Lee County",
-	   "household_income": 49147
-	 },
-	 {
-	   "fips": 12073,
-	   "state": "FL",
-	   "area_name": "Leon County",
-	   "household_income": 45463
-	 },
-	 {
-	   "fips": 12075,
-	   "state": "FL",
-	   "area_name": "Levy County",
-	   "household_income": 37433
-	 },
-	 {
-	   "fips": 12077,
-	   "state": "FL",
-	   "area_name": "Liberty County",
-	   "household_income": 38473
-	 },
-	 {
-	   "fips": 12079,
-	   "state": "FL",
-	   "area_name": "Madison County",
-	   "household_income": 33017
-	 },
-	 {
-	   "fips": 12081,
-	   "state": "FL",
-	   "area_name": "Manatee County",
-	   "household_income": 51673
-	 },
-	 {
-	   "fips": 12083,
-	   "state": "FL",
-	   "area_name": "Marion County",
-	   "household_income": 39860
-	 },
-	 {
-	   "fips": 12085,
-	   "state": "FL",
-	   "area_name": "Martin County",
-	   "household_income": 55472
-	 },
-	 {
-	   "fips": 12086,
-	   "state": "FL",
-	   "area_name": "Miami-Dade County",
-	   "household_income": 42754
-	 },
-	 {
-	   "fips": 12087,
-	   "state": "FL",
-	   "area_name": "Monroe County",
-	   "household_income": 57411
-	 },
-	 {
-	   "fips": 12089,
-	   "state": "FL",
-	   "area_name": "Nassau County",
-	   "household_income": 56728
-	 },
-	 {
-	   "fips": 12091,
-	   "state": "FL",
-	   "area_name": "Okaloosa County",
-	   "household_income": 55952
-	 },
-	 {
-	   "fips": 12093,
-	   "state": "FL",
-	   "area_name": "Okeechobee County",
-	   "household_income": 37065
-	 },
-	 {
-	   "fips": 12095,
-	   "state": "FL",
-	   "area_name": "Orange County",
-	   "household_income": 47069
-	 },
-	 {
-	   "fips": 12097,
-	   "state": "FL",
-	   "area_name": "Osceola County",
-	   "household_income": 42945
-	 },
-	 {
-	   "fips": 12099,
-	   "state": "FL",
-	   "area_name": "Palm Beach County",
-	   "household_income": 52225
-	 },
-	 {
-	   "fips": 12101,
-	   "state": "FL",
-	   "area_name": "Pasco County",
-	   "household_income": 45219
-	 },
-	 {
-	   "fips": 12103,
-	   "state": "FL",
-	   "area_name": "Pinellas County",
-	   "household_income": 45162
-	 },
-	 {
-	   "fips": 12105,
-	   "state": "FL",
-	   "area_name": "Polk County",
-	   "household_income": 42768
-	 },
-	 {
-	   "fips": 12107,
-	   "state": "FL",
-	   "area_name": "Putnam County",
-	   "household_income": 32054
-	 },
-	 {
-	   "fips": 12109,
-	   "state": "FL",
-	   "area_name": "St. Johns County",
-	   "household_income": 66560
-	 },
-	 {
-	   "fips": 12111,
-	   "state": "FL",
-	   "area_name": "St. Lucie County",
-	   "household_income": 42722
-	 },
-	 {
-	   "fips": 12113,
-	   "state": "FL",
-	   "area_name": "Santa Rosa County",
-	   "household_income": 58587
-	 },
-	 {
-	   "fips": 12115,
-	   "state": "FL",
-	   "area_name": "Sarasota County",
-	   "household_income": 52109
-	 },
-	 {
-	   "fips": 12117,
-	   "state": "FL",
-	   "area_name": "Seminole County",
-	   "household_income": 56443
-	 },
-	 {
-	   "fips": 12119,
-	   "state": "FL",
-	   "area_name": "Sumter County",
-	   "household_income": 51907
-	 },
-	 {
-	   "fips": 12121,
-	   "state": "FL",
-	   "area_name": "Suwannee County",
-	   "household_income": 38177
-	 },
-	 {
-	   "fips": 12123,
-	   "state": "FL",
-	   "area_name": "Taylor County",
-	   "household_income": 36374
-	 },
-	 {
-	   "fips": 12125,
-	   "state": "FL",
-	   "area_name": "Union County",
-	   "household_income": 40207
-	 },
-	 {
-	   "fips": 12127,
-	   "state": "FL",
-	   "area_name": "Volusia County",
-	   "household_income": 40881
-	 },
-	 {
-	   "fips": 12129,
-	   "state": "FL",
-	   "area_name": "Wakulla County",
-	   "household_income": 51642
-	 },
-	 {
-	   "fips": 12131,
-	   "state": "FL",
-	   "area_name": "Walton County",
-	   "household_income": 46867
-	 },
-	 {
-	   "fips": 12133,
-	   "state": "FL",
-	   "area_name": "Washington County",
-	   "household_income": 36482
-	 },
-	 {
-	   "fips": 13001,
-	   "state": "GA",
-	   "area_name": "Appling County",
-	   "household_income": 36642
-	 },
-	 {
-	   "fips": 13003,
-	   "state": "GA",
-	   "area_name": "Atkinson County",
-	   "household_income": 31740
-	 },
-	 {
-	   "fips": 13005,
-	   "state": "GA",
-	   "area_name": "Bacon County",
-	   "household_income": 34201
-	 },
-	 {
-	   "fips": 13007,
-	   "state": "GA",
-	   "area_name": "Baker County",
-	   "household_income": 43115
-	 },
-	 {
-	   "fips": 13009,
-	   "state": "GA",
-	   "area_name": "Baldwin County",
-	   "household_income": 37008
-	 },
-	 {
-	   "fips": 13011,
-	   "state": "GA",
-	   "area_name": "Banks County",
-	   "household_income": 46018
-	 },
-	 {
-	   "fips": 13013,
-	   "state": "GA",
-	   "area_name": "Barrow County",
-	   "household_income": 49698
-	 },
-	 {
-	   "fips": 13015,
-	   "state": "GA",
-	   "area_name": "Bartow County",
-	   "household_income": 51440
-	 },
-	 {
-	   "fips": 13017,
-	   "state": "GA",
-	   "area_name": "Ben Hill County",
-	   "household_income": 31081
-	 },
-	 {
-	   "fips": 13019,
-	   "state": "GA",
-	   "area_name": "Berrien County",
-	   "household_income": 35078
-	 },
-	 {
-	   "fips": 13021,
-	   "state": "GA",
-	   "area_name": "Bibb County",
-	   "household_income": 36014
-	 },
-	 {
-	   "fips": 13023,
-	   "state": "GA",
-	   "area_name": "Bleckley County",
-	   "household_income": 40454
-	 },
-	 {
-	   "fips": 13025,
-	   "state": "GA",
-	   "area_name": "Brantley County",
-	   "household_income": 36865
-	 },
-	 {
-	   "fips": 13027,
-	   "state": "GA",
-	   "area_name": "Brooks County",
-	   "household_income": 32903
-	 },
-	 {
-	   "fips": 13029,
-	   "state": "GA",
-	   "area_name": "Bryan County",
-	   "household_income": 66556
-	 },
-	 {
-	   "fips": 13031,
-	   "state": "GA",
-	   "area_name": "Bulloch County",
-	   "household_income": 36315
-	 },
-	 {
-	   "fips": 13033,
-	   "state": "GA",
-	   "area_name": "Burke County",
-	   "household_income": 35055
-	 },
-	 {
-	   "fips": 13035,
-	   "state": "GA",
-	   "area_name": "Butts County",
-	   "household_income": 41505
-	 },
-	 {
-	   "fips": 13037,
-	   "state": "GA",
-	   "area_name": "Calhoun County",
-	   "household_income": 30760
-	 },
-	 {
-	   "fips": 13039,
-	   "state": "GA",
-	   "area_name": "Camden County",
-	   "household_income": 51793
-	 },
-	 {
-	   "fips": 13043,
-	   "state": "GA",
-	   "area_name": "Candler County",
-	   "household_income": 31829
-	 },
-	 {
-	   "fips": 13045,
-	   "state": "GA",
-	   "area_name": "Carroll County",
-	   "household_income": 43442
-	 },
-	 {
-	   "fips": 13047,
-	   "state": "GA",
-	   "area_name": "Catoosa County",
-	   "household_income": 50728
-	 },
-	 {
-	   "fips": 13049,
-	   "state": "GA",
-	   "area_name": "Charlton County",
-	   "household_income": 34312
-	 },
-	 {
-	   "fips": 13051,
-	   "state": "GA",
-	   "area_name": "Chatham County",
-	   "household_income": 50154
-	 },
-	 {
-	   "fips": 13053,
-	   "state": "GA",
-	   "area_name": "Chattahoochee County",
-	   "household_income": 45933
-	 },
-	 {
-	   "fips": 13055,
-	   "state": "GA",
-	   "area_name": "Chattooga County",
-	   "household_income": 34830
-	 },
-	 {
-	   "fips": 13057,
-	   "state": "GA",
-	   "area_name": "Cherokee County",
-	   "household_income": 71168
-	 },
-	 {
-	   "fips": 13059,
-	   "state": "GA",
-	   "area_name": "Clarke County",
-	   "household_income": 31487
-	 },
-	 {
-	   "fips": 13061,
-	   "state": "GA",
-	   "area_name": "Clay County",
-	   "household_income": 27512
-	 },
-	 {
-	   "fips": 13063,
-	   "state": "GA",
-	   "area_name": "Clayton County",
-	   "household_income": 42985
-	 },
-	 {
-	   "fips": 13065,
-	   "state": "GA",
-	   "area_name": "Clinch County",
-	   "household_income": 31577
-	 },
-	 {
-	   "fips": 13067,
-	   "state": "GA",
-	   "area_name": "Cobb County",
-	   "household_income": 66970
-	 },
-	 {
-	   "fips": 13069,
-	   "state": "GA",
-	   "area_name": "Coffee County",
-	   "household_income": 33125
-	 },
-	 {
-	   "fips": 13071,
-	   "state": "GA",
-	   "area_name": "Colquitt County",
-	   "household_income": 33509
-	 },
-	 {
-	   "fips": 13073,
-	   "state": "GA",
-	   "area_name": "Columbia County",
-	   "household_income": 68067
-	 },
-	 {
-	   "fips": 13075,
-	   "state": "GA",
-	   "area_name": "Cook County",
-	   "household_income": 32408
-	 },
-	 {
-	   "fips": 13077,
-	   "state": "GA",
-	   "area_name": "Coweta County",
-	   "household_income": 60809
-	 },
-	 {
-	   "fips": 13079,
-	   "state": "GA",
-	   "area_name": "Crawford County",
-	   "household_income": 43111
-	 },
-	 {
-	   "fips": 13081,
-	   "state": "GA",
-	   "area_name": "Crisp County",
-	   "household_income": 31176
-	 },
-	 {
-	   "fips": 13083,
-	   "state": "GA",
-	   "area_name": "Dade County",
-	   "household_income": 42953
-	 },
-	 {
-	   "fips": 13085,
-	   "state": "GA",
-	   "area_name": "Dawson County",
-	   "household_income": 57491
-	 },
-	 {
-	   "fips": 13087,
-	   "state": "GA",
-	   "area_name": "Decatur County",
-	   "household_income": 33968
-	 },
-	 {
-	   "fips": 13089,
-	   "state": "GA",
-	   "area_name": "DeKalb County",
-	   "household_income": 50597
-	 },
-	 {
-	   "fips": 13091,
-	   "state": "GA",
-	   "area_name": "Dodge County",
-	   "household_income": 32293
-	 },
-	 {
-	   "fips": 13093,
-	   "state": "GA",
-	   "area_name": "Dooly County",
-	   "household_income": 31103
-	 },
-	 {
-	   "fips": 13095,
-	   "state": "GA",
-	   "area_name": "Dougherty County",
-	   "household_income": 32150
-	 },
-	 {
-	   "fips": 13097,
-	   "state": "GA",
-	   "area_name": "Douglas County",
-	   "household_income": 54581
-	 },
-	 {
-	   "fips": 13099,
-	   "state": "GA",
-	   "area_name": "Early County",
-	   "household_income": 34906
-	 },
-	 {
-	   "fips": 13101,
-	   "state": "GA",
-	   "area_name": "Echols County",
-	   "household_income": 34444
-	 },
-	 {
-	   "fips": 13103,
-	   "state": "GA",
-	   "area_name": "Effingham County",
-	   "household_income": 61195
-	 },
-	 {
-	   "fips": 13105,
-	   "state": "GA",
-	   "area_name": "Elbert County",
-	   "household_income": 35351
-	 },
-	 {
-	   "fips": 13107,
-	   "state": "GA",
-	   "area_name": "Emanuel County",
-	   "household_income": 30119
-	 },
-	 {
-	   "fips": 13109,
-	   "state": "GA",
-	   "area_name": "Evans County",
-	   "household_income": 33293
-	 },
-	 {
-	   "fips": 13111,
-	   "state": "GA",
-	   "area_name": "Fannin County",
-	   "household_income": 37813
-	 },
-	 {
-	   "fips": 13113,
-	   "state": "GA",
-	   "area_name": "Fayette County",
-	   "household_income": 79069
-	 },
-	 {
-	   "fips": 13115,
-	   "state": "GA",
-	   "area_name": "Floyd County",
-	   "household_income": 41814
-	 },
-	 {
-	   "fips": 13117,
-	   "state": "GA",
-	   "area_name": "Forsyth County",
-	   "household_income": 86413
-	 },
-	 {
-	   "fips": 13119,
-	   "state": "GA",
-	   "area_name": "Franklin County",
-	   "household_income": 38055
-	 },
-	 {
-	   "fips": 13121,
-	   "state": "GA",
-	   "area_name": "Fulton County",
-	   "household_income": 55516
-	 },
-	 {
-	   "fips": 13123,
-	   "state": "GA",
-	   "area_name": "Gilmer County",
-	   "household_income": 40010
-	 },
-	 {
-	   "fips": 13125,
-	   "state": "GA",
-	   "area_name": "Glascock County",
-	   "household_income": 39643
-	 },
-	 {
-	   "fips": 13127,
-	   "state": "GA",
-	   "area_name": "Glynn County",
-	   "household_income": 46737
-	 },
-	 {
-	   "fips": 13129,
-	   "state": "GA",
-	   "area_name": "Gordon County",
-	   "household_income": 43880
-	 },
-	 {
-	   "fips": 13131,
-	   "state": "GA",
-	   "area_name": "Grady County",
-	   "household_income": 35237
-	 },
-	 {
-	   "fips": 13133,
-	   "state": "GA",
-	   "area_name": "Greene County",
-	   "household_income": 42823
-	 },
-	 {
-	   "fips": 13135,
-	   "state": "GA",
-	   "area_name": "Gwinnett County",
-	   "household_income": 59858
-	 },
-	 {
-	   "fips": 13137,
-	   "state": "GA",
-	   "area_name": "Habersham County",
-	   "household_income": 40994
-	 },
-	 {
-	   "fips": 13139,
-	   "state": "GA",
-	   "area_name": "Hall County",
-	   "household_income": 52238
-	 },
-	 {
-	   "fips": 13141,
-	   "state": "GA",
-	   "area_name": "Hancock County",
-	   "household_income": 26309
-	 },
-	 {
-	   "fips": 13143,
-	   "state": "GA",
-	   "area_name": "Haralson County",
-	   "household_income": 40387
-	 },
-	 {
-	   "fips": 13145,
-	   "state": "GA",
-	   "area_name": "Harris County",
-	   "household_income": 66249
-	 },
-	 {
-	   "fips": 13147,
-	   "state": "GA",
-	   "area_name": "Hart County",
-	   "household_income": 38564
-	 },
-	 {
-	   "fips": 13149,
-	   "state": "GA",
-	   "area_name": "Heard County",
-	   "household_income": 41348
-	 },
-	 {
-	   "fips": 13151,
-	   "state": "GA",
-	   "area_name": "Henry County",
-	   "household_income": 60388
-	 },
-	 {
-	   "fips": 13153,
-	   "state": "GA",
-	   "area_name": "Houston County",
-	   "household_income": 53027
-	 },
-	 {
-	   "fips": 13155,
-	   "state": "GA",
-	   "area_name": "Irwin County",
-	   "household_income": 35955
-	 },
-	 {
-	   "fips": 13157,
-	   "state": "GA",
-	   "area_name": "Jackson County",
-	   "household_income": 51931
-	 },
-	 {
-	   "fips": 13159,
-	   "state": "GA",
-	   "area_name": "Jasper County",
-	   "household_income": 41818
-	 },
-	 {
-	   "fips": 13161,
-	   "state": "GA",
-	   "area_name": "Jeff Davis County",
-	   "household_income": 35235
-	 },
-	 {
-	   "fips": 13163,
-	   "state": "GA",
-	   "area_name": "Jefferson County",
-	   "household_income": 30835
-	 },
-	 {
-	   "fips": 13165,
-	   "state": "GA",
-	   "area_name": "Jenkins County",
-	   "household_income": 30678
-	 },
-	 {
-	   "fips": 13167,
-	   "state": "GA",
-	   "area_name": "Johnson County",
-	   "household_income": 29818
-	 },
-	 {
-	   "fips": 13169,
-	   "state": "GA",
-	   "area_name": "Jones County",
-	   "household_income": 51749
-	 },
-	 {
-	   "fips": 13171,
-	   "state": "GA",
-	   "area_name": "Lamar County",
-	   "household_income": 40339
-	 },
-	 {
-	   "fips": 13173,
-	   "state": "GA",
-	   "area_name": "Lanier County",
-	   "household_income": 37113
-	 },
-	 {
-	   "fips": 13175,
-	   "state": "GA",
-	   "area_name": "Laurens County",
-	   "household_income": 35807
-	 },
-	 {
-	   "fips": 13177,
-	   "state": "GA",
-	   "area_name": "Lee County",
-	   "household_income": 64533
-	 },
-	 {
-	   "fips": 13179,
-	   "state": "GA",
-	   "area_name": "Liberty County",
-	   "household_income": 41682
-	 },
-	 {
-	   "fips": 13181,
-	   "state": "GA",
-	   "area_name": "Lincoln County",
-	   "household_income": 39484
-	 },
-	 {
-	   "fips": 13183,
-	   "state": "GA",
-	   "area_name": "Long County",
-	   "household_income": 43193
-	 },
-	 {
-	   "fips": 13185,
-	   "state": "GA",
-	   "area_name": "Lowndes County",
-	   "household_income": 38887
-	 },
-	 {
-	   "fips": 13187,
-	   "state": "GA",
-	   "area_name": "Lumpkin County",
-	   "household_income": 44653
-	 },
-	 {
-	   "fips": 13189,
-	   "state": "GA",
-	   "area_name": "McDuffie County",
-	   "household_income": 37413
-	 },
-	 {
-	   "fips": 13191,
-	   "state": "GA",
-	   "area_name": "McIntosh County",
-	   "household_income": 37603
-	 },
-	 {
-	   "fips": 13193,
-	   "state": "GA",
-	   "area_name": "Macon County",
-	   "household_income": 29430
-	 },
-	 {
-	   "fips": 13195,
-	   "state": "GA",
-	   "area_name": "Madison County",
-	   "household_income": 45557
-	 },
-	 {
-	   "fips": 13197,
-	   "state": "GA",
-	   "area_name": "Marion County",
-	   "household_income": 36055
-	 },
-	 {
-	   "fips": 13199,
-	   "state": "GA",
-	   "area_name": "Meriwether County",
-	   "household_income": 37243
-	 },
-	 {
-	   "fips": 13201,
-	   "state": "GA",
-	   "area_name": "Miller County",
-	   "household_income": 35276
-	 },
-	 {
-	   "fips": 13205,
-	   "state": "GA",
-	   "area_name": "Mitchell County",
-	   "household_income": 32711
-	 },
-	 {
-	   "fips": 13207,
-	   "state": "GA",
-	   "area_name": "Monroe County",
-	   "household_income": 53542
-	 },
-	 {
-	   "fips": 13209,
-	   "state": "GA",
-	   "area_name": "Montgomery County",
-	   "household_income": 36436
-	 },
-	 {
-	   "fips": 13211,
-	   "state": "GA",
-	   "area_name": "Morgan County",
-	   "household_income": 50295
-	 },
-	 {
-	   "fips": 13213,
-	   "state": "GA",
-	   "area_name": "Murray County",
-	   "household_income": 40976
-	 },
-	 {
-	   "fips": 13215,
-	   "state": "GA",
-	   "area_name": "Muscogee County",
-	   "household_income": 41783
-	 },
-	 {
-	   "fips": 13217,
-	   "state": "GA",
-	   "area_name": "Newton County",
-	   "household_income": 48058
-	 },
-	 {
-	   "fips": 13219,
-	   "state": "GA",
-	   "area_name": "Oconee County",
-	   "household_income": 80631
-	 },
-	 {
-	   "fips": 13221,
-	   "state": "GA",
-	   "area_name": "Oglethorpe County",
-	   "household_income": 46840
-	 },
-	 {
-	   "fips": 13223,
-	   "state": "GA",
-	   "area_name": "Paulding County",
-	   "household_income": 63964
-	 },
-	 {
-	   "fips": 13225,
-	   "state": "GA",
-	   "area_name": "Peach County",
-	   "household_income": 40550
-	 },
-	 {
-	   "fips": 13227,
-	   "state": "GA",
-	   "area_name": "Pickens County",
-	   "household_income": 51047
-	 },
-	 {
-	   "fips": 13229,
-	   "state": "GA",
-	   "area_name": "Pierce County",
-	   "household_income": 40526
-	 },
-	 {
-	   "fips": 13231,
-	   "state": "GA",
-	   "area_name": "Pike County",
-	   "household_income": 50395
-	 },
-	 {
-	   "fips": 13233,
-	   "state": "GA",
-	   "area_name": "Polk County",
-	   "household_income": 38847
-	 },
-	 {
-	   "fips": 13235,
-	   "state": "GA",
-	   "area_name": "Pulaski County",
-	   "household_income": 36128
-	 },
-	 {
-	   "fips": 13237,
-	   "state": "GA",
-	   "area_name": "Putnam County",
-	   "household_income": 42125
-	 },
-	 {
-	   "fips": 13239,
-	   "state": "GA",
-	   "area_name": "Quitman County",
-	   "household_income": 29477
-	 },
-	 {
-	   "fips": 13241,
-	   "state": "GA",
-	   "area_name": "Rabun County",
-	   "household_income": 38449
-	 },
-	 {
-	   "fips": 13243,
-	   "state": "GA",
-	   "area_name": "Randolph County",
-	   "household_income": 25807
-	 },
-	 {
-	   "fips": 13245,
-	   "state": "GA",
-	   "area_name": "Richmond County",
-	   "household_income": 36012
-	 },
-	 {
-	   "fips": 13247,
-	   "state": "GA",
-	   "area_name": "Rockdale County",
-	   "household_income": 48287
-	 },
-	 {
-	   "fips": 13249,
-	   "state": "GA",
-	   "area_name": "Schley County",
-	   "household_income": 39601
-	 },
-	 {
-	   "fips": 13251,
-	   "state": "GA",
-	   "area_name": "Screven County",
-	   "household_income": 34012
-	 },
-	 {
-	   "fips": 13253,
-	   "state": "GA",
-	   "area_name": "Seminole County",
-	   "household_income": 37672
-	 },
-	 {
-	   "fips": 13255,
-	   "state": "GA",
-	   "area_name": "Spalding County",
-	   "household_income": 35555
-	 },
-	 {
-	   "fips": 13257,
-	   "state": "GA",
-	   "area_name": "Stephens County",
-	   "household_income": 36870
-	 },
-	 {
-	   "fips": 13259,
-	   "state": "GA",
-	   "area_name": "Stewart County",
-	   "household_income": 27635
-	 },
-	 {
-	   "fips": 13261,
-	   "state": "GA",
-	   "area_name": "Sumter County",
-	   "household_income": 34017
-	 },
-	 {
-	   "fips": 13263,
-	   "state": "GA",
-	   "area_name": "Talbot County",
-	   "household_income": 33370
-	 },
-	 {
-	   "fips": 13265,
-	   "state": "GA",
-	   "area_name": "Taliaferro County",
-	   "household_income": 28716
-	 },
-	 {
-	   "fips": 13267,
-	   "state": "GA",
-	   "area_name": "Tattnall County",
-	   "household_income": 34010
-	 },
-	 {
-	   "fips": 13269,
-	   "state": "GA",
-	   "area_name": "Taylor County",
-	   "household_income": 32815
-	 },
-	 {
-	   "fips": 13271,
-	   "state": "GA",
-	   "area_name": "Telfair County",
-	   "household_income": 29244
-	 },
-	 {
-	   "fips": 13273,
-	   "state": "GA",
-	   "area_name": "Terrell County",
-	   "household_income": 34604
-	 },
-	 {
-	   "fips": 13275,
-	   "state": "GA",
-	   "area_name": "Thomas County",
-	   "household_income": 36973
-	 },
-	 {
-	   "fips": 13277,
-	   "state": "GA",
-	   "area_name": "Tift County",
-	   "household_income": 36303
-	 },
-	 {
-	   "fips": 13279,
-	   "state": "GA",
-	   "area_name": "Toombs County",
-	   "household_income": 34008
-	 },
-	 {
-	   "fips": 13281,
-	   "state": "GA",
-	   "area_name": "Towns County",
-	   "household_income": 39453
-	 },
-	 {
-	   "fips": 13283,
-	   "state": "GA",
-	   "area_name": "Treutlen County",
-	   "household_income": 32536
-	 },
-	 {
-	   "fips": 13285,
-	   "state": "GA",
-	   "area_name": "Troup County",
-	   "household_income": 41141
-	 },
-	 {
-	   "fips": 13287,
-	   "state": "GA",
-	   "area_name": "Turner County",
-	   "household_income": 32171
-	 },
-	 {
-	   "fips": 13289,
-	   "state": "GA",
-	   "area_name": "Twiggs County",
-	   "household_income": 36886
-	 },
-	 {
-	   "fips": 13291,
-	   "state": "GA",
-	   "area_name": "Union County",
-	   "household_income": 40667
-	 },
-	 {
-	   "fips": 13293,
-	   "state": "GA",
-	   "area_name": "Upson County",
-	   "household_income": 34867
-	 },
-	 {
-	   "fips": 13295,
-	   "state": "GA",
-	   "area_name": "Walker County",
-	   "household_income": 39078
-	 },
-	 {
-	   "fips": 13297,
-	   "state": "GA",
-	   "area_name": "Walton County",
-	   "household_income": 52082
-	 },
-	 {
-	   "fips": 13299,
-	   "state": "GA",
-	   "area_name": "Ware County",
-	   "household_income": 34288
-	 },
-	 {
-	   "fips": 13301,
-	   "state": "GA",
-	   "area_name": "Warren County",
-	   "household_income": 31623
-	 },
-	 {
-	   "fips": 13303,
-	   "state": "GA",
-	   "area_name": "Washington County",
-	   "household_income": 36137
-	 },
-	 {
-	   "fips": 13305,
-	   "state": "GA",
-	   "area_name": "Wayne County",
-	   "household_income": 41093
-	 },
-	 {
-	   "fips": 13307,
-	   "state": "GA",
-	   "area_name": "Webster County",
-	   "household_income": 33893
-	 },
-	 {
-	   "fips": 13309,
-	   "state": "GA",
-	   "area_name": "Wheeler County",
-	   "household_income": 30264
-	 },
-	 {
-	   "fips": 13311,
-	   "state": "GA",
-	   "area_name": "White County",
-	   "household_income": 42126
-	 },
-	 {
-	   "fips": 13313,
-	   "state": "GA",
-	   "area_name": "Whitfield County",
-	   "household_income": 43731
-	 },
-	 {
-	   "fips": 13315,
-	   "state": "GA",
-	   "area_name": "Wilcox County",
-	   "household_income": 32722
-	 },
-	 {
-	   "fips": 13317,
-	   "state": "GA",
-	   "area_name": "Wilkes County",
-	   "household_income": 32042
-	 },
-	 {
-	   "fips": 13319,
-	   "state": "GA",
-	   "area_name": "Wilkinson County",
-	   "household_income": 34512
-	 },
-	 {
-	   "fips": 13321,
-	   "state": "GA",
-	   "area_name": "Worth County",
-	   "household_income": 40382
-	 },
-	 {
-	   "fips": 15001,
-	   "state": "HI",
-	   "area_name": "Hawaii County",
-	   "household_income": 51887
-	 },
-	 {
-	   "fips": 15003,
-	   "state": "HI",
-	   "area_name": "Honolulu County/city",
-	   "household_income": 73985
-	 },
-	 {
-	   "fips": 15007,
-	   "state": "HI",
-	   "area_name": "Kauai County",
-	   "household_income": 58883
-	 },
-	 {
-	   "fips": 15009,
-	   "state": "HI",
-	   "area_name": "Maui County",
-	   "household_income": 64916
-	 },
-	 {
-	   "fips": 16001,
-	   "state": "ID",
-	   "area_name": "Ada County",
-	   "household_income": 57908
-	 },
-	 {
-	   "fips": 16003,
-	   "state": "ID",
-	   "area_name": "Adams County",
-	   "household_income": 40777
-	 },
-	 {
-	   "fips": 16005,
-	   "state": "ID",
-	   "area_name": "Bannock County",
-	   "household_income": 44324
-	 },
-	 {
-	   "fips": 16007,
-	   "state": "ID",
-	   "area_name": "Bear Lake County",
-	   "household_income": 45504
-	 },
-	 {
-	   "fips": 16009,
-	   "state": "ID",
-	   "area_name": "Benewah County",
-	   "household_income": 46277
-	 },
-	 {
-	   "fips": 16011,
-	   "state": "ID",
-	   "area_name": "Bingham County",
-	   "household_income": 47292
-	 },
-	 {
-	   "fips": 16013,
-	   "state": "ID",
-	   "area_name": "Blaine County",
-	   "household_income": 63490
-	 },
-	 {
-	   "fips": 16015,
-	   "state": "ID",
-	   "area_name": "Boise County",
-	   "household_income": 50874
-	 },
-	 {
-	   "fips": 16017,
-	   "state": "ID",
-	   "area_name": "Bonner County",
-	   "household_income": 45193
-	 },
-	 {
-	   "fips": 16019,
-	   "state": "ID",
-	   "area_name": "Bonneville County",
-	   "household_income": 51440
-	 },
-	 {
-	   "fips": 16021,
-	   "state": "ID",
-	   "area_name": "Boundary County",
-	   "household_income": 42720
-	 },
-	 {
-	   "fips": 16023,
-	   "state": "ID",
-	   "area_name": "Butte County",
-	   "household_income": 42907
-	 },
-	 {
-	   "fips": 16025,
-	   "state": "ID",
-	   "area_name": "Camas County",
-	   "household_income": 49569
-	 },
-	 {
-	   "fips": 16027,
-	   "state": "ID",
-	   "area_name": "Canyon County",
-	   "household_income": 43489
-	 },
-	 {
-	   "fips": 16029,
-	   "state": "ID",
-	   "area_name": "Caribou County",
-	   "household_income": 55770
-	 },
-	 {
-	   "fips": 16031,
-	   "state": "ID",
-	   "area_name": "Cassia County",
-	   "household_income": 45078
-	 },
-	 {
-	   "fips": 16033,
-	   "state": "ID",
-	   "area_name": "Clark County",
-	   "household_income": 45979
-	 },
-	 {
-	   "fips": 16035,
-	   "state": "ID",
-	   "area_name": "Clearwater County",
-	   "household_income": 41304
-	 },
-	 {
-	   "fips": 16037,
-	   "state": "ID",
-	   "area_name": "Custer County",
-	   "household_income": 42704
-	 },
-	 {
-	   "fips": 16039,
-	   "state": "ID",
-	   "area_name": "Elmore County",
-	   "household_income": 45049
-	 },
-	 {
-	   "fips": 16041,
-	   "state": "ID",
-	   "area_name": "Franklin County",
-	   "household_income": 50545
-	 },
-	 {
-	   "fips": 16043,
-	   "state": "ID",
-	   "area_name": "Fremont County",
-	   "household_income": 45578
-	 },
-	 {
-	   "fips": 16045,
-	   "state": "ID",
-	   "area_name": "Gem County",
-	   "household_income": 41688
-	 },
-	 {
-	   "fips": 16047,
-	   "state": "ID",
-	   "area_name": "Gooding County",
-	   "household_income": 44669
-	 },
-	 {
-	   "fips": 16049,
-	   "state": "ID",
-	   "area_name": "Idaho County",
-	   "household_income": 39551
-	 },
-	 {
-	   "fips": 16051,
-	   "state": "ID",
-	   "area_name": "Jefferson County",
-	   "household_income": 52428
-	 },
-	 {
-	   "fips": 16053,
-	   "state": "ID",
-	   "area_name": "Jerome County",
-	   "household_income": 46513
-	 },
-	 {
-	   "fips": 16055,
-	   "state": "ID",
-	   "area_name": "Kootenai County",
-	   "household_income": 49061
-	 },
-	 {
-	   "fips": 16057,
-	   "state": "ID",
-	   "area_name": "Latah County",
-	   "household_income": 43482
-	 },
-	 {
-	   "fips": 16059,
-	   "state": "ID",
-	   "area_name": "Lemhi County",
-	   "household_income": 37869
-	 },
-	 {
-	   "fips": 16061,
-	   "state": "ID",
-	   "area_name": "Lewis County",
-	   "household_income": 39918
-	 },
-	 {
-	   "fips": 16063,
-	   "state": "ID",
-	   "area_name": "Lincoln County",
-	   "household_income": 44046
-	 },
-	 {
-	   "fips": 16065,
-	   "state": "ID",
-	   "area_name": "Madison County",
-	   "household_income": 36065
-	 },
-	 {
-	   "fips": 16067,
-	   "state": "ID",
-	   "area_name": "Minidoka County",
-	   "household_income": 46332
-	 },
-	 {
-	   "fips": 16069,
-	   "state": "ID",
-	   "area_name": "Nez Perce County",
-	   "household_income": 46214
-	 },
-	 {
-	   "fips": 16071,
-	   "state": "ID",
-	   "area_name": "Oneida County",
-	   "household_income": 46503
-	 },
-	 {
-	   "fips": 16073,
-	   "state": "ID",
-	   "area_name": "Owyhee County",
-	   "household_income": 38478
-	 },
-	 {
-	   "fips": 16075,
-	   "state": "ID",
-	   "area_name": "Payette County",
-	   "household_income": 45533
-	 },
-	 {
-	   "fips": 16077,
-	   "state": "ID",
-	   "area_name": "Power County",
-	   "household_income": 48048
-	 },
-	 {
-	   "fips": 16079,
-	   "state": "ID",
-	   "area_name": "Shoshone County",
-	   "household_income": 36577
-	 },
-	 {
-	   "fips": 16081,
-	   "state": "ID",
-	   "area_name": "Teton County",
-	   "household_income": 57644
-	 },
-	 {
-	   "fips": 16083,
-	   "state": "ID",
-	   "area_name": "Twin Falls County",
-	   "household_income": 44236
-	 },
-	 {
-	   "fips": 16085,
-	   "state": "ID",
-	   "area_name": "Valley County",
-	   "household_income": 49380
-	 },
-	 {
-	   "fips": 16087,
-	   "state": "ID",
-	   "area_name": "Washington County",
-	   "household_income": 35955
-	 },
-	 {
-	   "fips": 17001,
-	   "state": "IL",
-	   "area_name": "Adams County",
-	   "household_income": 46061
-	 },
-	 {
-	   "fips": 17003,
-	   "state": "IL",
-	   "area_name": "Alexander County",
-	   "household_income": 30699
-	 },
-	 {
-	   "fips": 17005,
-	   "state": "IL",
-	   "area_name": "Bond County",
-	   "household_income": 49886
-	 },
-	 {
-	   "fips": 17007,
-	   "state": "IL",
-	   "area_name": "Boone County",
-	   "household_income": 58792
-	 },
-	 {
-	   "fips": 17009,
-	   "state": "IL",
-	   "area_name": "Brown County",
-	   "household_income": 50225
-	 },
-	 {
-	   "fips": 17011,
-	   "state": "IL",
-	   "area_name": "Bureau County",
-	   "household_income": 52138
-	 },
-	 {
-	   "fips": 17013,
-	   "state": "IL",
-	   "area_name": "Calhoun County",
-	   "household_income": 49689
-	 },
-	 {
-	   "fips": 17015,
-	   "state": "IL",
-	   "area_name": "Carroll County",
-	   "household_income": 50750
-	 },
-	 {
-	   "fips": 17017,
-	   "state": "IL",
-	   "area_name": "Cass County",
-	   "household_income": 46289
-	 },
-	 {
-	   "fips": 17019,
-	   "state": "IL",
-	   "area_name": "Champaign County",
-	   "household_income": 47966
-	 },
-	 {
-	   "fips": 17021,
-	   "state": "IL",
-	   "area_name": "Christian County",
-	   "household_income": 46870
-	 },
-	 {
-	   "fips": 17023,
-	   "state": "IL",
-	   "area_name": "Clark County",
-	   "household_income": 50645
-	 },
-	 {
-	   "fips": 17025,
-	   "state": "IL",
-	   "area_name": "Clay County",
-	   "household_income": 45709
-	 },
-	 {
-	   "fips": 17027,
-	   "state": "IL",
-	   "area_name": "Clinton County",
-	   "household_income": 60556
-	 },
-	 {
-	   "fips": 17029,
-	   "state": "IL",
-	   "area_name": "Coles County",
-	   "household_income": 41319
-	 },
-	 {
-	   "fips": 17031,
-	   "state": "IL",
-	   "area_name": "Cook County",
-	   "household_income": 55058
-	 },
-	 {
-	   "fips": 17033,
-	   "state": "IL",
-	   "area_name": "Crawford County",
-	   "household_income": 45889
-	 },
-	 {
-	   "fips": 17035,
-	   "state": "IL",
-	   "area_name": "Cumberland County",
-	   "household_income": 49567
-	 },
-	 {
-	   "fips": 17037,
-	   "state": "IL",
-	   "area_name": "DeKalb County",
-	   "household_income": 56536
-	 },
-	 {
-	   "fips": 17039,
-	   "state": "IL",
-	   "area_name": "De Witt County",
-	   "household_income": 55193
-	 },
-	 {
-	   "fips": 17041,
-	   "state": "IL",
-	   "area_name": "Douglas County",
-	   "household_income": 52526
-	 },
-	 {
-	   "fips": 17043,
-	   "state": "IL",
-	   "area_name": "DuPage County",
-	   "household_income": 80037
-	 },
-	 {
-	   "fips": 17045,
-	   "state": "IL",
-	   "area_name": "Edgar County",
-	   "household_income": 45485
-	 },
-	 {
-	   "fips": 17047,
-	   "state": "IL",
-	   "area_name": "Edwards County",
-	   "household_income": 46894
-	 },
-	 {
-	   "fips": 17049,
-	   "state": "IL",
-	   "area_name": "Effingham County",
-	   "household_income": 52578
-	 },
-	 {
-	   "fips": 17051,
-	   "state": "IL",
-	   "area_name": "Fayette County",
-	   "household_income": 41268
-	 },
-	 {
-	   "fips": 17053,
-	   "state": "IL",
-	   "area_name": "Ford County",
-	   "household_income": 50877
-	 },
-	 {
-	   "fips": 17055,
-	   "state": "IL",
-	   "area_name": "Franklin County",
-	   "household_income": 37758
-	 },
-	 {
-	   "fips": 17057,
-	   "state": "IL",
-	   "area_name": "Fulton County",
-	   "household_income": 44435
-	 },
-	 {
-	   "fips": 17059,
-	   "state": "IL",
-	   "area_name": "Gallatin County",
-	   "household_income": 41045
-	 },
-	 {
-	   "fips": 17061,
-	   "state": "IL",
-	   "area_name": "Greene County",
-	   "household_income": 39738
-	 },
-	 {
-	   "fips": 17063,
-	   "state": "IL",
-	   "area_name": "Grundy County",
-	   "household_income": 70092
-	 },
-	 {
-	   "fips": 17065,
-	   "state": "IL",
-	   "area_name": "Hamilton County",
-	   "household_income": 49790
-	 },
-	 {
-	   "fips": 17067,
-	   "state": "IL",
-	   "area_name": "Hancock County",
-	   "household_income": 48767
-	 },
-	 {
-	   "fips": 17069,
-	   "state": "IL",
-	   "area_name": "Hardin County",
-	   "household_income": 37331
-	 },
-	 {
-	   "fips": 17071,
-	   "state": "IL",
-	   "area_name": "Henderson County",
-	   "household_income": 50999
-	 },
-	 {
-	   "fips": 17073,
-	   "state": "IL",
-	   "area_name": "Henry County",
-	   "household_income": 51025
-	 },
-	 {
-	   "fips": 17075,
-	   "state": "IL",
-	   "area_name": "Iroquois County",
-	   "household_income": 46895
-	 },
-	 {
-	   "fips": 17077,
-	   "state": "IL",
-	   "area_name": "Jackson County",
-	   "household_income": 34395
-	 },
-	 {
-	   "fips": 17079,
-	   "state": "IL",
-	   "area_name": "Jasper County",
-	   "household_income": 52919
-	 },
-	 {
-	   "fips": 17081,
-	   "state": "IL",
-	   "area_name": "Jefferson County",
-	   "household_income": 43073
-	 },
-	 {
-	   "fips": 17083,
-	   "state": "IL",
-	   "area_name": "Jersey County",
-	   "household_income": 52493
-	 },
-	 {
-	   "fips": 17085,
-	   "state": "IL",
-	   "area_name": "Jo Daviess County",
-	   "household_income": 51282
-	 },
-	 {
-	   "fips": 17087,
-	   "state": "IL",
-	   "area_name": "Johnson County",
-	   "household_income": 45773
-	 },
-	 {
-	   "fips": 17089,
-	   "state": "IL",
-	   "area_name": "Kane County",
-	   "household_income": 72131
-	 },
-	 {
-	   "fips": 17091,
-	   "state": "IL",
-	   "area_name": "Kankakee County",
-	   "household_income": 56326
-	 },
-	 {
-	   "fips": 17093,
-	   "state": "IL",
-	   "area_name": "Kendall County",
-	   "household_income": 90640
-	 },
-	 {
-	   "fips": 17095,
-	   "state": "IL",
-	   "area_name": "Knox County",
-	   "household_income": 38992
-	 },
-	 {
-	   "fips": 17097,
-	   "state": "IL",
-	   "area_name": "Lake County",
-	   "household_income": 78001
-	 },
-	 {
-	   "fips": 17099,
-	   "state": "IL",
-	   "area_name": "LaSalle County",
-	   "household_income": 51205
-	 },
-	 {
-	   "fips": 17101,
-	   "state": "IL",
-	   "area_name": "Lawrence County",
-	   "household_income": 41759
-	 },
-	 {
-	   "fips": 17103,
-	   "state": "IL",
-	   "area_name": "Lee County",
-	   "household_income": 54472
-	 },
-	 {
-	   "fips": 17105,
-	   "state": "IL",
-	   "area_name": "Livingston County",
-	   "household_income": 53918
-	 },
-	 {
-	   "fips": 17107,
-	   "state": "IL",
-	   "area_name": "Logan County",
-	   "household_income": 54353
-	 },
-	 {
-	   "fips": 17109,
-	   "state": "IL",
-	   "area_name": "McDonough County",
-	   "household_income": 42684
-	 },
-	 {
-	   "fips": 17111,
-	   "state": "IL",
-	   "area_name": "McHenry County",
-	   "household_income": 76856
-	 },
-	 {
-	   "fips": 17113,
-	   "state": "IL",
-	   "area_name": "McLean County",
-	   "household_income": 60460
-	 },
-	 {
-	   "fips": 17115,
-	   "state": "IL",
-	   "area_name": "Macon County",
-	   "household_income": 47575
-	 },
-	 {
-	   "fips": 17117,
-	   "state": "IL",
-	   "area_name": "Macoupin County",
-	   "household_income": 48544
-	 },
-	 {
-	   "fips": 17119,
-	   "state": "IL",
-	   "area_name": "Madison County",
-	   "household_income": 54375
-	 },
-	 {
-	   "fips": 17121,
-	   "state": "IL",
-	   "area_name": "Marion County",
-	   "household_income": 44289
-	 },
-	 {
-	   "fips": 17123,
-	   "state": "IL",
-	   "area_name": "Marshall County",
-	   "household_income": 53732
-	 },
-	 {
-	   "fips": 17125,
-	   "state": "IL",
-	   "area_name": "Mason County",
-	   "household_income": 46878
-	 },
-	 {
-	   "fips": 17127,
-	   "state": "IL",
-	   "area_name": "Massac County",
-	   "household_income": 40590
-	 },
-	 {
-	   "fips": 17129,
-	   "state": "IL",
-	   "area_name": "Menard County",
-	   "household_income": 61388
-	 },
-	 {
-	   "fips": 17131,
-	   "state": "IL",
-	   "area_name": "Mercer County",
-	   "household_income": 54916
-	 },
-	 {
-	   "fips": 17133,
-	   "state": "IL",
-	   "area_name": "Monroe County",
-	   "household_income": 73684
-	 },
-	 {
-	   "fips": 17135,
-	   "state": "IL",
-	   "area_name": "Montgomery County",
-	   "household_income": 45288
-	 },
-	 {
-	   "fips": 17137,
-	   "state": "IL",
-	   "area_name": "Morgan County",
-	   "household_income": 46406
-	 },
-	 {
-	   "fips": 17139,
-	   "state": "IL",
-	   "area_name": "Moultrie County",
-	   "household_income": 52790
-	 },
-	 {
-	   "fips": 17141,
-	   "state": "IL",
-	   "area_name": "Ogle County",
-	   "household_income": 57126
-	 },
-	 {
-	   "fips": 17143,
-	   "state": "IL",
-	   "area_name": "Peoria County",
-	   "household_income": 52448
-	 },
-	 {
-	   "fips": 17145,
-	   "state": "IL",
-	   "area_name": "Perry County",
-	   "household_income": 42032
-	 },
-	 {
-	   "fips": 17147,
-	   "state": "IL",
-	   "area_name": "Piatt County",
-	   "household_income": 65971
-	 },
-	 {
-	   "fips": 17149,
-	   "state": "IL",
-	   "area_name": "Pike County",
-	   "household_income": 39005
-	 },
-	 {
-	   "fips": 17151,
-	   "state": "IL",
-	   "area_name": "Pope County",
-	   "household_income": 40722
-	 },
-	 {
-	   "fips": 17153,
-	   "state": "IL",
-	   "area_name": "Pulaski County",
-	   "household_income": 33943
-	 },
-	 {
-	   "fips": 17155,
-	   "state": "IL",
-	   "area_name": "Putnam County",
-	   "household_income": 62024
-	 },
-	 {
-	   "fips": 17157,
-	   "state": "IL",
-	   "area_name": "Randolph County",
-	   "household_income": 47862
-	 },
-	 {
-	   "fips": 17159,
-	   "state": "IL",
-	   "area_name": "Richland County",
-	   "household_income": 43396
-	 },
-	 {
-	   "fips": 17161,
-	   "state": "IL",
-	   "area_name": "Rock Island County",
-	   "household_income": 48024
-	 },
-	 {
-	   "fips": 17163,
-	   "state": "IL",
-	   "area_name": "St. Clair County",
-	   "household_income": 50155
-	 },
-	 {
-	   "fips": 17165,
-	   "state": "IL",
-	   "area_name": "Saline County",
-	   "household_income": 38329
-	 },
-	 {
-	   "fips": 17167,
-	   "state": "IL",
-	   "area_name": "Sangamon County",
-	   "household_income": 55371
-	 },
-	 {
-	   "fips": 17169,
-	   "state": "IL",
-	   "area_name": "Schuyler County",
-	   "household_income": 47092
-	 },
-	 {
-	   "fips": 17171,
-	   "state": "IL",
-	   "area_name": "Scott County",
-	   "household_income": 51584
-	 },
-	 {
-	   "fips": 17173,
-	   "state": "IL",
-	   "area_name": "Shelby County",
-	   "household_income": 48994
-	 },
-	 {
-	   "fips": 17175,
-	   "state": "IL",
-	   "area_name": "Stark County",
-	   "household_income": 50219
-	 },
-	 {
-	   "fips": 17177,
-	   "state": "IL",
-	   "area_name": "Stephenson County",
-	   "household_income": 48569
-	 },
-	 {
-	   "fips": 17179,
-	   "state": "IL",
-	   "area_name": "Tazewell County",
-	   "household_income": 60490
-	 },
-	 {
-	   "fips": 17181,
-	   "state": "IL",
-	   "area_name": "Union County",
-	   "household_income": 40957
-	 },
-	 {
-	   "fips": 17183,
-	   "state": "IL",
-	   "area_name": "Vermilion County",
-	   "household_income": 42036
-	 },
-	 {
-	   "fips": 17185,
-	   "state": "IL",
-	   "area_name": "Wabash County",
-	   "household_income": 49385
-	 },
-	 {
-	   "fips": 17187,
-	   "state": "IL",
-	   "area_name": "Warren County",
-	   "household_income": 44180
-	 },
-	 {
-	   "fips": 17189,
-	   "state": "IL",
-	   "area_name": "Washington County",
-	   "household_income": 54683
-	 },
-	 {
-	   "fips": 17191,
-	   "state": "IL",
-	   "area_name": "Wayne County",
-	   "household_income": 46839
-	 },
-	 {
-	   "fips": 17193,
-	   "state": "IL",
-	   "area_name": "White County",
-	   "household_income": 46927
-	 },
-	 {
-	   "fips": 17195,
-	   "state": "IL",
-	   "area_name": "Whiteside County",
-	   "household_income": 49895
-	 },
-	 {
-	   "fips": 17197,
-	   "state": "IL",
-	   "area_name": "Will County",
-	   "household_income": 75176
-	 },
-	 {
-	   "fips": 17199,
-	   "state": "IL",
-	   "area_name": "Williamson County",
-	   "household_income": 46322
-	 },
-	 {
-	   "fips": 17201,
-	   "state": "IL",
-	   "area_name": "Winnebago County",
-	   "household_income": 47708
-	 },
-	 {
-	   "fips": 17203,
-	   "state": "IL",
-	   "area_name": "Woodford County",
-	   "household_income": 70127
-	 },
-	 {
-	   "fips": 18001,
-	   "state": "IN",
-	   "area_name": "Adams County",
-	   "household_income": 50172
-	 },
-	 {
-	   "fips": 18003,
-	   "state": "IN",
-	   "area_name": "Allen County",
-	   "household_income": 48651
-	 },
-	 {
-	   "fips": 18005,
-	   "state": "IN",
-	   "area_name": "Bartholomew County",
-	   "household_income": 54101
-	 },
-	 {
-	   "fips": 18007,
-	   "state": "IN",
-	   "area_name": "Benton County",
-	   "household_income": 46196
-	 },
-	 {
-	   "fips": 18009,
-	   "state": "IN",
-	   "area_name": "Blackford County",
-	   "household_income": 39563
-	 },
-	 {
-	   "fips": 18011,
-	   "state": "IN",
-	   "area_name": "Boone County",
-	   "household_income": 68352
-	 },
-	 {
-	   "fips": 18013,
-	   "state": "IN",
-	   "area_name": "Brown County",
-	   "household_income": 52582
-	 },
-	 {
-	   "fips": 18015,
-	   "state": "IN",
-	   "area_name": "Carroll County",
-	   "household_income": 55318
-	 },
-	 {
-	   "fips": 18017,
-	   "state": "IN",
-	   "area_name": "Cass County",
-	   "household_income": 44430
-	 },
-	 {
-	   "fips": 18019,
-	   "state": "IN",
-	   "area_name": "Clark County",
-	   "household_income": 52050
-	 },
-	 {
-	   "fips": 18021,
-	   "state": "IN",
-	   "area_name": "Clay County",
-	   "household_income": 44385
-	 },
-	 {
-	   "fips": 18023,
-	   "state": "IN",
-	   "area_name": "Clinton County",
-	   "household_income": 49945
-	 },
-	 {
-	   "fips": 18025,
-	   "state": "IN",
-	   "area_name": "Crawford County",
-	   "household_income": 40657
-	 },
-	 {
-	   "fips": 18027,
-	   "state": "IN",
-	   "area_name": "Daviess County",
-	   "household_income": 47670
-	 },
-	 {
-	   "fips": 18029,
-	   "state": "IN",
-	   "area_name": "Dearborn County",
-	   "household_income": 59280
-	 },
-	 {
-	   "fips": 18031,
-	   "state": "IN",
-	   "area_name": "Decatur County",
-	   "household_income": 50258
-	 },
-	 {
-	   "fips": 18033,
-	   "state": "IN",
-	   "area_name": "DeKalb County",
-	   "household_income": 51911
-	 },
-	 {
-	   "fips": 18035,
-	   "state": "IN",
-	   "area_name": "Delaware County",
-	   "household_income": 39449
-	 },
-	 {
-	   "fips": 18037,
-	   "state": "IN",
-	   "area_name": "Dubois County",
-	   "household_income": 53211
-	 },
-	 {
-	   "fips": 18039,
-	   "state": "IN",
-	   "area_name": "Elkhart County",
-	   "household_income": 50192
-	 },
-	 {
-	   "fips": 18041,
-	   "state": "IN",
-	   "area_name": "Fayette County",
-	   "household_income": 40122
-	 },
-	 {
-	   "fips": 18043,
-	   "state": "IN",
-	   "area_name": "Floyd County",
-	   "household_income": 53186
-	 },
-	 {
-	   "fips": 18045,
-	   "state": "IN",
-	   "area_name": "Fountain County",
-	   "household_income": 45168
-	 },
-	 {
-	   "fips": 18047,
-	   "state": "IN",
-	   "area_name": "Franklin County",
-	   "household_income": 54086
-	 },
-	 {
-	   "fips": 18049,
-	   "state": "IN",
-	   "area_name": "Fulton County",
-	   "household_income": 44762
-	 },
-	 {
-	   "fips": 18051,
-	   "state": "IN",
-	   "area_name": "Gibson County",
-	   "household_income": 46466
-	 },
-	 {
-	   "fips": 18053,
-	   "state": "IN",
-	   "area_name": "Grant County",
-	   "household_income": 40234
-	 },
-	 {
-	   "fips": 18055,
-	   "state": "IN",
-	   "area_name": "Greene County",
-	   "household_income": 41077
-	 },
-	 {
-	   "fips": 18057,
-	   "state": "IN",
-	   "area_name": "Hamilton County",
-	   "household_income": 89861
-	 },
-	 {
-	   "fips": 18059,
-	   "state": "IN",
-	   "area_name": "Hancock County",
-	   "household_income": 68334
-	 },
-	 {
-	   "fips": 18061,
-	   "state": "IN",
-	   "area_name": "Harrison County",
-	   "household_income": 56787
-	 },
-	 {
-	   "fips": 18063,
-	   "state": "IN",
-	   "area_name": "Hendricks County",
-	   "household_income": 70358
-	 },
-	 {
-	   "fips": 18065,
-	   "state": "IN",
-	   "area_name": "Henry County",
-	   "household_income": 41955
-	 },
-	 {
-	   "fips": 18067,
-	   "state": "IN",
-	   "area_name": "Howard County",
-	   "household_income": 47433
-	 },
-	 {
-	   "fips": 18069,
-	   "state": "IN",
-	   "area_name": "Huntington County",
-	   "household_income": 49832
-	 },
-	 {
-	   "fips": 18071,
-	   "state": "IN",
-	   "area_name": "Jackson County",
-	   "household_income": 48368
-	 },
-	 {
-	   "fips": 18073,
-	   "state": "IN",
-	   "area_name": "Jasper County",
-	   "household_income": 55190
-	 },
-	 {
-	   "fips": 18075,
-	   "state": "IN",
-	   "area_name": "Jay County",
-	   "household_income": 38663
-	 },
-	 {
-	   "fips": 18077,
-	   "state": "IN",
-	   "area_name": "Jefferson County",
-	   "household_income": 45964
-	 },
-	 {
-	   "fips": 18079,
-	   "state": "IN",
-	   "area_name": "Jennings County",
-	   "household_income": 43783
-	 },
-	 {
-	   "fips": 18081,
-	   "state": "IN",
-	   "area_name": "Johnson County",
-	   "household_income": 58833
-	 },
-	 {
-	   "fips": 18083,
-	   "state": "IN",
-	   "area_name": "Knox County",
-	   "household_income": 44077
-	 },
-	 {
-	   "fips": 18085,
-	   "state": "IN",
-	   "area_name": "Kosciusko County",
-	   "household_income": 54068
-	 },
-	 {
-	   "fips": 18087,
-	   "state": "IN",
-	   "area_name": "LaGrange County",
-	   "household_income": 52003
-	 },
-	 {
-	   "fips": 18089,
-	   "state": "IN",
-	   "area_name": "Lake County",
-	   "household_income": 50774
-	 },
-	 {
-	   "fips": 18091,
-	   "state": "IN",
-	   "area_name": "LaPorte County",
-	   "household_income": 46243
-	 },
-	 {
-	   "fips": 18093,
-	   "state": "IN",
-	   "area_name": "Lawrence County",
-	   "household_income": 45232
-	 },
-	 {
-	   "fips": 18095,
-	   "state": "IN",
-	   "area_name": "Madison County",
-	   "household_income": 44730
-	 },
-	 {
-	   "fips": 18097,
-	   "state": "IN",
-	   "area_name": "Marion County",
-	   "household_income": 42700
-	 },
-	 {
-	   "fips": 18099,
-	   "state": "IN",
-	   "area_name": "Marshall County",
-	   "household_income": 52508
-	 },
-	 {
-	   "fips": 18101,
-	   "state": "IN",
-	   "area_name": "Martin County",
-	   "household_income": 48381
-	 },
-	 {
-	   "fips": 18103,
-	   "state": "IN",
-	   "area_name": "Miami County",
-	   "household_income": 41065
-	 },
-	 {
-	   "fips": 18105,
-	   "state": "IN",
-	   "area_name": "Monroe County",
-	   "household_income": 43841
-	 },
-	 {
-	   "fips": 18107,
-	   "state": "IN",
-	   "area_name": "Montgomery County",
-	   "household_income": 46945
-	 },
-	 {
-	   "fips": 18109,
-	   "state": "IN",
-	   "area_name": "Morgan County",
-	   "household_income": 54849
-	 },
-	 {
-	   "fips": 18111,
-	   "state": "IN",
-	   "area_name": "Newton County",
-	   "household_income": 51285
-	 },
-	 {
-	   "fips": 18113,
-	   "state": "IN",
-	   "area_name": "Noble County",
-	   "household_income": 50997
-	 },
-	 {
-	   "fips": 18115,
-	   "state": "IN",
-	   "area_name": "Ohio County",
-	   "household_income": 51403
-	 },
-	 {
-	   "fips": 18117,
-	   "state": "IN",
-	   "area_name": "Orange County",
-	   "household_income": 39572
-	 },
-	 {
-	   "fips": 18119,
-	   "state": "IN",
-	   "area_name": "Owen County",
-	   "household_income": 46001
-	 },
-	 {
-	   "fips": 18121,
-	   "state": "IN",
-	   "area_name": "Parke County",
-	   "household_income": 42056
-	 },
-	 {
-	   "fips": 18123,
-	   "state": "IN",
-	   "area_name": "Perry County",
-	   "household_income": 44623
-	 },
-	 {
-	   "fips": 18125,
-	   "state": "IN",
-	   "area_name": "Pike County",
-	   "household_income": 47217
-	 },
-	 {
-	   "fips": 18127,
-	   "state": "IN",
-	   "area_name": "Porter County",
-	   "household_income": 63030
-	 },
-	 {
-	   "fips": 18129,
-	   "state": "IN",
-	   "area_name": "Posey County",
-	   "household_income": 59975
-	 },
-	 {
-	   "fips": 18131,
-	   "state": "IN",
-	   "area_name": "Pulaski County",
-	   "household_income": 43770
-	 },
-	 {
-	   "fips": 18133,
-	   "state": "IN",
-	   "area_name": "Putnam County",
-	   "household_income": 49467
-	 },
-	 {
-	   "fips": 18135,
-	   "state": "IN",
-	   "area_name": "Randolph County",
-	   "household_income": 41577
-	 },
-	 {
-	   "fips": 18137,
-	   "state": "IN",
-	   "area_name": "Ripley County",
-	   "household_income": 52491
-	 },
-	 {
-	   "fips": 18139,
-	   "state": "IN",
-	   "area_name": "Rush County",
-	   "household_income": 47418
-	 },
-	 {
-	   "fips": 18141,
-	   "state": "IN",
-	   "area_name": "St. Joseph County",
-	   "household_income": 46388
-	 },
-	 {
-	   "fips": 18143,
-	   "state": "IN",
-	   "area_name": "Scott County",
-	   "household_income": 41649
-	 },
-	 {
-	   "fips": 18145,
-	   "state": "IN",
-	   "area_name": "Shelby County",
-	   "household_income": 54831
-	 },
-	 {
-	   "fips": 18147,
-	   "state": "IN",
-	   "area_name": "Spencer County",
-	   "household_income": 54468
-	 },
-	 {
-	   "fips": 18149,
-	   "state": "IN",
-	   "area_name": "Starke County",
-	   "household_income": 43740
-	 },
-	 {
-	   "fips": 18151,
-	   "state": "IN",
-	   "area_name": "Steuben County",
-	   "household_income": 50078
-	 },
-	 {
-	   "fips": 18153,
-	   "state": "IN",
-	   "area_name": "Sullivan County",
-	   "household_income": 43933
-	 },
-	 {
-	   "fips": 18155,
-	   "state": "IN",
-	   "area_name": "Switzerland County",
-	   "household_income": 47606
-	 },
-	 {
-	   "fips": 18157,
-	   "state": "IN",
-	   "area_name": "Tippecanoe County",
-	   "household_income": 46276
-	 },
-	 {
-	   "fips": 18159,
-	   "state": "IN",
-	   "area_name": "Tipton County",
-	   "household_income": 55008
-	 },
-	 {
-	   "fips": 18161,
-	   "state": "IN",
-	   "area_name": "Union County",
-	   "household_income": 47410
-	 },
-	 {
-	   "fips": 18163,
-	   "state": "IN",
-	   "area_name": "Vanderburgh County",
-	   "household_income": 42622
-	 },
-	 {
-	   "fips": 18165,
-	   "state": "IN",
-	   "area_name": "Vermillion County",
-	   "household_income": 44388
-	 },
-	 {
-	   "fips": 18167,
-	   "state": "IN",
-	   "area_name": "Vigo County",
-	   "household_income": 41260
-	 },
-	 {
-	   "fips": 18169,
-	   "state": "IN",
-	   "area_name": "Wabash County",
-	   "household_income": 45151
-	 },
-	 {
-	   "fips": 18171,
-	   "state": "IN",
-	   "area_name": "Warren County",
-	   "household_income": 55925
-	 },
-	 {
-	   "fips": 18173,
-	   "state": "IN",
-	   "area_name": "Warrick County",
-	   "household_income": 65793
-	 },
-	 {
-	   "fips": 18175,
-	   "state": "IN",
-	   "area_name": "Washington County",
-	   "household_income": 43573
-	 },
-	 {
-	   "fips": 18177,
-	   "state": "IN",
-	   "area_name": "Wayne County",
-	   "household_income": 40929
-	 },
-	 {
-	   "fips": 18179,
-	   "state": "IN",
-	   "area_name": "Wells County",
-	   "household_income": 51182
-	 },
-	 {
-	   "fips": 18181,
-	   "state": "IN",
-	   "area_name": "White County",
-	   "household_income": 50731
-	 },
-	 {
-	   "fips": 18183,
-	   "state": "IN",
-	   "area_name": "Whitley County",
-	   "household_income": 59266
-	 },
-	 {
-	   "fips": 19001,
-	   "state": "IA",
-	   "area_name": "Adair County",
-	   "household_income": 48216
-	 },
-	 {
-	   "fips": 19003,
-	   "state": "IA",
-	   "area_name": "Adams County",
-	   "household_income": 51929
-	 },
-	 {
-	   "fips": 19005,
-	   "state": "IA",
-	   "area_name": "Allamakee County",
-	   "household_income": 45229
-	 },
-	 {
-	   "fips": 19007,
-	   "state": "IA",
-	   "area_name": "Appanoose County",
-	   "household_income": 40422
-	 },
-	 {
-	   "fips": 19009,
-	   "state": "IA",
-	   "area_name": "Audubon County",
-	   "household_income": 50014
-	 },
-	 {
-	   "fips": 19011,
-	   "state": "IA",
-	   "area_name": "Benton County",
-	   "household_income": 61931
-	 },
-	 {
-	   "fips": 19013,
-	   "state": "IA",
-	   "area_name": "Black Hawk County",
-	   "household_income": 51331
-	 },
-	 {
-	   "fips": 19015,
-	   "state": "IA",
-	   "area_name": "Boone County",
-	   "household_income": 54186
-	 },
-	 {
-	   "fips": 19017,
-	   "state": "IA",
-	   "area_name": "Bremer County",
-	   "household_income": 62438
-	 },
-	 {
-	   "fips": 19019,
-	   "state": "IA",
-	   "area_name": "Buchanan County",
-	   "household_income": 55781
-	 },
-	 {
-	   "fips": 19021,
-	   "state": "IA",
-	   "area_name": "Buena Vista County",
-	   "household_income": 50719
-	 },
-	 {
-	   "fips": 19023,
-	   "state": "IA",
-	   "area_name": "Butler County",
-	   "household_income": 52273
-	 },
-	 {
-	   "fips": 19025,
-	   "state": "IA",
-	   "area_name": "Calhoun County",
-	   "household_income": 49456
-	 },
-	 {
-	   "fips": 19027,
-	   "state": "IA",
-	   "area_name": "Carroll County",
-	   "household_income": 52367
-	 },
-	 {
-	   "fips": 19029,
-	   "state": "IA",
-	   "area_name": "Cass County",
-	   "household_income": 46159
-	 },
-	 {
-	   "fips": 19031,
-	   "state": "IA",
-	   "area_name": "Cedar County",
-	   "household_income": 61423
-	 },
-	 {
-	   "fips": 19033,
-	   "state": "IA",
-	   "area_name": "Cerro Gordo County",
-	   "household_income": 49569
-	 },
-	 {
-	   "fips": 19035,
-	   "state": "IA",
-	   "area_name": "Cherokee County",
-	   "household_income": 52894
-	 },
-	 {
-	   "fips": 19037,
-	   "state": "IA",
-	   "area_name": "Chickasaw County",
-	   "household_income": 50788
-	 },
-	 {
-	   "fips": 19039,
-	   "state": "IA",
-	   "area_name": "Clarke County",
-	   "household_income": 45413
-	 },
-	 {
-	   "fips": 19041,
-	   "state": "IA",
-	   "area_name": "Clay County",
-	   "household_income": 51514
-	 },
-	 {
-	   "fips": 19043,
-	   "state": "IA",
-	   "area_name": "Clayton County",
-	   "household_income": 49018
-	 },
-	 {
-	   "fips": 19045,
-	   "state": "IA",
-	   "area_name": "Clinton County",
-	   "household_income": 48528
-	 },
-	 {
-	   "fips": 19047,
-	   "state": "IA",
-	   "area_name": "Crawford County",
-	   "household_income": 50370
-	 },
-	 {
-	   "fips": 19049,
-	   "state": "IA",
-	   "area_name": "Dallas County",
-	   "household_income": 79173
-	 },
-	 {
-	   "fips": 19051,
-	   "state": "IA",
-	   "area_name": "Davis County",
-	   "household_income": 46750
-	 },
-	 {
-	   "fips": 19053,
-	   "state": "IA",
-	   "area_name": "Decatur County",
-	   "household_income": 36742
-	 },
-	 {
-	   "fips": 19055,
-	   "state": "IA",
-	   "area_name": "Delaware County",
-	   "household_income": 55958
-	 },
-	 {
-	   "fips": 19057,
-	   "state": "IA",
-	   "area_name": "Des Moines County",
-	   "household_income": 45292
-	 },
-	 {
-	   "fips": 19059,
-	   "state": "IA",
-	   "area_name": "Dickinson County",
-	   "household_income": 56551
-	 },
-	 {
-	   "fips": 19061,
-	   "state": "IA",
-	   "area_name": "Dubuque County",
-	   "household_income": 55320
-	 },
-	 {
-	   "fips": 19063,
-	   "state": "IA",
-	   "area_name": "Emmet County",
-	   "household_income": 47342
-	 },
-	 {
-	   "fips": 19065,
-	   "state": "IA",
-	   "area_name": "Fayette County",
-	   "household_income": 45522
-	 },
-	 {
-	   "fips": 19067,
-	   "state": "IA",
-	   "area_name": "Floyd County",
-	   "household_income": 48292
-	 },
-	 {
-	   "fips": 19069,
-	   "state": "IA",
-	   "area_name": "Franklin County",
-	   "household_income": 51045
-	 },
-	 {
-	   "fips": 19071,
-	   "state": "IA",
-	   "area_name": "Fremont County",
-	   "household_income": 54154
-	 },
-	 {
-	   "fips": 19073,
-	   "state": "IA",
-	   "area_name": "Greene County",
-	   "household_income": 49125
-	 },
-	 {
-	   "fips": 19075,
-	   "state": "IA",
-	   "area_name": "Grundy County",
-	   "household_income": 61215
-	 },
-	 {
-	   "fips": 19077,
-	   "state": "IA",
-	   "area_name": "Guthrie County",
-	   "household_income": 49507
-	 },
-	 {
-	   "fips": 19079,
-	   "state": "IA",
-	   "area_name": "Hamilton County",
-	   "household_income": 53691
-	 },
-	 {
-	   "fips": 19081,
-	   "state": "IA",
-	   "area_name": "Hancock County",
-	   "household_income": 57682
-	 },
-	 {
-	   "fips": 19083,
-	   "state": "IA",
-	   "area_name": "Hardin County",
-	   "household_income": 53277
-	 },
-	 {
-	   "fips": 19085,
-	   "state": "IA",
-	   "area_name": "Harrison County",
-	   "household_income": 52824
-	 },
-	 {
-	   "fips": 19087,
-	   "state": "IA",
-	   "area_name": "Henry County",
-	   "household_income": 50347
-	 },
-	 {
-	   "fips": 19089,
-	   "state": "IA",
-	   "area_name": "Howard County",
-	   "household_income": 49837
-	 },
-	 {
-	   "fips": 19091,
-	   "state": "IA",
-	   "area_name": "Humboldt County",
-	   "household_income": 49696
-	 },
-	 {
-	   "fips": 19093,
-	   "state": "IA",
-	   "area_name": "Ida County",
-	   "household_income": 53905
-	 },
-	 {
-	   "fips": 19095,
-	   "state": "IA",
-	   "area_name": "Iowa County",
-	   "household_income": 58234
-	 },
-	 {
-	   "fips": 19097,
-	   "state": "IA",
-	   "area_name": "Jackson County",
-	   "household_income": 50299
-	 },
-	 {
-	   "fips": 19099,
-	   "state": "IA",
-	   "area_name": "Jasper County",
-	   "household_income": 52750
-	 },
-	 {
-	   "fips": 19101,
-	   "state": "IA",
-	   "area_name": "Jefferson County",
-	   "household_income": 41094
-	 },
-	 {
-	   "fips": 19103,
-	   "state": "IA",
-	   "area_name": "Johnson County",
-	   "household_income": 59946
-	 },
-	 {
-	   "fips": 19105,
-	   "state": "IA",
-	   "area_name": "Jones County",
-	   "household_income": 51558
-	 },
-	 {
-	   "fips": 19107,
-	   "state": "IA",
-	   "area_name": "Keokuk County",
-	   "household_income": 48316
-	 },
-	 {
-	   "fips": 19109,
-	   "state": "IA",
-	   "area_name": "Kossuth County",
-	   "household_income": 52967
-	 },
-	 {
-	   "fips": 19111,
-	   "state": "IA",
-	   "area_name": "Lee County",
-	   "household_income": 44719
-	 },
-	 {
-	   "fips": 19113,
-	   "state": "IA",
-	   "area_name": "Linn County",
-	   "household_income": 62700
-	 },
-	 {
-	   "fips": 19115,
-	   "state": "IA",
-	   "area_name": "Louisa County",
-	   "household_income": 50924
-	 },
-	 {
-	   "fips": 19117,
-	   "state": "IA",
-	   "area_name": "Lucas County",
-	   "household_income": 42582
-	 },
-	 {
-	   "fips": 19119,
-	   "state": "IA",
-	   "area_name": "Lyon County",
-	   "household_income": 61750
-	 },
-	 {
-	   "fips": 19121,
-	   "state": "IA",
-	   "area_name": "Madison County",
-	   "household_income": 62230
-	 },
-	 {
-	   "fips": 19123,
-	   "state": "IA",
-	   "area_name": "Mahaska County",
-	   "household_income": 48584
-	 },
-	 {
-	   "fips": 19125,
-	   "state": "IA",
-	   "area_name": "Marion County",
-	   "household_income": 57046
-	 },
-	 {
-	   "fips": 19127,
-	   "state": "IA",
-	   "area_name": "Marshall County",
-	   "household_income": 50244
-	 },
-	 {
-	   "fips": 19129,
-	   "state": "IA",
-	   "area_name": "Mills County",
-	   "household_income": 59399
-	 },
-	 {
-	   "fips": 19131,
-	   "state": "IA",
-	   "area_name": "Mitchell County",
-	   "household_income": 52616
-	 },
-	 {
-	   "fips": 19133,
-	   "state": "IA",
-	   "area_name": "Monona County",
-	   "household_income": 43178
-	 },
-	 {
-	   "fips": 19135,
-	   "state": "IA",
-	   "area_name": "Monroe County",
-	   "household_income": 44705
-	 },
-	 {
-	   "fips": 19137,
-	   "state": "IA",
-	   "area_name": "Montgomery County",
-	   "household_income": 42046
-	 },
-	 {
-	   "fips": 19139,
-	   "state": "IA",
-	   "area_name": "Muscatine County",
-	   "household_income": 54441
-	 },
-	 {
-	   "fips": 19141,
-	   "state": "IA",
-	   "area_name": "O'Brien County",
-	   "household_income": 55968
-	 },
-	 {
-	   "fips": 19143,
-	   "state": "IA",
-	   "area_name": "Osceola County",
-	   "household_income": 51423
-	 },
-	 {
-	   "fips": 19145,
-	   "state": "IA",
-	   "area_name": "Page County",
-	   "household_income": 46927
-	 },
-	 {
-	   "fips": 19147,
-	   "state": "IA",
-	   "area_name": "Palo Alto County",
-	   "household_income": 50600
-	 },
-	 {
-	   "fips": 19149,
-	   "state": "IA",
-	   "area_name": "Plymouth County",
-	   "household_income": 62745
-	 },
-	 {
-	   "fips": 19151,
-	   "state": "IA",
-	   "area_name": "Pocahontas County",
-	   "household_income": 49625
-	 },
-	 {
-	   "fips": 19153,
-	   "state": "IA",
-	   "area_name": "Polk County",
-	   "household_income": 61028
-	 },
-	 {
-	   "fips": 19155,
-	   "state": "IA",
-	   "area_name": "Pottawattamie County",
-	   "household_income": 51947
-	 },
-	 {
-	   "fips": 19157,
-	   "state": "IA",
-	   "area_name": "Poweshiek County",
-	   "household_income": 52791
-	 },
-	 {
-	   "fips": 19159,
-	   "state": "IA",
-	   "area_name": "Ringgold County",
-	   "household_income": 42854
-	 },
-	 {
-	   "fips": 19161,
-	   "state": "IA",
-	   "area_name": "Sac County",
-	   "household_income": 49513
-	 },
-	 {
-	   "fips": 19163,
-	   "state": "IA",
-	   "area_name": "Scott County",
-	   "household_income": 54959
-	 },
-	 {
-	   "fips": 19165,
-	   "state": "IA",
-	   "area_name": "Shelby County",
-	   "household_income": 55637
-	 },
-	 {
-	   "fips": 19167,
-	   "state": "IA",
-	   "area_name": "Sioux County",
-	   "household_income": 60205
-	 },
-	 {
-	   "fips": 19169,
-	   "state": "IA",
-	   "area_name": "Story County",
-	   "household_income": 52128
-	 },
-	 {
-	   "fips": 19171,
-	   "state": "IA",
-	   "area_name": "Tama County",
-	   "household_income": 54957
-	 },
-	 {
-	   "fips": 19173,
-	   "state": "IA",
-	   "area_name": "Taylor County",
-	   "household_income": 46501
-	 },
-	 {
-	   "fips": 19175,
-	   "state": "IA",
-	   "area_name": "Union County",
-	   "household_income": 44905
-	 },
-	 {
-	   "fips": 19177,
-	   "state": "IA",
-	   "area_name": "Van Buren County",
-	   "household_income": 42555
-	 },
-	 {
-	   "fips": 19179,
-	   "state": "IA",
-	   "area_name": "Wapello County",
-	   "household_income": 42414
-	 },
-	 {
-	   "fips": 19181,
-	   "state": "IA",
-	   "area_name": "Warren County",
-	   "household_income": 67342
-	 },
-	 {
-	   "fips": 19183,
-	   "state": "IA",
-	   "area_name": "Washington County",
-	   "household_income": 56243
-	 },
-	 {
-	   "fips": 19185,
-	   "state": "IA",
-	   "area_name": "Wayne County",
-	   "household_income": 42006
-	 },
-	 {
-	   "fips": 19187,
-	   "state": "IA",
-	   "area_name": "Webster County",
-	   "household_income": 43490
-	 },
-	 {
-	   "fips": 19189,
-	   "state": "IA",
-	   "area_name": "Winnebago County",
-	   "household_income": 50703
-	 },
-	 {
-	   "fips": 19191,
-	   "state": "IA",
-	   "area_name": "Winneshiek County",
-	   "household_income": 55984
-	 },
-	 {
-	   "fips": 19193,
-	   "state": "IA",
-	   "area_name": "Woodbury County",
-	   "household_income": 45641
-	 },
-	 {
-	   "fips": 19195,
-	   "state": "IA",
-	   "area_name": "Worth County",
-	   "household_income": 50286
-	 },
-	 {
-	   "fips": 19197,
-	   "state": "IA",
-	   "area_name": "Wright County",
-	   "household_income": 50108
-	 },
-	 {
-	   "fips": 20001,
-	   "state": "KS",
-	   "area_name": "Allen County",
-	   "household_income": 39196
-	 },
-	 {
-	   "fips": 20003,
-	   "state": "KS",
-	   "area_name": "Anderson County",
-	   "household_income": 45368
-	 },
-	 {
-	   "fips": 20005,
-	   "state": "KS",
-	   "area_name": "Atchison County",
-	   "household_income": 44199
-	 },
-	 {
-	   "fips": 20007,
-	   "state": "KS",
-	   "area_name": "Barber County",
-	   "household_income": 51676
-	 },
-	 {
-	   "fips": 20009,
-	   "state": "KS",
-	   "area_name": "Barton County",
-	   "household_income": 46942
-	 },
-	 {
-	   "fips": 20011,
-	   "state": "KS",
-	   "area_name": "Bourbon County",
-	   "household_income": 38430
-	 },
-	 {
-	   "fips": 20013,
-	   "state": "KS",
-	   "area_name": "Brown County",
-	   "household_income": 45781
-	 },
-	 {
-	   "fips": 20015,
-	   "state": "KS",
-	   "area_name": "Butler County",
-	   "household_income": 60123
-	 },
-	 {
-	   "fips": 20017,
-	   "state": "KS",
-	   "area_name": "Chase County",
-	   "household_income": 47025
-	 },
-	 {
-	   "fips": 20019,
-	   "state": "KS",
-	   "area_name": "Chautauqua County",
-	   "household_income": 39120
-	 },
-	 {
-	   "fips": 20021,
-	   "state": "KS",
-	   "area_name": "Cherokee County",
-	   "household_income": 40686
-	 },
-	 {
-	   "fips": 20023,
-	   "state": "KS",
-	   "area_name": "Cheyenne County",
-	   "household_income": 41797
-	 },
-	 {
-	   "fips": 20025,
-	   "state": "KS",
-	   "area_name": "Clark County",
-	   "household_income": 47650
-	 },
-	 {
-	   "fips": 20027,
-	   "state": "KS",
-	   "area_name": "Clay County",
-	   "household_income": 53131
-	 },
-	 {
-	   "fips": 20029,
-	   "state": "KS",
-	   "area_name": "Cloud County",
-	   "household_income": 42697
-	 },
-	 {
-	   "fips": 20031,
-	   "state": "KS",
-	   "area_name": "Coffey County",
-	   "household_income": 55705
-	 },
-	 {
-	   "fips": 20033,
-	   "state": "KS",
-	   "area_name": "Comanche County",
-	   "household_income": 45353
-	 },
-	 {
-	   "fips": 20035,
-	   "state": "KS",
-	   "area_name": "Cowley County",
-	   "household_income": 45180
-	 },
-	 {
-	   "fips": 20037,
-	   "state": "KS",
-	   "area_name": "Crawford County",
-	   "household_income": 38491
-	 },
-	 {
-	   "fips": 20039,
-	   "state": "KS",
-	   "area_name": "Decatur County",
-	   "household_income": 41434
-	 },
-	 {
-	   "fips": 20041,
-	   "state": "KS",
-	   "area_name": "Dickinson County",
-	   "household_income": 47493
-	 },
-	 {
-	   "fips": 20043,
-	   "state": "KS",
-	   "area_name": "Doniphan County",
-	   "household_income": 47599
-	 },
-	 {
-	   "fips": 20045,
-	   "state": "KS",
-	   "area_name": "Douglas County",
-	   "household_income": 49246
-	 },
-	 {
-	   "fips": 20047,
-	   "state": "KS",
-	   "area_name": "Edwards County",
-	   "household_income": 49256
-	 },
-	 {
-	   "fips": 20049,
-	   "state": "KS",
-	   "area_name": "Elk County",
-	   "household_income": 36471
-	 },
-	 {
-	   "fips": 20051,
-	   "state": "KS",
-	   "area_name": "Ellis County",
-	   "household_income": 49508
-	 },
-	 {
-	   "fips": 20053,
-	   "state": "KS",
-	   "area_name": "Ellsworth County",
-	   "household_income": 46961
-	 },
-	 {
-	   "fips": 20055,
-	   "state": "KS",
-	   "area_name": "Finney County",
-	   "household_income": 48609
-	 },
-	 {
-	   "fips": 20057,
-	   "state": "KS",
-	   "area_name": "Ford County",
-	   "household_income": 51144
-	 },
-	 {
-	   "fips": 20059,
-	   "state": "KS",
-	   "area_name": "Franklin County",
-	   "household_income": 50745
-	 },
-	 {
-	   "fips": 20061,
-	   "state": "KS",
-	   "area_name": "Geary County",
-	   "household_income": 41193
-	 },
-	 {
-	   "fips": 20063,
-	   "state": "KS",
-	   "area_name": "Gove County",
-	   "household_income": 50886
-	 },
-	 {
-	   "fips": 20065,
-	   "state": "KS",
-	   "area_name": "Graham County",
-	   "household_income": 45341
-	 },
-	 {
-	   "fips": 20067,
-	   "state": "KS",
-	   "area_name": "Grant County",
-	   "household_income": 60279
-	 },
-	 {
-	   "fips": 20069,
-	   "state": "KS",
-	   "area_name": "Gray County",
-	   "household_income": 58543
-	 },
-	 {
-	   "fips": 20071,
-	   "state": "KS",
-	   "area_name": "Greeley County",
-	   "household_income": 52795
-	 },
-	 {
-	   "fips": 20073,
-	   "state": "KS",
-	   "area_name": "Greenwood County",
-	   "household_income": 39732
-	 },
-	 {
-	   "fips": 20075,
-	   "state": "KS",
-	   "area_name": "Hamilton County",
-	   "household_income": 47709
-	 },
-	 {
-	   "fips": 20077,
-	   "state": "KS",
-	   "area_name": "Harper County",
-	   "household_income": 50525
-	 },
-	 {
-	   "fips": 20079,
-	   "state": "KS",
-	   "area_name": "Harvey County",
-	   "household_income": 55074
-	 },
-	 {
-	   "fips": 20081,
-	   "state": "KS",
-	   "area_name": "Haskell County",
-	   "household_income": 59596
-	 },
-	 {
-	   "fips": 20083,
-	   "state": "KS",
-	   "area_name": "Hodgeman County",
-	   "household_income": 52394
-	 },
-	 {
-	   "fips": 20085,
-	   "state": "KS",
-	   "area_name": "Jackson County",
-	   "household_income": 53796
-	 },
-	 {
-	   "fips": 20087,
-	   "state": "KS",
-	   "area_name": "Jefferson County",
-	   "household_income": 56927
-	 },
-	 {
-	   "fips": 20089,
-	   "state": "KS",
-	   "area_name": "Jewell County",
-	   "household_income": 44101
-	 },
-	 {
-	   "fips": 20091,
-	   "state": "KS",
-	   "area_name": "Johnson County",
-	   "household_income": 76104
-	 },
-	 {
-	   "fips": 20093,
-	   "state": "KS",
-	   "area_name": "Kearny County",
-	   "household_income": 53484
-	 },
-	 {
-	   "fips": 20095,
-	   "state": "KS",
-	   "area_name": "Kingman County",
-	   "household_income": 53378
-	 },
-	 {
-	   "fips": 20097,
-	   "state": "KS",
-	   "area_name": "Kiowa County",
-	   "household_income": 46318
-	 },
-	 {
-	   "fips": 20099,
-	   "state": "KS",
-	   "area_name": "Labette County",
-	   "household_income": 40822
-	 },
-	 {
-	   "fips": 20101,
-	   "state": "KS",
-	   "area_name": "Lane County",
-	   "household_income": 53739
-	 },
-	 {
-	   "fips": 20103,
-	   "state": "KS",
-	   "area_name": "Leavenworth County",
-	   "household_income": 65549
-	 },
-	 {
-	   "fips": 20105,
-	   "state": "KS",
-	   "area_name": "Lincoln County",
-	   "household_income": 44896
-	 },
-	 {
-	   "fips": 20107,
-	   "state": "KS",
-	   "area_name": "Linn County",
-	   "household_income": 44520
-	 },
-	 {
-	   "fips": 20109,
-	   "state": "KS",
-	   "area_name": "Logan County",
-	   "household_income": 49852
-	 },
-	 {
-	   "fips": 20111,
-	   "state": "KS",
-	   "area_name": "Lyon County",
-	   "household_income": 43038
-	 },
-	 {
-	   "fips": 20113,
-	   "state": "KS",
-	   "area_name": "McPherson County",
-	   "household_income": 57878
-	 },
-	 {
-	   "fips": 20115,
-	   "state": "KS",
-	   "area_name": "Marion County",
-	   "household_income": 47723
-	 },
-	 {
-	   "fips": 20117,
-	   "state": "KS",
-	   "area_name": "Marshall County",
-	   "household_income": 47901
-	 },
-	 {
-	   "fips": 20119,
-	   "state": "KS",
-	   "area_name": "Meade County",
-	   "household_income": 53903
-	 },
-	 {
-	   "fips": 20121,
-	   "state": "KS",
-	   "area_name": "Miami County",
-	   "household_income": 63924
-	 },
-	 {
-	   "fips": 20123,
-	   "state": "KS",
-	   "area_name": "Mitchell County",
-	   "household_income": 48645
-	 },
-	 {
-	   "fips": 20125,
-	   "state": "KS",
-	   "area_name": "Montgomery County",
-	   "household_income": 42221
-	 },
-	 {
-	   "fips": 20127,
-	   "state": "KS",
-	   "area_name": "Morris County",
-	   "household_income": 44774
-	 },
-	 {
-	   "fips": 20129,
-	   "state": "KS",
-	   "area_name": "Morton County",
-	   "household_income": 55378
-	 },
-	 {
-	   "fips": 20131,
-	   "state": "KS",
-	   "area_name": "Nemaha County",
-	   "household_income": 54149
-	 },
-	 {
-	   "fips": 20133,
-	   "state": "KS",
-	   "area_name": "Neosho County",
-	   "household_income": 41527
-	 },
-	 {
-	   "fips": 20135,
-	   "state": "KS",
-	   "area_name": "Ness County",
-	   "household_income": 51923
-	 },
-	 {
-	   "fips": 20137,
-	   "state": "KS",
-	   "area_name": "Norton County",
-	   "household_income": 44846
-	 },
-	 {
-	   "fips": 20139,
-	   "state": "KS",
-	   "area_name": "Osage County",
-	   "household_income": 52749
-	 },
-	 {
-	   "fips": 20141,
-	   "state": "KS",
-	   "area_name": "Osborne County",
-	   "household_income": 38848
-	 },
-	 {
-	   "fips": 20143,
-	   "state": "KS",
-	   "area_name": "Ottawa County",
-	   "household_income": 52744
-	 },
-	 {
-	   "fips": 20145,
-	   "state": "KS",
-	   "area_name": "Pawnee County",
-	   "household_income": 47351
-	 },
-	 {
-	   "fips": 20147,
-	   "state": "KS",
-	   "area_name": "Phillips County",
-	   "household_income": 45856
-	 },
-	 {
-	   "fips": 20149,
-	   "state": "KS",
-	   "area_name": "Pottawatomie County",
-	   "household_income": 65373
-	 },
-	 {
-	   "fips": 20151,
-	   "state": "KS",
-	   "area_name": "Pratt County",
-	   "household_income": 54701
-	 },
-	 {
-	   "fips": 20153,
-	   "state": "KS",
-	   "area_name": "Rawlins County",
-	   "household_income": 44932
-	 },
-	 {
-	   "fips": 20155,
-	   "state": "KS",
-	   "area_name": "Reno County",
-	   "household_income": 46533
-	 },
-	 {
-	   "fips": 20157,
-	   "state": "KS",
-	   "area_name": "Republic County",
-	   "household_income": 42381
-	 },
-	 {
-	   "fips": 20159,
-	   "state": "KS",
-	   "area_name": "Rice County",
-	   "household_income": 49152
-	 },
-	 {
-	   "fips": 20161,
-	   "state": "KS",
-	   "area_name": "Riley County",
-	   "household_income": 46468
-	 },
-	 {
-	   "fips": 20163,
-	   "state": "KS",
-	   "area_name": "Rooks County",
-	   "household_income": 48383
-	 },
-	 {
-	   "fips": 20165,
-	   "state": "KS",
-	   "area_name": "Rush County",
-	   "household_income": 43083
-	 },
-	 {
-	   "fips": 20167,
-	   "state": "KS",
-	   "area_name": "Russell County",
-	   "household_income": 45443
-	 },
-	 {
-	   "fips": 20169,
-	   "state": "KS",
-	   "area_name": "Saline County",
-	   "household_income": 48460
-	 },
-	 {
-	   "fips": 20171,
-	   "state": "KS",
-	   "area_name": "Scott County",
-	   "household_income": 56032
-	 },
-	 {
-	   "fips": 20173,
-	   "state": "KS",
-	   "area_name": "Sedgwick County",
-	   "household_income": 51175
-	 },
-	 {
-	   "fips": 20175,
-	   "state": "KS",
-	   "area_name": "Seward County",
-	   "household_income": 47381
-	 },
-	 {
-	   "fips": 20177,
-	   "state": "KS",
-	   "area_name": "Shawnee County",
-	   "household_income": 52795
-	 },
-	 {
-	   "fips": 20179,
-	   "state": "KS",
-	   "area_name": "Sheridan County",
-	   "household_income": 52300
-	 },
-	 {
-	   "fips": 20181,
-	   "state": "KS",
-	   "area_name": "Sherman County",
-	   "household_income": 43100
-	 },
-	 {
-	   "fips": 20183,
-	   "state": "KS",
-	   "area_name": "Smith County",
-	   "household_income": 41303
-	 },
-	 {
-	   "fips": 20185,
-	   "state": "KS",
-	   "area_name": "Stafford County",
-	   "household_income": 45945
-	 },
-	 {
-	   "fips": 20187,
-	   "state": "KS",
-	   "area_name": "Stanton County",
-	   "household_income": 56591
-	 },
-	 {
-	   "fips": 20189,
-	   "state": "KS",
-	   "area_name": "Stevens County",
-	   "household_income": 59773
-	 },
-	 {
-	   "fips": 20191,
-	   "state": "KS",
-	   "area_name": "Sumner County",
-	   "household_income": 52476
-	 },
-	 {
-	   "fips": 20193,
-	   "state": "KS",
-	   "area_name": "Thomas County",
-	   "household_income": 50639
-	 },
-	 {
-	   "fips": 20195,
-	   "state": "KS",
-	   "area_name": "Trego County",
-	   "household_income": 46859
-	 },
-	 {
-	   "fips": 20197,
-	   "state": "KS",
-	   "area_name": "Wabaunsee County",
-	   "household_income": 59160
-	 },
-	 {
-	   "fips": 20199,
-	   "state": "KS",
-	   "area_name": "Wallace County",
-	   "household_income": 49109
-	 },
-	 {
-	   "fips": 20201,
-	   "state": "KS",
-	   "area_name": "Washington County",
-	   "household_income": 43264
-	 },
-	 {
-	   "fips": 20203,
-	   "state": "KS",
-	   "area_name": "Wichita County",
-	   "household_income": 53447
-	 },
-	 {
-	   "fips": 20205,
-	   "state": "KS",
-	   "area_name": "Wilson County",
-	   "household_income": 39764
-	 },
-	 {
-	   "fips": 20207,
-	   "state": "KS",
-	   "area_name": "Woodson County",
-	   "household_income": 35502
-	 },
-	 {
-	   "fips": 20209,
-	   "state": "KS",
-	   "area_name": "Wyandotte County",
-	   "household_income": 37087
-	 },
-	 {
-	   "fips": 21001,
-	   "state": "KY",
-	   "area_name": "Adair County",
-	   "household_income": 31558
-	 },
-	 {
-	   "fips": 21003,
-	   "state": "KY",
-	   "area_name": "Allen County",
-	   "household_income": 39801
-	 },
-	 {
-	   "fips": 21005,
-	   "state": "KY",
-	   "area_name": "Anderson County",
-	   "household_income": 54331
-	 },
-	 {
-	   "fips": 21007,
-	   "state": "KY",
-	   "area_name": "Ballard County",
-	   "household_income": 44732
-	 },
-	 {
-	   "fips": 21009,
-	   "state": "KY",
-	   "area_name": "Barren County",
-	   "household_income": 37666
-	 },
-	 {
-	   "fips": 21011,
-	   "state": "KY",
-	   "area_name": "Bath County",
-	   "household_income": 34126
-	 },
-	 {
-	   "fips": 21013,
-	   "state": "KY",
-	   "area_name": "Bell County",
-	   "household_income": 24868
-	 },
-	 {
-	   "fips": 21015,
-	   "state": "KY",
-	   "area_name": "Boone County",
-	   "household_income": 66939
-	 },
-	 {
-	   "fips": 21017,
-	   "state": "KY",
-	   "area_name": "Bourbon County",
-	   "household_income": 42812
-	 },
-	 {
-	   "fips": 21019,
-	   "state": "KY",
-	   "area_name": "Boyd County",
-	   "household_income": 40224
-	 },
-	 {
-	   "fips": 21021,
-	   "state": "KY",
-	   "area_name": "Boyle County",
-	   "household_income": 41538
-	 },
-	 {
-	   "fips": 21023,
-	   "state": "KY",
-	   "area_name": "Bracken County",
-	   "household_income": 41910
-	 },
-	 {
-	   "fips": 21025,
-	   "state": "KY",
-	   "area_name": "Breathitt County",
-	   "household_income": 28647
-	 },
-	 {
-	   "fips": 21027,
-	   "state": "KY",
-	   "area_name": "Breckinridge County",
-	   "household_income": 41547
-	 },
-	 {
-	   "fips": 21029,
-	   "state": "KY",
-	   "area_name": "Bullitt County",
-	   "household_income": 54924
-	 },
-	 {
-	   "fips": 21031,
-	   "state": "KY",
-	   "area_name": "Butler County",
-	   "household_income": 35219
-	 },
-	 {
-	   "fips": 21033,
-	   "state": "KY",
-	   "area_name": "Caldwell County",
-	   "household_income": 42640
-	 },
-	 {
-	   "fips": 21035,
-	   "state": "KY",
-	   "area_name": "Calloway County",
-	   "household_income": 37705
-	 },
-	 {
-	   "fips": 21037,
-	   "state": "KY",
-	   "area_name": "Campbell County",
-	   "household_income": 52349
-	 },
-	 {
-	   "fips": 21039,
-	   "state": "KY",
-	   "area_name": "Carlisle County",
-	   "household_income": 40701
-	 },
-	 {
-	   "fips": 21041,
-	   "state": "KY",
-	   "area_name": "Carroll County",
-	   "household_income": 43615
-	 },
-	 {
-	   "fips": 21043,
-	   "state": "KY",
-	   "area_name": "Carter County",
-	   "household_income": 34991
-	 },
-	 {
-	   "fips": 21045,
-	   "state": "KY",
-	   "area_name": "Casey County",
-	   "household_income": 29344
-	 },
-	 {
-	   "fips": 21047,
-	   "state": "KY",
-	   "area_name": "Christian County",
-	   "household_income": 36736
-	 },
-	 {
-	   "fips": 21049,
-	   "state": "KY",
-	   "area_name": "Clark County",
-	   "household_income": 49012
-	 },
-	 {
-	   "fips": 21051,
-	   "state": "KY",
-	   "area_name": "Clay County",
-	   "household_income": 25215
-	 },
-	 {
-	   "fips": 21053,
-	   "state": "KY",
-	   "area_name": "Clinton County",
-	   "household_income": 28341
-	 },
-	 {
-	   "fips": 21055,
-	   "state": "KY",
-	   "area_name": "Crittenden County",
-	   "household_income": 38338
-	 },
-	 {
-	   "fips": 21057,
-	   "state": "KY",
-	   "area_name": "Cumberland County",
-	   "household_income": 29067
-	 },
-	 {
-	   "fips": 21059,
-	   "state": "KY",
-	   "area_name": "Daviess County",
-	   "household_income": 43390
-	 },
-	 {
-	   "fips": 21061,
-	   "state": "KY",
-	   "area_name": "Edmonson County",
-	   "household_income": 38544
-	 },
-	 {
-	   "fips": 21063,
-	   "state": "KY",
-	   "area_name": "Elliott County",
-	   "household_income": 30556
-	 },
-	 {
-	   "fips": 21065,
-	   "state": "KY",
-	   "area_name": "Estill County",
-	   "household_income": 30333
-	 },
-	 {
-	   "fips": 21067,
-	   "state": "KY",
-	   "area_name": "Fayette County",
-	   "household_income": 48552
-	 },
-	 {
-	   "fips": 21069,
-	   "state": "KY",
-	   "area_name": "Fleming County",
-	   "household_income": 35878
-	 },
-	 {
-	   "fips": 21071,
-	   "state": "KY",
-	   "area_name": "Floyd County",
-	   "household_income": 30127
-	 },
-	 {
-	   "fips": 21073,
-	   "state": "KY",
-	   "area_name": "Franklin County",
-	   "household_income": 49400
-	 },
-	 {
-	   "fips": 21075,
-	   "state": "KY",
-	   "area_name": "Fulton County",
-	   "household_income": 30671
-	 },
-	 {
-	   "fips": 21077,
-	   "state": "KY",
-	   "area_name": "Gallatin County",
-	   "household_income": 45483
-	 },
-	 {
-	   "fips": 21079,
-	   "state": "KY",
-	   "area_name": "Garrard County",
-	   "household_income": 43647
-	 },
-	 {
-	   "fips": 21081,
-	   "state": "KY",
-	   "area_name": "Grant County",
-	   "household_income": 46226
-	 },
-	 {
-	   "fips": 21083,
-	   "state": "KY",
-	   "area_name": "Graves County",
-	   "household_income": 39247
-	 },
-	 {
-	   "fips": 21085,
-	   "state": "KY",
-	   "area_name": "Grayson County",
-	   "household_income": 35726
-	 },
-	 {
-	   "fips": 21087,
-	   "state": "KY",
-	   "area_name": "Green County",
-	   "household_income": 33640
-	 },
-	 {
-	   "fips": 21089,
-	   "state": "KY",
-	   "area_name": "Greenup County",
-	   "household_income": 42452
-	 },
-	 {
-	   "fips": 21091,
-	   "state": "KY",
-	   "area_name": "Hancock County",
-	   "household_income": 50358
-	 },
-	 {
-	   "fips": 21093,
-	   "state": "KY",
-	   "area_name": "Hardin County",
-	   "household_income": 50407
-	 },
-	 {
-	   "fips": 21095,
-	   "state": "KY",
-	   "area_name": "Harlan County",
-	   "household_income": 26351
-	 },
-	 {
-	   "fips": 21097,
-	   "state": "KY",
-	   "area_name": "Harrison County",
-	   "household_income": 41406
-	 },
-	 {
-	   "fips": 21099,
-	   "state": "KY",
-	   "area_name": "Hart County",
-	   "household_income": 38038
-	 },
-	 {
-	   "fips": 21101,
-	   "state": "KY",
-	   "area_name": "Henderson County",
-	   "household_income": 43040
-	 },
-	 {
-	   "fips": 21103,
-	   "state": "KY",
-	   "area_name": "Henry County",
-	   "household_income": 43799
-	 },
-	 {
-	   "fips": 21105,
-	   "state": "KY",
-	   "area_name": "Hickman County",
-	   "household_income": 41588
-	 },
-	 {
-	   "fips": 21107,
-	   "state": "KY",
-	   "area_name": "Hopkins County",
-	   "household_income": 42477
-	 },
-	 {
-	   "fips": 21109,
-	   "state": "KY",
-	   "area_name": "Jackson County",
-	   "household_income": 29090
-	 },
-	 {
-	   "fips": 21111,
-	   "state": "KY",
-	   "area_name": "Jefferson County",
-	   "household_income": 48264
-	 },
-	 {
-	   "fips": 21113,
-	   "state": "KY",
-	   "area_name": "Jessamine County",
-	   "household_income": 51227
-	 },
-	 {
-	   "fips": 21115,
-	   "state": "KY",
-	   "area_name": "Johnson County",
-	   "household_income": 34271
-	 },
-	 {
-	   "fips": 21117,
-	   "state": "KY",
-	   "area_name": "Kenton County",
-	   "household_income": 54728
-	 },
-	 {
-	   "fips": 21119,
-	   "state": "KY",
-	   "area_name": "Knott County",
-	   "household_income": 27709
-	 },
-	 {
-	   "fips": 21121,
-	   "state": "KY",
-	   "area_name": "Knox County",
-	   "household_income": 26048
-	 },
-	 {
-	   "fips": 21123,
-	   "state": "KY",
-	   "area_name": "Larue County",
-	   "household_income": 40312
-	 },
-	 {
-	   "fips": 21125,
-	   "state": "KY",
-	   "area_name": "Laurel County",
-	   "household_income": 34678
-	 },
-	 {
-	   "fips": 21127,
-	   "state": "KY",
-	   "area_name": "Lawrence County",
-	   "household_income": 32835
-	 },
-	 {
-	   "fips": 21129,
-	   "state": "KY",
-	   "area_name": "Lee County",
-	   "household_income": 25473
-	 },
-	 {
-	   "fips": 21131,
-	   "state": "KY",
-	   "area_name": "Leslie County",
-	   "household_income": 27777
-	 },
-	 {
-	   "fips": 21133,
-	   "state": "KY",
-	   "area_name": "Letcher County",
-	   "household_income": 28574
-	 },
-	 {
-	   "fips": 21135,
-	   "state": "KY",
-	   "area_name": "Lewis County",
-	   "household_income": 30217
-	 },
-	 {
-	   "fips": 21137,
-	   "state": "KY",
-	   "area_name": "Lincoln County",
-	   "household_income": 35368
-	 },
-	 {
-	   "fips": 21139,
-	   "state": "KY",
-	   "area_name": "Livingston County",
-	   "household_income": 42892
-	 },
-	 {
-	   "fips": 21141,
-	   "state": "KY",
-	   "area_name": "Logan County",
-	   "household_income": 41150
-	 },
-	 {
-	   "fips": 21143,
-	   "state": "KY",
-	   "area_name": "Lyon County",
-	   "household_income": 43067
-	 },
-	 {
-	   "fips": 21145,
-	   "state": "KY",
-	   "area_name": "McCracken County",
-	   "household_income": 41216
-	 },
-	 {
-	   "fips": 21147,
-	   "state": "KY",
-	   "area_name": "McCreary County",
-	   "household_income": 24265
-	 },
-	 {
-	   "fips": 21149,
-	   "state": "KY",
-	   "area_name": "McLean County",
-	   "household_income": 42288
-	 },
-	 {
-	   "fips": 21151,
-	   "state": "KY",
-	   "area_name": "Madison County",
-	   "household_income": 44358
-	 },
-	 {
-	   "fips": 21153,
-	   "state": "KY",
-	   "area_name": "Magoffin County",
-	   "household_income": 29421
-	 },
-	 {
-	   "fips": 21155,
-	   "state": "KY",
-	   "area_name": "Marion County",
-	   "household_income": 39089
-	 },
-	 {
-	   "fips": 21157,
-	   "state": "KY",
-	   "area_name": "Marshall County",
-	   "household_income": 45596
-	 },
-	 {
-	   "fips": 21159,
-	   "state": "KY",
-	   "area_name": "Martin County",
-	   "household_income": 27484
-	 },
-	 {
-	   "fips": 21161,
-	   "state": "KY",
-	   "area_name": "Mason County",
-	   "household_income": 40260
-	 },
-	 {
-	   "fips": 21163,
-	   "state": "KY",
-	   "area_name": "Meade County",
-	   "household_income": 52377
-	 },
-	 {
-	   "fips": 21165,
-	   "state": "KY",
-	   "area_name": "Menifee County",
-	   "household_income": 30828
-	 },
-	 {
-	   "fips": 21167,
-	   "state": "KY",
-	   "area_name": "Mercer County",
-	   "household_income": 43945
-	 },
-	 {
-	   "fips": 21169,
-	   "state": "KY",
-	   "area_name": "Metcalfe County",
-	   "household_income": 30460
-	 },
-	 {
-	   "fips": 21171,
-	   "state": "KY",
-	   "area_name": "Monroe County",
-	   "household_income": 30172
-	 },
-	 {
-	   "fips": 21173,
-	   "state": "KY",
-	   "area_name": "Montgomery County",
-	   "household_income": 41139
-	 },
-	 {
-	   "fips": 21175,
-	   "state": "KY",
-	   "area_name": "Morgan County",
-	   "household_income": 30872
-	 },
-	 {
-	   "fips": 21177,
-	   "state": "KY",
-	   "area_name": "Muhlenberg County",
-	   "household_income": 38916
-	 },
-	 {
-	   "fips": 21179,
-	   "state": "KY",
-	   "area_name": "Nelson County",
-	   "household_income": 54540
-	 },
-	 {
-	   "fips": 21181,
-	   "state": "KY",
-	   "area_name": "Nicholas County",
-	   "household_income": 37061
-	 },
-	 {
-	   "fips": 21183,
-	   "state": "KY",
-	   "area_name": "Ohio County",
-	   "household_income": 38261
-	 },
-	 {
-	   "fips": 21185,
-	   "state": "KY",
-	   "area_name": "Oldham County",
-	   "household_income": 92097
-	 },
-	 {
-	   "fips": 21187,
-	   "state": "KY",
-	   "area_name": "Owen County",
-	   "household_income": 43626
-	 },
-	 {
-	   "fips": 21189,
-	   "state": "KY",
-	   "area_name": "Owsley County",
-	   "household_income": 23047
-	 },
-	 {
-	   "fips": 21191,
-	   "state": "KY",
-	   "area_name": "Pendleton County",
-	   "household_income": 47023
-	 },
-	 {
-	   "fips": 21193,
-	   "state": "KY",
-	   "area_name": "Perry County",
-	   "household_income": 31265
-	 },
-	 {
-	   "fips": 21195,
-	   "state": "KY",
-	   "area_name": "Pike County",
-	   "household_income": 32666
-	 },
-	 {
-	   "fips": 21197,
-	   "state": "KY",
-	   "area_name": "Powell County",
-	   "household_income": 32783
-	 },
-	 {
-	   "fips": 21199,
-	   "state": "KY",
-	   "area_name": "Pulaski County",
-	   "household_income": 32767
-	 },
-	 {
-	   "fips": 21201,
-	   "state": "KY",
-	   "area_name": "Robertson County",
-	   "household_income": 37281
-	 },
-	 {
-	   "fips": 21203,
-	   "state": "KY",
-	   "area_name": "Rockcastle County",
-	   "household_income": 33789
-	 },
-	 {
-	   "fips": 21205,
-	   "state": "KY",
-	   "area_name": "Rowan County",
-	   "household_income": 37287
-	 },
-	 {
-	   "fips": 21207,
-	   "state": "KY",
-	   "area_name": "Russell County",
-	   "household_income": 33623
-	 },
-	 {
-	   "fips": 21209,
-	   "state": "KY",
-	   "area_name": "Scott County",
-	   "household_income": 61989
-	 },
-	 {
-	   "fips": 21211,
-	   "state": "KY",
-	   "area_name": "Shelby County",
-	   "household_income": 57447
-	 },
-	 {
-	   "fips": 21213,
-	   "state": "KY",
-	   "area_name": "Simpson County",
-	   "household_income": 45269
-	 },
-	 {
-	   "fips": 21215,
-	   "state": "KY",
-	   "area_name": "Spencer County",
-	   "household_income": 67437
-	 },
-	 {
-	   "fips": 21217,
-	   "state": "KY",
-	   "area_name": "Taylor County",
-	   "household_income": 34633
-	 },
-	 {
-	   "fips": 21219,
-	   "state": "KY",
-	   "area_name": "Todd County",
-	   "household_income": 40002
-	 },
-	 {
-	   "fips": 21221,
-	   "state": "KY",
-	   "area_name": "Trigg County",
-	   "household_income": 44676
-	 },
-	 {
-	   "fips": 21223,
-	   "state": "KY",
-	   "area_name": "Trimble County",
-	   "household_income": 46708
-	 },
-	 {
-	   "fips": 21225,
-	   "state": "KY",
-	   "area_name": "Union County",
-	   "household_income": 44119
-	 },
-	 {
-	   "fips": 21227,
-	   "state": "KY",
-	   "area_name": "Warren County",
-	   "household_income": 48925
-	 },
-	 {
-	   "fips": 21229,
-	   "state": "KY",
-	   "area_name": "Washington County",
-	   "household_income": 39983
-	 },
-	 {
-	   "fips": 21231,
-	   "state": "KY",
-	   "area_name": "Wayne County",
-	   "household_income": 30619
-	 },
-	 {
-	   "fips": 21233,
-	   "state": "KY",
-	   "area_name": "Webster County",
-	   "household_income": 43024
-	 },
-	 {
-	   "fips": 21235,
-	   "state": "KY",
-	   "area_name": "Whitley County",
-	   "household_income": 31086
-	 },
-	 {
-	   "fips": 21237,
-	   "state": "KY",
-	   "area_name": "Wolfe County",
-	   "household_income": 25768
-	 },
-	 {
-	   "fips": 21239,
-	   "state": "KY",
-	   "area_name": "Woodford County",
-	   "household_income": 57067
-	 },
-	 {
-	   "fips": 22001,
-	   "state": "LA",
-	   "area_name": "Acadia Parish",
-	   "household_income": 40269
-	 },
-	 {
-	   "fips": 22003,
-	   "state": "LA",
-	   "area_name": "Allen Parish",
-	   "household_income": 36852
-	 },
-	 {
-	   "fips": 22005,
-	   "state": "LA",
-	   "area_name": "Ascension Parish",
-	   "household_income": 67299
-	 },
-	 {
-	   "fips": 22007,
-	   "state": "LA",
-	   "area_name": "Assumption Parish",
-	   "household_income": 46317
-	 },
-	 {
-	   "fips": 22009,
-	   "state": "LA",
-	   "area_name": "Avoyelles Parish",
-	   "household_income": 34022
-	 },
-	 {
-	   "fips": 22011,
-	   "state": "LA",
-	   "area_name": "Beauregard Parish",
-	   "household_income": 43918
-	 },
-	 {
-	   "fips": 22013,
-	   "state": "LA",
-	   "area_name": "Bienville Parish",
-	   "household_income": 33134
-	 },
-	 {
-	   "fips": 22015,
-	   "state": "LA",
-	   "area_name": "Bossier Parish",
-	   "household_income": 51138
-	 },
-	 {
-	   "fips": 22017,
-	   "state": "LA",
-	   "area_name": "Caddo Parish",
-	   "household_income": 39812
-	 },
-	 {
-	   "fips": 22019,
-	   "state": "LA",
-	   "area_name": "Calcasieu Parish",
-	   "household_income": 45979
-	 },
-	 {
-	   "fips": 22021,
-	   "state": "LA",
-	   "area_name": "Caldwell Parish",
-	   "household_income": 36350
-	 },
-	 {
-	   "fips": 22023,
-	   "state": "LA",
-	   "area_name": "Cameron Parish",
-	   "household_income": 59300
-	 },
-	 {
-	   "fips": 22025,
-	   "state": "LA",
-	   "area_name": "Catahoula Parish",
-	   "household_income": 34116
-	 },
-	 {
-	   "fips": 22027,
-	   "state": "LA",
-	   "area_name": "Claiborne Parish",
-	   "household_income": 35385
-	 },
-	 {
-	   "fips": 22029,
-	   "state": "LA",
-	   "area_name": "Concordia Parish",
-	   "household_income": 31835
-	 },
-	 {
-	   "fips": 22031,
-	   "state": "LA",
-	   "area_name": "De Soto Parish",
-	   "household_income": 40642
-	 },
-	 {
-	   "fips": 22033,
-	   "state": "LA",
-	   "area_name": "East Baton Rouge Parish",
-	   "household_income": 46831
-	 },
-	 {
-	   "fips": 22035,
-	   "state": "LA",
-	   "area_name": "East Carroll Parish",
-	   "household_income": 25402
-	 },
-	 {
-	   "fips": 22037,
-	   "state": "LA",
-	   "area_name": "East Feliciana Parish",
-	   "household_income": 41651
-	 },
-	 {
-	   "fips": 22039,
-	   "state": "LA",
-	   "area_name": "Evangeline Parish",
-	   "household_income": 32615
-	 },
-	 {
-	   "fips": 22041,
-	   "state": "LA",
-	   "area_name": "Franklin Parish",
-	   "household_income": 32318
-	 },
-	 {
-	   "fips": 22043,
-	   "state": "LA",
-	   "area_name": "Grant Parish",
-	   "household_income": 40668
-	 },
-	 {
-	   "fips": 22045,
-	   "state": "LA",
-	   "area_name": "Iberia Parish",
-	   "household_income": 45226
-	 },
-	 {
-	   "fips": 22047,
-	   "state": "LA",
-	   "area_name": "Iberville Parish",
-	   "household_income": 47377
-	 },
-	 {
-	   "fips": 22049,
-	   "state": "LA",
-	   "area_name": "Jackson Parish",
-	   "household_income": 37130
-	 },
-	 {
-	   "fips": 22051,
-	   "state": "LA",
-	   "area_name": "Jefferson Parish",
-	   "household_income": 47024
-	 },
-	 {
-	   "fips": 22053,
-	   "state": "LA",
-	   "area_name": "Jefferson Davis Parish",
-	   "household_income": 37968
-	 },
-	 {
-	   "fips": 22055,
-	   "state": "LA",
-	   "area_name": "Lafayette Parish",
-	   "household_income": 51340
-	 },
-	 {
-	   "fips": 22057,
-	   "state": "LA",
-	   "area_name": "Lafourche Parish",
-	   "household_income": 47382
-	 },
-	 {
-	   "fips": 22059,
-	   "state": "LA",
-	   "area_name": "LaSalle Parish",
-	   "household_income": 44139
-	 },
-	 {
-	   "fips": 22061,
-	   "state": "LA",
-	   "area_name": "Lincoln Parish",
-	   "household_income": 32889
-	 },
-	 {
-	   "fips": 22063,
-	   "state": "LA",
-	   "area_name": "Livingston Parish",
-	   "household_income": 58818
-	 },
-	 {
-	   "fips": 22065,
-	   "state": "LA",
-	   "area_name": "Madison Parish",
-	   "household_income": 26732
-	 },
-	 {
-	   "fips": 22067,
-	   "state": "LA",
-	   "area_name": "Morehouse Parish",
-	   "household_income": 30636
-	 },
-	 {
-	   "fips": 22069,
-	   "state": "LA",
-	   "area_name": "Natchitoches Parish",
-	   "household_income": 34522
-	 },
-	 {
-	   "fips": 22071,
-	   "state": "LA",
-	   "area_name": "Orleans Parish",
-	   "household_income": 35468
-	 },
-	 {
-	   "fips": 22073,
-	   "state": "LA",
-	   "area_name": "Ouachita Parish",
-	   "household_income": 40877
-	 },
-	 {
-	   "fips": 22075,
-	   "state": "LA",
-	   "area_name": "Plaquemines Parish",
-	   "household_income": 51304
-	 },
-	 {
-	   "fips": 22077,
-	   "state": "LA",
-	   "area_name": "Pointe Coupee Parish",
-	   "household_income": 44469
-	 },
-	 {
-	   "fips": 22079,
-	   "state": "LA",
-	   "area_name": "Rapides Parish",
-	   "household_income": 40406
-	 },
-	 {
-	   "fips": 22081,
-	   "state": "LA",
-	   "area_name": "Red River Parish",
-	   "household_income": 33322
-	 },
-	 {
-	   "fips": 22083,
-	   "state": "LA",
-	   "area_name": "Richland Parish",
-	   "household_income": 36666
-	 },
-	 {
-	   "fips": 22085,
-	   "state": "LA",
-	   "area_name": "Sabine Parish",
-	   "household_income": 39561
-	 },
-	 {
-	   "fips": 22087,
-	   "state": "LA",
-	   "area_name": "St. Bernard Parish",
-	   "household_income": 45615
-	 },
-	 {
-	   "fips": 22089,
-	   "state": "LA",
-	   "area_name": "St. Charles Parish",
-	   "household_income": 60751
-	 },
-	 {
-	   "fips": 22091,
-	   "state": "LA",
-	   "area_name": "St. Helena Parish",
-	   "household_income": 35004
-	 },
-	 {
-	   "fips": 22093,
-	   "state": "LA",
-	   "area_name": "St. James Parish",
-	   "household_income": 47477
-	 },
-	 {
-	   "fips": 22095,
-	   "state": "LA",
-	   "area_name": "St. John the Baptist Parish",
-	   "household_income": 47225
-	 },
-	 {
-	   "fips": 22097,
-	   "state": "LA",
-	   "area_name": "St. Landry Parish",
-	   "household_income": 32683
-	 },
-	 {
-	   "fips": 22099,
-	   "state": "LA",
-	   "area_name": "St. Martin Parish",
-	   "household_income": 46713
-	 },
-	 {
-	   "fips": 22101,
-	   "state": "LA",
-	   "area_name": "St. Mary Parish",
-	   "household_income": 42075
-	 },
-	 {
-	   "fips": 22103,
-	   "state": "LA",
-	   "area_name": "St. Tammany Parish",
-	   "household_income": 63441
-	 },
-	 {
-	   "fips": 22105,
-	   "state": "LA",
-	   "area_name": "Tangipahoa Parish",
-	   "household_income": 39927
-	 },
-	 {
-	   "fips": 22107,
-	   "state": "LA",
-	   "area_name": "Tensas Parish",
-	   "household_income": 27522
-	 },
-	 {
-	   "fips": 22109,
-	   "state": "LA",
-	   "area_name": "Terrebonne Parish",
-	   "household_income": 49044
-	 },
-	 {
-	   "fips": 22111,
-	   "state": "LA",
-	   "area_name": "Union Parish",
-	   "household_income": 38998
-	 },
-	 {
-	   "fips": 22113,
-	   "state": "LA",
-	   "area_name": "Vermilion Parish",
-	   "household_income": 45331
-	 },
-	 {
-	   "fips": 22115,
-	   "state": "LA",
-	   "area_name": "Vernon Parish",
-	   "household_income": 46682
-	 },
-	 {
-	   "fips": 22117,
-	   "state": "LA",
-	   "area_name": "Washington Parish",
-	   "household_income": 29749
-	 },
-	 {
-	   "fips": 22119,
-	   "state": "LA",
-	   "area_name": "Webster Parish",
-	   "household_income": 36003
-	 },
-	 {
-	   "fips": 22121,
-	   "state": "LA",
-	   "area_name": "West Baton Rouge Parish",
-	   "household_income": 51550
-	 },
-	 {
-	   "fips": 22123,
-	   "state": "LA",
-	   "area_name": "West Carroll Parish",
-	   "household_income": 33959
-	 },
-	 {
-	   "fips": 22125,
-	   "state": "LA",
-	   "area_name": "West Feliciana Parish",
-	   "household_income": 53679
-	 },
-	 {
-	   "fips": 22127,
-	   "state": "LA",
-	   "area_name": "Winn Parish",
-	   "household_income": 36644
-	 },
-	 {
-	   "fips": 23001,
-	   "state": "ME",
-	   "area_name": "Androscoggin County",
-	   "household_income": 46701
-	 },
-	 {
-	   "fips": 23003,
-	   "state": "ME",
-	   "area_name": "Aroostook County",
-	   "household_income": 36066
-	 },
-	 {
-	   "fips": 23005,
-	   "state": "ME",
-	   "area_name": "Cumberland County",
-	   "household_income": 61436
-	 },
-	 {
-	   "fips": 23007,
-	   "state": "ME",
-	   "area_name": "Franklin County",
-	   "household_income": 41035
-	 },
-	 {
-	   "fips": 23009,
-	   "state": "ME",
-	   "area_name": "Hancock County",
-	   "household_income": 45807
-	 },
-	 {
-	   "fips": 23011,
-	   "state": "ME",
-	   "area_name": "Kennebec County",
-	   "household_income": 45556
-	 },
-	 {
-	   "fips": 23013,
-	   "state": "ME",
-	   "area_name": "Knox County",
-	   "household_income": 50002
-	 },
-	 {
-	   "fips": 23015,
-	   "state": "ME",
-	   "area_name": "Lincoln County",
-	   "household_income": 47905
-	 },
-	 {
-	   "fips": 23017,
-	   "state": "ME",
-	   "area_name": "Oxford County",
-	   "household_income": 40120
-	 },
-	 {
-	   "fips": 23019,
-	   "state": "ME",
-	   "area_name": "Penobscot County",
-	   "household_income": 42728
-	 },
-	 {
-	   "fips": 23021,
-	   "state": "ME",
-	   "area_name": "Piscataquis County",
-	   "household_income": 36994
-	 },
-	 {
-	   "fips": 23023,
-	   "state": "ME",
-	   "area_name": "Sagadahoc County",
-	   "household_income": 55630
-	 },
-	 {
-	   "fips": 23025,
-	   "state": "ME",
-	   "area_name": "Somerset County",
-	   "household_income": 39001
-	 },
-	 {
-	   "fips": 23027,
-	   "state": "ME",
-	   "area_name": "Waldo County",
-	   "household_income": 46598
-	 },
-	 {
-	   "fips": 23029,
-	   "state": "ME",
-	   "area_name": "Washington County",
-	   "household_income": 38057
-	 },
-	 {
-	   "fips": 23031,
-	   "state": "ME",
-	   "area_name": "York County",
-	   "household_income": 55482
-	 },
-	 {
-	   "fips": 24001,
-	   "state": "MD",
-	   "area_name": "Allegany County",
-	   "household_income": 39808
-	 },
-	 {
-	   "fips": 24003,
-	   "state": "MD",
-	   "area_name": "Anne Arundel County",
-	   "household_income": 86654
-	 },
-	 {
-	   "fips": 24005,
-	   "state": "MD",
-	   "area_name": "Baltimore County",
-	   "household_income": 67766
-	 },
-	 {
-	   "fips": 24009,
-	   "state": "MD",
-	   "area_name": "Calvert County",
-	   "household_income": 92446
-	 },
-	 {
-	   "fips": 24011,
-	   "state": "MD",
-	   "area_name": "Caroline County",
-	   "household_income": 49573
-	 },
-	 {
-	   "fips": 24013,
-	   "state": "MD",
-	   "area_name": "Carroll County",
-	   "household_income": 84500
-	 },
-	 {
-	   "fips": 24015,
-	   "state": "MD",
-	   "area_name": "Cecil County",
-	   "household_income": 62198
-	 },
-	 {
-	   "fips": 24017,
-	   "state": "MD",
-	   "area_name": "Charles County",
-	   "household_income": 86703
-	 },
-	 {
-	   "fips": 24019,
-	   "state": "MD",
-	   "area_name": "Dorchester County",
-	   "household_income": 42279
-	 },
-	 {
-	   "fips": 24021,
-	   "state": "MD",
-	   "area_name": "Frederick County",
-	   "household_income": 83698
-	 },
-	 {
-	   "fips": 24023,
-	   "state": "MD",
-	   "area_name": "Garrett County",
-	   "household_income": 47441
-	 },
-	 {
-	   "fips": 24025,
-	   "state": "MD",
-	   "area_name": "Harford County",
-	   "household_income": 79403
-	 },
-	 {
-	   "fips": 24027,
-	   "state": "MD",
-	   "area_name": "Howard County",
-	   "household_income": 106871
-	 },
-	 {
-	   "fips": 24029,
-	   "state": "MD",
-	   "area_name": "Kent County",
-	   "household_income": 53288
-	 },
-	 {
-	   "fips": 24031,
-	   "state": "MD",
-	   "area_name": "Montgomery County",
-	   "household_income": 97279
-	 },
-	 {
-	   "fips": 24033,
-	   "state": "MD",
-	   "area_name": "Prince George's County",
-	   "household_income": 71904
-	 },
-	 {
-	   "fips": 24035,
-	   "state": "MD",
-	   "area_name": "Queen Anne's County",
-	   "household_income": 80650
-	 },
-	 {
-	   "fips": 24037,
-	   "state": "MD",
-	   "area_name": "St. Mary's County",
-	   "household_income": 84686
-	 },
-	 {
-	   "fips": 24039,
-	   "state": "MD",
-	   "area_name": "Somerset County",
-	   "household_income": 38376
-	 },
-	 {
-	   "fips": 24041,
-	   "state": "MD",
-	   "area_name": "Talbot County",
-	   "household_income": 54836
-	 },
-	 {
-	   "fips": 24043,
-	   "state": "MD",
-	   "area_name": "Washington County",
-	   "household_income": 54606
-	 },
-	 {
-	   "fips": 24045,
-	   "state": "MD",
-	   "area_name": "Wicomico County",
-	   "household_income": 51927
-	 },
-	 {
-	   "fips": 24047,
-	   "state": "MD",
-	   "area_name": "Worcester County",
-	   "household_income": 55691
-	 },
-	 {
-	   "fips": 24510,
-	   "state": "MD",
-	   "area_name": "Baltimore city",
-	   "household_income": 41895
-	 },
-	 {
-	   "fips": 25001,
-	   "state": "MA",
-	   "area_name": "Barnstable County",
-	   "household_income": 64150
-	 },
-	 {
-	   "fips": 25003,
-	   "state": "MA",
-	   "area_name": "Berkshire County",
-	   "household_income": 49890
-	 },
-	 {
-	   "fips": 25005,
-	   "state": "MA",
-	   "area_name": "Bristol County",
-	   "household_income": 57732
-	 },
-	 {
-	   "fips": 25007,
-	   "state": "MA",
-	   "area_name": "Dukes County",
-	   "household_income": 61259
-	 },
-	 {
-	   "fips": 25009,
-	   "state": "MA",
-	   "area_name": "Essex County",
-	   "household_income": 70074
-	 },
-	 {
-	   "fips": 25011,
-	   "state": "MA",
-	   "area_name": "Franklin County",
-	   "household_income": 53953
-	 },
-	 {
-	   "fips": 25013,
-	   "state": "MA",
-	   "area_name": "Hampden County",
-	   "household_income": 49072
-	 },
-	 {
-	   "fips": 25015,
-	   "state": "MA",
-	   "area_name": "Hampshire County",
-	   "household_income": 57737
-	 },
-	 {
-	   "fips": 25017,
-	   "state": "MA",
-	   "area_name": "Middlesex County",
-	   "household_income": 84026
-	 },
-	 {
-	   "fips": 25019,
-	   "state": "MA",
-	   "area_name": "Nantucket County/town",
-	   "household_income": 82596
-	 },
-	 {
-	   "fips": 25021,
-	   "state": "MA",
-	   "area_name": "Norfolk County",
-	   "household_income": 90039
-	 },
-	 {
-	   "fips": 25023,
-	   "state": "MA",
-	   "area_name": "Plymouth County",
-	   "household_income": 74576
-	 },
-	 {
-	   "fips": 25025,
-	   "state": "MA",
-	   "area_name": "Suffolk County",
-	   "household_income": 54280
-	 },
-	 {
-	   "fips": 25027,
-	   "state": "MA",
-	   "area_name": "Worcester County",
-	   "household_income": 65217
-	 },
-	 {
-	   "fips": 26001,
-	   "state": "MI",
-	   "area_name": "Alcona County",
-	   "household_income": 36377
-	 },
-	 {
-	   "fips": 26003,
-	   "state": "MI",
-	   "area_name": "Alger County",
-	   "household_income": 45308
-	 },
-	 {
-	   "fips": 26005,
-	   "state": "MI",
-	   "area_name": "Allegan County",
-	   "household_income": 54232
-	 },
-	 {
-	   "fips": 26007,
-	   "state": "MI",
-	   "area_name": "Alpena County",
-	   "household_income": 38121
-	 },
-	 {
-	   "fips": 26009,
-	   "state": "MI",
-	   "area_name": "Antrim County",
-	   "household_income": 45743
-	 },
-	 {
-	   "fips": 26011,
-	   "state": "MI",
-	   "area_name": "Arenac County",
-	   "household_income": 36460
-	 },
-	 {
-	   "fips": 26013,
-	   "state": "MI",
-	   "area_name": "Baraga County",
-	   "household_income": 41624
-	 },
-	 {
-	   "fips": 26015,
-	   "state": "MI",
-	   "area_name": "Barry County",
-	   "household_income": 57235
-	 },
-	 {
-	   "fips": 26017,
-	   "state": "MI",
-	   "area_name": "Bay County",
-	   "household_income": 46061
-	 },
-	 {
-	   "fips": 26019,
-	   "state": "MI",
-	   "area_name": "Benzie County",
-	   "household_income": 48846
-	 },
-	 {
-	   "fips": 26021,
-	   "state": "MI",
-	   "area_name": "Berrien County",
-	   "household_income": 44145
-	 },
-	 {
-	   "fips": 26023,
-	   "state": "MI",
-	   "area_name": "Branch County",
-	   "household_income": 46371
-	 },
-	 {
-	   "fips": 26025,
-	   "state": "MI",
-	   "area_name": "Calhoun County",
-	   "household_income": 45916
-	 },
-	 {
-	   "fips": 26027,
-	   "state": "MI",
-	   "area_name": "Cass County",
-	   "household_income": 48030
-	 },
-	 {
-	   "fips": 26029,
-	   "state": "MI",
-	   "area_name": "Charlevoix County",
-	   "household_income": 47991
-	 },
-	 {
-	   "fips": 26031,
-	   "state": "MI",
-	   "area_name": "Cheboygan County",
-	   "household_income": 41930
-	 },
-	 {
-	   "fips": 26033,
-	   "state": "MI",
-	   "area_name": "Chippewa County",
-	   "household_income": 38989
-	 },
-	 {
-	   "fips": 26035,
-	   "state": "MI",
-	   "area_name": "Clare County",
-	   "household_income": 34655
-	 },
-	 {
-	   "fips": 26037,
-	   "state": "MI",
-	   "area_name": "Clinton County",
-	   "household_income": 60650
-	 },
-	 {
-	   "fips": 26039,
-	   "state": "MI",
-	   "area_name": "Crawford County",
-	   "household_income": 41101
-	 },
-	 {
-	   "fips": 26041,
-	   "state": "MI",
-	   "area_name": "Delta County",
-	   "household_income": 43338
-	 },
-	 {
-	   "fips": 26043,
-	   "state": "MI",
-	   "area_name": "Dickinson County",
-	   "household_income": 45174
-	 },
-	 {
-	   "fips": 26045,
-	   "state": "MI",
-	   "area_name": "Eaton County",
-	   "household_income": 57088
-	 },
-	 {
-	   "fips": 26047,
-	   "state": "MI",
-	   "area_name": "Emmet County",
-	   "household_income": 50191
-	 },
-	 {
-	   "fips": 26049,
-	   "state": "MI",
-	   "area_name": "Genesee County",
-	   "household_income": 41787
-	 },
-	 {
-	   "fips": 26051,
-	   "state": "MI",
-	   "area_name": "Gladwin County",
-	   "household_income": 39721
-	 },
-	 {
-	   "fips": 26053,
-	   "state": "MI",
-	   "area_name": "Gogebic County",
-	   "household_income": 33600
-	 },
-	 {
-	   "fips": 26055,
-	   "state": "MI",
-	   "area_name": "Grand Traverse County",
-	   "household_income": 55592
-	 },
-	 {
-	   "fips": 26057,
-	   "state": "MI",
-	   "area_name": "Gratiot County",
-	   "household_income": 43509
-	 },
-	 {
-	   "fips": 26059,
-	   "state": "MI",
-	   "area_name": "Hillsdale County",
-	   "household_income": 44780
-	 },
-	 {
-	   "fips": 26061,
-	   "state": "MI",
-	   "area_name": "Houghton County",
-	   "household_income": 39126
-	 },
-	 {
-	   "fips": 26063,
-	   "state": "MI",
-	   "area_name": "Huron County",
-	   "household_income": 41678
-	 },
-	 {
-	   "fips": 26065,
-	   "state": "MI",
-	   "area_name": "Ingham County",
-	   "household_income": 45840
-	 },
-	 {
-	   "fips": 26067,
-	   "state": "MI",
-	   "area_name": "Ionia County",
-	   "household_income": 48681
-	 },
-	 {
-	   "fips": 26069,
-	   "state": "MI",
-	   "area_name": "Iosco County",
-	   "household_income": 37122
-	 },
-	 {
-	   "fips": 26071,
-	   "state": "MI",
-	   "area_name": "Iron County",
-	   "household_income": 35961
-	 },
-	 {
-	   "fips": 26073,
-	   "state": "MI",
-	   "area_name": "Isabella County",
-	   "household_income": 42431
-	 },
-	 {
-	   "fips": 26075,
-	   "state": "MI",
-	   "area_name": "Jackson County",
-	   "household_income": 46670
-	 },
-	 {
-	   "fips": 26077,
-	   "state": "MI",
-	   "area_name": "Kalamazoo County",
-	   "household_income": 46283
-	 },
-	 {
-	   "fips": 26079,
-	   "state": "MI",
-	   "area_name": "Kalkaska County",
-	   "household_income": 40709
-	 },
-	 {
-	   "fips": 26081,
-	   "state": "MI",
-	   "area_name": "Kent County",
-	   "household_income": 53342
-	 },
-	 {
-	   "fips": 26083,
-	   "state": "MI",
-	   "area_name": "Keweenaw County",
-	   "household_income": 40411
-	 },
-	 {
-	   "fips": 26085,
-	   "state": "MI",
-	   "area_name": "Lake County",
-	   "household_income": 30990
-	 },
-	 {
-	   "fips": 26087,
-	   "state": "MI",
-	   "area_name": "Lapeer County",
-	   "household_income": 51510
-	 },
-	 {
-	   "fips": 26089,
-	   "state": "MI",
-	   "area_name": "Leelanau County",
-	   "household_income": 60622
-	 },
-	 {
-	   "fips": 26091,
-	   "state": "MI",
-	   "area_name": "Lenawee County",
-	   "household_income": 48194
-	 },
-	 {
-	   "fips": 26093,
-	   "state": "MI",
-	   "area_name": "Livingston County",
-	   "household_income": 74341
-	 },
-	 {
-	   "fips": 26095,
-	   "state": "MI",
-	   "area_name": "Luce County",
-	   "household_income": 37590
-	 },
-	 {
-	   "fips": 26097,
-	   "state": "MI",
-	   "area_name": "Mackinac County",
-	   "household_income": 39359
-	 },
-	 {
-	   "fips": 26099,
-	   "state": "MI",
-	   "area_name": "Macomb County",
-	   "household_income": 54865
-	 },
-	 {
-	   "fips": 26101,
-	   "state": "MI",
-	   "area_name": "Manistee County",
-	   "household_income": 37477
-	 },
-	 {
-	   "fips": 26103,
-	   "state": "MI",
-	   "area_name": "Marquette County",
-	   "household_income": 44735
-	 },
-	 {
-	   "fips": 26105,
-	   "state": "MI",
-	   "area_name": "Mason County",
-	   "household_income": 42896
-	 },
-	 {
-	   "fips": 26107,
-	   "state": "MI",
-	   "area_name": "Mecosta County",
-	   "household_income": 41572
-	 },
-	 {
-	   "fips": 26109,
-	   "state": "MI",
-	   "area_name": "Menominee County",
-	   "household_income": 42191
-	 },
-	 {
-	   "fips": 26111,
-	   "state": "MI",
-	   "area_name": "Midland County",
-	   "household_income": 51629
-	 },
-	 {
-	   "fips": 26113,
-	   "state": "MI",
-	   "area_name": "Missaukee County",
-	   "household_income": 40455
-	 },
-	 {
-	   "fips": 26115,
-	   "state": "MI",
-	   "area_name": "Monroe County",
-	   "household_income": 57719
-	 },
-	 {
-	   "fips": 26117,
-	   "state": "MI",
-	   "area_name": "Montcalm County",
-	   "household_income": 41554
-	 },
-	 {
-	   "fips": 26119,
-	   "state": "MI",
-	   "area_name": "Montmorency County",
-	   "household_income": 37961
-	 },
-	 {
-	   "fips": 26121,
-	   "state": "MI",
-	   "area_name": "Muskegon County",
-	   "household_income": 42588
-	 },
-	 {
-	   "fips": 26123,
-	   "state": "MI",
-	   "area_name": "Newaygo County",
-	   "household_income": 41588
-	 },
-	 {
-	   "fips": 26125,
-	   "state": "MI",
-	   "area_name": "Oakland County",
-	   "household_income": 69378
-	 },
-	 {
-	   "fips": 26127,
-	   "state": "MI",
-	   "area_name": "Oceana County",
-	   "household_income": 41166
-	 },
-	 {
-	   "fips": 26129,
-	   "state": "MI",
-	   "area_name": "Ogemaw County",
-	   "household_income": 35968
-	 },
-	 {
-	   "fips": 26131,
-	   "state": "MI",
-	   "area_name": "Ontonagon County",
-	   "household_income": 35387
-	 },
-	 {
-	   "fips": 26133,
-	   "state": "MI",
-	   "area_name": "Osceola County",
-	   "household_income": 40235
-	 },
-	 {
-	   "fips": 26135,
-	   "state": "MI",
-	   "area_name": "Oscoda County",
-	   "household_income": 33975
-	 },
-	 {
-	   "fips": 26137,
-	   "state": "MI",
-	   "area_name": "Otsego County",
-	   "household_income": 44693
-	 },
-	 {
-	   "fips": 26139,
-	   "state": "MI",
-	   "area_name": "Ottawa County",
-	   "household_income": 60577
-	 },
-	 {
-	   "fips": 26141,
-	   "state": "MI",
-	   "area_name": "Presque Isle County",
-	   "household_income": 39420
-	 },
-	 {
-	   "fips": 26143,
-	   "state": "MI",
-	   "area_name": "Roscommon County",
-	   "household_income": 35002
-	 },
-	 {
-	   "fips": 26145,
-	   "state": "MI",
-	   "area_name": "Saginaw County",
-	   "household_income": 44548
-	 },
-	 {
-	   "fips": 26147,
-	   "state": "MI",
-	   "area_name": "St. Clair County",
-	   "household_income": 50303
-	 },
-	 {
-	   "fips": 26149,
-	   "state": "MI",
-	   "area_name": "St. Joseph County",
-	   "household_income": 43687
-	 },
-	 {
-	   "fips": 26151,
-	   "state": "MI",
-	   "area_name": "Sanilac County",
-	   "household_income": 42081
-	 },
-	 {
-	   "fips": 26153,
-	   "state": "MI",
-	   "area_name": "Schoolcraft County",
-	   "household_income": 39539
-	 },
-	 {
-	   "fips": 26155,
-	   "state": "MI",
-	   "area_name": "Shiawassee County",
-	   "household_income": 47882
-	 },
-	 {
-	   "fips": 26157,
-	   "state": "MI",
-	   "area_name": "Tuscola County",
-	   "household_income": 43186
-	 },
-	 {
-	   "fips": 26159,
-	   "state": "MI",
-	   "area_name": "Van Buren County",
-	   "household_income": 46715
-	 },
-	 {
-	   "fips": 26161,
-	   "state": "MI",
-	   "area_name": "Washtenaw County",
-	   "household_income": 62861
-	 },
-	 {
-	   "fips": 26163,
-	   "state": "MI",
-	   "area_name": "Wayne County",
-	   "household_income": 41434
-	 },
-	 {
-	   "fips": 26165,
-	   "state": "MI",
-	   "area_name": "Wexford County",
-	   "household_income": 39807
-	 },
-	 {
-	   "fips": 27001,
-	   "state": "MN",
-	   "area_name": "Aitkin County",
-	   "household_income": 40676
-	 },
-	 {
-	   "fips": 27003,
-	   "state": "MN",
-	   "area_name": "Anoka County",
-	   "household_income": 70868
-	 },
-	 {
-	   "fips": 27005,
-	   "state": "MN",
-	   "area_name": "Becker County",
-	   "household_income": 51116
-	 },
-	 {
-	   "fips": 27007,
-	   "state": "MN",
-	   "area_name": "Beltrami County",
-	   "household_income": 43706
-	 },
-	 {
-	   "fips": 27009,
-	   "state": "MN",
-	   "area_name": "Benton County",
-	   "household_income": 52531
-	 },
-	 {
-	   "fips": 27011,
-	   "state": "MN",
-	   "area_name": "Big Stone County",
-	   "household_income": 46495
-	 },
-	 {
-	   "fips": 27013,
-	   "state": "MN",
-	   "area_name": "Blue Earth County",
-	   "household_income": 49513
-	 },
-	 {
-	   "fips": 27015,
-	   "state": "MN",
-	   "area_name": "Brown County",
-	   "household_income": 52272
-	 },
-	 {
-	   "fips": 27017,
-	   "state": "MN",
-	   "area_name": "Carlton County",
-	   "household_income": 53291
-	 },
-	 {
-	   "fips": 27019,
-	   "state": "MN",
-	   "area_name": "Carver County",
-	   "household_income": 88500
-	 },
-	 {
-	   "fips": 27021,
-	   "state": "MN",
-	   "area_name": "Cass County",
-	   "household_income": 45179
-	 },
-	 {
-	   "fips": 27023,
-	   "state": "MN",
-	   "area_name": "Chippewa County",
-	   "household_income": 51274
-	 },
-	 {
-	   "fips": 27025,
-	   "state": "MN",
-	   "area_name": "Chisago County",
-	   "household_income": 75122
-	 },
-	 {
-	   "fips": 27027,
-	   "state": "MN",
-	   "area_name": "Clay County",
-	   "household_income": 55560
-	 },
-	 {
-	   "fips": 27029,
-	   "state": "MN",
-	   "area_name": "Clearwater County",
-	   "household_income": 43674
-	 },
-	 {
-	   "fips": 27031,
-	   "state": "MN",
-	   "area_name": "Cook County",
-	   "household_income": 48593
-	 },
-	 {
-	   "fips": 27033,
-	   "state": "MN",
-	   "area_name": "Cottonwood County",
-	   "household_income": 48176
-	 },
-	 {
-	   "fips": 27035,
-	   "state": "MN",
-	   "area_name": "Crow Wing County",
-	   "household_income": 50162
-	 },
-	 {
-	   "fips": 27037,
-	   "state": "MN",
-	   "area_name": "Dakota County",
-	   "household_income": 76269
-	 },
-	 {
-	   "fips": 27039,
-	   "state": "MN",
-	   "area_name": "Dodge County",
-	   "household_income": 68777
-	 },
-	 {
-	   "fips": 27041,
-	   "state": "MN",
-	   "area_name": "Douglas County",
-	   "household_income": 52298
-	 },
-	 {
-	   "fips": 27043,
-	   "state": "MN",
-	   "area_name": "Faribault County",
-	   "household_income": 48163
-	 },
-	 {
-	   "fips": 27045,
-	   "state": "MN",
-	   "area_name": "Fillmore County",
-	   "household_income": 52444
-	 },
-	 {
-	   "fips": 27047,
-	   "state": "MN",
-	   "area_name": "Freeborn County",
-	   "household_income": 47203
-	 },
-	 {
-	   "fips": 27049,
-	   "state": "MN",
-	   "area_name": "Goodhue County",
-	   "household_income": 60869
-	 },
-	 {
-	   "fips": 27051,
-	   "state": "MN",
-	   "area_name": "Grant County",
-	   "household_income": 48179
-	 },
-	 {
-	   "fips": 27053,
-	   "state": "MN",
-	   "area_name": "Hennepin County",
-	   "household_income": 64490
-	 },
-	 {
-	   "fips": 27055,
-	   "state": "MN",
-	   "area_name": "Houston County",
-	   "household_income": 59900
-	 },
-	 {
-	   "fips": 27057,
-	   "state": "MN",
-	   "area_name": "Hubbard County",
-	   "household_income": 47944
-	 },
-	 {
-	   "fips": 27059,
-	   "state": "MN",
-	   "area_name": "Isanti County",
-	   "household_income": 65342
-	 },
-	 {
-	   "fips": 27061,
-	   "state": "MN",
-	   "area_name": "Itasca County",
-	   "household_income": 48525
-	 },
-	 {
-	   "fips": 27063,
-	   "state": "MN",
-	   "area_name": "Jackson County",
-	   "household_income": 53700
-	 },
-	 {
-	   "fips": 27065,
-	   "state": "MN",
-	   "area_name": "Kanabec County",
-	   "household_income": 48908
-	 },
-	 {
-	   "fips": 27067,
-	   "state": "MN",
-	   "area_name": "Kandiyohi County",
-	   "household_income": 57405
-	 },
-	 {
-	   "fips": 27069,
-	   "state": "MN",
-	   "area_name": "Kittson County",
-	   "household_income": 50372
-	 },
-	 {
-	   "fips": 27071,
-	   "state": "MN",
-	   "area_name": "Koochiching County",
-	   "household_income": 44113
-	 },
-	 {
-	   "fips": 27073,
-	   "state": "MN",
-	   "area_name": "Lac qui Parle County",
-	   "household_income": 48245
-	 },
-	 {
-	   "fips": 27075,
-	   "state": "MN",
-	   "area_name": "Lake County",
-	   "household_income": 52381
-	 },
-	 {
-	   "fips": 27077,
-	   "state": "MN",
-	   "area_name": "Lake of the Woods County",
-	   "household_income": 44727
-	 },
-	 {
-	   "fips": 27079,
-	   "state": "MN",
-	   "area_name": "Le Sueur County",
-	   "household_income": 61665
-	 },
-	 {
-	   "fips": 27081,
-	   "state": "MN",
-	   "area_name": "Lincoln County",
-	   "household_income": 48449
-	 },
-	 {
-	   "fips": 27083,
-	   "state": "MN",
-	   "area_name": "Lyon County",
-	   "household_income": 53552
-	 },
-	 {
-	   "fips": 27085,
-	   "state": "MN",
-	   "area_name": "McLeod County",
-	   "household_income": 60114
-	 },
-	 {
-	   "fips": 27087,
-	   "state": "MN",
-	   "area_name": "Mahnomen County",
-	   "household_income": 39926
-	 },
-	 {
-	   "fips": 27089,
-	   "state": "MN",
-	   "area_name": "Marshall County",
-	   "household_income": 54433
-	 },
-	 {
-	   "fips": 27091,
-	   "state": "MN",
-	   "area_name": "Martin County",
-	   "household_income": 52042
-	 },
-	 {
-	   "fips": 27093,
-	   "state": "MN",
-	   "area_name": "Meeker County",
-	   "household_income": 54354
-	 },
-	 {
-	   "fips": 27095,
-	   "state": "MN",
-	   "area_name": "Mille Lacs County",
-	   "household_income": 48434
-	 },
-	 {
-	   "fips": 27097,
-	   "state": "MN",
-	   "area_name": "Morrison County",
-	   "household_income": 50685
-	 },
-	 {
-	   "fips": 27099,
-	   "state": "MN",
-	   "area_name": "Mower County",
-	   "household_income": 47537
-	 },
-	 {
-	   "fips": 27101,
-	   "state": "MN",
-	   "area_name": "Murray County",
-	   "household_income": 52219
-	 },
-	 {
-	   "fips": 27103,
-	   "state": "MN",
-	   "area_name": "Nicollet County",
-	   "household_income": 61279
-	 },
-	 {
-	   "fips": 27105,
-	   "state": "MN",
-	   "area_name": "Nobles County",
-	   "household_income": 50684
-	 },
-	 {
-	   "fips": 27107,
-	   "state": "MN",
-	   "area_name": "Norman County",
-	   "household_income": 51597
-	 },
-	 {
-	   "fips": 27109,
-	   "state": "MN",
-	   "area_name": "Olmsted County",
-	   "household_income": 69430
-	 },
-	 {
-	   "fips": 27111,
-	   "state": "MN",
-	   "area_name": "Otter Tail County",
-	   "household_income": 51510
-	 },
-	 {
-	   "fips": 27113,
-	   "state": "MN",
-	   "area_name": "Pennington County",
-	   "household_income": 50905
-	 },
-	 {
-	   "fips": 27115,
-	   "state": "MN",
-	   "area_name": "Pine County",
-	   "household_income": 42157
-	 },
-	 {
-	   "fips": 27117,
-	   "state": "MN",
-	   "area_name": "Pipestone County",
-	   "household_income": 47164
-	 },
-	 {
-	   "fips": 27119,
-	   "state": "MN",
-	   "area_name": "Polk County",
-	   "household_income": 50175
-	 },
-	 {
-	   "fips": 27121,
-	   "state": "MN",
-	   "area_name": "Pope County",
-	   "household_income": 51343
-	 },
-	 {
-	   "fips": 27123,
-	   "state": "MN",
-	   "area_name": "Ramsey County",
-	   "household_income": 55070
-	 },
-	 {
-	   "fips": 27125,
-	   "state": "MN",
-	   "area_name": "Red Lake County",
-	   "household_income": 48188
-	 },
-	 {
-	   "fips": 27127,
-	   "state": "MN",
-	   "area_name": "Redwood County",
-	   "household_income": 49934
-	 },
-	 {
-	   "fips": 27129,
-	   "state": "MN",
-	   "area_name": "Renville County",
-	   "household_income": 54386
-	 },
-	 {
-	   "fips": 27131,
-	   "state": "MN",
-	   "area_name": "Rice County",
-	   "household_income": 60317
-	 },
-	 {
-	   "fips": 27133,
-	   "state": "MN",
-	   "area_name": "Rock County",
-	   "household_income": 55352
-	 },
-	 {
-	   "fips": 27135,
-	   "state": "MN",
-	   "area_name": "Roseau County",
-	   "household_income": 53838
-	 },
-	 {
-	   "fips": 27137,
-	   "state": "MN",
-	   "area_name": "St. Louis County",
-	   "household_income": 49714
-	 },
-	 {
-	   "fips": 27139,
-	   "state": "MN",
-	   "area_name": "Scott County",
-	   "household_income": 91688
-	 },
-	 {
-	   "fips": 27141,
-	   "state": "MN",
-	   "area_name": "Sherburne County",
-	   "household_income": 76512
-	 },
-	 {
-	   "fips": 27143,
-	   "state": "MN",
-	   "area_name": "Sibley County",
-	   "household_income": 59893
-	 },
-	 {
-	   "fips": 27145,
-	   "state": "MN",
-	   "area_name": "Stearns County",
-	   "household_income": 55832
-	 },
-	 {
-	   "fips": 27147,
-	   "state": "MN",
-	   "area_name": "Steele County",
-	   "household_income": 57850
-	 },
-	 {
-	   "fips": 27149,
-	   "state": "MN",
-	   "area_name": "Stevens County",
-	   "household_income": 55292
-	 },
-	 {
-	   "fips": 27151,
-	   "state": "MN",
-	   "area_name": "Swift County",
-	   "household_income": 51032
-	 },
-	 {
-	   "fips": 27153,
-	   "state": "MN",
-	   "area_name": "Todd County",
-	   "household_income": 43287
-	 },
-	 {
-	   "fips": 27155,
-	   "state": "MN",
-	   "area_name": "Traverse County",
-	   "household_income": 49536
-	 },
-	 {
-	   "fips": 27157,
-	   "state": "MN",
-	   "area_name": "Wabasha County",
-	   "household_income": 58752
-	 },
-	 {
-	   "fips": 27159,
-	   "state": "MN",
-	   "area_name": "Wadena County",
-	   "household_income": 41909
-	 },
-	 {
-	   "fips": 27161,
-	   "state": "MN",
-	   "area_name": "Waseca County",
-	   "household_income": 54183
-	 },
-	 {
-	   "fips": 27163,
-	   "state": "MN",
-	   "area_name": "Washington County",
-	   "household_income": 84113
-	 },
-	 {
-	   "fips": 27165,
-	   "state": "MN",
-	   "area_name": "Watonwan County",
-	   "household_income": 48658
-	 },
-	 {
-	   "fips": 27167,
-	   "state": "MN",
-	   "area_name": "Wilkin County",
-	   "household_income": 54536
-	 },
-	 {
-	   "fips": 27169,
-	   "state": "MN",
-	   "area_name": "Winona County",
-	   "household_income": 49365
-	 },
-	 {
-	   "fips": 27171,
-	   "state": "MN",
-	   "area_name": "Wright County",
-	   "household_income": 76489
-	 },
-	 {
-	   "fips": 27173,
-	   "state": "MN",
-	   "area_name": "Yellow Medicine County",
-	   "household_income": 51028
-	 },
-	 {
-	   "fips": 28001,
-	   "state": "MS",
-	   "area_name": "Adams County",
-	   "household_income": 32327
-	 },
-	 {
-	   "fips": 28003,
-	   "state": "MS",
-	   "area_name": "Alcorn County",
-	   "household_income": 35180
-	 },
-	 {
-	   "fips": 28005,
-	   "state": "MS",
-	   "area_name": "Amite County",
-	   "household_income": 30668
-	 },
-	 {
-	   "fips": 28007,
-	   "state": "MS",
-	   "area_name": "Attala County",
-	   "household_income": 32521
-	 },
-	 {
-	   "fips": 28009,
-	   "state": "MS",
-	   "area_name": "Benton County",
-	   "household_income": 30665
-	 },
-	 {
-	   "fips": 28011,
-	   "state": "MS",
-	   "area_name": "Bolivar County",
-	   "household_income": 29297
-	 },
-	 {
-	   "fips": 28013,
-	   "state": "MS",
-	   "area_name": "Calhoun County",
-	   "household_income": 33141
-	 },
-	 {
-	   "fips": 28015,
-	   "state": "MS",
-	   "area_name": "Carroll County",
-	   "household_income": 38219
-	 },
-	 {
-	   "fips": 28017,
-	   "state": "MS",
-	   "area_name": "Chickasaw County",
-	   "household_income": 31616
-	 },
-	 {
-	   "fips": 28019,
-	   "state": "MS",
-	   "area_name": "Choctaw County",
-	   "household_income": 34548
-	 },
-	 {
-	   "fips": 28021,
-	   "state": "MS",
-	   "area_name": "Claiborne County",
-	   "household_income": 26083
-	 },
-	 {
-	   "fips": 28023,
-	   "state": "MS",
-	   "area_name": "Clarke County",
-	   "household_income": 34910
-	 },
-	 {
-	   "fips": 28025,
-	   "state": "MS",
-	   "area_name": "Clay County",
-	   "household_income": 33939
-	 },
-	 {
-	   "fips": 28027,
-	   "state": "MS",
-	   "area_name": "Coahoma County",
-	   "household_income": 28647
-	 },
-	 {
-	   "fips": 28029,
-	   "state": "MS",
-	   "area_name": "Copiah County",
-	   "household_income": 35314
-	 },
-	 {
-	   "fips": 28031,
-	   "state": "MS",
-	   "area_name": "Covington County",
-	   "household_income": 31835
-	 },
-	 {
-	   "fips": 28033,
-	   "state": "MS",
-	   "area_name": "DeSoto County",
-	   "household_income": 58479
-	 },
-	 {
-	   "fips": 28035,
-	   "state": "MS",
-	   "area_name": "Forrest County",
-	   "household_income": 36808
-	 },
-	 {
-	   "fips": 28037,
-	   "state": "MS",
-	   "area_name": "Franklin County",
-	   "household_income": 36544
-	 },
-	 {
-	   "fips": 28039,
-	   "state": "MS",
-	   "area_name": "George County",
-	   "household_income": 44811
-	 },
-	 {
-	   "fips": 28041,
-	   "state": "MS",
-	   "area_name": "Greene County",
-	   "household_income": 39615
-	 },
-	 {
-	   "fips": 28043,
-	   "state": "MS",
-	   "area_name": "Grenada County",
-	   "household_income": 33650
-	 },
-	 {
-	   "fips": 28045,
-	   "state": "MS",
-	   "area_name": "Hancock County",
-	   "household_income": 46288
-	 },
-	 {
-	   "fips": 28047,
-	   "state": "MS",
-	   "area_name": "Harrison County",
-	   "household_income": 41010
-	 },
-	 {
-	   "fips": 28049,
-	   "state": "MS",
-	   "area_name": "Hinds County",
-	   "household_income": 38454
-	 },
-	 {
-	   "fips": 28051,
-	   "state": "MS",
-	   "area_name": "Holmes County",
-	   "household_income": 22640
-	 },
-	 {
-	   "fips": 28053,
-	   "state": "MS",
-	   "area_name": "Humphreys County",
-	   "household_income": 25562
-	 },
-	 {
-	   "fips": 28055,
-	   "state": "MS",
-	   "area_name": "Issaquena County",
-	   "household_income": 37096
-	 },
-	 {
-	   "fips": 28057,
-	   "state": "MS",
-	   "area_name": "Itawamba County",
-	   "household_income": 38366
-	 },
-	 {
-	   "fips": 28059,
-	   "state": "MS",
-	   "area_name": "Jackson County",
-	   "household_income": 48018
-	 },
-	 {
-	   "fips": 28061,
-	   "state": "MS",
-	   "area_name": "Jasper County",
-	   "household_income": 35019
-	 },
-	 {
-	   "fips": 28063,
-	   "state": "MS",
-	   "area_name": "Jefferson County",
-	   "household_income": 26408
-	 },
-	 {
-	   "fips": 28065,
-	   "state": "MS",
-	   "area_name": "Jefferson Davis County",
-	   "household_income": 28271
-	 },
-	 {
-	   "fips": 28067,
-	   "state": "MS",
-	   "area_name": "Jones County",
-	   "household_income": 37367
-	 },
-	 {
-	   "fips": 28069,
-	   "state": "MS",
-	   "area_name": "Kemper County",
-	   "household_income": 33015
-	 },
-	 {
-	   "fips": 28071,
-	   "state": "MS",
-	   "area_name": "Lafayette County",
-	   "household_income": 40797
-	 },
-	 {
-	   "fips": 28073,
-	   "state": "MS",
-	   "area_name": "Lamar County",
-	   "household_income": 51389
-	 },
-	 {
-	   "fips": 28075,
-	   "state": "MS",
-	   "area_name": "Lauderdale County",
-	   "household_income": 38869
-	 },
-	 {
-	   "fips": 28077,
-	   "state": "MS",
-	   "area_name": "Lawrence County",
-	   "household_income": 38471
-	 },
-	 {
-	   "fips": 28079,
-	   "state": "MS",
-	   "area_name": "Leake County",
-	   "household_income": 32239
-	 },
-	 {
-	   "fips": 28081,
-	   "state": "MS",
-	   "area_name": "Lee County",
-	   "household_income": 43374
-	 },
-	 {
-	   "fips": 28083,
-	   "state": "MS",
-	   "area_name": "Leflore County",
-	   "household_income": 26439
-	 },
-	 {
-	   "fips": 28085,
-	   "state": "MS",
-	   "area_name": "Lincoln County",
-	   "household_income": 36118
-	 },
-	 {
-	   "fips": 28087,
-	   "state": "MS",
-	   "area_name": "Lowndes County",
-	   "household_income": 39937
-	 },
-	 {
-	   "fips": 28089,
-	   "state": "MS",
-	   "area_name": "Madison County",
-	   "household_income": 66671
-	 },
-	 {
-	   "fips": 28091,
-	   "state": "MS",
-	   "area_name": "Marion County",
-	   "household_income": 33428
-	 },
-	 {
-	   "fips": 28093,
-	   "state": "MS",
-	   "area_name": "Marshall County",
-	   "household_income": 37554
-	 },
-	 {
-	   "fips": 28095,
-	   "state": "MS",
-	   "area_name": "Monroe County",
-	   "household_income": 36810
-	 },
-	 {
-	   "fips": 28097,
-	   "state": "MS",
-	   "area_name": "Montgomery County",
-	   "household_income": 31963
-	 },
-	 {
-	   "fips": 28099,
-	   "state": "MS",
-	   "area_name": "Neshoba County",
-	   "household_income": 37686
-	 },
-	 {
-	   "fips": 28101,
-	   "state": "MS",
-	   "area_name": "Newton County",
-	   "household_income": 35185
-	 },
-	 {
-	   "fips": 28103,
-	   "state": "MS",
-	   "area_name": "Noxubee County",
-	   "household_income": 28730
-	 },
-	 {
-	   "fips": 28105,
-	   "state": "MS",
-	   "area_name": "Oktibbeha County",
-	   "household_income": 34429
-	 },
-	 {
-	   "fips": 28107,
-	   "state": "MS",
-	   "area_name": "Panola County",
-	   "household_income": 34526
-	 },
-	 {
-	   "fips": 28109,
-	   "state": "MS",
-	   "area_name": "Pearl River County",
-	   "household_income": 38465
-	 },
-	 {
-	   "fips": 28111,
-	   "state": "MS",
-	   "area_name": "Perry County",
-	   "household_income": 32459
-	 },
-	 {
-	   "fips": 28113,
-	   "state": "MS",
-	   "area_name": "Pike County",
-	   "household_income": 30078
-	 },
-	 {
-	   "fips": 28115,
-	   "state": "MS",
-	   "area_name": "Pontotoc County",
-	   "household_income": 40198
-	 },
-	 {
-	   "fips": 28117,
-	   "state": "MS",
-	   "area_name": "Prentiss County",
-	   "household_income": 34794
-	 },
-	 {
-	   "fips": 28119,
-	   "state": "MS",
-	   "area_name": "Quitman County",
-	   "household_income": 26204
-	 },
-	 {
-	   "fips": 28121,
-	   "state": "MS",
-	   "area_name": "Rankin County",
-	   "household_income": 58368
-	 },
-	 {
-	   "fips": 28123,
-	   "state": "MS",
-	   "area_name": "Scott County",
-	   "household_income": 32049
-	 },
-	 {
-	   "fips": 28125,
-	   "state": "MS",
-	   "area_name": "Sharkey County",
-	   "household_income": 27877
-	 },
-	 {
-	   "fips": 28127,
-	   "state": "MS",
-	   "area_name": "Simpson County",
-	   "household_income": 34338
-	 },
-	 {
-	   "fips": 28129,
-	   "state": "MS",
-	   "area_name": "Smith County",
-	   "household_income": 38975
-	 },
-	 {
-	   "fips": 28131,
-	   "state": "MS",
-	   "area_name": "Stone County",
-	   "household_income": 41136
-	 },
-	 {
-	   "fips": 28133,
-	   "state": "MS",
-	   "area_name": "Sunflower County",
-	   "household_income": 29227
-	 },
-	 {
-	   "fips": 28135,
-	   "state": "MS",
-	   "area_name": "Tallahatchie County",
-	   "household_income": 28456
-	 },
-	 {
-	   "fips": 28137,
-	   "state": "MS",
-	   "area_name": "Tate County",
-	   "household_income": 40975
-	 },
-	 {
-	   "fips": 28139,
-	   "state": "MS",
-	   "area_name": "Tippah County",
-	   "household_income": 37026
-	 },
-	 {
-	   "fips": 28141,
-	   "state": "MS",
-	   "area_name": "Tishomingo County",
-	   "household_income": 35550
-	 },
-	 {
-	   "fips": 28143,
-	   "state": "MS",
-	   "area_name": "Tunica County",
-	   "household_income": 30689
-	 },
-	 {
-	   "fips": 28145,
-	   "state": "MS",
-	   "area_name": "Union County",
-	   "household_income": 37667
-	 },
-	 {
-	   "fips": 28147,
-	   "state": "MS",
-	   "area_name": "Walthall County",
-	   "household_income": 31607
-	 },
-	 {
-	   "fips": 28149,
-	   "state": "MS",
-	   "area_name": "Warren County",
-	   "household_income": 40397
-	 },
-	 {
-	   "fips": 28151,
-	   "state": "MS",
-	   "area_name": "Washington County",
-	   "household_income": 30292
-	 },
-	 {
-	   "fips": 28153,
-	   "state": "MS",
-	   "area_name": "Wayne County",
-	   "household_income": 35425
-	 },
-	 {
-	   "fips": 28155,
-	   "state": "MS",
-	   "area_name": "Webster County",
-	   "household_income": 34073
-	 },
-	 {
-	   "fips": 28157,
-	   "state": "MS",
-	   "area_name": "Wilkinson County",
-	   "household_income": 27596
-	 },
-	 {
-	   "fips": 28159,
-	   "state": "MS",
-	   "area_name": "Winston County",
-	   "household_income": 34403
-	 },
-	 {
-	   "fips": 28161,
-	   "state": "MS",
-	   "area_name": "Yalobusha County",
-	   "household_income": 34494
-	 },
-	 {
-	   "fips": 28163,
-	   "state": "MS",
-	   "area_name": "Yazoo County",
-	   "household_income": 30313
-	 },
-	 {
-	   "fips": 29001,
-	   "state": "MO",
-	   "area_name": "Adair County",
-	   "household_income": 35425
-	 },
-	 {
-	   "fips": 29003,
-	   "state": "MO",
-	   "area_name": "Andrew County",
-	   "household_income": 56309
-	 },
-	 {
-	   "fips": 29005,
-	   "state": "MO",
-	   "area_name": "Atchison County",
-	   "household_income": 45997
-	 },
-	 {
-	   "fips": 29007,
-	   "state": "MO",
-	   "area_name": "Audrain County",
-	   "household_income": 41302
-	 },
-	 {
-	   "fips": 29009,
-	   "state": "MO",
-	   "area_name": "Barry County",
-	   "household_income": 38139
-	 },
-	 {
-	   "fips": 29011,
-	   "state": "MO",
-	   "area_name": "Barton County",
-	   "household_income": 37581
-	 },
-	 {
-	   "fips": 29013,
-	   "state": "MO",
-	   "area_name": "Bates County",
-	   "household_income": 41462
-	 },
-	 {
-	   "fips": 29015,
-	   "state": "MO",
-	   "area_name": "Benton County",
-	   "household_income": 33236
-	 },
-	 {
-	   "fips": 29017,
-	   "state": "MO",
-	   "area_name": "Bollinger County",
-	   "household_income": 39033
-	 },
-	 {
-	   "fips": 29019,
-	   "state": "MO",
-	   "area_name": "Boone County",
-	   "household_income": 50305
-	 },
-	 {
-	   "fips": 29021,
-	   "state": "MO",
-	   "area_name": "Buchanan County",
-	   "household_income": 45431
-	 },
-	 {
-	   "fips": 29023,
-	   "state": "MO",
-	   "area_name": "Butler County",
-	   "household_income": 35774
-	 },
-	 {
-	   "fips": 29025,
-	   "state": "MO",
-	   "area_name": "Caldwell County",
-	   "household_income": 43111
-	 },
-	 {
-	   "fips": 29027,
-	   "state": "MO",
-	   "area_name": "Callaway County",
-	   "household_income": 49384
-	 },
-	 {
-	   "fips": 29029,
-	   "state": "MO",
-	   "area_name": "Camden County",
-	   "household_income": 44410
-	 },
-	 {
-	   "fips": 29031,
-	   "state": "MO",
-	   "area_name": "Cape Girardeau County",
-	   "household_income": 47705
-	 },
-	 {
-	   "fips": 29033,
-	   "state": "MO",
-	   "area_name": "Carroll County",
-	   "household_income": 39017
-	 },
-	 {
-	   "fips": 29035,
-	   "state": "MO",
-	   "area_name": "Carter County",
-	   "household_income": 32170
-	 },
-	 {
-	   "fips": 29037,
-	   "state": "MO",
-	   "area_name": "Cass County",
-	   "household_income": 60970
-	 },
-	 {
-	   "fips": 29039,
-	   "state": "MO",
-	   "area_name": "Cedar County",
-	   "household_income": 33631
-	 },
-	 {
-	   "fips": 29041,
-	   "state": "MO",
-	   "area_name": "Chariton County",
-	   "household_income": 43049
-	 },
-	 {
-	   "fips": 29043,
-	   "state": "MO",
-	   "area_name": "Christian County",
-	   "household_income": 51831
-	 },
-	 {
-	   "fips": 29045,
-	   "state": "MO",
-	   "area_name": "Clark County",
-	   "household_income": 43298
-	 },
-	 {
-	   "fips": 29047,
-	   "state": "MO",
-	   "area_name": "Clay County",
-	   "household_income": 61598
-	 },
-	 {
-	   "fips": 29049,
-	   "state": "MO",
-	   "area_name": "Clinton County",
-	   "household_income": 51221
-	 },
-	 {
-	   "fips": 29051,
-	   "state": "MO",
-	   "area_name": "Cole County",
-	   "household_income": 51885
-	 },
-	 {
-	   "fips": 29053,
-	   "state": "MO",
-	   "area_name": "Cooper County",
-	   "household_income": 42166
-	 },
-	 {
-	   "fips": 29055,
-	   "state": "MO",
-	   "area_name": "Crawford County",
-	   "household_income": 37379
-	 },
-	 {
-	   "fips": 29057,
-	   "state": "MO",
-	   "area_name": "Dade County",
-	   "household_income": 37173
-	 },
-	 {
-	   "fips": 29059,
-	   "state": "MO",
-	   "area_name": "Dallas County",
-	   "household_income": 34987
-	 },
-	 {
-	   "fips": 29061,
-	   "state": "MO",
-	   "area_name": "Daviess County",
-	   "household_income": 41610
-	 },
-	 {
-	   "fips": 29063,
-	   "state": "MO",
-	   "area_name": "DeKalb County",
-	   "household_income": 42174
-	 },
-	 {
-	   "fips": 29065,
-	   "state": "MO",
-	   "area_name": "Dent County",
-	   "household_income": 34411
-	 },
-	 {
-	   "fips": 29067,
-	   "state": "MO",
-	   "area_name": "Douglas County",
-	   "household_income": 31805
-	 },
-	 {
-	   "fips": 29069,
-	   "state": "MO",
-	   "area_name": "Dunklin County",
-	   "household_income": 31486
-	 },
-	 {
-	   "fips": 29071,
-	   "state": "MO",
-	   "area_name": "Franklin County",
-	   "household_income": 51978
-	 },
-	 {
-	   "fips": 29073,
-	   "state": "MO",
-	   "area_name": "Gasconade County",
-	   "household_income": 44065
-	 },
-	 {
-	   "fips": 29075,
-	   "state": "MO",
-	   "area_name": "Gentry County",
-	   "household_income": 39444
-	 },
-	 {
-	   "fips": 29077,
-	   "state": "MO",
-	   "area_name": "Greene County",
-	   "household_income": 40386
-	 },
-	 {
-	   "fips": 29079,
-	   "state": "MO",
-	   "area_name": "Grundy County",
-	   "household_income": 37911
-	 },
-	 {
-	   "fips": 29081,
-	   "state": "MO",
-	   "area_name": "Harrison County",
-	   "household_income": 37486
-	 },
-	 {
-	   "fips": 29083,
-	   "state": "MO",
-	   "area_name": "Henry County",
-	   "household_income": 39232
-	 },
-	 {
-	   "fips": 29085,
-	   "state": "MO",
-	   "area_name": "Hickory County",
-	   "household_income": 33707
-	 },
-	 {
-	   "fips": 29087,
-	   "state": "MO",
-	   "area_name": "Holt County",
-	   "household_income": 41652
-	 },
-	 {
-	   "fips": 29089,
-	   "state": "MO",
-	   "area_name": "Howard County",
-	   "household_income": 44188
-	 },
-	 {
-	   "fips": 29091,
-	   "state": "MO",
-	   "area_name": "Howell County",
-	   "household_income": 32662
-	 },
-	 {
-	   "fips": 29093,
-	   "state": "MO",
-	   "area_name": "Iron County",
-	   "household_income": 33091
-	 },
-	 {
-	   "fips": 29095,
-	   "state": "MO",
-	   "area_name": "Jackson County",
-	   "household_income": 46185
-	 },
-	 {
-	   "fips": 29097,
-	   "state": "MO",
-	   "area_name": "Jasper County",
-	   "household_income": 40047
-	 },
-	 {
-	   "fips": 29099,
-	   "state": "MO",
-	   "area_name": "Jefferson County",
-	   "household_income": 58976
-	 },
-	 {
-	   "fips": 29101,
-	   "state": "MO",
-	   "area_name": "Johnson County",
-	   "household_income": 49949
-	 },
-	 {
-	   "fips": 29103,
-	   "state": "MO",
-	   "area_name": "Knox County",
-	   "household_income": 37581
-	 },
-	 {
-	   "fips": 29105,
-	   "state": "MO",
-	   "area_name": "Laclede County",
-	   "household_income": 36895
-	 },
-	 {
-	   "fips": 29107,
-	   "state": "MO",
-	   "area_name": "Lafayette County",
-	   "household_income": 48128
-	 },
-	 {
-	   "fips": 29109,
-	   "state": "MO",
-	   "area_name": "Lawrence County",
-	   "household_income": 39908
-	 },
-	 {
-	   "fips": 29111,
-	   "state": "MO",
-	   "area_name": "Lewis County",
-	   "household_income": 41891
-	 },
-	 {
-	   "fips": 29113,
-	   "state": "MO",
-	   "area_name": "Lincoln County",
-	   "household_income": 53804
-	 },
-	 {
-	   "fips": 29115,
-	   "state": "MO",
-	   "area_name": "Linn County",
-	   "household_income": 37597
-	 },
-	 {
-	   "fips": 29117,
-	   "state": "MO",
-	   "area_name": "Livingston County",
-	   "household_income": 47937
-	 },
-	 {
-	   "fips": 29119,
-	   "state": "MO",
-	   "area_name": "McDonald County",
-	   "household_income": 34863
-	 },
-	 {
-	   "fips": 29121,
-	   "state": "MO",
-	   "area_name": "Macon County",
-	   "household_income": 35345
-	 },
-	 {
-	   "fips": 29123,
-	   "state": "MO",
-	   "area_name": "Madison County",
-	   "household_income": 35363
-	 },
-	 {
-	   "fips": 29125,
-	   "state": "MO",
-	   "area_name": "Maries County",
-	   "household_income": 40165
-	 },
-	 {
-	   "fips": 29127,
-	   "state": "MO",
-	   "area_name": "Marion County",
-	   "household_income": 42088
-	 },
-	 {
-	   "fips": 29129,
-	   "state": "MO",
-	   "area_name": "Mercer County",
-	   "household_income": 38023
-	 },
-	 {
-	   "fips": 29131,
-	   "state": "MO",
-	   "area_name": "Miller County",
-	   "household_income": 37360
-	 },
-	 {
-	   "fips": 29133,
-	   "state": "MO",
-	   "area_name": "Mississippi County",
-	   "household_income": 30661
-	 },
-	 {
-	   "fips": 29135,
-	   "state": "MO",
-	   "area_name": "Moniteau County",
-	   "household_income": 47158
-	 },
-	 {
-	   "fips": 29137,
-	   "state": "MO",
-	   "area_name": "Monroe County",
-	   "household_income": 41376
-	 },
-	 {
-	   "fips": 29139,
-	   "state": "MO",
-	   "area_name": "Montgomery County",
-	   "household_income": 42105
-	 },
-	 {
-	   "fips": 29141,
-	   "state": "MO",
-	   "area_name": "Morgan County",
-	   "household_income": 36867
-	 },
-	 {
-	   "fips": 29143,
-	   "state": "MO",
-	   "area_name": "New Madrid County",
-	   "household_income": 34631
-	 },
-	 {
-	   "fips": 29145,
-	   "state": "MO",
-	   "area_name": "Newton County",
-	   "household_income": 45448
-	 },
-	 {
-	   "fips": 29147,
-	   "state": "MO",
-	   "area_name": "Nodaway County",
-	   "household_income": 42956
-	 },
-	 {
-	   "fips": 29149,
-	   "state": "MO",
-	   "area_name": "Oregon County",
-	   "household_income": 29415
-	 },
-	 {
-	   "fips": 29151,
-	   "state": "MO",
-	   "area_name": "Osage County",
-	   "household_income": 51958
-	 },
-	 {
-	   "fips": 29153,
-	   "state": "MO",
-	   "area_name": "Ozark County",
-	   "household_income": 31025
-	 },
-	 {
-	   "fips": 29155,
-	   "state": "MO",
-	   "area_name": "Pemiscot County",
-	   "household_income": 32120
-	 },
-	 {
-	   "fips": 29157,
-	   "state": "MO",
-	   "area_name": "Perry County",
-	   "household_income": 50548
-	 },
-	 {
-	   "fips": 29159,
-	   "state": "MO",
-	   "area_name": "Pettis County",
-	   "household_income": 40038
-	 },
-	 {
-	   "fips": 29161,
-	   "state": "MO",
-	   "area_name": "Phelps County",
-	   "household_income": 40710
-	 },
-	 {
-	   "fips": 29163,
-	   "state": "MO",
-	   "area_name": "Pike County",
-	   "household_income": 44408
-	 },
-	 {
-	   "fips": 29165,
-	   "state": "MO",
-	   "area_name": "Platte County",
-	   "household_income": 70874
-	 },
-	 {
-	   "fips": 29167,
-	   "state": "MO",
-	   "area_name": "Polk County",
-	   "household_income": 38344
-	 },
-	 {
-	   "fips": 29169,
-	   "state": "MO",
-	   "area_name": "Pulaski County",
-	   "household_income": 47227
-	 },
-	 {
-	   "fips": 29171,
-	   "state": "MO",
-	   "area_name": "Putnam County",
-	   "household_income": 34684
-	 },
-	 {
-	   "fips": 29173,
-	   "state": "MO",
-	   "area_name": "Ralls County",
-	   "household_income": 51738
-	 },
-	 {
-	   "fips": 29175,
-	   "state": "MO",
-	   "area_name": "Randolph County",
-	   "household_income": 41346
-	 },
-	 {
-	   "fips": 29177,
-	   "state": "MO",
-	   "area_name": "Ray County",
-	   "household_income": 51986
-	 },
-	 {
-	   "fips": 29179,
-	   "state": "MO",
-	   "area_name": "Reynolds County",
-	   "household_income": 31820
-	 },
-	 {
-	   "fips": 29181,
-	   "state": "MO",
-	   "area_name": "Ripley County",
-	   "household_income": 30019
-	 },
-	 {
-	   "fips": 29183,
-	   "state": "MO",
-	   "area_name": "St. Charles County",
-	   "household_income": 74220
-	 },
-	 {
-	   "fips": 29185,
-	   "state": "MO",
-	   "area_name": "St. Clair County",
-	   "household_income": 33986
-	 },
-	 {
-	   "fips": 29186,
-	   "state": "MO",
-	   "area_name": "Ste. Genevieve County",
-	   "household_income": 46874
-	 },
-	 {
-	   "fips": 29187,
-	   "state": "MO",
-	   "area_name": "St. Francois County",
-	   "household_income": 40376
-	 },
-	 {
-	   "fips": 29189,
-	   "state": "MO",
-	   "area_name": "St. Louis County",
-	   "household_income": 60093
-	 },
-	 {
-	   "fips": 29195,
-	   "state": "MO",
-	   "area_name": "Saline County",
-	   "household_income": 41112
-	 },
-	 {
-	   "fips": 29197,
-	   "state": "MO",
-	   "area_name": "Schuyler County",
-	   "household_income": 34644
-	 },
-	 {
-	   "fips": 29199,
-	   "state": "MO",
-	   "area_name": "Scotland County",
-	   "household_income": 38281
-	 },
-	 {
-	   "fips": 29201,
-	   "state": "MO",
-	   "area_name": "Scott County",
-	   "household_income": 40532
-	 },
-	 {
-	   "fips": 29203,
-	   "state": "MO",
-	   "area_name": "Shannon County",
-	   "household_income": 27382
-	 },
-	 {
-	   "fips": 29205,
-	   "state": "MO",
-	   "area_name": "Shelby County",
-	   "household_income": 42498
-	 },
-	 {
-	   "fips": 29207,
-	   "state": "MO",
-	   "area_name": "Stoddard County",
-	   "household_income": 38329
-	 },
-	 {
-	   "fips": 29209,
-	   "state": "MO",
-	   "area_name": "Stone County",
-	   "household_income": 40642
-	 },
-	 {
-	   "fips": 29211,
-	   "state": "MO",
-	   "area_name": "Sullivan County",
-	   "household_income": 36642
-	 },
-	 {
-	   "fips": 29213,
-	   "state": "MO",
-	   "area_name": "Taney County",
-	   "household_income": 35731
-	 },
-	 {
-	   "fips": 29215,
-	   "state": "MO",
-	   "area_name": "Texas County",
-	   "household_income": 33755
-	 },
-	 {
-	   "fips": 29217,
-	   "state": "MO",
-	   "area_name": "Vernon County",
-	   "household_income": 40267
-	 },
-	 {
-	   "fips": 29219,
-	   "state": "MO",
-	   "area_name": "Warren County",
-	   "household_income": 52959
-	 },
-	 {
-	   "fips": 29221,
-	   "state": "MO",
-	   "area_name": "Washington County",
-	   "household_income": 34581
-	 },
-	 {
-	   "fips": 29223,
-	   "state": "MO",
-	   "area_name": "Wayne County",
-	   "household_income": 30721
-	 },
-	 {
-	   "fips": 29225,
-	   "state": "MO",
-	   "area_name": "Webster County",
-	   "household_income": 41561
-	 },
-	 {
-	   "fips": 29227,
-	   "state": "MO",
-	   "area_name": "Worth County",
-	   "household_income": 38802
-	 },
-	 {
-	   "fips": 29229,
-	   "state": "MO",
-	   "area_name": "Wright County",
-	   "household_income": 31600
-	 },
-	 {
-	   "fips": 29510,
-	   "state": "MO",
-	   "area_name": "St. Louis city",
-	   "household_income": 35681
-	 },
-	 {
-	   "fips": 30001,
-	   "state": "MT",
-	   "area_name": "Beaverhead County",
-	   "household_income": 41602
-	 },
-	 {
-	   "fips": 30003,
-	   "state": "MT",
-	   "area_name": "Big Horn County",
-	   "household_income": 38871
-	 },
-	 {
-	   "fips": 30005,
-	   "state": "MT",
-	   "area_name": "Blaine County",
-	   "household_income": 35740
-	 },
-	 {
-	   "fips": 30007,
-	   "state": "MT",
-	   "area_name": "Broadwater County",
-	   "household_income": 49758
-	 },
-	 {
-	   "fips": 30009,
-	   "state": "MT",
-	   "area_name": "Carbon County",
-	   "household_income": 47520
-	 },
-	 {
-	   "fips": 30011,
-	   "state": "MT",
-	   "area_name": "Carter County",
-	   "household_income": 41466
-	 },
-	 {
-	   "fips": 30013,
-	   "state": "MT",
-	   "area_name": "Cascade County",
-	   "household_income": 42903
-	 },
-	 {
-	   "fips": 30015,
-	   "state": "MT",
-	   "area_name": "Chouteau County",
-	   "household_income": 41004
-	 },
-	 {
-	   "fips": 30017,
-	   "state": "MT",
-	   "area_name": "Custer County",
-	   "household_income": 47493
-	 },
-	 {
-	   "fips": 30019,
-	   "state": "MT",
-	   "area_name": "Daniels County",
-	   "household_income": 47376
-	 },
-	 {
-	   "fips": 30021,
-	   "state": "MT",
-	   "area_name": "Dawson County",
-	   "household_income": 50540
-	 },
-	 {
-	   "fips": 30023,
-	   "state": "MT",
-	   "area_name": "Deer Lodge County",
-	   "household_income": 38178
-	 },
-	 {
-	   "fips": 30025,
-	   "state": "MT",
-	   "area_name": "Fallon County",
-	   "household_income": 59102
-	 },
-	 {
-	   "fips": 30027,
-	   "state": "MT",
-	   "area_name": "Fergus County",
-	   "household_income": 42915
-	 },
-	 {
-	   "fips": 30029,
-	   "state": "MT",
-	   "area_name": "Flathead County",
-	   "household_income": 47351
-	 },
-	 {
-	   "fips": 30031,
-	   "state": "MT",
-	   "area_name": "Gallatin County",
-	   "household_income": 51569
-	 },
-	 {
-	   "fips": 30033,
-	   "state": "MT",
-	   "area_name": "Garfield County",
-	   "household_income": 42757
-	 },
-	 {
-	   "fips": 30035,
-	   "state": "MT",
-	   "area_name": "Glacier County",
-	   "household_income": 33428
-	 },
-	 {
-	   "fips": 30037,
-	   "state": "MT",
-	   "area_name": "Golden Valley County",
-	   "household_income": 37316
-	 },
-	 {
-	   "fips": 30039,
-	   "state": "MT",
-	   "area_name": "Granite County",
-	   "household_income": 47902
-	 },
-	 {
-	   "fips": 30041,
-	   "state": "MT",
-	   "area_name": "Hill County",
-	   "household_income": 43509
-	 },
-	 {
-	   "fips": 30043,
-	   "state": "MT",
-	   "area_name": "Jefferson County",
-	   "household_income": 61575
-	 },
-	 {
-	   "fips": 30045,
-	   "state": "MT",
-	   "area_name": "Judith Basin County",
-	   "household_income": 43272
-	 },
-	 {
-	   "fips": 30047,
-	   "state": "MT",
-	   "area_name": "Lake County",
-	   "household_income": 38221
-	 },
-	 {
-	   "fips": 30049,
-	   "state": "MT",
-	   "area_name": "Lewis and Clark County",
-	   "household_income": 53572
-	 },
-	 {
-	   "fips": 30051,
-	   "state": "MT",
-	   "area_name": "Liberty County",
-	   "household_income": 37911
-	 },
-	 {
-	   "fips": 30053,
-	   "state": "MT",
-	   "area_name": "Lincoln County",
-	   "household_income": 36734
-	 },
-	 {
-	   "fips": 30055,
-	   "state": "MT",
-	   "area_name": "McCone County",
-	   "household_income": 43132
-	 },
-	 {
-	   "fips": 30057,
-	   "state": "MT",
-	   "area_name": "Madison County",
-	   "household_income": 41539
-	 },
-	 {
-	   "fips": 30059,
-	   "state": "MT",
-	   "area_name": "Meagher County",
-	   "household_income": 36903
-	 },
-	 {
-	   "fips": 30061,
-	   "state": "MT",
-	   "area_name": "Mineral County",
-	   "household_income": 36449
-	 },
-	 {
-	   "fips": 30063,
-	   "state": "MT",
-	   "area_name": "Missoula County",
-	   "household_income": 44716
-	 },
-	 {
-	   "fips": 30065,
-	   "state": "MT",
-	   "area_name": "Musselshell County",
-	   "household_income": 39827
-	 },
-	 {
-	   "fips": 30067,
-	   "state": "MT",
-	   "area_name": "Park County",
-	   "household_income": 42942
-	 },
-	 {
-	   "fips": 30069,
-	   "state": "MT",
-	   "area_name": "Petroleum County",
-	   "household_income": 35092
-	 },
-	 {
-	   "fips": 30071,
-	   "state": "MT",
-	   "area_name": "Phillips County",
-	   "household_income": 41595
-	 },
-	 {
-	   "fips": 30073,
-	   "state": "MT",
-	   "area_name": "Pondera County",
-	   "household_income": 39292
-	 },
-	 {
-	   "fips": 30075,
-	   "state": "MT",
-	   "area_name": "Powder River County",
-	   "household_income": 44644
-	 },
-	 {
-	   "fips": 30077,
-	   "state": "MT",
-	   "area_name": "Powell County",
-	   "household_income": 40072
-	 },
-	 {
-	   "fips": 30079,
-	   "state": "MT",
-	   "area_name": "Prairie County",
-	   "household_income": 40140
-	 },
-	 {
-	   "fips": 30081,
-	   "state": "MT",
-	   "area_name": "Ravalli County",
-	   "household_income": 42902
-	 },
-	 {
-	   "fips": 30083,
-	   "state": "MT",
-	   "area_name": "Richland County",
-	   "household_income": 65738
-	 },
-	 {
-	   "fips": 30085,
-	   "state": "MT",
-	   "area_name": "Roosevelt County",
-	   "household_income": 37511
-	 },
-	 {
-	   "fips": 30087,
-	   "state": "MT",
-	   "area_name": "Rosebud County",
-	   "household_income": 50751
-	 },
-	 {
-	   "fips": 30089,
-	   "state": "MT",
-	   "area_name": "Sanders County",
-	   "household_income": 32815
-	 },
-	 {
-	   "fips": 30091,
-	   "state": "MT",
-	   "area_name": "Sheridan County",
-	   "household_income": 52711
-	 },
-	 {
-	   "fips": 30093,
-	   "state": "MT",
-	   "area_name": "Silver Bow County",
-	   "household_income": 39882
-	 },
-	 {
-	   "fips": 30095,
-	   "state": "MT",
-	   "area_name": "Stillwater County",
-	   "household_income": 60812
-	 },
-	 {
-	   "fips": 30097,
-	   "state": "MT",
-	   "area_name": "Sweet Grass County",
-	   "household_income": 45000
-	 },
-	 {
-	   "fips": 30099,
-	   "state": "MT",
-	   "area_name": "Teton County",
-	   "household_income": 46208
-	 },
-	 {
-	   "fips": 30101,
-	   "state": "MT",
-	   "area_name": "Toole County",
-	   "household_income": 45207
-	 },
-	 {
-	   "fips": 30103,
-	   "state": "MT",
-	   "area_name": "Treasure County",
-	   "household_income": 47089
-	 },
-	 {
-	   "fips": 30105,
-	   "state": "MT",
-	   "area_name": "Valley County",
-	   "household_income": 46328
-	 },
-	 {
-	   "fips": 30107,
-	   "state": "MT",
-	   "area_name": "Wheatland County",
-	   "household_income": 35875
-	 },
-	 {
-	   "fips": 30109,
-	   "state": "MT",
-	   "area_name": "Wibaux County",
-	   "household_income": 43859
-	 },
-	 {
-	   "fips": 30111,
-	   "state": "MT",
-	   "area_name": "Yellowstone County",
-	   "household_income": 51653
-	 },
-	 {
-	   "fips": 31001,
-	   "state": "NE",
-	   "area_name": "Adams County",
-	   "household_income": 48658
-	 },
-	 {
-	   "fips": 31003,
-	   "state": "NE",
-	   "area_name": "Antelope County",
-	   "household_income": 50919
-	 },
-	 {
-	   "fips": 31005,
-	   "state": "NE",
-	   "area_name": "Arthur County",
-	   "household_income": 43408
-	 },
-	 {
-	   "fips": 31007,
-	   "state": "NE",
-	   "area_name": "Banner County",
-	   "household_income": 48990
-	 },
-	 {
-	   "fips": 31009,
-	   "state": "NE",
-	   "area_name": "Blaine County",
-	   "household_income": 38228
-	 },
-	 {
-	   "fips": 31011,
-	   "state": "NE",
-	   "area_name": "Boone County",
-	   "household_income": 52914
-	 },
-	 {
-	   "fips": 31013,
-	   "state": "NE",
-	   "area_name": "Box Butte County",
-	   "household_income": 55465
-	 },
-	 {
-	   "fips": 31015,
-	   "state": "NE",
-	   "area_name": "Boyd County",
-	   "household_income": 39964
-	 },
-	 {
-	   "fips": 31017,
-	   "state": "NE",
-	   "area_name": "Brown County",
-	   "household_income": 42348
-	 },
-	 {
-	   "fips": 31019,
-	   "state": "NE",
-	   "area_name": "Buffalo County",
-	   "household_income": 51550
-	 },
-	 {
-	   "fips": 31021,
-	   "state": "NE",
-	   "area_name": "Burt County",
-	   "household_income": 49345
-	 },
-	 {
-	   "fips": 31023,
-	   "state": "NE",
-	   "area_name": "Butler County",
-	   "household_income": 54240
-	 },
-	 {
-	   "fips": 31025,
-	   "state": "NE",
-	   "area_name": "Cass County",
-	   "household_income": 66522
-	 },
-	 {
-	   "fips": 31027,
-	   "state": "NE",
-	   "area_name": "Cedar County",
-	   "household_income": 54421
-	 },
-	 {
-	   "fips": 31029,
-	   "state": "NE",
-	   "area_name": "Chase County",
-	   "household_income": 52749
-	 },
-	 {
-	   "fips": 31031,
-	   "state": "NE",
-	   "area_name": "Cherry County",
-	   "household_income": 43564
-	 },
-	 {
-	   "fips": 31033,
-	   "state": "NE",
-	   "area_name": "Cheyenne County",
-	   "household_income": 55964
-	 },
-	 {
-	   "fips": 31035,
-	   "state": "NE",
-	   "area_name": "Clay County",
-	   "household_income": 55758
-	 },
-	 {
-	   "fips": 31037,
-	   "state": "NE",
-	   "area_name": "Colfax County",
-	   "household_income": 50758
-	 },
-	 {
-	   "fips": 31039,
-	   "state": "NE",
-	   "area_name": "Cuming County",
-	   "household_income": 56047
-	 },
-	 {
-	   "fips": 31041,
-	   "state": "NE",
-	   "area_name": "Custer County",
-	   "household_income": 45644
-	 },
-	 {
-	   "fips": 31043,
-	   "state": "NE",
-	   "area_name": "Dakota County",
-	   "household_income": 50289
-	 },
-	 {
-	   "fips": 31045,
-	   "state": "NE",
-	   "area_name": "Dawes County",
-	   "household_income": 40667
-	 },
-	 {
-	   "fips": 31047,
-	   "state": "NE",
-	   "area_name": "Dawson County",
-	   "household_income": 47366
-	 },
-	 {
-	   "fips": 31049,
-	   "state": "NE",
-	   "area_name": "Deuel County",
-	   "household_income": 44109
-	 },
-	 {
-	   "fips": 31051,
-	   "state": "NE",
-	   "area_name": "Dixon County",
-	   "household_income": 52601
-	 },
-	 {
-	   "fips": 31053,
-	   "state": "NE",
-	   "area_name": "Dodge County",
-	   "household_income": 50043
-	 },
-	 {
-	   "fips": 31055,
-	   "state": "NE",
-	   "area_name": "Douglas County",
-	   "household_income": 52842
-	 },
-	 {
-	   "fips": 31057,
-	   "state": "NE",
-	   "area_name": "Dundy County",
-	   "household_income": 45624
-	 },
-	 {
-	   "fips": 31059,
-	   "state": "NE",
-	   "area_name": "Fillmore County",
-	   "household_income": 54556
-	 },
-	 {
-	   "fips": 31061,
-	   "state": "NE",
-	   "area_name": "Franklin County",
-	   "household_income": 44794
-	 },
-	 {
-	   "fips": 31063,
-	   "state": "NE",
-	   "area_name": "Frontier County",
-	   "household_income": 48543
-	 },
-	 {
-	   "fips": 31065,
-	   "state": "NE",
-	   "area_name": "Furnas County",
-	   "household_income": 44461
-	 },
-	 {
-	   "fips": 31067,
-	   "state": "NE",
-	   "area_name": "Gage County",
-	   "household_income": 50861
-	 },
-	 {
-	   "fips": 31069,
-	   "state": "NE",
-	   "area_name": "Garden County",
-	   "household_income": 38645
-	 },
-	 {
-	   "fips": 31071,
-	   "state": "NE",
-	   "area_name": "Garfield County",
-	   "household_income": 40436
-	 },
-	 {
-	   "fips": 31073,
-	   "state": "NE",
-	   "area_name": "Gosper County",
-	   "household_income": 55319
-	 },
-	 {
-	   "fips": 31075,
-	   "state": "NE",
-	   "area_name": "Grant County",
-	   "household_income": 47537
-	 },
-	 {
-	   "fips": 31077,
-	   "state": "NE",
-	   "area_name": "Greeley County",
-	   "household_income": 43858
-	 },
-	 {
-	   "fips": 31079,
-	   "state": "NE",
-	   "area_name": "Hall County",
-	   "household_income": 48499
-	 },
-	 {
-	   "fips": 31081,
-	   "state": "NE",
-	   "area_name": "Hamilton County",
-	   "household_income": 62191
-	 },
-	 {
-	   "fips": 31083,
-	   "state": "NE",
-	   "area_name": "Harlan County",
-	   "household_income": 46744
-	 },
-	 {
-	   "fips": 31085,
-	   "state": "NE",
-	   "area_name": "Hayes County",
-	   "household_income": 48856
-	 },
-	 {
-	   "fips": 31087,
-	   "state": "NE",
-	   "area_name": "Hitchcock County",
-	   "household_income": 40496
-	 },
-	 {
-	   "fips": 31089,
-	   "state": "NE",
-	   "area_name": "Holt County",
-	   "household_income": 46667
-	 },
-	 {
-	   "fips": 31091,
-	   "state": "NE",
-	   "area_name": "Hooker County",
-	   "household_income": 40732
-	 },
-	 {
-	   "fips": 31093,
-	   "state": "NE",
-	   "area_name": "Howard County",
-	   "household_income": 51040
-	 },
-	 {
-	   "fips": 31095,
-	   "state": "NE",
-	   "area_name": "Jefferson County",
-	   "household_income": 44947
-	 },
-	 {
-	   "fips": 31097,
-	   "state": "NE",
-	   "area_name": "Johnson County",
-	   "household_income": 48511
-	 },
-	 {
-	   "fips": 31099,
-	   "state": "NE",
-	   "area_name": "Kearney County",
-	   "household_income": 56791
-	 },
-	 {
-	   "fips": 31101,
-	   "state": "NE",
-	   "area_name": "Keith County",
-	   "household_income": 45192
-	 },
-	 {
-	   "fips": 31103,
-	   "state": "NE",
-	   "area_name": "Keya Paha County",
-	   "household_income": 41138
-	 },
-	 {
-	   "fips": 31105,
-	   "state": "NE",
-	   "area_name": "Kimball County",
-	   "household_income": 45771
-	 },
-	 {
-	   "fips": 31107,
-	   "state": "NE",
-	   "area_name": "Knox County",
-	   "household_income": 42745
-	 },
-	 {
-	   "fips": 31109,
-	   "state": "NE",
-	   "area_name": "Lancaster County",
-	   "household_income": 52011
-	 },
-	 {
-	   "fips": 31111,
-	   "state": "NE",
-	   "area_name": "Lincoln County",
-	   "household_income": 49770
-	 },
-	 {
-	   "fips": 31113,
-	   "state": "NE",
-	   "area_name": "Logan County",
-	   "household_income": 50761
-	 },
-	 {
-	   "fips": 31115,
-	   "state": "NE",
-	   "area_name": "Loup County",
-	   "household_income": 49132
-	 },
-	 {
-	   "fips": 31117,
-	   "state": "NE",
-	   "area_name": "McPherson County",
-	   "household_income": 62280
-	 },
-	 {
-	   "fips": 31119,
-	   "state": "NE",
-	   "area_name": "Madison County",
-	   "household_income": 51836
-	 },
-	 {
-	   "fips": 31121,
-	   "state": "NE",
-	   "area_name": "Merrick County",
-	   "household_income": 50893
-	 },
-	 {
-	   "fips": 31123,
-	   "state": "NE",
-	   "area_name": "Morrill County",
-	   "household_income": 46961
-	 },
-	 {
-	   "fips": 31125,
-	   "state": "NE",
-	   "area_name": "Nance County",
-	   "household_income": 48535
-	 },
-	 {
-	   "fips": 31127,
-	   "state": "NE",
-	   "area_name": "Nemaha County",
-	   "household_income": 49162
-	 },
-	 {
-	   "fips": 31129,
-	   "state": "NE",
-	   "area_name": "Nuckolls County",
-	   "household_income": 43249
-	 },
-	 {
-	   "fips": 31131,
-	   "state": "NE",
-	   "area_name": "Otoe County",
-	   "household_income": 51527
-	 },
-	 {
-	   "fips": 31133,
-	   "state": "NE",
-	   "area_name": "Pawnee County",
-	   "household_income": 42977
-	 },
-	 {
-	   "fips": 31135,
-	   "state": "NE",
-	   "area_name": "Perkins County",
-	   "household_income": 56080
-	 },
-	 {
-	   "fips": 31137,
-	   "state": "NE",
-	   "area_name": "Phelps County",
-	   "household_income": 54137
-	 },
-	 {
-	   "fips": 31139,
-	   "state": "NE",
-	   "area_name": "Pierce County",
-	   "household_income": 53489
-	 },
-	 {
-	   "fips": 31141,
-	   "state": "NE",
-	   "area_name": "Platte County",
-	   "household_income": 61768
-	 },
-	 {
-	   "fips": 31143,
-	   "state": "NE",
-	   "area_name": "Polk County",
-	   "household_income": 58162
-	 },
-	 {
-	   "fips": 31145,
-	   "state": "NE",
-	   "area_name": "Red Willow County",
-	   "household_income": 43842
-	 },
-	 {
-	   "fips": 31147,
-	   "state": "NE",
-	   "area_name": "Richardson County",
-	   "household_income": 44282
-	 },
-	 {
-	   "fips": 31149,
-	   "state": "NE",
-	   "area_name": "Rock County",
-	   "household_income": 46051
-	 },
-	 {
-	   "fips": 31151,
-	   "state": "NE",
-	   "area_name": "Saline County",
-	   "household_income": 51805
-	 },
-	 {
-	   "fips": 31153,
-	   "state": "NE",
-	   "area_name": "Sarpy County",
-	   "household_income": 74008
-	 },
-	 {
-	   "fips": 31155,
-	   "state": "NE",
-	   "area_name": "Saunders County",
-	   "household_income": 61961
-	 },
-	 {
-	   "fips": 31157,
-	   "state": "NE",
-	   "area_name": "Scotts Bluff County",
-	   "household_income": 47194
-	 },
-	 {
-	   "fips": 31159,
-	   "state": "NE",
-	   "area_name": "Seward County",
-	   "household_income": 61802
-	 },
-	 {
-	   "fips": 31161,
-	   "state": "NE",
-	   "area_name": "Sheridan County",
-	   "household_income": 40351
-	 },
-	 {
-	   "fips": 31163,
-	   "state": "NE",
-	   "area_name": "Sherman County",
-	   "household_income": 43883
-	 },
-	 {
-	   "fips": 31165,
-	   "state": "NE",
-	   "area_name": "Sioux County",
-	   "household_income": 47313
-	 },
-	 {
-	   "fips": 31167,
-	   "state": "NE",
-	   "area_name": "Stanton County",
-	   "household_income": 55955
-	 },
-	 {
-	   "fips": 31169,
-	   "state": "NE",
-	   "area_name": "Thayer County",
-	   "household_income": 49517
-	 },
-	 {
-	   "fips": 31171,
-	   "state": "NE",
-	   "area_name": "Thomas County",
-	   "household_income": 39537
-	 },
-	 {
-	   "fips": 31173,
-	   "state": "NE",
-	   "area_name": "Thurston County",
-	   "household_income": 41344
-	 },
-	 {
-	   "fips": 31175,
-	   "state": "NE",
-	   "area_name": "Valley County",
-	   "household_income": 44726
-	 },
-	 {
-	   "fips": 31177,
-	   "state": "NE",
-	   "area_name": "Washington County",
-	   "household_income": 69191
-	 },
-	 {
-	   "fips": 31179,
-	   "state": "NE",
-	   "area_name": "Wayne County",
-	   "household_income": 53290
-	 },
-	 {
-	   "fips": 31181,
-	   "state": "NE",
-	   "area_name": "Webster County",
-	   "household_income": 40979
-	 },
-	 {
-	   "fips": 31183,
-	   "state": "NE",
-	   "area_name": "Wheeler County",
-	   "household_income": 45400
-	 },
-	 {
-	   "fips": 31185,
-	   "state": "NE",
-	   "area_name": "York County",
-	   "household_income": 51335
-	 },
-	 {
-	   "fips": 32001,
-	   "state": "NV",
-	   "area_name": "Churchill County",
-	   "household_income": 46840
-	 },
-	 {
-	   "fips": 32003,
-	   "state": "NV",
-	   "area_name": "Clark County",
-	   "household_income": 51241
-	 },
-	 {
-	   "fips": 32005,
-	   "state": "NV",
-	   "area_name": "Douglas County",
-	   "household_income": 60322
-	 },
-	 {
-	   "fips": 32007,
-	   "state": "NV",
-	   "area_name": "Elko County",
-	   "household_income": 72648
-	 },
-	 {
-	   "fips": 32009,
-	   "state": "NV",
-	   "area_name": "Esmeralda County",
-	   "household_income": 47180
-	 },
-	 {
-	   "fips": 32011,
-	   "state": "NV",
-	   "area_name": "Eureka County",
-	   "household_income": 70535
-	 },
-	 {
-	   "fips": 32013,
-	   "state": "NV",
-	   "area_name": "Humboldt County",
-	   "household_income": 67423
-	 },
-	 {
-	   "fips": 32015,
-	   "state": "NV",
-	   "area_name": "Lander County",
-	   "household_income": 74347
-	 },
-	 {
-	   "fips": 32017,
-	   "state": "NV",
-	   "area_name": "Lincoln County",
-	   "household_income": 45629
-	 },
-	 {
-	   "fips": 32019,
-	   "state": "NV",
-	   "area_name": "Lyon County",
-	   "household_income": 48576
-	 },
-	 {
-	   "fips": 32021,
-	   "state": "NV",
-	   "area_name": "Mineral County",
-	   "household_income": 40714
-	 },
-	 {
-	   "fips": 32023,
-	   "state": "NV",
-	   "area_name": "Nye County",
-	   "household_income": 42881
-	 },
-	 {
-	   "fips": 32027,
-	   "state": "NV",
-	   "area_name": "Pershing County",
-	   "household_income": 52001
-	 },
-	 {
-	   "fips": 32029,
-	   "state": "NV",
-	   "area_name": "Storey County",
-	   "household_income": 55291
-	 },
-	 {
-	   "fips": 32031,
-	   "state": "NV",
-	   "area_name": "Washoe County",
-	   "household_income": 52862
-	 },
-	 {
-	   "fips": 32033,
-	   "state": "NV",
-	   "area_name": "White Pine County",
-	   "household_income": 57243
-	 },
-	 {
-	   "fips": 32510,
-	   "state": "NV",
-	   "area_name": "Carson City",
-	   "household_income": 45639
-	 },
-	 {
-	   "fips": 33001,
-	   "state": "NH",
-	   "area_name": "Belknap County",
-	   "household_income": 59831
-	 },
-	 {
-	   "fips": 33003,
-	   "state": "NH",
-	   "area_name": "Carroll County",
-	   "household_income": 57556
-	 },
-	 {
-	   "fips": 33005,
-	   "state": "NH",
-	   "area_name": "Cheshire County",
-	   "household_income": 56008
-	 },
-	 {
-	   "fips": 33007,
-	   "state": "NH",
-	   "area_name": "Coos County",
-	   "household_income": 42491
-	 },
-	 {
-	   "fips": 33009,
-	   "state": "NH",
-	   "area_name": "Grafton County",
-	   "household_income": 56353
-	 },
-	 {
-	   "fips": 33011,
-	   "state": "NH",
-	   "area_name": "Hillsborough County",
-	   "household_income": 71233
-	 },
-	 {
-	   "fips": 33013,
-	   "state": "NH",
-	   "area_name": "Merrimack County",
-	   "household_income": 62429
-	 },
-	 {
-	   "fips": 33015,
-	   "state": "NH",
-	   "area_name": "Rockingham County",
-	   "household_income": 79653
-	 },
-	 {
-	   "fips": 33017,
-	   "state": "NH",
-	   "area_name": "Strafford County",
-	   "household_income": 58577
-	 },
-	 {
-	   "fips": 33019,
-	   "state": "NH",
-	   "area_name": "Sullivan County",
-	   "household_income": 57142
-	 },
-	 {
-	   "fips": 34001,
-	   "state": "NJ",
-	   "area_name": "Atlantic County",
-	   "household_income": 54208
-	 },
-	 {
-	   "fips": 34003,
-	   "state": "NJ",
-	   "area_name": "Bergen County",
-	   "household_income": 84309
-	 },
-	 {
-	   "fips": 34005,
-	   "state": "NJ",
-	   "area_name": "Burlington County",
-	   "household_income": 80479
-	 },
-	 {
-	   "fips": 34007,
-	   "state": "NJ",
-	   "area_name": "Camden County",
-	   "household_income": 61685
-	 },
-	 {
-	   "fips": 34009,
-	   "state": "NJ",
-	   "area_name": "Cape May County",
-	   "household_income": 55409
-	 },
-	 {
-	   "fips": 34011,
-	   "state": "NJ",
-	   "area_name": "Cumberland County",
-	   "household_income": 45438
-	 },
-	 {
-	   "fips": 34013,
-	   "state": "NJ",
-	   "area_name": "Essex County",
-	   "household_income": 54603
-	 },
-	 {
-	   "fips": 34015,
-	   "state": "NJ",
-	   "area_name": "Gloucester County",
-	   "household_income": 78983
-	 },
-	 {
-	   "fips": 34017,
-	   "state": "NJ",
-	   "area_name": "Hudson County",
-	   "household_income": 57720
-	 },
-	 {
-	   "fips": 34019,
-	   "state": "NJ",
-	   "area_name": "Hunterdon County",
-	   "household_income": 103876
-	 },
-	 {
-	   "fips": 34021,
-	   "state": "NJ",
-	   "area_name": "Mercer County",
-	   "household_income": 73750
-	 },
-	 {
-	   "fips": 34023,
-	   "state": "NJ",
-	   "area_name": "Middlesex County",
-	   "household_income": 77330
-	 },
-	 {
-	   "fips": 34025,
-	   "state": "NJ",
-	   "area_name": "Monmouth County",
-	   "household_income": 87220
-	 },
-	 {
-	   "fips": 34027,
-	   "state": "NJ",
-	   "area_name": "Morris County",
-	   "household_income": 100511
-	 },
-	 {
-	   "fips": 34029,
-	   "state": "NJ",
-	   "area_name": "Ocean County",
-	   "household_income": 62937
-	 },
-	 {
-	   "fips": 34031,
-	   "state": "NJ",
-	   "area_name": "Passaic County",
-	   "household_income": 58030
-	 },
-	 {
-	   "fips": 34033,
-	   "state": "NJ",
-	   "area_name": "Salem County",
-	   "household_income": 56645
-	 },
-	 {
-	   "fips": 34035,
-	   "state": "NJ",
-	   "area_name": "Somerset County",
-	   "household_income": 100194
-	 },
-	 {
-	   "fips": 34037,
-	   "state": "NJ",
-	   "area_name": "Sussex County",
-	   "household_income": 82048
-	 },
-	 {
-	   "fips": 34039,
-	   "state": "NJ",
-	   "area_name": "Union County",
-	   "household_income": 68172
-	 },
-	 {
-	   "fips": 34041,
-	   "state": "NJ",
-	   "area_name": "Warren County",
-	   "household_income": 71294
-	 },
-	 {
-	   "fips": 35001,
-	   "state": "NM",
-	   "area_name": "Bernalillo County",
-	   "household_income": 47192
-	 },
-	 {
-	   "fips": 35003,
-	   "state": "NM",
-	   "area_name": "Catron County",
-	   "household_income": 33256
-	 },
-	 {
-	   "fips": 35005,
-	   "state": "NM",
-	   "area_name": "Chaves County",
-	   "household_income": 38403
-	 },
-	 {
-	   "fips": 35006,
-	   "state": "NM",
-	   "area_name": "Cibola County",
-	   "household_income": 35081
-	 },
-	 {
-	   "fips": 35007,
-	   "state": "NM",
-	   "area_name": "Colfax County",
-	   "household_income": 37156
-	 },
-	 {
-	   "fips": 35009,
-	   "state": "NM",
-	   "area_name": "Curry County",
-	   "household_income": 42620
-	 },
-	 {
-	   "fips": 35011,
-	   "state": "NM",
-	   "area_name": "De Baca County",
-	   "household_income": 33789
-	 },
-	 {
-	   "fips": 35013,
-	   "state": "NM",
-	   "area_name": "Dona Ana County",
-	   "household_income": 38974
-	 },
-	 {
-	   "fips": 35015,
-	   "state": "NM",
-	   "area_name": "Eddy County",
-	   "household_income": 57007
-	 },
-	 {
-	   "fips": 35017,
-	   "state": "NM",
-	   "area_name": "Grant County",
-	   "household_income": 38221
-	 },
-	 {
-	   "fips": 35019,
-	   "state": "NM",
-	   "area_name": "Guadalupe County",
-	   "household_income": 29147
-	 },
-	 {
-	   "fips": 35021,
-	   "state": "NM",
-	   "area_name": "Harding County",
-	   "household_income": 40380
-	 },
-	 {
-	   "fips": 35023,
-	   "state": "NM",
-	   "area_name": "Hidalgo County",
-	   "household_income": 34304
-	 },
-	 {
-	   "fips": 35025,
-	   "state": "NM",
-	   "area_name": "Lea County",
-	   "household_income": 58994
-	 },
-	 {
-	   "fips": 35027,
-	   "state": "NM",
-	   "area_name": "Lincoln County",
-	   "household_income": 39995
-	 },
-	 {
-	   "fips": 35028,
-	   "state": "NM",
-	   "area_name": "Los Alamos County",
-	   "household_income": 108477
-	 },
-	 {
-	   "fips": 35029,
-	   "state": "NM",
-	   "area_name": "Luna County",
-	   "household_income": 27268
-	 },
-	 {
-	   "fips": 35031,
-	   "state": "NM",
-	   "area_name": "McKinley County",
-	   "household_income": 29497
-	 },
-	 {
-	   "fips": 35033,
-	   "state": "NM",
-	   "area_name": "Mora County",
-	   "household_income": 27627
-	 },
-	 {
-	   "fips": 35035,
-	   "state": "NM",
-	   "area_name": "Otero County",
-	   "household_income": 41736
-	 },
-	 {
-	   "fips": 35037,
-	   "state": "NM",
-	   "area_name": "Quay County",
-	   "household_income": 29069
-	 },
-	 {
-	   "fips": 35039,
-	   "state": "NM",
-	   "area_name": "Rio Arriba County",
-	   "household_income": 34902
-	 },
-	 {
-	   "fips": 35041,
-	   "state": "NM",
-	   "area_name": "Roosevelt County",
-	   "household_income": 36108
-	 },
-	 {
-	   "fips": 35043,
-	   "state": "NM",
-	   "area_name": "Sandoval County",
-	   "household_income": 56142
-	 },
-	 {
-	   "fips": 35045,
-	   "state": "NM",
-	   "area_name": "San Juan County",
-	   "household_income": 47520
-	 },
-	 {
-	   "fips": 35047,
-	   "state": "NM",
-	   "area_name": "San Miguel County",
-	   "household_income": 32964
-	 },
-	 {
-	   "fips": 35049,
-	   "state": "NM",
-	   "area_name": "Santa Fe County",
-	   "household_income": 52628
-	 },
-	 {
-	   "fips": 35051,
-	   "state": "NM",
-	   "area_name": "Sierra County",
-	   "household_income": 29036
-	 },
-	 {
-	   "fips": 35053,
-	   "state": "NM",
-	   "area_name": "Socorro County",
-	   "household_income": 32285
-	 },
-	 {
-	   "fips": 35055,
-	   "state": "NM",
-	   "area_name": "Taos County",
-	   "household_income": 36125
-	 },
-	 {
-	   "fips": 35057,
-	   "state": "NM",
-	   "area_name": "Torrance County",
-	   "household_income": 37311
-	 },
-	 {
-	   "fips": 35059,
-	   "state": "NM",
-	   "area_name": "Union County",
-	   "household_income": 36684
-	 },
-	 {
-	   "fips": 35061,
-	   "state": "NM",
-	   "area_name": "Valencia County",
-	   "household_income": 40591
-	 },
-	 {
-	   "fips": 36001,
-	   "state": "NY",
-	   "area_name": "Albany County",
-	   "household_income": 60371
-	 },
-	 {
-	   "fips": 36003,
-	   "state": "NY",
-	   "area_name": "Allegany County",
-	   "household_income": 42655
-	 },
-	 {
-	   "fips": 36005,
-	   "state": "NY",
-	   "area_name": "Bronx County",
-	   "household_income": 33687
-	 },
-	 {
-	   "fips": 36007,
-	   "state": "NY",
-	   "area_name": "Broome County",
-	   "household_income": 46283
-	 },
-	 {
-	   "fips": 36009,
-	   "state": "NY",
-	   "area_name": "Cattaraugus County",
-	   "household_income": 43892
-	 },
-	 {
-	   "fips": 36011,
-	   "state": "NY",
-	   "area_name": "Cayuga County",
-	   "household_income": 52792
-	 },
-	 {
-	   "fips": 36013,
-	   "state": "NY",
-	   "area_name": "Chautauqua County",
-	   "household_income": 41757
-	 },
-	 {
-	   "fips": 36015,
-	   "state": "NY",
-	   "area_name": "Chemung County",
-	   "household_income": 48880
-	 },
-	 {
-	   "fips": 36017,
-	   "state": "NY",
-	   "area_name": "Chenango County",
-	   "household_income": 46387
-	 },
-	 {
-	   "fips": 36019,
-	   "state": "NY",
-	   "area_name": "Clinton County",
-	   "household_income": 51576
-	 },
-	 {
-	   "fips": 36021,
-	   "state": "NY",
-	   "area_name": "Columbia County",
-	   "household_income": 55047
-	 },
-	 {
-	   "fips": 36023,
-	   "state": "NY",
-	   "area_name": "Cortland County",
-	   "household_income": 48357
-	 },
-	 {
-	   "fips": 36025,
-	   "state": "NY",
-	   "area_name": "Delaware County",
-	   "household_income": 45860
-	 },
-	 {
-	   "fips": 36027,
-	   "state": "NY",
-	   "area_name": "Dutchess County",
-	   "household_income": 70925
-	 },
-	 {
-	   "fips": 36029,
-	   "state": "NY",
-	   "area_name": "Erie County",
-	   "household_income": 50134
-	 },
-	 {
-	   "fips": 36031,
-	   "state": "NY",
-	   "area_name": "Essex County",
-	   "household_income": 50182
-	 },
-	 {
-	   "fips": 36033,
-	   "state": "NY",
-	   "area_name": "Franklin County",
-	   "household_income": 45704
-	 },
-	 {
-	   "fips": 36035,
-	   "state": "NY",
-	   "area_name": "Fulton County",
-	   "household_income": 45409
-	 },
-	 {
-	   "fips": 36037,
-	   "state": "NY",
-	   "area_name": "Genesee County",
-	   "household_income": 52410
-	 },
-	 {
-	   "fips": 36039,
-	   "state": "NY",
-	   "area_name": "Greene County",
-	   "household_income": 52597
-	 },
-	 {
-	   "fips": 36041,
-	   "state": "NY",
-	   "area_name": "Hamilton County",
-	   "household_income": 49137
-	 },
-	 {
-	   "fips": 36043,
-	   "state": "NY",
-	   "area_name": "Herkimer County",
-	   "household_income": 44148
-	 },
-	 {
-	   "fips": 36045,
-	   "state": "NY",
-	   "area_name": "Jefferson County",
-	   "household_income": 49781
-	 },
-	 {
-	   "fips": 36047,
-	   "state": "NY",
-	   "area_name": "Kings County",
-	   "household_income": 47547
-	 },
-	 {
-	   "fips": 36049,
-	   "state": "NY",
-	   "area_name": "Lewis County",
-	   "household_income": 47542
-	 },
-	 {
-	   "fips": 36051,
-	   "state": "NY",
-	   "area_name": "Livingston County",
-	   "household_income": 49920
-	 },
-	 {
-	   "fips": 36053,
-	   "state": "NY",
-	   "area_name": "Madison County",
-	   "household_income": 51600
-	 },
-	 {
-	   "fips": 36055,
-	   "state": "NY",
-	   "area_name": "Monroe County",
-	   "household_income": 51371
-	 },
-	 {
-	   "fips": 36057,
-	   "state": "NY",
-	   "area_name": "Montgomery County",
-	   "household_income": 40923
-	 },
-	 {
-	   "fips": 36059,
-	   "state": "NY",
-	   "area_name": "Nassau County",
-	   "household_income": 98312
-	 },
-	 {
-	   "fips": 36061,
-	   "state": "NY",
-	   "area_name": "New York County",
-	   "household_income": 75459
-	 },
-	 {
-	   "fips": 36063,
-	   "state": "NY",
-	   "area_name": "Niagara County",
-	   "household_income": 49274
-	 },
-	 {
-	   "fips": 36065,
-	   "state": "NY",
-	   "area_name": "Oneida County",
-	   "household_income": 48350
-	 },
-	 {
-	   "fips": 36067,
-	   "state": "NY",
-	   "area_name": "Onondaga County",
-	   "household_income": 52892
-	 },
-	 {
-	   "fips": 36069,
-	   "state": "NY",
-	   "area_name": "Ontario County",
-	   "household_income": 58473
-	 },
-	 {
-	   "fips": 36071,
-	   "state": "NY",
-	   "area_name": "Orange County",
-	   "household_income": 69228
-	 },
-	 {
-	   "fips": 36073,
-	   "state": "NY",
-	   "area_name": "Orleans County",
-	   "household_income": 46577
-	 },
-	 {
-	   "fips": 36075,
-	   "state": "NY",
-	   "area_name": "Oswego County",
-	   "household_income": 46926
-	 },
-	 {
-	   "fips": 36077,
-	   "state": "NY",
-	   "area_name": "Otsego County",
-	   "household_income": 43104
-	 },
-	 {
-	   "fips": 36079,
-	   "state": "NY",
-	   "area_name": "Putnam County",
-	   "household_income": 94334
-	 },
-	 {
-	   "fips": 36081,
-	   "state": "NY",
-	   "area_name": "Queens County",
-	   "household_income": 56866
-	 },
-	 {
-	   "fips": 36083,
-	   "state": "NY",
-	   "area_name": "Rensselaer County",
-	   "household_income": 59925
-	 },
-	 {
-	   "fips": 36085,
-	   "state": "NY",
-	   "area_name": "Richmond County",
-	   "household_income": 70299
-	 },
-	 {
-	   "fips": 36087,
-	   "state": "NY",
-	   "area_name": "Rockland County",
-	   "household_income": 83162
-	 },
-	 {
-	   "fips": 36089,
-	   "state": "NY",
-	   "area_name": "St. Lawrence County",
-	   "household_income": 43518
-	 },
-	 {
-	   "fips": 36091,
-	   "state": "NY",
-	   "area_name": "Saratoga County",
-	   "household_income": 71885
-	 },
-	 {
-	   "fips": 36093,
-	   "state": "NY",
-	   "area_name": "Schenectady County",
-	   "household_income": 56508
-	 },
-	 {
-	   "fips": 36095,
-	   "state": "NY",
-	   "area_name": "Schoharie County",
-	   "household_income": 48718
-	 },
-	 {
-	   "fips": 36097,
-	   "state": "NY",
-	   "area_name": "Schuyler County",
-	   "household_income": 48135
-	 },
-	 {
-	   "fips": 36099,
-	   "state": "NY",
-	   "area_name": "Seneca County",
-	   "household_income": 49809
-	 },
-	 {
-	   "fips": 36101,
-	   "state": "NY",
-	   "area_name": "Steuben County",
-	   "household_income": 46849
-	 },
-	 {
-	   "fips": 36103,
-	   "state": "NY",
-	   "area_name": "Suffolk County",
-	   "household_income": 85886
-	 },
-	 {
-	   "fips": 36105,
-	   "state": "NY",
-	   "area_name": "Sullivan County",
-	   "household_income": 48908
-	 },
-	 {
-	   "fips": 36107,
-	   "state": "NY",
-	   "area_name": "Tioga County",
-	   "household_income": 52195
-	 },
-	 {
-	   "fips": 36109,
-	   "state": "NY",
-	   "area_name": "Tompkins County",
-	   "household_income": 51880
-	 },
-	 {
-	   "fips": 36111,
-	   "state": "NY",
-	   "area_name": "Ulster County",
-	   "household_income": 56718
-	 },
-	 {
-	   "fips": 36113,
-	   "state": "NY",
-	   "area_name": "Warren County",
-	   "household_income": 54585
-	 },
-	 {
-	   "fips": 36115,
-	   "state": "NY",
-	   "area_name": "Washington County",
-	   "household_income": 47547
-	 },
-	 {
-	   "fips": 36117,
-	   "state": "NY",
-	   "area_name": "Wayne County",
-	   "household_income": 49191
-	 },
-	 {
-	   "fips": 36119,
-	   "state": "NY",
-	   "area_name": "Westchester County",
-	   "household_income": 83152
-	 },
-	 {
-	   "fips": 36121,
-	   "state": "NY",
-	   "area_name": "Wyoming County",
-	   "household_income": 53783
-	 },
-	 {
-	   "fips": 36123,
-	   "state": "NY",
-	   "area_name": "Yates County",
-	   "household_income": 48368
-	 },
-	 {
-	   "fips": 37001,
-	   "state": "NC",
-	   "area_name": "Alamance County",
-	   "household_income": 41296
-	 },
-	 {
-	   "fips": 37003,
-	   "state": "NC",
-	   "area_name": "Alexander County",
-	   "household_income": 43043
-	 },
-	 {
-	   "fips": 37005,
-	   "state": "NC",
-	   "area_name": "Alleghany County",
-	   "household_income": 35266
-	 },
-	 {
-	   "fips": 37007,
-	   "state": "NC",
-	   "area_name": "Anson County",
-	   "household_income": 32508
-	 },
-	 {
-	   "fips": 37009,
-	   "state": "NC",
-	   "area_name": "Ashe County",
-	   "household_income": 36488
-	 },
-	 {
-	   "fips": 37011,
-	   "state": "NC",
-	   "area_name": "Avery County",
-	   "household_income": 37131
-	 },
-	 {
-	   "fips": 37013,
-	   "state": "NC",
-	   "area_name": "Beaufort County",
-	   "household_income": 40357
-	 },
-	 {
-	   "fips": 37015,
-	   "state": "NC",
-	   "area_name": "Bertie County",
-	   "household_income": 31217
-	 },
-	 {
-	   "fips": 37017,
-	   "state": "NC",
-	   "area_name": "Bladen County",
-	   "household_income": 33521
-	 },
-	 {
-	   "fips": 37019,
-	   "state": "NC",
-	   "area_name": "Brunswick County",
-	   "household_income": 47387
-	 },
-	 {
-	   "fips": 37021,
-	   "state": "NC",
-	   "area_name": "Buncombe County",
-	   "household_income": 47296
-	 },
-	 {
-	   "fips": 37023,
-	   "state": "NC",
-	   "area_name": "Burke County",
-	   "household_income": 39275
-	 },
-	 {
-	   "fips": 37025,
-	   "state": "NC",
-	   "area_name": "Cabarrus County",
-	   "household_income": 55250
-	 },
-	 {
-	   "fips": 37027,
-	   "state": "NC",
-	   "area_name": "Caldwell County",
-	   "household_income": 38653
-	 },
-	 {
-	   "fips": 37029,
-	   "state": "NC",
-	   "area_name": "Camden County",
-	   "household_income": 61730
-	 },
-	 {
-	   "fips": 37031,
-	   "state": "NC",
-	   "area_name": "Carteret County",
-	   "household_income": 48824
-	 },
-	 {
-	   "fips": 37033,
-	   "state": "NC",
-	   "area_name": "Caswell County",
-	   "household_income": 42730
-	 },
-	 {
-	   "fips": 37035,
-	   "state": "NC",
-	   "area_name": "Catawba County",
-	   "household_income": 45080
-	 },
-	 {
-	   "fips": 37037,
-	   "state": "NC",
-	   "area_name": "Chatham County",
-	   "household_income": 56797
-	 },
-	 {
-	   "fips": 37039,
-	   "state": "NC",
-	   "area_name": "Cherokee County",
-	   "household_income": 34620
-	 },
-	 {
-	   "fips": 37041,
-	   "state": "NC",
-	   "area_name": "Chowan County",
-	   "household_income": 38887
-	 },
-	 {
-	   "fips": 37043,
-	   "state": "NC",
-	   "area_name": "Clay County",
-	   "household_income": 37072
-	 },
-	 {
-	   "fips": 37045,
-	   "state": "NC",
-	   "area_name": "Cleveland County",
-	   "household_income": 39444
-	 },
-	 {
-	   "fips": 37047,
-	   "state": "NC",
-	   "area_name": "Columbus County",
-	   "household_income": 34321
-	 },
-	 {
-	   "fips": 37049,
-	   "state": "NC",
-	   "area_name": "Craven County",
-	   "household_income": 43972
-	 },
-	 {
-	   "fips": 37051,
-	   "state": "NC",
-	   "area_name": "Cumberland County",
-	   "household_income": 42582
-	 },
-	 {
-	   "fips": 37053,
-	   "state": "NC",
-	   "area_name": "Currituck County",
-	   "household_income": 58024
-	 },
-	 {
-	   "fips": 37055,
-	   "state": "NC",
-	   "area_name": "Dare County",
-	   "household_income": 54642
-	 },
-	 {
-	   "fips": 37057,
-	   "state": "NC",
-	   "area_name": "Davidson County",
-	   "household_income": 43346
-	 },
-	 {
-	   "fips": 37059,
-	   "state": "NC",
-	   "area_name": "Davie County",
-	   "household_income": 47592
-	 },
-	 {
-	   "fips": 37061,
-	   "state": "NC",
-	   "area_name": "Duplin County",
-	   "household_income": 34109
-	 },
-	 {
-	   "fips": 37063,
-	   "state": "NC",
-	   "area_name": "Durham County",
-	   "household_income": 50745
-	 },
-	 {
-	   "fips": 37065,
-	   "state": "NC",
-	   "area_name": "Edgecombe County",
-	   "household_income": 31615
-	 },
-	 {
-	   "fips": 37067,
-	   "state": "NC",
-	   "area_name": "Forsyth County",
-	   "household_income": 45944
-	 },
-	 {
-	   "fips": 37069,
-	   "state": "NC",
-	   "area_name": "Franklin County",
-	   "household_income": 48166
-	 },
-	 {
-	   "fips": 37071,
-	   "state": "NC",
-	   "area_name": "Gaston County",
-	   "household_income": 42056
-	 },
-	 {
-	   "fips": 37073,
-	   "state": "NC",
-	   "area_name": "Gates County",
-	   "household_income": 48413
-	 },
-	 {
-	   "fips": 37075,
-	   "state": "NC",
-	   "area_name": "Graham County",
-	   "household_income": 33824
-	 },
-	 {
-	   "fips": 37077,
-	   "state": "NC",
-	   "area_name": "Granville County",
-	   "household_income": 49342
-	 },
-	 {
-	   "fips": 37079,
-	   "state": "NC",
-	   "area_name": "Greene County",
-	   "household_income": 37263
-	 },
-	 {
-	   "fips": 37081,
-	   "state": "NC",
-	   "area_name": "Guilford County",
-	   "household_income": 44828
-	 },
-	 {
-	   "fips": 37083,
-	   "state": "NC",
-	   "area_name": "Halifax County",
-	   "household_income": 31674
-	 },
-	 {
-	   "fips": 37085,
-	   "state": "NC",
-	   "area_name": "Harnett County",
-	   "household_income": 45380
-	 },
-	 {
-	   "fips": 37087,
-	   "state": "NC",
-	   "area_name": "Haywood County",
-	   "household_income": 42812
-	 },
-	 {
-	   "fips": 37089,
-	   "state": "NC",
-	   "area_name": "Henderson County",
-	   "household_income": 47286
-	 },
-	 {
-	   "fips": 37091,
-	   "state": "NC",
-	   "area_name": "Hertford County",
-	   "household_income": 30056
-	 },
-	 {
-	   "fips": 37093,
-	   "state": "NC",
-	   "area_name": "Hoke County",
-	   "household_income": 44175
-	 },
-	 {
-	   "fips": 37095,
-	   "state": "NC",
-	   "area_name": "Hyde County",
-	   "household_income": 36891
-	 },
-	 {
-	   "fips": 37097,
-	   "state": "NC",
-	   "area_name": "Iredell County",
-	   "household_income": 54026
-	 },
-	 {
-	   "fips": 37099,
-	   "state": "NC",
-	   "area_name": "Jackson County",
-	   "household_income": 38130
-	 },
-	 {
-	   "fips": 37101,
-	   "state": "NC",
-	   "area_name": "Johnston County",
-	   "household_income": 50055
-	 },
-	 {
-	   "fips": 37103,
-	   "state": "NC",
-	   "area_name": "Jones County",
-	   "household_income": 38928
-	 },
-	 {
-	   "fips": 37105,
-	   "state": "NC",
-	   "area_name": "Lee County",
-	   "household_income": 46073
-	 },
-	 {
-	   "fips": 37107,
-	   "state": "NC",
-	   "area_name": "Lenoir County",
-	   "household_income": 35991
-	 },
-	 {
-	   "fips": 37109,
-	   "state": "NC",
-	   "area_name": "Lincoln County",
-	   "household_income": 49676
-	 },
-	 {
-	   "fips": 37111,
-	   "state": "NC",
-	   "area_name": "McDowell County",
-	   "household_income": 37881
-	 },
-	 {
-	   "fips": 37113,
-	   "state": "NC",
-	   "area_name": "Macon County",
-	   "household_income": 37884
-	 },
-	 {
-	   "fips": 37115,
-	   "state": "NC",
-	   "area_name": "Madison County",
-	   "household_income": 38445
-	 },
-	 {
-	   "fips": 37117,
-	   "state": "NC",
-	   "area_name": "Martin County",
-	   "household_income": 35930
-	 },
-	 {
-	   "fips": 37119,
-	   "state": "NC",
-	   "area_name": "Mecklenburg County",
-	   "household_income": 59049
-	 },
-	 {
-	   "fips": 37121,
-	   "state": "NC",
-	   "area_name": "Mitchell County",
-	   "household_income": 36795
-	 },
-	 {
-	   "fips": 37123,
-	   "state": "NC",
-	   "area_name": "Montgomery County",
-	   "household_income": 38530
-	 },
-	 {
-	   "fips": 37125,
-	   "state": "NC",
-	   "area_name": "Moore County",
-	   "household_income": 51650
-	 },
-	 {
-	   "fips": 37127,
-	   "state": "NC",
-	   "area_name": "Nash County",
-	   "household_income": 43348
-	 },
-	 {
-	   "fips": 37129,
-	   "state": "NC",
-	   "area_name": "New Hanover County",
-	   "household_income": 49905
-	 },
-	 {
-	   "fips": 37131,
-	   "state": "NC",
-	   "area_name": "Northampton County",
-	   "household_income": 32063
-	 },
-	 {
-	   "fips": 37133,
-	   "state": "NC",
-	   "area_name": "Onslow County",
-	   "household_income": 47201
-	 },
-	 {
-	   "fips": 37135,
-	   "state": "NC",
-	   "area_name": "Orange County",
-	   "household_income": 60304
-	 },
-	 {
-	   "fips": 37137,
-	   "state": "NC",
-	   "area_name": "Pamlico County",
-	   "household_income": 43097
-	 },
-	 {
-	   "fips": 37139,
-	   "state": "NC",
-	   "area_name": "Pasquotank County",
-	   "household_income": 44596
-	 },
-	 {
-	   "fips": 37141,
-	   "state": "NC",
-	   "area_name": "Pender County",
-	   "household_income": 45453
-	 },
-	 {
-	   "fips": 37143,
-	   "state": "NC",
-	   "area_name": "Perquimans County",
-	   "household_income": 41328
-	 },
-	 {
-	   "fips": 37145,
-	   "state": "NC",
-	   "area_name": "Person County",
-	   "household_income": 45841
-	 },
-	 {
-	   "fips": 37147,
-	   "state": "NC",
-	   "area_name": "Pitt County",
-	   "household_income": 41765
-	 },
-	 {
-	   "fips": 37149,
-	   "state": "NC",
-	   "area_name": "Polk County",
-	   "household_income": 45464
-	 },
-	 {
-	   "fips": 37151,
-	   "state": "NC",
-	   "area_name": "Randolph County",
-	   "household_income": 41770
-	 },
-	 {
-	   "fips": 37153,
-	   "state": "NC",
-	   "area_name": "Richmond County",
-	   "household_income": 34665
-	 },
-	 {
-	   "fips": 37155,
-	   "state": "NC",
-	   "area_name": "Robeson County",
-	   "household_income": 30414
-	 },
-	 {
-	   "fips": 37157,
-	   "state": "NC",
-	   "area_name": "Rockingham County",
-	   "household_income": 39606
-	 },
-	 {
-	   "fips": 37159,
-	   "state": "NC",
-	   "area_name": "Rowan County",
-	   "household_income": 44973
-	 },
-	 {
-	   "fips": 37161,
-	   "state": "NC",
-	   "area_name": "Rutherford County",
-	   "household_income": 35629
-	 },
-	 {
-	   "fips": 37163,
-	   "state": "NC",
-	   "area_name": "Sampson County",
-	   "household_income": 33876
-	 },
-	 {
-	   "fips": 37165,
-	   "state": "NC",
-	   "area_name": "Scotland County",
-	   "household_income": 32782
-	 },
-	 {
-	   "fips": 37167,
-	   "state": "NC",
-	   "area_name": "Stanly County",
-	   "household_income": 41921
-	 },
-	 {
-	   "fips": 37169,
-	   "state": "NC",
-	   "area_name": "Stokes County",
-	   "household_income": 45065
-	 },
-	 {
-	   "fips": 37171,
-	   "state": "NC",
-	   "area_name": "Surry County",
-	   "household_income": 37915
-	 },
-	 {
-	   "fips": 37173,
-	   "state": "NC",
-	   "area_name": "Swain County",
-	   "household_income": 34788
-	 },
-	 {
-	   "fips": 37175,
-	   "state": "NC",
-	   "area_name": "Transylvania County",
-	   "household_income": 44490
-	 },
-	 {
-	   "fips": 37177,
-	   "state": "NC",
-	   "area_name": "Tyrrell County",
-	   "household_income": 32773
-	 },
-	 {
-	   "fips": 37179,
-	   "state": "NC",
-	   "area_name": "Union County",
-	   "household_income": 64381
-	 },
-	 {
-	   "fips": 37181,
-	   "state": "NC",
-	   "area_name": "Vance County",
-	   "household_income": 33609
-	 },
-	 {
-	   "fips": 37183,
-	   "state": "NC",
-	   "area_name": "Wake County",
-	   "household_income": 66950
-	 },
-	 {
-	   "fips": 37185,
-	   "state": "NC",
-	   "area_name": "Warren County",
-	   "household_income": 33869
-	 },
-	 {
-	   "fips": 37187,
-	   "state": "NC",
-	   "area_name": "Washington County",
-	   "household_income": 32867
-	 },
-	 {
-	   "fips": 37189,
-	   "state": "NC",
-	   "area_name": "Watauga County",
-	   "household_income": 41942
-	 },
-	 {
-	   "fips": 37191,
-	   "state": "NC",
-	   "area_name": "Wayne County",
-	   "household_income": 36890
-	 },
-	 {
-	   "fips": 37193,
-	   "state": "NC",
-	   "area_name": "Wilkes County",
-	   "household_income": 33398
-	 },
-	 {
-	   "fips": 37195,
-	   "state": "NC",
-	   "area_name": "Wilson County",
-	   "household_income": 39268
-	 },
-	 {
-	   "fips": 37197,
-	   "state": "NC",
-	   "area_name": "Yadkin County",
-	   "household_income": 40801
-	 },
-	 {
-	   "fips": 37199,
-	   "state": "NC",
-	   "area_name": "Yancey County",
-	   "household_income": 35974
-	 },
-	 {
-	   "fips": 38001,
-	   "state": "ND",
-	   "area_name": "Adams County",
-	   "household_income": 45710
-	 },
-	 {
-	   "fips": 38003,
-	   "state": "ND",
-	   "area_name": "Barnes County",
-	   "household_income": 52376
-	 },
-	 {
-	   "fips": 38005,
-	   "state": "ND",
-	   "area_name": "Benson County",
-	   "household_income": 39342
-	 },
-	 {
-	   "fips": 38007,
-	   "state": "ND",
-	   "area_name": "Billings County",
-	   "household_income": 75096
-	 },
-	 {
-	   "fips": 38009,
-	   "state": "ND",
-	   "area_name": "Bottineau County",
-	   "household_income": 56965
-	 },
-	 {
-	   "fips": 38011,
-	   "state": "ND",
-	   "area_name": "Bowman County",
-	   "household_income": 60946
-	 },
-	 {
-	   "fips": 38013,
-	   "state": "ND",
-	   "area_name": "Burke County",
-	   "household_income": 62875
-	 },
-	 {
-	   "fips": 38015,
-	   "state": "ND",
-	   "area_name": "Burleigh County",
-	   "household_income": 66734
-	 },
-	 {
-	   "fips": 38017,
-	   "state": "ND",
-	   "area_name": "Cass County",
-	   "household_income": 53755
-	 },
-	 {
-	   "fips": 38019,
-	   "state": "ND",
-	   "area_name": "Cavalier County",
-	   "household_income": 54057
-	 },
-	 {
-	   "fips": 38021,
-	   "state": "ND",
-	   "area_name": "Dickey County",
-	   "household_income": 51817
-	 },
-	 {
-	   "fips": 38023,
-	   "state": "ND",
-	   "area_name": "Divide County",
-	   "household_income": 67344
-	 },
-	 {
-	   "fips": 38025,
-	   "state": "ND",
-	   "area_name": "Dunn County",
-	   "household_income": 72018
-	 },
-	 {
-	   "fips": 38027,
-	   "state": "ND",
-	   "area_name": "Eddy County",
-	   "household_income": 47596
-	 },
-	 {
-	   "fips": 38029,
-	   "state": "ND",
-	   "area_name": "Emmons County",
-	   "household_income": 44282
-	 },
-	 {
-	   "fips": 38031,
-	   "state": "ND",
-	   "area_name": "Foster County",
-	   "household_income": 54593
-	 },
-	 {
-	   "fips": 38033,
-	   "state": "ND",
-	   "area_name": "Golden Valley County",
-	   "household_income": 53420
-	 },
-	 {
-	   "fips": 38035,
-	   "state": "ND",
-	   "area_name": "Grand Forks County",
-	   "household_income": 50435
-	 },
-	 {
-	   "fips": 38037,
-	   "state": "ND",
-	   "area_name": "Grant County",
-	   "household_income": 39679
-	 },
-	 {
-	   "fips": 38039,
-	   "state": "ND",
-	   "area_name": "Griggs County",
-	   "household_income": 51192
-	 },
-	 {
-	   "fips": 38041,
-	   "state": "ND",
-	   "area_name": "Hettinger County",
-	   "household_income": 50038
-	 },
-	 {
-	   "fips": 38043,
-	   "state": "ND",
-	   "area_name": "Kidder County",
-	   "household_income": 46923
-	 },
-	 {
-	   "fips": 38045,
-	   "state": "ND",
-	   "area_name": "LaMoure County",
-	   "household_income": 53721
-	 },
-	 {
-	   "fips": 38047,
-	   "state": "ND",
-	   "area_name": "Logan County",
-	   "household_income": 44696
-	 },
-	 {
-	   "fips": 38049,
-	   "state": "ND",
-	   "area_name": "McHenry County",
-	   "household_income": 48887
-	 },
-	 {
-	   "fips": 38051,
-	   "state": "ND",
-	   "area_name": "McIntosh County",
-	   "household_income": 40258
-	 },
-	 {
-	   "fips": 38053,
-	   "state": "ND",
-	   "area_name": "McKenzie County",
-	   "household_income": 81209
-	 },
-	 {
-	   "fips": 38055,
-	   "state": "ND",
-	   "area_name": "McLean County",
-	   "household_income": 56616
-	 },
-	 {
-	   "fips": 38057,
-	   "state": "ND",
-	   "area_name": "Mercer County",
-	   "household_income": 74047
-	 },
-	 {
-	   "fips": 38059,
-	   "state": "ND",
-	   "area_name": "Morton County",
-	   "household_income": 54637
-	 },
-	 {
-	   "fips": 38061,
-	   "state": "ND",
-	   "area_name": "Mountrail County",
-	   "household_income": 66807
-	 },
-	 {
-	   "fips": 38063,
-	   "state": "ND",
-	   "area_name": "Nelson County",
-	   "household_income": 45040
-	 },
-	 {
-	   "fips": 38065,
-	   "state": "ND",
-	   "area_name": "Oliver County",
-	   "household_income": 62010
-	 },
-	 {
-	   "fips": 38067,
-	   "state": "ND",
-	   "area_name": "Pembina County",
-	   "household_income": 56298
-	 },
-	 {
-	   "fips": 38069,
-	   "state": "ND",
-	   "area_name": "Pierce County",
-	   "household_income": 39572
-	 },
-	 {
-	   "fips": 38071,
-	   "state": "ND",
-	   "area_name": "Ramsey County",
-	   "household_income": 51097
-	 },
-	 {
-	   "fips": 38073,
-	   "state": "ND",
-	   "area_name": "Ransom County",
-	   "household_income": 56270
-	 },
-	 {
-	   "fips": 38075,
-	   "state": "ND",
-	   "area_name": "Renville County",
-	   "household_income": 60957
-	 },
-	 {
-	   "fips": 38077,
-	   "state": "ND",
-	   "area_name": "Richland County",
-	   "household_income": 57177
-	 },
-	 {
-	   "fips": 38079,
-	   "state": "ND",
-	   "area_name": "Rolette County",
-	   "household_income": 35630
-	 },
-	 {
-	   "fips": 38081,
-	   "state": "ND",
-	   "area_name": "Sargent County",
-	   "household_income": 58467
-	 },
-	 {
-	   "fips": 38083,
-	   "state": "ND",
-	   "area_name": "Sheridan County",
-	   "household_income": 44990
-	 },
-	 {
-	   "fips": 38085,
-	   "state": "ND",
-	   "area_name": "Sioux County",
-	   "household_income": 33950
-	 },
-	 {
-	   "fips": 38087,
-	   "state": "ND",
-	   "area_name": "Slope County",
-	   "household_income": 55664
-	 },
-	 {
-	   "fips": 38089,
-	   "state": "ND",
-	   "area_name": "Stark County",
-	   "household_income": 76672
-	 },
-	 {
-	   "fips": 38091,
-	   "state": "ND",
-	   "area_name": "Steele County",
-	   "household_income": 59408
-	 },
-	 {
-	   "fips": 38093,
-	   "state": "ND",
-	   "area_name": "Stutsman County",
-	   "household_income": 53333
-	 },
-	 {
-	   "fips": 38095,
-	   "state": "ND",
-	   "area_name": "Towner County",
-	   "household_income": 51961
-	 },
-	 {
-	   "fips": 38097,
-	   "state": "ND",
-	   "area_name": "Traill County",
-	   "household_income": 58995
-	 },
-	 {
-	   "fips": 38099,
-	   "state": "ND",
-	   "area_name": "Walsh County",
-	   "household_income": 51754
-	 },
-	 {
-	   "fips": 38101,
-	   "state": "ND",
-	   "area_name": "Ward County",
-	   "household_income": 62526
-	 },
-	 {
-	   "fips": 38103,
-	   "state": "ND",
-	   "area_name": "Wells County",
-	   "household_income": 51470
-	 },
-	 {
-	   "fips": 38105,
-	   "state": "ND",
-	   "area_name": "Williams County",
-	   "household_income": 86354
-	 },
-	 {
-	   "fips": 39001,
-	   "state": "OH",
-	   "area_name": "Adams County",
-	   "household_income": 34116
-	 },
-	 {
-	   "fips": 39003,
-	   "state": "OH",
-	   "area_name": "Allen County",
-	   "household_income": 43602
-	 },
-	 {
-	   "fips": 39005,
-	   "state": "OH",
-	   "area_name": "Ashland County",
-	   "household_income": 47369
-	 },
-	 {
-	   "fips": 39007,
-	   "state": "OH",
-	   "area_name": "Ashtabula County",
-	   "household_income": 39757
-	 },
-	 {
-	   "fips": 39009,
-	   "state": "OH",
-	   "area_name": "Athens County",
-	   "household_income": 34216
-	 },
-	 {
-	   "fips": 39011,
-	   "state": "OH",
-	   "area_name": "Auglaize County",
-	   "household_income": 52650
-	 },
-	 {
-	   "fips": 39013,
-	   "state": "OH",
-	   "area_name": "Belmont County",
-	   "household_income": 41983
-	 },
-	 {
-	   "fips": 39015,
-	   "state": "OH",
-	   "area_name": "Brown County",
-	   "household_income": 46484
-	 },
-	 {
-	   "fips": 39017,
-	   "state": "OH",
-	   "area_name": "Butler County",
-	   "household_income": 58558
-	 },
-	 {
-	   "fips": 39019,
-	   "state": "OH",
-	   "area_name": "Carroll County",
-	   "household_income": 46177
-	 },
-	 {
-	   "fips": 39021,
-	   "state": "OH",
-	   "area_name": "Champaign County",
-	   "household_income": 50302
-	 },
-	 {
-	   "fips": 39023,
-	   "state": "OH",
-	   "area_name": "Clark County",
-	   "household_income": 42029
-	 },
-	 {
-	   "fips": 39025,
-	   "state": "OH",
-	   "area_name": "Clermont County",
-	   "household_income": 62158
-	 },
-	 {
-	   "fips": 39027,
-	   "state": "OH",
-	   "area_name": "Clinton County",
-	   "household_income": 49453
-	 },
-	 {
-	   "fips": 39029,
-	   "state": "OH",
-	   "area_name": "Columbiana County",
-	   "household_income": 42645
-	 },
-	 {
-	   "fips": 39031,
-	   "state": "OH",
-	   "area_name": "Coshocton County",
-	   "household_income": 41547
-	 },
-	 {
-	   "fips": 39033,
-	   "state": "OH",
-	   "area_name": "Crawford County",
-	   "household_income": 39881
-	 },
-	 {
-	   "fips": 39035,
-	   "state": "OH",
-	   "area_name": "Cuyahoga County",
-	   "household_income": 44138
-	 },
-	 {
-	   "fips": 39037,
-	   "state": "OH",
-	   "area_name": "Darke County",
-	   "household_income": 46610
-	 },
-	 {
-	   "fips": 39039,
-	   "state": "OH",
-	   "area_name": "Defiance County",
-	   "household_income": 53026
-	 },
-	 {
-	   "fips": 39041,
-	   "state": "OH",
-	   "area_name": "Delaware County",
-	   "household_income": 97802
-	 },
-	 {
-	   "fips": 39043,
-	   "state": "OH",
-	   "area_name": "Erie County",
-	   "household_income": 49234
-	 },
-	 {
-	   "fips": 39045,
-	   "state": "OH",
-	   "area_name": "Fairfield County",
-	   "household_income": 59921
-	 },
-	 {
-	   "fips": 39047,
-	   "state": "OH",
-	   "area_name": "Fayette County",
-	   "household_income": 44947
-	 },
-	 {
-	   "fips": 39049,
-	   "state": "OH",
-	   "area_name": "Franklin County",
-	   "household_income": 53164
-	 },
-	 {
-	   "fips": 39051,
-	   "state": "OH",
-	   "area_name": "Fulton County",
-	   "household_income": 54666
-	 },
-	 {
-	   "fips": 39053,
-	   "state": "OH",
-	   "area_name": "Gallia County",
-	   "household_income": 36675
-	 },
-	 {
-	   "fips": 39055,
-	   "state": "OH",
-	   "area_name": "Geauga County",
-	   "household_income": 72264
-	 },
-	 {
-	   "fips": 39057,
-	   "state": "OH",
-	   "area_name": "Greene County",
-	   "household_income": 59382
-	 },
-	 {
-	   "fips": 39059,
-	   "state": "OH",
-	   "area_name": "Guernsey County",
-	   "household_income": 41940
-	 },
-	 {
-	   "fips": 39061,
-	   "state": "OH",
-	   "area_name": "Hamilton County",
-	   "household_income": 48973
-	 },
-	 {
-	   "fips": 39063,
-	   "state": "OH",
-	   "area_name": "Hancock County",
-	   "household_income": 51498
-	 },
-	 {
-	   "fips": 39065,
-	   "state": "OH",
-	   "area_name": "Hardin County",
-	   "household_income": 45195
-	 },
-	 {
-	   "fips": 39067,
-	   "state": "OH",
-	   "area_name": "Harrison County",
-	   "household_income": 42582
-	 },
-	 {
-	   "fips": 39069,
-	   "state": "OH",
-	   "area_name": "Henry County",
-	   "household_income": 53645
-	 },
-	 {
-	   "fips": 39071,
-	   "state": "OH",
-	   "area_name": "Highland County",
-	   "household_income": 41611
-	 },
-	 {
-	   "fips": 39073,
-	   "state": "OH",
-	   "area_name": "Hocking County",
-	   "household_income": 42374
-	 },
-	 {
-	   "fips": 39075,
-	   "state": "OH",
-	   "area_name": "Holmes County",
-	   "household_income": 50069
-	 },
-	 {
-	   "fips": 39077,
-	   "state": "OH",
-	   "area_name": "Huron County",
-	   "household_income": 47824
-	 },
-	 {
-	   "fips": 39079,
-	   "state": "OH",
-	   "area_name": "Jackson County",
-	   "household_income": 41161
-	 },
-	 {
-	   "fips": 39081,
-	   "state": "OH",
-	   "area_name": "Jefferson County",
-	   "household_income": 40148
-	 },
-	 {
-	   "fips": 39083,
-	   "state": "OH",
-	   "area_name": "Knox County",
-	   "household_income": 46908
-	 },
-	 {
-	   "fips": 39085,
-	   "state": "OH",
-	   "area_name": "Lake County",
-	   "household_income": 58697
-	 },
-	 {
-	   "fips": 39087,
-	   "state": "OH",
-	   "area_name": "Lawrence County",
-	   "household_income": 41608
-	 },
-	 {
-	   "fips": 39089,
-	   "state": "OH",
-	   "area_name": "Licking County",
-	   "household_income": 57308
-	 },
-	 {
-	   "fips": 39091,
-	   "state": "OH",
-	   "area_name": "Logan County",
-	   "household_income": 50753
-	 },
-	 {
-	   "fips": 39093,
-	   "state": "OH",
-	   "area_name": "Lorain County",
-	   "household_income": 52331
-	 },
-	 {
-	   "fips": 39095,
-	   "state": "OH",
-	   "area_name": "Lucas County",
-	   "household_income": 42344
-	 },
-	 {
-	   "fips": 39097,
-	   "state": "OH",
-	   "area_name": "Madison County",
-	   "household_income": 52996
-	 },
-	 {
-	   "fips": 39099,
-	   "state": "OH",
-	   "area_name": "Mahoning County",
-	   "household_income": 41316
-	 },
-	 {
-	   "fips": 39101,
-	   "state": "OH",
-	   "area_name": "Marion County",
-	   "household_income": 42240
-	 },
-	 {
-	   "fips": 39103,
-	   "state": "OH",
-	   "area_name": "Medina County",
-	   "household_income": 68405
-	 },
-	 {
-	   "fips": 39105,
-	   "state": "OH",
-	   "area_name": "Meigs County",
-	   "household_income": 38081
-	 },
-	 {
-	   "fips": 39107,
-	   "state": "OH",
-	   "area_name": "Mercer County",
-	   "household_income": 52606
-	 },
-	 {
-	   "fips": 39109,
-	   "state": "OH",
-	   "area_name": "Miami County",
-	   "household_income": 51868
-	 },
-	 {
-	   "fips": 39111,
-	   "state": "OH",
-	   "area_name": "Monroe County",
-	   "household_income": 40646
-	 },
-	 {
-	   "fips": 39113,
-	   "state": "OH",
-	   "area_name": "Montgomery County",
-	   "household_income": 42994
-	 },
-	 {
-	   "fips": 39115,
-	   "state": "OH",
-	   "area_name": "Morgan County",
-	   "household_income": 37923
-	 },
-	 {
-	   "fips": 39117,
-	   "state": "OH",
-	   "area_name": "Morrow County",
-	   "household_income": 49846
-	 },
-	 {
-	   "fips": 39119,
-	   "state": "OH",
-	   "area_name": "Muskingum County",
-	   "household_income": 41814
-	 },
-	 {
-	   "fips": 39121,
-	   "state": "OH",
-	   "area_name": "Noble County",
-	   "household_income": 43953
-	 },
-	 {
-	   "fips": 39123,
-	   "state": "OH",
-	   "area_name": "Ottawa County",
-	   "household_income": 50345
-	 },
-	 {
-	   "fips": 39125,
-	   "state": "OH",
-	   "area_name": "Paulding County",
-	   "household_income": 47358
-	 },
-	 {
-	   "fips": 39127,
-	   "state": "OH",
-	   "area_name": "Perry County",
-	   "household_income": 43341
-	 },
-	 {
-	   "fips": 39129,
-	   "state": "OH",
-	   "area_name": "Pickaway County",
-	   "household_income": 54868
-	 },
-	 {
-	   "fips": 39131,
-	   "state": "OH",
-	   "area_name": "Pike County",
-	   "household_income": 40512
-	 },
-	 {
-	   "fips": 39133,
-	   "state": "OH",
-	   "area_name": "Portage County",
-	   "household_income": 52047
-	 },
-	 {
-	   "fips": 39135,
-	   "state": "OH",
-	   "area_name": "Preble County",
-	   "household_income": 49516
-	 },
-	 {
-	   "fips": 39137,
-	   "state": "OH",
-	   "area_name": "Putnam County",
-	   "household_income": 56519
-	 },
-	 {
-	   "fips": 39139,
-	   "state": "OH",
-	   "area_name": "Richland County",
-	   "household_income": 41948
-	 },
-	 {
-	   "fips": 39141,
-	   "state": "OH",
-	   "area_name": "Ross County",
-	   "household_income": 42466
-	 },
-	 {
-	   "fips": 39143,
-	   "state": "OH",
-	   "area_name": "Sandusky County",
-	   "household_income": 46447
-	 },
-	 {
-	   "fips": 39145,
-	   "state": "OH",
-	   "area_name": "Scioto County",
-	   "household_income": 37625
-	 },
-	 {
-	   "fips": 39147,
-	   "state": "OH",
-	   "area_name": "Seneca County",
-	   "household_income": 45003
-	 },
-	 {
-	   "fips": 39149,
-	   "state": "OH",
-	   "area_name": "Shelby County",
-	   "household_income": 50774
-	 },
-	 {
-	   "fips": 39151,
-	   "state": "OH",
-	   "area_name": "Stark County",
-	   "household_income": 47745
-	 },
-	 {
-	   "fips": 39153,
-	   "state": "OH",
-	   "area_name": "Summit County",
-	   "household_income": 50453
-	 },
-	 {
-	   "fips": 39155,
-	   "state": "OH",
-	   "area_name": "Trumbull County",
-	   "household_income": 43160
-	 },
-	 {
-	   "fips": 39157,
-	   "state": "OH",
-	   "area_name": "Tuscarawas County",
-	   "household_income": 46128
-	 },
-	 {
-	   "fips": 39159,
-	   "state": "OH",
-	   "area_name": "Union County",
-	   "household_income": 69900
-	 },
-	 {
-	   "fips": 39161,
-	   "state": "OH",
-	   "area_name": "Van Wert County",
-	   "household_income": 49565
-	 },
-	 {
-	   "fips": 39163,
-	   "state": "OH",
-	   "area_name": "Vinton County",
-	   "household_income": 37633
-	 },
-	 {
-	   "fips": 39165,
-	   "state": "OH",
-	   "area_name": "Warren County",
-	   "household_income": 72973
-	 },
-	 {
-	   "fips": 39167,
-	   "state": "OH",
-	   "area_name": "Washington County",
-	   "household_income": 45048
-	 },
-	 {
-	   "fips": 39169,
-	   "state": "OH",
-	   "area_name": "Wayne County",
-	   "household_income": 50106
-	 },
-	 {
-	   "fips": 39171,
-	   "state": "OH",
-	   "area_name": "Williams County",
-	   "household_income": 42214
-	 },
-	 {
-	   "fips": 39173,
-	   "state": "OH",
-	   "area_name": "Wood County",
-	   "household_income": 54996
-	 },
-	 {
-	   "fips": 39175,
-	   "state": "OH",
-	   "area_name": "Wyandot County",
-	   "household_income": 47905
-	 },
-	 {
-	   "fips": 40001,
-	   "state": "OK",
-	   "area_name": "Adair County",
-	   "household_income": 31386
-	 },
-	 {
-	   "fips": 40003,
-	   "state": "OK",
-	   "area_name": "Alfalfa County",
-	   "household_income": 51885
-	 },
-	 {
-	   "fips": 40005,
-	   "state": "OK",
-	   "area_name": "Atoka County",
-	   "household_income": 35910
-	 },
-	 {
-	   "fips": 40007,
-	   "state": "OK",
-	   "area_name": "Beaver County",
-	   "household_income": 56664
-	 },
-	 {
-	   "fips": 40009,
-	   "state": "OK",
-	   "area_name": "Beckham County",
-	   "household_income": 46625
-	 },
-	 {
-	   "fips": 40011,
-	   "state": "OK",
-	   "area_name": "Blaine County",
-	   "household_income": 44309
-	 },
-	 {
-	   "fips": 40013,
-	   "state": "OK",
-	   "area_name": "Bryan County",
-	   "household_income": 38187
-	 },
-	 {
-	   "fips": 40015,
-	   "state": "OK",
-	   "area_name": "Caddo County",
-	   "household_income": 39933
-	 },
-	 {
-	   "fips": 40017,
-	   "state": "OK",
-	   "area_name": "Canadian County",
-	   "household_income": 68421
-	 },
-	 {
-	   "fips": 40019,
-	   "state": "OK",
-	   "area_name": "Carter County",
-	   "household_income": 44402
-	 },
-	 {
-	   "fips": 40021,
-	   "state": "OK",
-	   "area_name": "Cherokee County",
-	   "household_income": 38027
-	 },
-	 {
-	   "fips": 40023,
-	   "state": "OK",
-	   "area_name": "Choctaw County",
-	   "household_income": 29652
-	 },
-	 {
-	   "fips": 40025,
-	   "state": "OK",
-	   "area_name": "Cimarron County",
-	   "household_income": 41800
-	 },
-	 {
-	   "fips": 40027,
-	   "state": "OK",
-	   "area_name": "Cleveland County",
-	   "household_income": 58205
-	 },
-	 {
-	   "fips": 40029,
-	   "state": "OK",
-	   "area_name": "Coal County",
-	   "household_income": 36566
-	 },
-	 {
-	   "fips": 40031,
-	   "state": "OK",
-	   "area_name": "Comanche County",
-	   "household_income": 46071
-	 },
-	 {
-	   "fips": 40033,
-	   "state": "OK",
-	   "area_name": "Cotton County",
-	   "household_income": 41469
-	 },
-	 {
-	   "fips": 40035,
-	   "state": "OK",
-	   "area_name": "Craig County",
-	   "household_income": 36953
-	 },
-	 {
-	   "fips": 40037,
-	   "state": "OK",
-	   "area_name": "Creek County",
-	   "household_income": 46614
-	 },
-	 {
-	   "fips": 40039,
-	   "state": "OK",
-	   "area_name": "Custer County",
-	   "household_income": 45574
-	 },
-	 {
-	   "fips": 40041,
-	   "state": "OK",
-	   "area_name": "Delaware County",
-	   "household_income": 36424
-	 },
-	 {
-	   "fips": 40043,
-	   "state": "OK",
-	   "area_name": "Dewey County",
-	   "household_income": 50348
-	 },
-	 {
-	   "fips": 40045,
-	   "state": "OK",
-	   "area_name": "Ellis County",
-	   "household_income": 52032
-	 },
-	 {
-	   "fips": 40047,
-	   "state": "OK",
-	   "area_name": "Garfield County",
-	   "household_income": 49136
-	 },
-	 {
-	   "fips": 40049,
-	   "state": "OK",
-	   "area_name": "Garvin County",
-	   "household_income": 40774
-	 },
-	 {
-	   "fips": 40051,
-	   "state": "OK",
-	   "area_name": "Grady County",
-	   "household_income": 51199
-	 },
-	 {
-	   "fips": 40053,
-	   "state": "OK",
-	   "area_name": "Grant County",
-	   "household_income": 49774
-	 },
-	 {
-	   "fips": 40055,
-	   "state": "OK",
-	   "area_name": "Greer County",
-	   "household_income": 34872
-	 },
-	 {
-	   "fips": 40057,
-	   "state": "OK",
-	   "area_name": "Harmon County",
-	   "household_income": 33750
-	 },
-	 {
-	   "fips": 40059,
-	   "state": "OK",
-	   "area_name": "Harper County",
-	   "household_income": 49204
-	 },
-	 {
-	   "fips": 40061,
-	   "state": "OK",
-	   "area_name": "Haskell County",
-	   "household_income": 35313
-	 },
-	 {
-	   "fips": 40063,
-	   "state": "OK",
-	   "area_name": "Hughes County",
-	   "household_income": 34837
-	 },
-	 {
-	   "fips": 40065,
-	   "state": "OK",
-	   "area_name": "Jackson County",
-	   "household_income": 41370
-	 },
-	 {
-	   "fips": 40067,
-	   "state": "OK",
-	   "area_name": "Jefferson County",
-	   "household_income": 32645
-	 },
-	 {
-	   "fips": 40069,
-	   "state": "OK",
-	   "area_name": "Johnston County",
-	   "household_income": 35977
-	 },
-	 {
-	   "fips": 40071,
-	   "state": "OK",
-	   "area_name": "Kay County",
-	   "household_income": 41514
-	 },
-	 {
-	   "fips": 40073,
-	   "state": "OK",
-	   "area_name": "Kingfisher County",
-	   "household_income": 59525
-	 },
-	 {
-	   "fips": 40075,
-	   "state": "OK",
-	   "area_name": "Kiowa County",
-	   "household_income": 36699
-	 },
-	 {
-	   "fips": 40077,
-	   "state": "OK",
-	   "area_name": "Latimer County",
-	   "household_income": 35522
-	 },
-	 {
-	   "fips": 40079,
-	   "state": "OK",
-	   "area_name": "Le Flore County",
-	   "household_income": 36627
-	 },
-	 {
-	   "fips": 40081,
-	   "state": "OK",
-	   "area_name": "Lincoln County",
-	   "household_income": 46083
-	 },
-	 {
-	   "fips": 40083,
-	   "state": "OK",
-	   "area_name": "Logan County",
-	   "household_income": 55602
-	 },
-	 {
-	   "fips": 40085,
-	   "state": "OK",
-	   "area_name": "Love County",
-	   "household_income": 52662
-	 },
-	 {
-	   "fips": 40087,
-	   "state": "OK",
-	   "area_name": "McClain County",
-	   "household_income": 58392
-	 },
-	 {
-	   "fips": 40089,
-	   "state": "OK",
-	   "area_name": "McCurtain County",
-	   "household_income": 34964
-	 },
-	 {
-	   "fips": 40091,
-	   "state": "OK",
-	   "area_name": "McIntosh County",
-	   "household_income": 33450
-	 },
-	 {
-	   "fips": 40093,
-	   "state": "OK",
-	   "area_name": "Major County",
-	   "household_income": 54107
-	 },
-	 {
-	   "fips": 40095,
-	   "state": "OK",
-	   "area_name": "Marshall County",
-	   "household_income": 38517
-	 },
-	 {
-	   "fips": 40097,
-	   "state": "OK",
-	   "area_name": "Mayes County",
-	   "household_income": 41806
-	 },
-	 {
-	   "fips": 40099,
-	   "state": "OK",
-	   "area_name": "Murray County",
-	   "household_income": 43783
-	 },
-	 {
-	   "fips": 40101,
-	   "state": "OK",
-	   "area_name": "Muskogee County",
-	   "household_income": 41015
-	 },
-	 {
-	   "fips": 40103,
-	   "state": "OK",
-	   "area_name": "Noble County",
-	   "household_income": 46874
-	 },
-	 {
-	   "fips": 40105,
-	   "state": "OK",
-	   "area_name": "Nowata County",
-	   "household_income": 39706
-	 },
-	 {
-	   "fips": 40107,
-	   "state": "OK",
-	   "area_name": "Okfuskee County",
-	   "household_income": 34172
-	 },
-	 {
-	   "fips": 40109,
-	   "state": "OK",
-	   "area_name": "Oklahoma County",
-	   "household_income": 48226
-	 },
-	 {
-	   "fips": 40111,
-	   "state": "OK",
-	   "area_name": "Okmulgee County",
-	   "household_income": 38183
-	 },
-	 {
-	   "fips": 40113,
-	   "state": "OK",
-	   "area_name": "Osage County",
-	   "household_income": 48014
-	 },
-	 {
-	   "fips": 40115,
-	   "state": "OK",
-	   "area_name": "Ottawa County",
-	   "household_income": 35580
-	 },
-	 {
-	   "fips": 40117,
-	   "state": "OK",
-	   "area_name": "Pawnee County",
-	   "household_income": 43476
-	 },
-	 {
-	   "fips": 40119,
-	   "state": "OK",
-	   "area_name": "Payne County",
-	   "household_income": 41037
-	 },
-	 {
-	   "fips": 40121,
-	   "state": "OK",
-	   "area_name": "Pittsburg County",
-	   "household_income": 39900
-	 },
-	 {
-	   "fips": 40123,
-	   "state": "OK",
-	   "area_name": "Pontotoc County",
-	   "household_income": 41423
-	 },
-	 {
-	   "fips": 40125,
-	   "state": "OK",
-	   "area_name": "Pottawatomie County",
-	   "household_income": 45710
-	 },
-	 {
-	   "fips": 40127,
-	   "state": "OK",
-	   "area_name": "Pushmataha County",
-	   "household_income": 32215
-	 },
-	 {
-	   "fips": 40129,
-	   "state": "OK",
-	   "area_name": "Roger Mills County",
-	   "household_income": 56139
-	 },
-	 {
-	   "fips": 40131,
-	   "state": "OK",
-	   "area_name": "Rogers County",
-	   "household_income": 56465
-	 },
-	 {
-	   "fips": 40133,
-	   "state": "OK",
-	   "area_name": "Seminole County",
-	   "household_income": 35964
-	 },
-	 {
-	   "fips": 40135,
-	   "state": "OK",
-	   "area_name": "Sequoyah County",
-	   "household_income": 35592
-	 },
-	 {
-	   "fips": 40137,
-	   "state": "OK",
-	   "area_name": "Stephens County",
-	   "household_income": 42967
-	 },
-	 {
-	   "fips": 40139,
-	   "state": "OK",
-	   "area_name": "Texas County",
-	   "household_income": 49780
-	 },
-	 {
-	   "fips": 40141,
-	   "state": "OK",
-	   "area_name": "Tillman County",
-	   "household_income": 35274
-	 },
-	 {
-	   "fips": 40143,
-	   "state": "OK",
-	   "area_name": "Tulsa County",
-	   "household_income": 50507
-	 },
-	 {
-	   "fips": 40145,
-	   "state": "OK",
-	   "area_name": "Wagoner County",
-	   "household_income": 58921
-	 },
-	 {
-	   "fips": 40147,
-	   "state": "OK",
-	   "area_name": "Washington County",
-	   "household_income": 49056
-	 },
-	 {
-	   "fips": 40149,
-	   "state": "OK",
-	   "area_name": "Washita County",
-	   "household_income": 47391
-	 },
-	 {
-	   "fips": 40151,
-	   "state": "OK",
-	   "area_name": "Woods County",
-	   "household_income": 48831
-	 },
-	 {
-	   "fips": 40153,
-	   "state": "OK",
-	   "area_name": "Woodward County",
-	   "household_income": 56067
-	 },
-	 {
-	   "fips": 41001,
-	   "state": "OR",
-	   "area_name": "Baker County",
-	   "household_income": 38966
-	 },
-	 {
-	   "fips": 41003,
-	   "state": "OR",
-	   "area_name": "Benton County",
-	   "household_income": 54089
-	 },
-	 {
-	   "fips": 41005,
-	   "state": "OR",
-	   "area_name": "Clackamas County",
-	   "household_income": 65555
-	 },
-	 {
-	   "fips": 41007,
-	   "state": "OR",
-	   "area_name": "Clatsop County",
-	   "household_income": 45132
-	 },
-	 {
-	   "fips": 41009,
-	   "state": "OR",
-	   "area_name": "Columbia County",
-	   "household_income": 57517
-	 },
-	 {
-	   "fips": 41011,
-	   "state": "OR",
-	   "area_name": "Coos County",
-	   "household_income": 39956
-	 },
-	 {
-	   "fips": 41013,
-	   "state": "OR",
-	   "area_name": "Crook County",
-	   "household_income": 38155
-	 },
-	 {
-	   "fips": 41015,
-	   "state": "OR",
-	   "area_name": "Curry County",
-	   "household_income": 40524
-	 },
-	 {
-	   "fips": 41017,
-	   "state": "OR",
-	   "area_name": "Deschutes County",
-	   "household_income": 52387
-	 },
-	 {
-	   "fips": 41019,
-	   "state": "OR",
-	   "area_name": "Douglas County",
-	   "household_income": 41504
-	 },
-	 {
-	   "fips": 41021,
-	   "state": "OR",
-	   "area_name": "Gilliam County",
-	   "household_income": 51978
-	 },
-	 {
-	   "fips": 41023,
-	   "state": "OR",
-	   "area_name": "Grant County",
-	   "household_income": 41304
-	 },
-	 {
-	   "fips": 41025,
-	   "state": "OR",
-	   "area_name": "Harney County",
-	   "household_income": 36340
-	 },
-	 {
-	   "fips": 41027,
-	   "state": "OR",
-	   "area_name": "Hood River County",
-	   "household_income": 54063
-	 },
-	 {
-	   "fips": 41029,
-	   "state": "OR",
-	   "area_name": "Jackson County",
-	   "household_income": 44835
-	 },
-	 {
-	   "fips": 41031,
-	   "state": "OR",
-	   "area_name": "Jefferson County",
-	   "household_income": 42753
-	 },
-	 {
-	   "fips": 41033,
-	   "state": "OR",
-	   "area_name": "Josephine County",
-	   "household_income": 37230
-	 },
-	 {
-	   "fips": 41035,
-	   "state": "OR",
-	   "area_name": "Klamath County",
-	   "household_income": 39234
-	 },
-	 {
-	   "fips": 41037,
-	   "state": "OR",
-	   "area_name": "Lake County",
-	   "household_income": 40328
-	 },
-	 {
-	   "fips": 41039,
-	   "state": "OR",
-	   "area_name": "Lane County",
-	   "household_income": 44976
-	 },
-	 {
-	   "fips": 41041,
-	   "state": "OR",
-	   "area_name": "Lincoln County",
-	   "household_income": 40226
-	 },
-	 {
-	   "fips": 41043,
-	   "state": "OR",
-	   "area_name": "Linn County",
-	   "household_income": 44358
-	 },
-	 {
-	   "fips": 41045,
-	   "state": "OR",
-	   "area_name": "Malheur County",
-	   "household_income": 35094
-	 },
-	 {
-	   "fips": 41047,
-	   "state": "OR",
-	   "area_name": "Marion County",
-	   "household_income": 48554
-	 },
-	 {
-	   "fips": 41049,
-	   "state": "OR",
-	   "area_name": "Morrow County",
-	   "household_income": 51839
-	 },
-	 {
-	   "fips": 41051,
-	   "state": "OR",
-	   "area_name": "Multnomah County",
-	   "household_income": 53519
-	 },
-	 {
-	   "fips": 41053,
-	   "state": "OR",
-	   "area_name": "Polk County",
-	   "household_income": 52626
-	 },
-	 {
-	   "fips": 41055,
-	   "state": "OR",
-	   "area_name": "Sherman County",
-	   "household_income": 53277
-	 },
-	 {
-	   "fips": 41057,
-	   "state": "OR",
-	   "area_name": "Tillamook County",
-	   "household_income": 41662
-	 },
-	 {
-	   "fips": 41059,
-	   "state": "OR",
-	   "area_name": "Umatilla County",
-	   "household_income": 44780
-	 },
-	 {
-	   "fips": 41061,
-	   "state": "OR",
-	   "area_name": "Union County",
-	   "household_income": 44841
-	 },
-	 {
-	   "fips": 41063,
-	   "state": "OR",
-	   "area_name": "Wallowa County",
-	   "household_income": 39743
-	 },
-	 {
-	   "fips": 41065,
-	   "state": "OR",
-	   "area_name": "Wasco County",
-	   "household_income": 44010
-	 },
-	 {
-	   "fips": 41067,
-	   "state": "OR",
-	   "area_name": "Washington County",
-	   "household_income": 66315
-	 },
-	 {
-	   "fips": 41069,
-	   "state": "OR",
-	   "area_name": "Wheeler County",
-	   "household_income": 33387
-	 },
-	 {
-	   "fips": 41071,
-	   "state": "OR",
-	   "area_name": "Yamhill County",
-	   "household_income": 52903
-	 },
-	 {
-	   "fips": 42001,
-	   "state": "PA",
-	   "area_name": "Adams County",
-	   "household_income": 60179
-	 },
-	 {
-	   "fips": 42003,
-	   "state": "PA",
-	   "area_name": "Allegheny County",
-	   "household_income": 52385
-	 },
-	 {
-	   "fips": 42005,
-	   "state": "PA",
-	   "area_name": "Armstrong County",
-	   "household_income": 44326
-	 },
-	 {
-	   "fips": 42007,
-	   "state": "PA",
-	   "area_name": "Beaver County",
-	   "household_income": 51041
-	 },
-	 {
-	   "fips": 42009,
-	   "state": "PA",
-	   "area_name": "Bedford County",
-	   "household_income": 46890
-	 },
-	 {
-	   "fips": 42011,
-	   "state": "PA",
-	   "area_name": "Berks County",
-	   "household_income": 55936
-	 },
-	 {
-	   "fips": 42013,
-	   "state": "PA",
-	   "area_name": "Blair County",
-	   "household_income": 43343
-	 },
-	 {
-	   "fips": 42015,
-	   "state": "PA",
-	   "area_name": "Bradford County",
-	   "household_income": 47242
-	 },
-	 {
-	   "fips": 42017,
-	   "state": "PA",
-	   "area_name": "Bucks County",
-	   "household_income": 77823
-	 },
-	 {
-	   "fips": 42019,
-	   "state": "PA",
-	   "area_name": "Butler County",
-	   "household_income": 60851
-	 },
-	 {
-	   "fips": 42021,
-	   "state": "PA",
-	   "area_name": "Cambria County",
-	   "household_income": 42703
-	 },
-	 {
-	   "fips": 42023,
-	   "state": "PA",
-	   "area_name": "Cameron County",
-	   "household_income": 40257
-	 },
-	 {
-	   "fips": 42025,
-	   "state": "PA",
-	   "area_name": "Carbon County",
-	   "household_income": 49252
-	 },
-	 {
-	   "fips": 42027,
-	   "state": "PA",
-	   "area_name": "Centre County",
-	   "household_income": 51573
-	 },
-	 {
-	   "fips": 42029,
-	   "state": "PA",
-	   "area_name": "Chester County",
-	   "household_income": 85613
-	 },
-	 {
-	   "fips": 42031,
-	   "state": "PA",
-	   "area_name": "Clarion County",
-	   "household_income": 43202
-	 },
-	 {
-	   "fips": 42033,
-	   "state": "PA",
-	   "area_name": "Clearfield County",
-	   "household_income": 40230
-	 },
-	 {
-	   "fips": 42035,
-	   "state": "PA",
-	   "area_name": "Clinton County",
-	   "household_income": 44224
-	 },
-	 {
-	   "fips": 42037,
-	   "state": "PA",
-	   "area_name": "Columbia County",
-	   "household_income": 46938
-	 },
-	 {
-	   "fips": 42039,
-	   "state": "PA",
-	   "area_name": "Crawford County",
-	   "household_income": 43969
-	 },
-	 {
-	   "fips": 42041,
-	   "state": "PA",
-	   "area_name": "Cumberland County",
-	   "household_income": 62692
-	 },
-	 {
-	   "fips": 42043,
-	   "state": "PA",
-	   "area_name": "Dauphin County",
-	   "household_income": 52967
-	 },
-	 {
-	   "fips": 42045,
-	   "state": "PA",
-	   "area_name": "Delaware County",
-	   "household_income": 62867
-	 },
-	 {
-	   "fips": 42047,
-	   "state": "PA",
-	   "area_name": "Elk County",
-	   "household_income": 46965
-	 },
-	 {
-	   "fips": 42049,
-	   "state": "PA",
-	   "area_name": "Erie County",
-	   "household_income": 45476
-	 },
-	 {
-	   "fips": 42051,
-	   "state": "PA",
-	   "area_name": "Fayette County",
-	   "household_income": 36902
-	 },
-	 {
-	   "fips": 42053,
-	   "state": "PA",
-	   "area_name": "Forest County",
-	   "household_income": 37794
-	 },
-	 {
-	   "fips": 42055,
-	   "state": "PA",
-	   "area_name": "Franklin County",
-	   "household_income": 50434
-	 },
-	 {
-	   "fips": 42057,
-	   "state": "PA",
-	   "area_name": "Fulton County",
-	   "household_income": 48084
-	 },
-	 {
-	   "fips": 42059,
-	   "state": "PA",
-	   "area_name": "Greene County",
-	   "household_income": 49897
-	 },
-	 {
-	   "fips": 42061,
-	   "state": "PA",
-	   "area_name": "Huntingdon County",
-	   "household_income": 44531
-	 },
-	 {
-	   "fips": 42063,
-	   "state": "PA",
-	   "area_name": "Indiana County",
-	   "household_income": 42611
-	 },
-	 {
-	   "fips": 42065,
-	   "state": "PA",
-	   "area_name": "Jefferson County",
-	   "household_income": 43810
-	 },
-	 {
-	   "fips": 42067,
-	   "state": "PA",
-	   "area_name": "Juniata County",
-	   "household_income": 48944
-	 },
-	 {
-	   "fips": 42069,
-	   "state": "PA",
-	   "area_name": "Lackawanna County",
-	   "household_income": 45098
-	 },
-	 {
-	   "fips": 42071,
-	   "state": "PA",
-	   "area_name": "Lancaster County",
-	   "household_income": 57369
-	 },
-	 {
-	   "fips": 42073,
-	   "state": "PA",
-	   "area_name": "Lawrence County",
-	   "household_income": 44903
-	 },
-	 {
-	   "fips": 42075,
-	   "state": "PA",
-	   "area_name": "Lebanon County",
-	   "household_income": 53861
-	 },
-	 {
-	   "fips": 42077,
-	   "state": "PA",
-	   "area_name": "Lehigh County",
-	   "household_income": 58283
-	 },
-	 {
-	   "fips": 42079,
-	   "state": "PA",
-	   "area_name": "Luzerne County",
-	   "household_income": 44222
-	 },
-	 {
-	   "fips": 42081,
-	   "state": "PA",
-	   "area_name": "Lycoming County",
-	   "household_income": 45211
-	 },
-	 {
-	   "fips": 42083,
-	   "state": "PA",
-	   "area_name": "McKean County",
-	   "household_income": 44723
-	 },
-	 {
-	   "fips": 42085,
-	   "state": "PA",
-	   "area_name": "Mercer County",
-	   "household_income": 43559
-	 },
-	 {
-	   "fips": 42087,
-	   "state": "PA",
-	   "area_name": "Mifflin County",
-	   "household_income": 40957
-	 },
-	 {
-	   "fips": 42089,
-	   "state": "PA",
-	   "area_name": "Monroe County",
-	   "household_income": 59492
-	 },
-	 {
-	   "fips": 42091,
-	   "state": "PA",
-	   "area_name": "Montgomery County",
-	   "household_income": 79576
-	 },
-	 {
-	   "fips": 42093,
-	   "state": "PA",
-	   "area_name": "Montour County",
-	   "household_income": 54547
-	 },
-	 {
-	   "fips": 42095,
-	   "state": "PA",
-	   "area_name": "Northampton County",
-	   "household_income": 61510
-	 },
-	 {
-	   "fips": 42097,
-	   "state": "PA",
-	   "area_name": "Northumberland County",
-	   "household_income": 40429
-	 },
-	 {
-	   "fips": 42099,
-	   "state": "PA",
-	   "area_name": "Perry County",
-	   "household_income": 54920
-	 },
-	 {
-	   "fips": 42101,
-	   "state": "PA",
-	   "area_name": "Philadelphia County/city",
-	   "household_income": 39037
-	 },
-	 {
-	   "fips": 42103,
-	   "state": "PA",
-	   "area_name": "Pike County",
-	   "household_income": 58375
-	 },
-	 {
-	   "fips": 42105,
-	   "state": "PA",
-	   "area_name": "Potter County",
-	   "household_income": 40323
-	 },
-	 {
-	   "fips": 42107,
-	   "state": "PA",
-	   "area_name": "Schuylkill County",
-	   "household_income": 43169
-	 },
-	 {
-	   "fips": 42109,
-	   "state": "PA",
-	   "area_name": "Snyder County",
-	   "household_income": 49117
-	 },
-	 {
-	   "fips": 42111,
-	   "state": "PA",
-	   "area_name": "Somerset County",
-	   "household_income": 45706
-	 },
-	 {
-	   "fips": 42113,
-	   "state": "PA",
-	   "area_name": "Sullivan County",
-	   "household_income": 44191
-	 },
-	 {
-	   "fips": 42115,
-	   "state": "PA",
-	   "area_name": "Susquehanna County",
-	   "household_income": 49552
-	 },
-	 {
-	   "fips": 42117,
-	   "state": "PA",
-	   "area_name": "Tioga County",
-	   "household_income": 47360
-	 },
-	 {
-	   "fips": 42119,
-	   "state": "PA",
-	   "area_name": "Union County",
-	   "household_income": 47996
-	 },
-	 {
-	   "fips": 42121,
-	   "state": "PA",
-	   "area_name": "Venango County",
-	   "household_income": 43810
-	 },
-	 {
-	   "fips": 42123,
-	   "state": "PA",
-	   "area_name": "Warren County",
-	   "household_income": 44651
-	 },
-	 {
-	   "fips": 42125,
-	   "state": "PA",
-	   "area_name": "Washington County",
-	   "household_income": 55796
-	 },
-	 {
-	   "fips": 42127,
-	   "state": "PA",
-	   "area_name": "Wayne County",
-	   "household_income": 48663
-	 },
-	 {
-	   "fips": 42129,
-	   "state": "PA",
-	   "area_name": "Westmoreland County",
-	   "household_income": 53536
-	 },
-	 {
-	   "fips": 42131,
-	   "state": "PA",
-	   "area_name": "Wyoming County",
-	   "household_income": 55882
-	 },
-	 {
-	   "fips": 42133,
-	   "state": "PA",
-	   "area_name": "York County",
-	   "household_income": 58471
-	 },
-	 {
-	   "fips": 44001,
-	   "state": "RI",
-	   "area_name": "Bristol County",
-	   "household_income": 68246
-	 },
-	 {
-	   "fips": 44003,
-	   "state": "RI",
-	   "area_name": "Kent County",
-	   "household_income": 61923
-	 },
-	 {
-	   "fips": 44005,
-	   "state": "RI",
-	   "area_name": "Newport County",
-	   "household_income": 69203
-	 },
-	 {
-	   "fips": 44007,
-	   "state": "RI",
-	   "area_name": "Providence County",
-	   "household_income": 47278
-	 },
-	 {
-	   "fips": 44009,
-	   "state": "RI",
-	   "area_name": "Washington County",
-	   "household_income": 70705
-	 },
-	 {
-	   "fips": 45001,
-	   "state": "SC",
-	   "area_name": "Abbeville County",
-	   "household_income": 35525
-	 },
-	 {
-	   "fips": 45003,
-	   "state": "SC",
-	   "area_name": "Aiken County",
-	   "household_income": 48537
-	 },
-	 {
-	   "fips": 45005,
-	   "state": "SC",
-	   "area_name": "Allendale County",
-	   "household_income": 25530
-	 },
-	 {
-	   "fips": 45007,
-	   "state": "SC",
-	   "area_name": "Anderson County",
-	   "household_income": 43124
-	 },
-	 {
-	   "fips": 45009,
-	   "state": "SC",
-	   "area_name": "Bamberg County",
-	   "household_income": 30349
-	 },
-	 {
-	   "fips": 45011,
-	   "state": "SC",
-	   "area_name": "Barnwell County",
-	   "household_income": 32205
-	 },
-	 {
-	   "fips": 45013,
-	   "state": "SC",
-	   "area_name": "Beaufort County",
-	   "household_income": 55427
-	 },
-	 {
-	   "fips": 45015,
-	   "state": "SC",
-	   "area_name": "Berkeley County",
-	   "household_income": 52436
-	 },
-	 {
-	   "fips": 45017,
-	   "state": "SC",
-	   "area_name": "Calhoun County",
-	   "household_income": 41209
-	 },
-	 {
-	   "fips": 45019,
-	   "state": "SC",
-	   "area_name": "Charleston County",
-	   "household_income": 52752
-	 },
-	 {
-	   "fips": 45021,
-	   "state": "SC",
-	   "area_name": "Cherokee County",
-	   "household_income": 38947
-	 },
-	 {
-	   "fips": 45023,
-	   "state": "SC",
-	   "area_name": "Chester County",
-	   "household_income": 37537
-	 },
-	 {
-	   "fips": 45025,
-	   "state": "SC",
-	   "area_name": "Chesterfield County",
-	   "household_income": 34949
-	 },
-	 {
-	   "fips": 45027,
-	   "state": "SC",
-	   "area_name": "Clarendon County",
-	   "household_income": 32268
-	 },
-	 {
-	   "fips": 45029,
-	   "state": "SC",
-	   "area_name": "Colleton County",
-	   "household_income": 35558
-	 },
-	 {
-	   "fips": 45031,
-	   "state": "SC",
-	   "area_name": "Darlington County",
-	   "household_income": 35640
-	 },
-	 {
-	   "fips": 45033,
-	   "state": "SC",
-	   "area_name": "Dillon County",
-	   "household_income": 30516
-	 },
-	 {
-	   "fips": 45035,
-	   "state": "SC",
-	   "area_name": "Dorchester County",
-	   "household_income": 56388
-	 },
-	 {
-	   "fips": 45037,
-	   "state": "SC",
-	   "area_name": "Edgefield County",
-	   "household_income": 44129
-	 },
-	 {
-	   "fips": 45039,
-	   "state": "SC",
-	   "area_name": "Fairfield County",
-	   "household_income": 35490
-	 },
-	 {
-	   "fips": 45041,
-	   "state": "SC",
-	   "area_name": "Florence County",
-	   "household_income": 42232
-	 },
-	 {
-	   "fips": 45043,
-	   "state": "SC",
-	   "area_name": "Georgetown County",
-	   "household_income": 44283
-	 },
-	 {
-	   "fips": 45045,
-	   "state": "SC",
-	   "area_name": "Greenville County",
-	   "household_income": 49659
-	 },
-	 {
-	   "fips": 45047,
-	   "state": "SC",
-	   "area_name": "Greenwood County",
-	   "household_income": 38878
-	 },
-	 {
-	   "fips": 45049,
-	   "state": "SC",
-	   "area_name": "Hampton County",
-	   "household_income": 33644
-	 },
-	 {
-	   "fips": 45051,
-	   "state": "SC",
-	   "area_name": "Horry County",
-	   "household_income": 42830
-	 },
-	 {
-	   "fips": 45053,
-	   "state": "SC",
-	   "area_name": "Jasper County",
-	   "household_income": 37715
-	 },
-	 {
-	   "fips": 45055,
-	   "state": "SC",
-	   "area_name": "Kershaw County",
-	   "household_income": 45411
-	 },
-	 {
-	   "fips": 45057,
-	   "state": "SC",
-	   "area_name": "Lancaster County",
-	   "household_income": 44854
-	 },
-	 {
-	   "fips": 45059,
-	   "state": "SC",
-	   "area_name": "Laurens County",
-	   "household_income": 38268
-	 },
-	 {
-	   "fips": 45061,
-	   "state": "SC",
-	   "area_name": "Lee County",
-	   "household_income": 31510
-	 },
-	 {
-	   "fips": 45063,
-	   "state": "SC",
-	   "area_name": "Lexington County",
-	   "household_income": 54098
-	 },
-	 {
-	   "fips": 45065,
-	   "state": "SC",
-	   "area_name": "McCormick County",
-	   "household_income": 38694
-	 },
-	 {
-	   "fips": 45067,
-	   "state": "SC",
-	   "area_name": "Marion County",
-	   "household_income": 32283
-	 },
-	 {
-	   "fips": 45069,
-	   "state": "SC",
-	   "area_name": "Marlboro County",
-	   "household_income": 31170
-	 },
-	 {
-	   "fips": 45071,
-	   "state": "SC",
-	   "area_name": "Newberry County",
-	   "household_income": 42000
-	 },
-	 {
-	   "fips": 45073,
-	   "state": "SC",
-	   "area_name": "Oconee County",
-	   "household_income": 39548
-	 },
-	 {
-	   "fips": 45075,
-	   "state": "SC",
-	   "area_name": "Orangeburg County",
-	   "household_income": 31382
-	 },
-	 {
-	   "fips": 45077,
-	   "state": "SC",
-	   "area_name": "Pickens County",
-	   "household_income": 41375
-	 },
-	 {
-	   "fips": 45079,
-	   "state": "SC",
-	   "area_name": "Richland County",
-	   "household_income": 49782
-	 },
-	 {
-	   "fips": 45081,
-	   "state": "SC",
-	   "area_name": "Saluda County",
-	   "household_income": 42286
-	 },
-	 {
-	   "fips": 45083,
-	   "state": "SC",
-	   "area_name": "Spartanburg County",
-	   "household_income": 44050
-	 },
-	 {
-	   "fips": 45085,
-	   "state": "SC",
-	   "area_name": "Sumter County",
-	   "household_income": 37906
-	 },
-	 {
-	   "fips": 45087,
-	   "state": "SC",
-	   "area_name": "Union County",
-	   "household_income": 37501
-	 },
-	 {
-	   "fips": 45089,
-	   "state": "SC",
-	   "area_name": "Williamsburg County",
-	   "household_income": 29609
-	 },
-	 {
-	   "fips": 45091,
-	   "state": "SC",
-	   "area_name": "York County",
-	   "household_income": 54196
-	 },
-	 {
-	   "fips": 46003,
-	   "state": "SD",
-	   "area_name": "Aurora County",
-	   "household_income": 50896
-	 },
-	 {
-	   "fips": 46005,
-	   "state": "SD",
-	   "area_name": "Beadle County",
-	   "household_income": 49583
-	 },
-	 {
-	   "fips": 46007,
-	   "state": "SD",
-	   "area_name": "Bennett County",
-	   "household_income": 34326
-	 },
-	 {
-	   "fips": 46009,
-	   "state": "SD",
-	   "area_name": "Bon Homme County",
-	   "household_income": 47987
-	 },
-	 {
-	   "fips": 46011,
-	   "state": "SD",
-	   "area_name": "Brookings County",
-	   "household_income": 52930
-	 },
-	 {
-	   "fips": 46013,
-	   "state": "SD",
-	   "area_name": "Brown County",
-	   "household_income": 53150
-	 },
-	 {
-	   "fips": 46015,
-	   "state": "SD",
-	   "area_name": "Brule County",
-	   "household_income": 47224
-	 },
-	 {
-	   "fips": 46017,
-	   "state": "SD",
-	   "area_name": "Buffalo County",
-	   "household_income": 21658
-	 },
-	 {
-	   "fips": 46019,
-	   "state": "SD",
-	   "area_name": "Butte County",
-	   "household_income": 41446
-	 },
-	 {
-	   "fips": 46021,
-	   "state": "SD",
-	   "area_name": "Campbell County",
-	   "household_income": 49895
-	 },
-	 {
-	   "fips": 46023,
-	   "state": "SD",
-	   "area_name": "Charles Mix County",
-	   "household_income": 41395
-	 },
-	 {
-	   "fips": 46025,
-	   "state": "SD",
-	   "area_name": "Clark County",
-	   "household_income": 48024
-	 },
-	 {
-	   "fips": 46027,
-	   "state": "SD",
-	   "area_name": "Clay County",
-	   "household_income": 43453
-	 },
-	 {
-	   "fips": 46029,
-	   "state": "SD",
-	   "area_name": "Codington County",
-	   "household_income": 52892
-	 },
-	 {
-	   "fips": 46031,
-	   "state": "SD",
-	   "area_name": "Corson County",
-	   "household_income": 31420
-	 },
-	 {
-	   "fips": 46033,
-	   "state": "SD",
-	   "area_name": "Custer County",
-	   "household_income": 51244
-	 },
-	 {
-	   "fips": 46035,
-	   "state": "SD",
-	   "area_name": "Davison County",
-	   "household_income": 48675
-	 },
-	 {
-	   "fips": 46037,
-	   "state": "SD",
-	   "area_name": "Day County",
-	   "household_income": 43305
-	 },
-	 {
-	   "fips": 46039,
-	   "state": "SD",
-	   "area_name": "Deuel County",
-	   "household_income": 51246
-	 },
-	 {
-	   "fips": 46041,
-	   "state": "SD",
-	   "area_name": "Dewey County",
-	   "household_income": 34936
-	 },
-	 {
-	   "fips": 46043,
-	   "state": "SD",
-	   "area_name": "Douglas County",
-	   "household_income": 49251
-	 },
-	 {
-	   "fips": 46045,
-	   "state": "SD",
-	   "area_name": "Edmunds County",
-	   "household_income": 57148
-	 },
-	 {
-	   "fips": 46047,
-	   "state": "SD",
-	   "area_name": "Fall River County",
-	   "household_income": 42007
-	 },
-	 {
-	   "fips": 46049,
-	   "state": "SD",
-	   "area_name": "Faulk County",
-	   "household_income": 46633
-	 },
-	 {
-	   "fips": 46051,
-	   "state": "SD",
-	   "area_name": "Grant County",
-	   "household_income": 52816
-	 },
-	 {
-	   "fips": 46053,
-	   "state": "SD",
-	   "area_name": "Gregory County",
-	   "household_income": 36836
-	 },
-	 {
-	   "fips": 46055,
-	   "state": "SD",
-	   "area_name": "Haakon County",
-	   "household_income": 43699
-	 },
-	 {
-	   "fips": 46057,
-	   "state": "SD",
-	   "area_name": "Hamlin County",
-	   "household_income": 53944
-	 },
-	 {
-	   "fips": 46059,
-	   "state": "SD",
-	   "area_name": "Hand County",
-	   "household_income": 51201
-	 },
-	 {
-	   "fips": 46061,
-	   "state": "SD",
-	   "area_name": "Hanson County",
-	   "household_income": 61945
-	 },
-	 {
-	   "fips": 46063,
-	   "state": "SD",
-	   "area_name": "Harding County",
-	   "household_income": 49220
-	 },
-	 {
-	   "fips": 46065,
-	   "state": "SD",
-	   "area_name": "Hughes County",
-	   "household_income": 58340
-	 },
-	 {
-	   "fips": 46067,
-	   "state": "SD",
-	   "area_name": "Hutchinson County",
-	   "household_income": 48879
-	 },
-	 {
-	   "fips": 46069,
-	   "state": "SD",
-	   "area_name": "Hyde County",
-	   "household_income": 49184
-	 },
-	 {
-	   "fips": 46071,
-	   "state": "SD",
-	   "area_name": "Jackson County",
-	   "household_income": 31922
-	 },
-	 {
-	   "fips": 46073,
-	   "state": "SD",
-	   "area_name": "Jerauld County",
-	   "household_income": 48773
-	 },
-	 {
-	   "fips": 46075,
-	   "state": "SD",
-	   "area_name": "Jones County",
-	   "household_income": 44876
-	 },
-	 {
-	   "fips": 46077,
-	   "state": "SD",
-	   "area_name": "Kingsbury County",
-	   "household_income": 51837
-	 },
-	 {
-	   "fips": 46079,
-	   "state": "SD",
-	   "area_name": "Lake County",
-	   "household_income": 53175
-	 },
-	 {
-	   "fips": 46081,
-	   "state": "SD",
-	   "area_name": "Lawrence County",
-	   "household_income": 45945
-	 },
-	 {
-	   "fips": 46083,
-	   "state": "SD",
-	   "area_name": "Lincoln County",
-	   "household_income": 79857
-	 },
-	 {
-	   "fips": 46085,
-	   "state": "SD",
-	   "area_name": "Lyman County",
-	   "household_income": 40639
-	 },
-	 {
-	   "fips": 46087,
-	   "state": "SD",
-	   "area_name": "McCook County",
-	   "household_income": 57741
-	 },
-	 {
-	   "fips": 46089,
-	   "state": "SD",
-	   "area_name": "McPherson County",
-	   "household_income": 38469
-	 },
-	 {
-	   "fips": 46091,
-	   "state": "SD",
-	   "area_name": "Marshall County",
-	   "household_income": 50155
-	 },
-	 {
-	   "fips": 46093,
-	   "state": "SD",
-	   "area_name": "Meade County",
-	   "household_income": 54771
-	 },
-	 {
-	   "fips": 46095,
-	   "state": "SD",
-	   "area_name": "Mellette County",
-	   "household_income": 34237
-	 },
-	 {
-	   "fips": 46097,
-	   "state": "SD",
-	   "area_name": "Miner County",
-	   "household_income": 49159
-	 },
-	 {
-	   "fips": 46099,
-	   "state": "SD",
-	   "area_name": "Minnehaha County",
-	   "household_income": 55107
-	 },
-	 {
-	   "fips": 46101,
-	   "state": "SD",
-	   "area_name": "Moody County",
-	   "household_income": 53654
-	 },
-	 {
-	   "fips": 46102,
-	   "state": "SD",
-	   "area_name": "Oglala Lakota County",
-	   "household_income": 27244
-	 },
-	 {
-	   "fips": 46103,
-	   "state": "SD",
-	   "area_name": "Pennington County",
-	   "household_income": 48379
-	 },
-	 {
-	   "fips": 46105,
-	   "state": "SD",
-	   "area_name": "Perkins County",
-	   "household_income": 39936
-	 },
-	 {
-	   "fips": 46107,
-	   "state": "SD",
-	   "area_name": "Potter County",
-	   "household_income": 52758
-	 },
-	 {
-	   "fips": 46109,
-	   "state": "SD",
-	   "area_name": "Roberts County",
-	   "household_income": 45911
-	 },
-	 {
-	   "fips": 46111,
-	   "state": "SD",
-	   "area_name": "Sanborn County",
-	   "household_income": 46281
-	 },
-	 {
-	   "fips": 46115,
-	   "state": "SD",
-	   "area_name": "Spink County",
-	   "household_income": 48125
-	 },
-	 {
-	   "fips": 46117,
-	   "state": "SD",
-	   "area_name": "Stanley County",
-	   "household_income": 67172
-	 },
-	 {
-	   "fips": 46119,
-	   "state": "SD",
-	   "area_name": "Sully County",
-	   "household_income": 59879
-	 },
-	 {
-	   "fips": 46121,
-	   "state": "SD",
-	   "area_name": "Todd County",
-	   "household_income": 27481
-	 },
-	 {
-	   "fips": 46123,
-	   "state": "SD",
-	   "area_name": "Tripp County",
-	   "household_income": 40545
-	 },
-	 {
-	   "fips": 46125,
-	   "state": "SD",
-	   "area_name": "Turner County",
-	   "household_income": 55708
-	 },
-	 {
-	   "fips": 46127,
-	   "state": "SD",
-	   "area_name": "Union County",
-	   "household_income": 72041
-	 },
-	 {
-	   "fips": 46129,
-	   "state": "SD",
-	   "area_name": "Walworth County",
-	   "household_income": 41831
-	 },
-	 {
-	   "fips": 46135,
-	   "state": "SD",
-	   "area_name": "Yankton County",
-	   "household_income": 47363
-	 },
-	 {
-	   "fips": 46137,
-	   "state": "SD",
-	   "area_name": "Ziebach County",
-	   "household_income": 32025
-	 },
-	 {
-	   "fips": 47001,
-	   "state": "TN",
-	   "area_name": "Anderson County",
-	   "household_income": 46689
-	 },
-	 {
-	   "fips": 47003,
-	   "state": "TN",
-	   "area_name": "Bedford County",
-	   "household_income": 42252
-	 },
-	 {
-	   "fips": 47005,
-	   "state": "TN",
-	   "area_name": "Benton County",
-	   "household_income": 34382
-	 },
-	 {
-	   "fips": 47007,
-	   "state": "TN",
-	   "area_name": "Bledsoe County",
-	   "household_income": 34948
-	 },
-	 {
-	   "fips": 47009,
-	   "state": "TN",
-	   "area_name": "Blount County",
-	   "household_income": 47175
-	 },
-	 {
-	   "fips": 47011,
-	   "state": "TN",
-	   "area_name": "Bradley County",
-	   "household_income": 43065
-	 },
-	 {
-	   "fips": 47013,
-	   "state": "TN",
-	   "area_name": "Campbell County",
-	   "household_income": 33333
-	 },
-	 {
-	   "fips": 47015,
-	   "state": "TN",
-	   "area_name": "Cannon County",
-	   "household_income": 41068
-	 },
-	 {
-	   "fips": 47017,
-	   "state": "TN",
-	   "area_name": "Carroll County",
-	   "household_income": 36627
-	 },
-	 {
-	   "fips": 47019,
-	   "state": "TN",
-	   "area_name": "Carter County",
-	   "household_income": 34354
-	 },
-	 {
-	   "fips": 47021,
-	   "state": "TN",
-	   "area_name": "Cheatham County",
-	   "household_income": 51475
-	 },
-	 {
-	   "fips": 47023,
-	   "state": "TN",
-	   "area_name": "Chester County",
-	   "household_income": 40980
-	 },
-	 {
-	   "fips": 47025,
-	   "state": "TN",
-	   "area_name": "Claiborne County",
-	   "household_income": 33640
-	 },
-	 {
-	   "fips": 47027,
-	   "state": "TN",
-	   "area_name": "Clay County",
-	   "household_income": 30744
-	 },
-	 {
-	   "fips": 47029,
-	   "state": "TN",
-	   "area_name": "Cocke County",
-	   "household_income": 30860
-	 },
-	 {
-	   "fips": 47031,
-	   "state": "TN",
-	   "area_name": "Coffee County",
-	   "household_income": 45235
-	 },
-	 {
-	   "fips": 47033,
-	   "state": "TN",
-	   "area_name": "Crockett County",
-	   "household_income": 37853
-	 },
-	 {
-	   "fips": 47035,
-	   "state": "TN",
-	   "area_name": "Cumberland County",
-	   "household_income": 40839
-	 },
-	 {
-	   "fips": 47037,
-	   "state": "TN",
-	   "area_name": "Davidson County",
-	   "household_income": 48195
-	 },
-	 {
-	   "fips": 47039,
-	   "state": "TN",
-	   "area_name": "Decatur County",
-	   "household_income": 37417
-	 },
-	 {
-	   "fips": 47041,
-	   "state": "TN",
-	   "area_name": "DeKalb County",
-	   "household_income": 38595
-	 },
-	 {
-	   "fips": 47043,
-	   "state": "TN",
-	   "area_name": "Dickson County",
-	   "household_income": 45914
-	 },
-	 {
-	   "fips": 47045,
-	   "state": "TN",
-	   "area_name": "Dyer County",
-	   "household_income": 43425
-	 },
-	 {
-	   "fips": 47047,
-	   "state": "TN",
-	   "area_name": "Fayette County",
-	   "household_income": 56573
-	 },
-	 {
-	   "fips": 47049,
-	   "state": "TN",
-	   "area_name": "Fentress County",
-	   "household_income": 30299
-	 },
-	 {
-	   "fips": 47051,
-	   "state": "TN",
-	   "area_name": "Franklin County",
-	   "household_income": 43851
-	 },
-	 {
-	   "fips": 47053,
-	   "state": "TN",
-	   "area_name": "Gibson County",
-	   "household_income": 37498
-	 },
-	 {
-	   "fips": 47055,
-	   "state": "TN",
-	   "area_name": "Giles County",
-	   "household_income": 41326
-	 },
-	 {
-	   "fips": 47057,
-	   "state": "TN",
-	   "area_name": "Grainger County",
-	   "household_income": 35704
-	 },
-	 {
-	   "fips": 47059,
-	   "state": "TN",
-	   "area_name": "Greene County",
-	   "household_income": 36740
-	 },
-	 {
-	   "fips": 47061,
-	   "state": "TN",
-	   "area_name": "Grundy County",
-	   "household_income": 28086
-	 },
-	 {
-	   "fips": 47063,
-	   "state": "TN",
-	   "area_name": "Hamblen County",
-	   "household_income": 37410
-	 },
-	 {
-	   "fips": 47065,
-	   "state": "TN",
-	   "area_name": "Hamilton County",
-	   "household_income": 48380
-	 },
-	 {
-	   "fips": 47067,
-	   "state": "TN",
-	   "area_name": "Hancock County",
-	   "household_income": 27323
-	 },
-	 {
-	   "fips": 47069,
-	   "state": "TN",
-	   "area_name": "Hardeman County",
-	   "household_income": 35321
-	 },
-	 {
-	   "fips": 47071,
-	   "state": "TN",
-	   "area_name": "Hardin County",
-	   "household_income": 36285
-	 },
-	 {
-	   "fips": 47073,
-	   "state": "TN",
-	   "area_name": "Hawkins County",
-	   "household_income": 39506
-	 },
-	 {
-	   "fips": 47075,
-	   "state": "TN",
-	   "area_name": "Haywood County",
-	   "household_income": 35470
-	 },
-	 {
-	   "fips": 47077,
-	   "state": "TN",
-	   "area_name": "Henderson County",
-	   "household_income": 39303
-	 },
-	 {
-	   "fips": 47079,
-	   "state": "TN",
-	   "area_name": "Henry County",
-	   "household_income": 37151
-	 },
-	 {
-	   "fips": 47081,
-	   "state": "TN",
-	   "area_name": "Hickman County",
-	   "household_income": 37443
-	 },
-	 {
-	   "fips": 47083,
-	   "state": "TN",
-	   "area_name": "Houston County",
-	   "household_income": 39753
-	 },
-	 {
-	   "fips": 47085,
-	   "state": "TN",
-	   "area_name": "Humphreys County",
-	   "household_income": 42837
-	 },
-	 {
-	   "fips": 47087,
-	   "state": "TN",
-	   "area_name": "Jackson County",
-	   "household_income": 35379
-	 },
-	 {
-	   "fips": 47089,
-	   "state": "TN",
-	   "area_name": "Jefferson County",
-	   "household_income": 41235
-	 },
-	 {
-	   "fips": 47091,
-	   "state": "TN",
-	   "area_name": "Johnson County",
-	   "household_income": 31330
-	 },
-	 {
-	   "fips": 47093,
-	   "state": "TN",
-	   "area_name": "Knox County",
-	   "household_income": 47199
-	 },
-	 {
-	   "fips": 47095,
-	   "state": "TN",
-	   "area_name": "Lake County",
-	   "household_income": 28524
-	 },
-	 {
-	   "fips": 47097,
-	   "state": "TN",
-	   "area_name": "Lauderdale County",
-	   "household_income": 33595
-	 },
-	 {
-	   "fips": 47099,
-	   "state": "TN",
-	   "area_name": "Lawrence County",
-	   "household_income": 34614
-	 },
-	 {
-	   "fips": 47101,
-	   "state": "TN",
-	   "area_name": "Lewis County",
-	   "household_income": 36255
-	 },
-	 {
-	   "fips": 47103,
-	   "state": "TN",
-	   "area_name": "Lincoln County",
-	   "household_income": 41802
-	 },
-	 {
-	   "fips": 47105,
-	   "state": "TN",
-	   "area_name": "Loudon County",
-	   "household_income": 53945
-	 },
-	 {
-	   "fips": 47107,
-	   "state": "TN",
-	   "area_name": "McMinn County",
-	   "household_income": 39528
-	 },
-	 {
-	   "fips": 47109,
-	   "state": "TN",
-	   "area_name": "McNairy County",
-	   "household_income": 34882
-	 },
-	 {
-	   "fips": 47111,
-	   "state": "TN",
-	   "area_name": "Macon County",
-	   "household_income": 36886
-	 },
-	 {
-	   "fips": 47113,
-	   "state": "TN",
-	   "area_name": "Madison County",
-	   "household_income": 43113
-	 },
-	 {
-	   "fips": 47115,
-	   "state": "TN",
-	   "area_name": "Marion County",
-	   "household_income": 40766
-	 },
-	 {
-	   "fips": 47117,
-	   "state": "TN",
-	   "area_name": "Marshall County",
-	   "household_income": 42839
-	 },
-	 {
-	   "fips": 47119,
-	   "state": "TN",
-	   "area_name": "Maury County",
-	   "household_income": 51303
-	 },
-	 {
-	   "fips": 47121,
-	   "state": "TN",
-	   "area_name": "Meigs County",
-	   "household_income": 34801
-	 },
-	 {
-	   "fips": 47123,
-	   "state": "TN",
-	   "area_name": "Monroe County",
-	   "household_income": 37392
-	 },
-	 {
-	   "fips": 47125,
-	   "state": "TN",
-	   "area_name": "Montgomery County",
-	   "household_income": 50935
-	 },
-	 {
-	   "fips": 47127,
-	   "state": "TN",
-	   "area_name": "Moore County",
-	   "household_income": 50358
-	 },
-	 {
-	   "fips": 47129,
-	   "state": "TN",
-	   "area_name": "Morgan County",
-	   "household_income": 36390
-	 },
-	 {
-	   "fips": 47131,
-	   "state": "TN",
-	   "area_name": "Obion County",
-	   "household_income": 40683
-	 },
-	 {
-	   "fips": 47133,
-	   "state": "TN",
-	   "area_name": "Overton County",
-	   "household_income": 35884
-	 },
-	 {
-	   "fips": 47135,
-	   "state": "TN",
-	   "area_name": "Perry County",
-	   "household_income": 33776
-	 },
-	 {
-	   "fips": 47137,
-	   "state": "TN",
-	   "area_name": "Pickett County",
-	   "household_income": 31996
-	 },
-	 {
-	   "fips": 47139,
-	   "state": "TN",
-	   "area_name": "Polk County",
-	   "household_income": 36643
-	 },
-	 {
-	   "fips": 47141,
-	   "state": "TN",
-	   "area_name": "Putnam County",
-	   "household_income": 37693
-	 },
-	 {
-	   "fips": 47143,
-	   "state": "TN",
-	   "area_name": "Rhea County",
-	   "household_income": 37952
-	 },
-	 {
-	   "fips": 47145,
-	   "state": "TN",
-	   "area_name": "Roane County",
-	   "household_income": 43269
-	 },
-	 {
-	   "fips": 47147,
-	   "state": "TN",
-	   "area_name": "Robertson County",
-	   "household_income": 52640
-	 },
-	 {
-	   "fips": 47149,
-	   "state": "TN",
-	   "area_name": "Rutherford County",
-	   "household_income": 53799
-	 },
-	 {
-	   "fips": 47151,
-	   "state": "TN",
-	   "area_name": "Scott County",
-	   "household_income": 31397
-	 },
-	 {
-	   "fips": 47153,
-	   "state": "TN",
-	   "area_name": "Sequatchie County",
-	   "household_income": 44111
-	 },
-	 {
-	   "fips": 47155,
-	   "state": "TN",
-	   "area_name": "Sevier County",
-	   "household_income": 39905
-	 },
-	 {
-	   "fips": 47157,
-	   "state": "TN",
-	   "area_name": "Shelby County",
-	   "household_income": 44015
-	 },
-	 {
-	   "fips": 47159,
-	   "state": "TN",
-	   "area_name": "Smith County",
-	   "household_income": 43659
-	 },
-	 {
-	   "fips": 47161,
-	   "state": "TN",
-	   "area_name": "Stewart County",
-	   "household_income": 41590
-	 },
-	 {
-	   "fips": 47163,
-	   "state": "TN",
-	   "area_name": "Sullivan County",
-	   "household_income": 38840
-	 },
-	 {
-	   "fips": 47165,
-	   "state": "TN",
-	   "area_name": "Sumner County",
-	   "household_income": 58291
-	 },
-	 {
-	   "fips": 47167,
-	   "state": "TN",
-	   "area_name": "Tipton County",
-	   "household_income": 52339
-	 },
-	 {
-	   "fips": 47169,
-	   "state": "TN",
-	   "area_name": "Trousdale County",
-	   "household_income": 40251
-	 },
-	 {
-	   "fips": 47171,
-	   "state": "TN",
-	   "area_name": "Unicoi County",
-	   "household_income": 37632
-	 },
-	 {
-	   "fips": 47173,
-	   "state": "TN",
-	   "area_name": "Union County",
-	   "household_income": 37453
-	 },
-	 {
-	   "fips": 47175,
-	   "state": "TN",
-	   "area_name": "Van Buren County",
-	   "household_income": 34884
-	 },
-	 {
-	   "fips": 47177,
-	   "state": "TN",
-	   "area_name": "Warren County",
-	   "household_income": 36942
-	 },
-	 {
-	   "fips": 47179,
-	   "state": "TN",
-	   "area_name": "Washington County",
-	   "household_income": 43212
-	 },
-	 {
-	   "fips": 47181,
-	   "state": "TN",
-	   "area_name": "Wayne County",
-	   "household_income": 33573
-	 },
-	 {
-	   "fips": 47183,
-	   "state": "TN",
-	   "area_name": "Weakley County",
-	   "household_income": 36205
-	 },
-	 {
-	   "fips": 47185,
-	   "state": "TN",
-	   "area_name": "White County",
-	   "household_income": 35400
-	 },
-	 {
-	   "fips": 47187,
-	   "state": "TN",
-	   "area_name": "Williamson County",
-	   "household_income": 97936
-	 },
-	 {
-	   "fips": 47189,
-	   "state": "TN",
-	   "area_name": "Wilson County",
-	   "household_income": 60955
-	 },
-	 {
-	   "fips": 48001,
-	   "state": "TX",
-	   "area_name": "Anderson County",
-	   "household_income": 42471
-	 },
-	 {
-	   "fips": 48003,
-	   "state": "TX",
-	   "area_name": "Andrews County",
-	   "household_income": 66878
-	 },
-	 {
-	   "fips": 48005,
-	   "state": "TX",
-	   "area_name": "Angelina County",
-	   "household_income": 42128
-	 },
-	 {
-	   "fips": 48007,
-	   "state": "TX",
-	   "area_name": "Aransas County",
-	   "household_income": 44551
-	 },
-	 {
-	   "fips": 48009,
-	   "state": "TX",
-	   "area_name": "Archer County",
-	   "household_income": 58867
-	 },
-	 {
-	   "fips": 48011,
-	   "state": "TX",
-	   "area_name": "Armstrong County",
-	   "household_income": 55177
-	 },
-	 {
-	   "fips": 48013,
-	   "state": "TX",
-	   "area_name": "Atascosa County",
-	   "household_income": 52785
-	 },
-	 {
-	   "fips": 48015,
-	   "state": "TX",
-	   "area_name": "Austin County",
-	   "household_income": 58792
-	 },
-	 {
-	   "fips": 48017,
-	   "state": "TX",
-	   "area_name": "Bailey County",
-	   "household_income": 36821
-	 },
-	 {
-	   "fips": 48019,
-	   "state": "TX",
-	   "area_name": "Bandera County",
-	   "household_income": 50107
-	 },
-	 {
-	   "fips": 48021,
-	   "state": "TX",
-	   "area_name": "Bastrop County",
-	   "household_income": 52886
-	 },
-	 {
-	   "fips": 48023,
-	   "state": "TX",
-	   "area_name": "Baylor County",
-	   "household_income": 36027
-	 },
-	 {
-	   "fips": 48025,
-	   "state": "TX",
-	   "area_name": "Bee County",
-	   "household_income": 40680
-	 },
-	 {
-	   "fips": 48027,
-	   "state": "TX",
-	   "area_name": "Bell County",
-	   "household_income": 51048
-	 },
-	 {
-	   "fips": 48029,
-	   "state": "TX",
-	   "area_name": "Bexar County",
-	   "household_income": 50699
-	 },
-	 {
-	   "fips": 48031,
-	   "state": "TX",
-	   "area_name": "Blanco County",
-	   "household_income": 57177
-	 },
-	 {
-	   "fips": 48033,
-	   "state": "TX",
-	   "area_name": "Borden County",
-	   "household_income": 61750
-	 },
-	 {
-	   "fips": 48035,
-	   "state": "TX",
-	   "area_name": "Bosque County",
-	   "household_income": 44397
-	 },
-	 {
-	   "fips": 48037,
-	   "state": "TX",
-	   "area_name": "Bowie County",
-	   "household_income": 41883
-	 },
-	 {
-	   "fips": 48039,
-	   "state": "TX",
-	   "area_name": "Brazoria County",
-	   "household_income": 73788
-	 },
-	 {
-	   "fips": 48041,
-	   "state": "TX",
-	   "area_name": "Brazos County",
-	   "household_income": 41641
-	 },
-	 {
-	   "fips": 48043,
-	   "state": "TX",
-	   "area_name": "Brewster County",
-	   "household_income": 40179
-	 },
-	 {
-	   "fips": 48045,
-	   "state": "TX",
-	   "area_name": "Briscoe County",
-	   "household_income": 42139
-	 },
-	 {
-	   "fips": 48047,
-	   "state": "TX",
-	   "area_name": "Brooks County",
-	   "household_income": 27875
-	 },
-	 {
-	   "fips": 48049,
-	   "state": "TX",
-	   "area_name": "Brown County",
-	   "household_income": 41316
-	 },
-	 {
-	   "fips": 48051,
-	   "state": "TX",
-	   "area_name": "Burleson County",
-	   "household_income": 48140
-	 },
-	 {
-	   "fips": 48053,
-	   "state": "TX",
-	   "area_name": "Burnet County",
-	   "household_income": 53203
-	 },
-	 {
-	   "fips": 48055,
-	   "state": "TX",
-	   "area_name": "Caldwell County",
-	   "household_income": 47227
-	 },
-	 {
-	   "fips": 48057,
-	   "state": "TX",
-	   "area_name": "Calhoun County",
-	   "household_income": 46705
-	 },
-	 {
-	   "fips": 48059,
-	   "state": "TX",
-	   "area_name": "Callahan County",
-	   "household_income": 40796
-	 },
-	 {
-	   "fips": 48061,
-	   "state": "TX",
-	   "area_name": "Cameron County",
-	   "household_income": 32215
-	 },
-	 {
-	   "fips": 48063,
-	   "state": "TX",
-	   "area_name": "Camp County",
-	   "household_income": 37801
-	 },
-	 {
-	   "fips": 48065,
-	   "state": "TX",
-	   "area_name": "Carson County",
-	   "household_income": 58425
-	 },
-	 {
-	   "fips": 48067,
-	   "state": "TX",
-	   "area_name": "Cass County",
-	   "household_income": 39256
-	 },
-	 {
-	   "fips": 48069,
-	   "state": "TX",
-	   "area_name": "Castro County",
-	   "household_income": 42966
-	 },
-	 {
-	   "fips": 48071,
-	   "state": "TX",
-	   "area_name": "Chambers County",
-	   "household_income": 77281
-	 },
-	 {
-	   "fips": 48073,
-	   "state": "TX",
-	   "area_name": "Cherokee County",
-	   "household_income": 38465
-	 },
-	 {
-	   "fips": 48075,
-	   "state": "TX",
-	   "area_name": "Childress County",
-	   "household_income": 39025
-	 },
-	 {
-	   "fips": 48077,
-	   "state": "TX",
-	   "area_name": "Clay County",
-	   "household_income": 50993
-	 },
-	 {
-	   "fips": 48079,
-	   "state": "TX",
-	   "area_name": "Cochran County",
-	   "household_income": 39870
-	 },
-	 {
-	   "fips": 48081,
-	   "state": "TX",
-	   "area_name": "Coke County",
-	   "household_income": 41593
-	 },
-	 {
-	   "fips": 48083,
-	   "state": "TX",
-	   "area_name": "Coleman County",
-	   "household_income": 37497
-	 },
-	 {
-	   "fips": 48085,
-	   "state": "TX",
-	   "area_name": "Collin County",
-	   "household_income": 86634
-	 },
-	 {
-	   "fips": 48087,
-	   "state": "TX",
-	   "area_name": "Collingsworth County",
-	   "household_income": 38655
-	 },
-	 {
-	   "fips": 48089,
-	   "state": "TX",
-	   "area_name": "Colorado County",
-	   "household_income": 46484
-	 },
-	 {
-	   "fips": 48091,
-	   "state": "TX",
-	   "area_name": "Comal County",
-	   "household_income": 64533
-	 },
-	 {
-	   "fips": 48093,
-	   "state": "TX",
-	   "area_name": "Comanche County",
-	   "household_income": 38280
-	 },
-	 {
-	   "fips": 48095,
-	   "state": "TX",
-	   "area_name": "Concho County",
-	   "household_income": 40837
-	 },
-	 {
-	   "fips": 48097,
-	   "state": "TX",
-	   "area_name": "Cooke County",
-	   "household_income": 57378
-	 },
-	 {
-	   "fips": 48099,
-	   "state": "TX",
-	   "area_name": "Coryell County",
-	   "household_income": 47018
-	 },
-	 {
-	   "fips": 48101,
-	   "state": "TX",
-	   "area_name": "Cottle County",
-	   "household_income": 32722
-	 },
-	 {
-	   "fips": 48103,
-	   "state": "TX",
-	   "area_name": "Crane County",
-	   "household_income": 61098
-	 },
-	 {
-	   "fips": 48105,
-	   "state": "TX",
-	   "area_name": "Crockett County",
-	   "household_income": 49614
-	 },
-	 {
-	   "fips": 48107,
-	   "state": "TX",
-	   "area_name": "Crosby County",
-	   "household_income": 36627
-	 },
-	 {
-	   "fips": 48109,
-	   "state": "TX",
-	   "area_name": "Culberson County",
-	   "household_income": 33637
-	 },
-	 {
-	   "fips": 48111,
-	   "state": "TX",
-	   "area_name": "Dallam County",
-	   "household_income": 43523
-	 },
-	 {
-	   "fips": 48113,
-	   "state": "TX",
-	   "area_name": "Dallas County",
-	   "household_income": 50118
-	 },
-	 {
-	   "fips": 48115,
-	   "state": "TX",
-	   "area_name": "Dawson County",
-	   "household_income": 41876
-	 },
-	 {
-	   "fips": 48117,
-	   "state": "TX",
-	   "area_name": "Deaf Smith County",
-	   "household_income": 41499
-	 },
-	 {
-	   "fips": 48119,
-	   "state": "TX",
-	   "area_name": "Delta County",
-	   "household_income": 38304
-	 },
-	 {
-	   "fips": 48121,
-	   "state": "TX",
-	   "area_name": "Denton County",
-	   "household_income": 74569
-	 },
-	 {
-	   "fips": 48123,
-	   "state": "TX",
-	   "area_name": "DeWitt County",
-	   "household_income": 45717
-	 },
-	 {
-	   "fips": 48125,
-	   "state": "TX",
-	   "area_name": "Dickens County",
-	   "household_income": 35924
-	 },
-	 {
-	   "fips": 48127,
-	   "state": "TX",
-	   "area_name": "Dimmit County",
-	   "household_income": 36856
-	 },
-	 {
-	   "fips": 48129,
-	   "state": "TX",
-	   "area_name": "Donley County",
-	   "household_income": 37263
-	 },
-	 {
-	   "fips": 48131,
-	   "state": "TX",
-	   "area_name": "Duval County",
-	   "household_income": 35069
-	 },
-	 {
-	   "fips": 48133,
-	   "state": "TX",
-	   "area_name": "Eastland County",
-	   "household_income": 36591
-	 },
-	 {
-	   "fips": 48135,
-	   "state": "TX",
-	   "area_name": "Ector County",
-	   "household_income": 55555
-	 },
-	 {
-	   "fips": 48137,
-	   "state": "TX",
-	   "area_name": "Edwards County",
-	   "household_income": 35554
-	 },
-	 {
-	   "fips": 48139,
-	   "state": "TX",
-	   "area_name": "Ellis County",
-	   "household_income": 61157
-	 },
-	 {
-	   "fips": 48141,
-	   "state": "TX",
-	   "area_name": "El Paso County",
-	   "household_income": 40081
-	 },
-	 {
-	   "fips": 48143,
-	   "state": "TX",
-	   "area_name": "Erath County",
-	   "household_income": 41914
-	 },
-	 {
-	   "fips": 48145,
-	   "state": "TX",
-	   "area_name": "Falls County",
-	   "household_income": 35491
-	 },
-	 {
-	   "fips": 48147,
-	   "state": "TX",
-	   "area_name": "Fannin County",
-	   "household_income": 43211
-	 },
-	 {
-	   "fips": 48149,
-	   "state": "TX",
-	   "area_name": "Fayette County",
-	   "household_income": 49830
-	 },
-	 {
-	   "fips": 48151,
-	   "state": "TX",
-	   "area_name": "Fisher County",
-	   "household_income": 44519
-	 },
-	 {
-	   "fips": 48153,
-	   "state": "TX",
-	   "area_name": "Floyd County",
-	   "household_income": 36898
-	 },
-	 {
-	   "fips": 48155,
-	   "state": "TX",
-	   "area_name": "Foard County",
-	   "household_income": 33442
-	 },
-	 {
-	   "fips": 48157,
-	   "state": "TX",
-	   "area_name": "Fort Bend County",
-	   "household_income": 88516
-	 },
-	 {
-	   "fips": 48159,
-	   "state": "TX",
-	   "area_name": "Franklin County",
-	   "household_income": 42099
-	 },
-	 {
-	   "fips": 48161,
-	   "state": "TX",
-	   "area_name": "Freestone County",
-	   "household_income": 46526
-	 },
-	 {
-	   "fips": 48163,
-	   "state": "TX",
-	   "area_name": "Frio County",
-	   "household_income": 34206
-	 },
-	 {
-	   "fips": 48165,
-	   "state": "TX",
-	   "area_name": "Gaines County",
-	   "household_income": 50709
-	 },
-	 {
-	   "fips": 48167,
-	   "state": "TX",
-	   "area_name": "Galveston County",
-	   "household_income": 58333
-	 },
-	 {
-	   "fips": 48169,
-	   "state": "TX",
-	   "area_name": "Garza County",
-	   "household_income": 49947
-	 },
-	 {
-	   "fips": 48171,
-	   "state": "TX",
-	   "area_name": "Gillespie County",
-	   "household_income": 52814
-	 },
-	 {
-	   "fips": 48173,
-	   "state": "TX",
-	   "area_name": "Glasscock County",
-	   "household_income": 73335
-	 },
-	 {
-	   "fips": 48175,
-	   "state": "TX",
-	   "area_name": "Goliad County",
-	   "household_income": 49369
-	 },
-	 {
-	   "fips": 48177,
-	   "state": "TX",
-	   "area_name": "Gonzales County",
-	   "household_income": 42291
-	 },
-	 {
-	   "fips": 48179,
-	   "state": "TX",
-	   "area_name": "Gray County",
-	   "household_income": 49012
-	 },
-	 {
-	   "fips": 48181,
-	   "state": "TX",
-	   "area_name": "Grayson County",
-	   "household_income": 49261
-	 },
-	 {
-	   "fips": 48183,
-	   "state": "TX",
-	   "area_name": "Gregg County",
-	   "household_income": 50020
-	 },
-	 {
-	   "fips": 48185,
-	   "state": "TX",
-	   "area_name": "Grimes County",
-	   "household_income": 44795
-	 },
-	 {
-	   "fips": 48187,
-	   "state": "TX",
-	   "area_name": "Guadalupe County",
-	   "household_income": 61825
-	 },
-	 {
-	   "fips": 48189,
-	   "state": "TX",
-	   "area_name": "Hale County",
-	   "household_income": 40213
-	 },
-	 {
-	   "fips": 48191,
-	   "state": "TX",
-	   "area_name": "Hall County",
-	   "household_income": 33324
-	 },
-	 {
-	   "fips": 48193,
-	   "state": "TX",
-	   "area_name": "Hamilton County",
-	   "household_income": 41207
-	 },
-	 {
-	   "fips": 48195,
-	   "state": "TX",
-	   "area_name": "Hansford County",
-	   "household_income": 50698
-	 },
-	 {
-	   "fips": 48197,
-	   "state": "TX",
-	   "area_name": "Hardeman County",
-	   "household_income": 36992
-	 },
-	 {
-	   "fips": 48199,
-	   "state": "TX",
-	   "area_name": "Hardin County",
-	   "household_income": 53872
-	 },
-	 {
-	   "fips": 48201,
-	   "state": "TX",
-	   "area_name": "Harris County",
-	   "household_income": 54230
-	 },
-	 {
-	   "fips": 48203,
-	   "state": "TX",
-	   "area_name": "Harrison County",
-	   "household_income": 48461
-	 },
-	 {
-	   "fips": 48205,
-	   "state": "TX",
-	   "area_name": "Hartley County",
-	   "household_income": 64182
-	 },
-	 {
-	   "fips": 48207,
-	   "state": "TX",
-	   "area_name": "Haskell County",
-	   "household_income": 35607
-	 },
-	 {
-	   "fips": 48209,
-	   "state": "TX",
-	   "area_name": "Hays County",
-	   "household_income": 59569
-	 },
-	 {
-	   "fips": 48211,
-	   "state": "TX",
-	   "area_name": "Hemphill County",
-	   "household_income": 66505
-	 },
-	 {
-	   "fips": 48213,
-	   "state": "TX",
-	   "area_name": "Henderson County",
-	   "household_income": 40921
-	 },
-	 {
-	   "fips": 48215,
-	   "state": "TX",
-	   "area_name": "Hidalgo County",
-	   "household_income": 34368
-	 },
-	 {
-	   "fips": 48217,
-	   "state": "TX",
-	   "area_name": "Hill County",
-	   "household_income": 41521
-	 },
-	 {
-	   "fips": 48219,
-	   "state": "TX",
-	   "area_name": "Hockley County",
-	   "household_income": 50124
-	 },
-	 {
-	   "fips": 48221,
-	   "state": "TX",
-	   "area_name": "Hood County",
-	   "household_income": 55472
-	 },
-	 {
-	   "fips": 48223,
-	   "state": "TX",
-	   "area_name": "Hopkins County",
-	   "household_income": 44076
-	 },
-	 {
-	   "fips": 48225,
-	   "state": "TX",
-	   "area_name": "Houston County",
-	   "household_income": 33698
-	 },
-	 {
-	   "fips": 48227,
-	   "state": "TX",
-	   "area_name": "Howard County",
-	   "household_income": 47299
-	 },
-	 {
-	   "fips": 48229,
-	   "state": "TX",
-	   "area_name": "Hudspeth County",
-	   "household_income": 32086
-	 },
-	 {
-	   "fips": 48231,
-	   "state": "TX",
-	   "area_name": "Hunt County",
-	   "household_income": 43385
-	 },
-	 {
-	   "fips": 48233,
-	   "state": "TX",
-	   "area_name": "Hutchinson County",
-	   "household_income": 51508
-	 },
-	 {
-	   "fips": 48235,
-	   "state": "TX",
-	   "area_name": "Irion County",
-	   "household_income": 63054
-	 },
-	 {
-	   "fips": 48237,
-	   "state": "TX",
-	   "area_name": "Jack County",
-	   "household_income": 52030
-	 },
-	 {
-	   "fips": 48239,
-	   "state": "TX",
-	   "area_name": "Jackson County",
-	   "household_income": 52185
-	 },
-	 {
-	   "fips": 48241,
-	   "state": "TX",
-	   "area_name": "Jasper County",
-	   "household_income": 41017
-	 },
-	 {
-	   "fips": 48243,
-	   "state": "TX",
-	   "area_name": "Jeff Davis County",
-	   "household_income": 46364
-	 },
-	 {
-	   "fips": 48245,
-	   "state": "TX",
-	   "area_name": "Jefferson County",
-	   "household_income": 41147
-	 },
-	 {
-	   "fips": 48247,
-	   "state": "TX",
-	   "area_name": "Jim Hogg County",
-	   "household_income": 36929
-	 },
-	 {
-	   "fips": 48249,
-	   "state": "TX",
-	   "area_name": "Jim Wells County",
-	   "household_income": 46200
-	 },
-	 {
-	   "fips": 48251,
-	   "state": "TX",
-	   "area_name": "Johnson County",
-	   "household_income": 55926
-	 },
-	 {
-	   "fips": 48253,
-	   "state": "TX",
-	   "area_name": "Jones County",
-	   "household_income": 41079
-	 },
-	 {
-	   "fips": 48255,
-	   "state": "TX",
-	   "area_name": "Karnes County",
-	   "household_income": 43986
-	 },
-	 {
-	   "fips": 48257,
-	   "state": "TX",
-	   "area_name": "Kaufman County",
-	   "household_income": 57585
-	 },
-	 {
-	   "fips": 48259,
-	   "state": "TX",
-	   "area_name": "Kendall County",
-	   "household_income": 77764
-	 },
-	 {
-	   "fips": 48261,
-	   "state": "TX",
-	   "area_name": "Kenedy County",
-	   "household_income": 38451
-	 },
-	 {
-	   "fips": 48263,
-	   "state": "TX",
-	   "area_name": "Kent County",
-	   "household_income": 43026
-	 },
-	 {
-	   "fips": 48265,
-	   "state": "TX",
-	   "area_name": "Kerr County",
-	   "household_income": 44113
-	 },
-	 {
-	   "fips": 48267,
-	   "state": "TX",
-	   "area_name": "Kimble County",
-	   "household_income": 38750
-	 },
-	 {
-	   "fips": 48269,
-	   "state": "TX",
-	   "area_name": "King County",
-	   "household_income": 64203
-	 },
-	 {
-	   "fips": 48271,
-	   "state": "TX",
-	   "area_name": "Kinney County",
-	   "household_income": 39335
-	 },
-	 {
-	   "fips": 48273,
-	   "state": "TX",
-	   "area_name": "Kleberg County",
-	   "household_income": 40884
-	 },
-	 {
-	   "fips": 48275,
-	   "state": "TX",
-	   "area_name": "Knox County",
-	   "household_income": 36929
-	 },
-	 {
-	   "fips": 48277,
-	   "state": "TX",
-	   "area_name": "Lamar County",
-	   "household_income": 41009
-	 },
-	 {
-	   "fips": 48279,
-	   "state": "TX",
-	   "area_name": "Lamb County",
-	   "household_income": 37111
-	 },
-	 {
-	   "fips": 48281,
-	   "state": "TX",
-	   "area_name": "Lampasas County",
-	   "household_income": 50699
-	 },
-	 {
-	   "fips": 48283,
-	   "state": "TX",
-	   "area_name": "La Salle County",
-	   "household_income": 38012
-	 },
-	 {
-	   "fips": 48285,
-	   "state": "TX",
-	   "area_name": "Lavaca County",
-	   "household_income": 47041
-	 },
-	 {
-	   "fips": 48287,
-	   "state": "TX",
-	   "area_name": "Lee County",
-	   "household_income": 52895
-	 },
-	 {
-	   "fips": 48289,
-	   "state": "TX",
-	   "area_name": "Leon County",
-	   "household_income": 45159
-	 },
-	 {
-	   "fips": 48291,
-	   "state": "TX",
-	   "area_name": "Liberty County",
-	   "household_income": 47123
-	 },
-	 {
-	   "fips": 48293,
-	   "state": "TX",
-	   "area_name": "Limestone County",
-	   "household_income": 37256
-	 },
-	 {
-	   "fips": 48295,
-	   "state": "TX",
-	   "area_name": "Lipscomb County",
-	   "household_income": 60810
-	 },
-	 {
-	   "fips": 48297,
-	   "state": "TX",
-	   "area_name": "Live Oak County",
-	   "household_income": 51481
-	 },
-	 {
-	   "fips": 48299,
-	   "state": "TX",
-	   "area_name": "Llano County",
-	   "household_income": 45096
-	 },
-	 {
-	   "fips": 48301,
-	   "state": "TX",
-	   "area_name": "Loving County",
-	   "household_income": 55819
-	 },
-	 {
-	   "fips": 48303,
-	   "state": "TX",
-	   "area_name": "Lubbock County",
-	   "household_income": 45719
-	 },
-	 {
-	   "fips": 48305,
-	   "state": "TX",
-	   "area_name": "Lynn County",
-	   "household_income": 41589
-	 },
-	 {
-	   "fips": 48307,
-	   "state": "TX",
-	   "area_name": "McCulloch County",
-	   "household_income": 39649
-	 },
-	 {
-	   "fips": 48309,
-	   "state": "TX",
-	   "area_name": "McLennan County",
-	   "household_income": 43488
-	 },
-	 {
-	   "fips": 48311,
-	   "state": "TX",
-	   "area_name": "McMullen County",
-	   "household_income": 61571
-	 },
-	 {
-	   "fips": 48313,
-	   "state": "TX",
-	   "area_name": "Madison County",
-	   "household_income": 39030
-	 },
-	 {
-	   "fips": 48315,
-	   "state": "TX",
-	   "area_name": "Marion County",
-	   "household_income": 34452
-	 },
-	 {
-	   "fips": 48317,
-	   "state": "TX",
-	   "area_name": "Martin County",
-	   "household_income": 61896
-	 },
-	 {
-	   "fips": 48319,
-	   "state": "TX",
-	   "area_name": "Mason County",
-	   "household_income": 42820
-	 },
-	 {
-	   "fips": 48321,
-	   "state": "TX",
-	   "area_name": "Matagorda County",
-	   "household_income": 41587
-	 },
-	 {
-	   "fips": 48323,
-	   "state": "TX",
-	   "area_name": "Maverick County",
-	   "household_income": 32248
-	 },
-	 {
-	   "fips": 48325,
-	   "state": "TX",
-	   "area_name": "Medina County",
-	   "household_income": 53440
-	 },
-	 {
-	   "fips": 48327,
-	   "state": "TX",
-	   "area_name": "Menard County",
-	   "household_income": 32580
-	 },
-	 {
-	   "fips": 48329,
-	   "state": "TX",
-	   "area_name": "Midland County",
-	   "household_income": 74811
-	 },
-	 {
-	   "fips": 48331,
-	   "state": "TX",
-	   "area_name": "Milam County",
-	   "household_income": 41849
-	 },
-	 {
-	   "fips": 48333,
-	   "state": "TX",
-	   "area_name": "Mills County",
-	   "household_income": 38564
-	 },
-	 {
-	   "fips": 48335,
-	   "state": "TX",
-	   "area_name": "Mitchell County",
-	   "household_income": 41363
-	 },
-	 {
-	   "fips": 48337,
-	   "state": "TX",
-	   "area_name": "Montague County",
-	   "household_income": 48996
-	 },
-	 {
-	   "fips": 48339,
-	   "state": "TX",
-	   "area_name": "Montgomery County",
-	   "household_income": 70929
-	 },
-	 {
-	   "fips": 48341,
-	   "state": "TX",
-	   "area_name": "Moore County",
-	   "household_income": 42839
-	 },
-	 {
-	   "fips": 48343,
-	   "state": "TX",
-	   "area_name": "Morris County",
-	   "household_income": 37954
-	 },
-	 {
-	   "fips": 48345,
-	   "state": "TX",
-	   "area_name": "Motley County",
-	   "household_income": 37936
-	 },
-	 {
-	   "fips": 48347,
-	   "state": "TX",
-	   "area_name": "Nacogdoches County",
-	   "household_income": 38895
-	 },
-	 {
-	   "fips": 48349,
-	   "state": "TX",
-	   "area_name": "Navarro County",
-	   "household_income": 43091
-	 },
-	 {
-	   "fips": 48351,
-	   "state": "TX",
-	   "area_name": "Newton County",
-	   "household_income": 39135
-	 },
-	 {
-	   "fips": 48353,
-	   "state": "TX",
-	   "area_name": "Nolan County",
-	   "household_income": 38742
-	 },
-	 {
-	   "fips": 48355,
-	   "state": "TX",
-	   "area_name": "Nueces County",
-	   "household_income": 51222
-	 },
-	 {
-	   "fips": 48357,
-	   "state": "TX",
-	   "area_name": "Ochiltree County",
-	   "household_income": 61773
-	 },
-	 {
-	   "fips": 48359,
-	   "state": "TX",
-	   "area_name": "Oldham County",
-	   "household_income": 54458
-	 },
-	 {
-	   "fips": 48361,
-	   "state": "TX",
-	   "area_name": "Orange County",
-	   "household_income": 48834
-	 },
-	 {
-	   "fips": 48363,
-	   "state": "TX",
-	   "area_name": "Palo Pinto County",
-	   "household_income": 40862
-	 },
-	 {
-	   "fips": 48365,
-	   "state": "TX",
-	   "area_name": "Panola County",
-	   "household_income": 48822
-	 },
-	 {
-	   "fips": 48367,
-	   "state": "TX",
-	   "area_name": "Parker County",
-	   "household_income": 67655
-	 },
-	 {
-	   "fips": 48369,
-	   "state": "TX",
-	   "area_name": "Parmer County",
-	   "household_income": 41813
-	 },
-	 {
-	   "fips": 48371,
-	   "state": "TX",
-	   "area_name": "Pecos County",
-	   "household_income": 44817
-	 },
-	 {
-	   "fips": 48373,
-	   "state": "TX",
-	   "area_name": "Polk County",
-	   "household_income": 41401
-	 },
-	 {
-	   "fips": 48375,
-	   "state": "TX",
-	   "area_name": "Potter County",
-	   "household_income": 38224
-	 },
-	 {
-	   "fips": 48377,
-	   "state": "TX",
-	   "area_name": "Presidio County",
-	   "household_income": 34258
-	 },
-	 {
-	   "fips": 48379,
-	   "state": "TX",
-	   "area_name": "Rains County",
-	   "household_income": 47834
-	 },
-	 {
-	   "fips": 48381,
-	   "state": "TX",
-	   "area_name": "Randall County",
-	   "household_income": 64636
-	 },
-	 {
-	   "fips": 48383,
-	   "state": "TX",
-	   "area_name": "Reagan County",
-	   "household_income": 62376
-	 },
-	 {
-	   "fips": 48385,
-	   "state": "TX",
-	   "area_name": "Real County",
-	   "household_income": 37294
-	 },
-	 {
-	   "fips": 48387,
-	   "state": "TX",
-	   "area_name": "Red River County",
-	   "household_income": 34340
-	 },
-	 {
-	   "fips": 48389,
-	   "state": "TX",
-	   "area_name": "Reeves County",
-	   "household_income": 39006
-	 },
-	 {
-	   "fips": 48391,
-	   "state": "TX",
-	   "area_name": "Refugio County",
-	   "household_income": 43654
-	 },
-	 {
-	   "fips": 48393,
-	   "state": "TX",
-	   "area_name": "Roberts County",
-	   "household_income": 69424
-	 },
-	 {
-	   "fips": 48395,
-	   "state": "TX",
-	   "area_name": "Robertson County",
-	   "household_income": 43194
-	 },
-	 {
-	   "fips": 48397,
-	   "state": "TX",
-	   "area_name": "Rockwall County",
-	   "household_income": 84692
-	 },
-	 {
-	   "fips": 48399,
-	   "state": "TX",
-	   "area_name": "Runnels County",
-	   "household_income": 38607
-	 },
-	 {
-	   "fips": 48401,
-	   "state": "TX",
-	   "area_name": "Rusk County",
-	   "household_income": 46427
-	 },
-	 {
-	   "fips": 48403,
-	   "state": "TX",
-	   "area_name": "Sabine County",
-	   "household_income": 35701
-	 },
-	 {
-	   "fips": 48405,
-	   "state": "TX",
-	   "area_name": "San Augustine County",
-	   "household_income": 32826
-	 },
-	 {
-	   "fips": 48407,
-	   "state": "TX",
-	   "area_name": "San Jacinto County",
-	   "household_income": 43087
-	 },
-	 {
-	   "fips": 48409,
-	   "state": "TX",
-	   "area_name": "San Patricio County",
-	   "household_income": 51958
-	 },
-	 {
-	   "fips": 48411,
-	   "state": "TX",
-	   "area_name": "San Saba County",
-	   "household_income": 38000
-	 },
-	 {
-	   "fips": 48413,
-	   "state": "TX",
-	   "area_name": "Schleicher County",
-	   "household_income": 50361
-	 },
-	 {
-	   "fips": 48415,
-	   "state": "TX",
-	   "area_name": "Scurry County",
-	   "household_income": 56444
-	 },
-	 {
-	   "fips": 48417,
-	   "state": "TX",
-	   "area_name": "Shackelford County",
-	   "household_income": 55130
-	 },
-	 {
-	   "fips": 48419,
-	   "state": "TX",
-	   "area_name": "Shelby County",
-	   "household_income": 35772
-	 },
-	 {
-	   "fips": 48421,
-	   "state": "TX",
-	   "area_name": "Sherman County",
-	   "household_income": 49309
-	 },
-	 {
-	   "fips": 48423,
-	   "state": "TX",
-	   "area_name": "Smith County",
-	   "household_income": 45363
-	 },
-	 {
-	   "fips": 48425,
-	   "state": "TX",
-	   "area_name": "Somervell County",
-	   "household_income": 51733
-	 },
-	 {
-	   "fips": 48427,
-	   "state": "TX",
-	   "area_name": "Starr County",
-	   "household_income": 26699
-	 },
-	 {
-	   "fips": 48429,
-	   "state": "TX",
-	   "area_name": "Stephens County",
-	   "household_income": 44110
-	 },
-	 {
-	   "fips": 48431,
-	   "state": "TX",
-	   "area_name": "Sterling County",
-	   "household_income": 59854
-	 },
-	 {
-	   "fips": 48433,
-	   "state": "TX",
-	   "area_name": "Stonewall County",
-	   "household_income": 42780
-	 },
-	 {
-	   "fips": 48435,
-	   "state": "TX",
-	   "area_name": "Sutton County",
-	   "household_income": 60435
-	 },
-	 {
-	   "fips": 48437,
-	   "state": "TX",
-	   "area_name": "Swisher County",
-	   "household_income": 37527
-	 },
-	 {
-	   "fips": 48439,
-	   "state": "TX",
-	   "area_name": "Tarrant County",
-	   "household_income": 58127
-	 },
-	 {
-	   "fips": 48441,
-	   "state": "TX",
-	   "area_name": "Taylor County",
-	   "household_income": 45559
-	 },
-	 {
-	   "fips": 48443,
-	   "state": "TX",
-	   "area_name": "Terrell County",
-	   "household_income": 39503
-	 },
-	 {
-	   "fips": 48445,
-	   "state": "TX",
-	   "area_name": "Terry County",
-	   "household_income": 38752
-	 },
-	 {
-	   "fips": 48447,
-	   "state": "TX",
-	   "area_name": "Throckmorton County",
-	   "household_income": 43618
-	 },
-	 {
-	   "fips": 48449,
-	   "state": "TX",
-	   "area_name": "Titus County",
-	   "household_income": 40680
-	 },
-	 {
-	   "fips": 48451,
-	   "state": "TX",
-	   "area_name": "Tom Green County",
-	   "household_income": 45261
-	 },
-	 {
-	   "fips": 48453,
-	   "state": "TX",
-	   "area_name": "Travis County",
-	   "household_income": 61779
-	 },
-	 {
-	   "fips": 48455,
-	   "state": "TX",
-	   "area_name": "Trinity County",
-	   "household_income": 36645
-	 },
-	 {
-	   "fips": 48457,
-	   "state": "TX",
-	   "area_name": "Tyler County",
-	   "household_income": 40442
-	 },
-	 {
-	   "fips": 48459,
-	   "state": "TX",
-	   "area_name": "Upshur County",
-	   "household_income": 46346
-	 },
-	 {
-	   "fips": 48461,
-	   "state": "TX",
-	   "area_name": "Upton County",
-	   "household_income": 55918
-	 },
-	 {
-	   "fips": 48463,
-	   "state": "TX",
-	   "area_name": "Uvalde County",
-	   "household_income": 37933
-	 },
-	 {
-	   "fips": 48465,
-	   "state": "TX",
-	   "area_name": "Val Verde County",
-	   "household_income": 41437
-	 },
-	 {
-	   "fips": 48467,
-	   "state": "TX",
-	   "area_name": "Van Zandt County",
-	   "household_income": 43377
-	 },
-	 {
-	   "fips": 48469,
-	   "state": "TX",
-	   "area_name": "Victoria County",
-	   "household_income": 51003
-	 },
-	 {
-	   "fips": 48471,
-	   "state": "TX",
-	   "area_name": "Walker County",
-	   "household_income": 39984
-	 },
-	 {
-	   "fips": 48473,
-	   "state": "TX",
-	   "area_name": "Waller County",
-	   "household_income": 50589
-	 },
-	 {
-	   "fips": 48475,
-	   "state": "TX",
-	   "area_name": "Ward County",
-	   "household_income": 53244
-	 },
-	 {
-	   "fips": 48477,
-	   "state": "TX",
-	   "area_name": "Washington County",
-	   "household_income": 55139
-	 },
-	 {
-	   "fips": 48479,
-	   "state": "TX",
-	   "area_name": "Webb County",
-	   "household_income": 37935
-	 },
-	 {
-	   "fips": 48481,
-	   "state": "TX",
-	   "area_name": "Wharton County",
-	   "household_income": 44110
-	 },
-	 {
-	   "fips": 48483,
-	   "state": "TX",
-	   "area_name": "Wheeler County",
-	   "household_income": 52548
-	 },
-	 {
-	   "fips": 48485,
-	   "state": "TX",
-	   "area_name": "Wichita County",
-	   "household_income": 43379
-	 },
-	 {
-	   "fips": 48487,
-	   "state": "TX",
-	   "area_name": "Wilbarger County",
-	   "household_income": 39377
-	 },
-	 {
-	   "fips": 48489,
-	   "state": "TX",
-	   "area_name": "Willacy County",
-	   "household_income": 29782
-	 },
-	 {
-	   "fips": 48491,
-	   "state": "TX",
-	   "area_name": "Williamson County",
-	   "household_income": 73098
-	 },
-	 {
-	   "fips": 48493,
-	   "state": "TX",
-	   "area_name": "Wilson County",
-	   "household_income": 62752
-	 },
-	 {
-	   "fips": 48495,
-	   "state": "TX",
-	   "area_name": "Winkler County",
-	   "household_income": 55493
-	 },
-	 {
-	   "fips": 48497,
-	   "state": "TX",
-	   "area_name": "Wise County",
-	   "household_income": 59904
-	 },
-	 {
-	   "fips": 48499,
-	   "state": "TX",
-	   "area_name": "Wood County",
-	   "household_income": 42753
-	 },
-	 {
-	   "fips": 48501,
-	   "state": "TX",
-	   "area_name": "Yoakum County",
-	   "household_income": 60738
-	 },
-	 {
-	   "fips": 48503,
-	   "state": "TX",
-	   "area_name": "Young County",
-	   "household_income": 41872
-	 },
-	 {
-	   "fips": 48505,
-	   "state": "TX",
-	   "area_name": "Zapata County",
-	   "household_income": 33291
-	 },
-	 {
-	   "fips": 48507,
-	   "state": "TX",
-	   "area_name": "Zavala County",
-	   "household_income": 26336
-	 },
-	 {
-	   "fips": 49001,
-	   "state": "UT",
-	   "area_name": "Beaver County",
-	   "household_income": 50818
-	 },
-	 {
-	   "fips": 49003,
-	   "state": "UT",
-	   "area_name": "Box Elder County",
-	   "household_income": 56313
-	 },
-	 {
-	   "fips": 49005,
-	   "state": "UT",
-	   "area_name": "Cache County",
-	   "household_income": 51735
-	 },
-	 {
-	   "fips": 49007,
-	   "state": "UT",
-	   "area_name": "Carbon County",
-	   "household_income": 47340
-	 },
-	 {
-	   "fips": 49009,
-	   "state": "UT",
-	   "area_name": "Daggett County",
-	   "household_income": 53006
-	 },
-	 {
-	   "fips": 49011,
-	   "state": "UT",
-	   "area_name": "Davis County",
-	   "household_income": 70797
-	 },
-	 {
-	   "fips": 49013,
-	   "state": "UT",
-	   "area_name": "Duchesne County",
-	   "household_income": 61976
-	 },
-	 {
-	   "fips": 49015,
-	   "state": "UT",
-	   "area_name": "Emery County",
-	   "household_income": 49709
-	 },
-	 {
-	   "fips": 49017,
-	   "state": "UT",
-	   "area_name": "Garfield County",
-	   "household_income": 45666
-	 },
-	 {
-	   "fips": 49019,
-	   "state": "UT",
-	   "area_name": "Grand County",
-	   "household_income": 43344
-	 },
-	 {
-	   "fips": 49021,
-	   "state": "UT",
-	   "area_name": "Iron County",
-	   "household_income": 43615
-	 },
-	 {
-	   "fips": 49023,
-	   "state": "UT",
-	   "area_name": "Juab County",
-	   "household_income": 55204
-	 },
-	 {
-	   "fips": 49025,
-	   "state": "UT",
-	   "area_name": "Kane County",
-	   "household_income": 48456
-	 },
-	 {
-	   "fips": 49027,
-	   "state": "UT",
-	   "area_name": "Millard County",
-	   "household_income": 52623
-	 },
-	 {
-	   "fips": 49029,
-	   "state": "UT",
-	   "area_name": "Morgan County",
-	   "household_income": 82597
-	 },
-	 {
-	   "fips": 49031,
-	   "state": "UT",
-	   "area_name": "Piute County",
-	   "household_income": 37730
-	 },
-	 {
-	   "fips": 49033,
-	   "state": "UT",
-	   "area_name": "Rich County",
-	   "household_income": 56772
-	 },
-	 {
-	   "fips": 49035,
-	   "state": "UT",
-	   "area_name": "Salt Lake County",
-	   "household_income": 62536
-	 },
-	 {
-	   "fips": 49037,
-	   "state": "UT",
-	   "area_name": "San Juan County",
-	   "household_income": 40590
-	 },
-	 {
-	   "fips": 49039,
-	   "state": "UT",
-	   "area_name": "Sanpete County",
-	   "household_income": 44644
-	 },
-	 {
-	   "fips": 49041,
-	   "state": "UT",
-	   "area_name": "Sevier County",
-	   "household_income": 48622
-	 },
-	 {
-	   "fips": 49043,
-	   "state": "UT",
-	   "area_name": "Summit County",
-	   "household_income": 92560
-	 },
-	 {
-	   "fips": 49045,
-	   "state": "UT",
-	   "area_name": "Tooele County",
-	   "household_income": 64193
-	 },
-	 {
-	   "fips": 49047,
-	   "state": "UT",
-	   "area_name": "Uintah County",
-	   "household_income": 65489
-	 },
-	 {
-	   "fips": 49049,
-	   "state": "UT",
-	   "area_name": "Utah County",
-	   "household_income": 60957
-	 },
-	 {
-	   "fips": 49051,
-	   "state": "UT",
-	   "area_name": "Wasatch County",
-	   "household_income": 65207
-	 },
-	 {
-	   "fips": 49053,
-	   "state": "UT",
-	   "area_name": "Washington County",
-	   "household_income": 50169
-	 },
-	 {
-	   "fips": 49055,
-	   "state": "UT",
-	   "area_name": "Wayne County",
-	   "household_income": 42366
-	 },
-	 {
-	   "fips": 49057,
-	   "state": "UT",
-	   "area_name": "Weber County",
-	   "household_income": 59293
-	 },
-	 {
-	   "fips": 50001,
-	   "state": "VT",
-	   "area_name": "Addison County",
-	   "household_income": 59089
-	 },
-	 {
-	   "fips": 50003,
-	   "state": "VT",
-	   "area_name": "Bennington County",
-	   "household_income": 44674
-	 },
-	 {
-	   "fips": 50005,
-	   "state": "VT",
-	   "area_name": "Caledonia County",
-	   "household_income": 45029
-	 },
-	 {
-	   "fips": 50007,
-	   "state": "VT",
-	   "area_name": "Chittenden County",
-	   "household_income": 61908
-	 },
-	 {
-	   "fips": 50009,
-	   "state": "VT",
-	   "area_name": "Essex County",
-	   "household_income": 35570
-	 },
-	 {
-	   "fips": 50011,
-	   "state": "VT",
-	   "area_name": "Franklin County",
-	   "household_income": 59184
-	 },
-	 {
-	   "fips": 50013,
-	   "state": "VT",
-	   "area_name": "Grand Isle County",
-	   "household_income": 60081
-	 },
-	 {
-	   "fips": 50015,
-	   "state": "VT",
-	   "area_name": "Lamoille County",
-	   "household_income": 49142
-	 },
-	 {
-	   "fips": 50017,
-	   "state": "VT",
-	   "area_name": "Orange County",
-	   "household_income": 53025
-	 },
-	 {
-	   "fips": 50019,
-	   "state": "VT",
-	   "area_name": "Orleans County",
-	   "household_income": 42089
-	 },
-	 {
-	   "fips": 50021,
-	   "state": "VT",
-	   "area_name": "Rutland County",
-	   "household_income": 44888
-	 },
-	 {
-	   "fips": 50023,
-	   "state": "VT",
-	   "area_name": "Washington County",
-	   "household_income": 58673
-	 },
-	 {
-	   "fips": 50025,
-	   "state": "VT",
-	   "area_name": "Windham County",
-	   "household_income": 49616
-	 },
-	 {
-	   "fips": 50027,
-	   "state": "VT",
-	   "area_name": "Windsor County",
-	   "household_income": 51513
-	 },
-	 {
-	   "fips": 51001,
-	   "state": "VA",
-	   "area_name": "Accomack County",
-	   "household_income": 38390
-	 },
-	 {
-	   "fips": 51003,
-	   "state": "VA",
-	   "area_name": "Albemarle County",
-	   "household_income": 67083
-	 },
-	 {
-	   "fips": 51005,
-	   "state": "VA",
-	   "area_name": "Alleghany County",
-	   "household_income": 45454
-	 },
-	 {
-	   "fips": 51007,
-	   "state": "VA",
-	   "area_name": "Amelia County",
-	   "household_income": 51738
-	 },
-	 {
-	   "fips": 51009,
-	   "state": "VA",
-	   "area_name": "Amherst County",
-	   "household_income": 43998
-	 },
-	 {
-	   "fips": 51011,
-	   "state": "VA",
-	   "area_name": "Appomattox County",
-	   "household_income": 44397
-	 },
-	 {
-	   "fips": 51013,
-	   "state": "VA",
-	   "area_name": "Arlington County",
-	   "household_income": 107143
-	 },
-	 {
-	   "fips": 51015,
-	   "state": "VA",
-	   "area_name": "Augusta County",
-	   "household_income": 57808
-	 },
-	 {
-	   "fips": 51017,
-	   "state": "VA",
-	   "area_name": "Bath County",
-	   "household_income": 43852
-	 },
-	 {
-	   "fips": 51019,
-	   "state": "VA",
-	   "area_name": "Bedford County",
-	   "household_income": 55507
-	 },
-	 {
-	   "fips": 51021,
-	   "state": "VA",
-	   "area_name": "Bland County",
-	   "household_income": 42624
-	 },
-	 {
-	   "fips": 51023,
-	   "state": "VA",
-	   "area_name": "Botetourt County",
-	   "household_income": 63646
-	 },
-	 {
-	   "fips": 51025,
-	   "state": "VA",
-	   "area_name": "Brunswick County",
-	   "household_income": 37344
-	 },
-	 {
-	   "fips": 51027,
-	   "state": "VA",
-	   "area_name": "Buchanan County",
-	   "household_income": 32083
-	 },
-	 {
-	   "fips": 51029,
-	   "state": "VA",
-	   "area_name": "Buckingham County",
-	   "household_income": 38731
-	 },
-	 {
-	   "fips": 51031,
-	   "state": "VA",
-	   "area_name": "Campbell County",
-	   "household_income": 46663
-	 },
-	 {
-	   "fips": 51033,
-	   "state": "VA",
-	   "area_name": "Caroline County",
-	   "household_income": 56099
-	 },
-	 {
-	   "fips": 51035,
-	   "state": "VA",
-	   "area_name": "Carroll County",
-	   "household_income": 38474
-	 },
-	 {
-	   "fips": 51036,
-	   "state": "VA",
-	   "area_name": "Charles City County",
-	   "household_income": 49768
-	 },
-	 {
-	   "fips": 51037,
-	   "state": "VA",
-	   "area_name": "Charlotte County",
-	   "household_income": 36339
-	 },
-	 {
-	   "fips": 51041,
-	   "state": "VA",
-	   "area_name": "Chesterfield County",
-	   "household_income": 72972
-	 },
-	 {
-	   "fips": 51043,
-	   "state": "VA",
-	   "area_name": "Clarke County",
-	   "household_income": 70281
-	 },
-	 {
-	   "fips": 51045,
-	   "state": "VA",
-	   "area_name": "Craig County",
-	   "household_income": 46551
-	 },
-	 {
-	   "fips": 51047,
-	   "state": "VA",
-	   "area_name": "Culpeper County",
-	   "household_income": 62394
-	 },
-	 {
-	   "fips": 51049,
-	   "state": "VA",
-	   "area_name": "Cumberland County",
-	   "household_income": 41409
-	 },
-	 {
-	   "fips": 51051,
-	   "state": "VA",
-	   "area_name": "Dickenson County",
-	   "household_income": 32103
-	 },
-	 {
-	   "fips": 51053,
-	   "state": "VA",
-	   "area_name": "Dinwiddie County",
-	   "household_income": 52288
-	 },
-	 {
-	   "fips": 51057,
-	   "state": "VA",
-	   "area_name": "Essex County",
-	   "household_income": 48277
-	 },
-	 {
-	   "fips": 51059,
-	   "state": "VA",
-	   "area_name": "Fairfax County",
-	   "household_income": 110507
-	 },
-	 {
-	   "fips": 51061,
-	   "state": "VA",
-	   "area_name": "Fauquier County",
-	   "household_income": 89106
-	 },
-	 {
-	   "fips": 51063,
-	   "state": "VA",
-	   "area_name": "Floyd County",
-	   "household_income": 43355
-	 },
-	 {
-	   "fips": 51065,
-	   "state": "VA",
-	   "area_name": "Fluvanna County",
-	   "household_income": 64258
-	 },
-	 {
-	   "fips": 51067,
-	   "state": "VA",
-	   "area_name": "Franklin County",
-	   "household_income": 47419
-	 },
-	 {
-	   "fips": 51069,
-	   "state": "VA",
-	   "area_name": "Frederick County",
-	   "household_income": 65485
-	 },
-	 {
-	   "fips": 51071,
-	   "state": "VA",
-	   "area_name": "Giles County",
-	   "household_income": 45979
-	 },
-	 {
-	   "fips": 51073,
-	   "state": "VA",
-	   "area_name": "Gloucester County",
-	   "household_income": 58900
-	 },
-	 {
-	   "fips": 51075,
-	   "state": "VA",
-	   "area_name": "Goochland County",
-	   "household_income": 86610
-	 },
-	 {
-	   "fips": 51077,
-	   "state": "VA",
-	   "area_name": "Grayson County",
-	   "household_income": 31893
-	 },
-	 {
-	   "fips": 51079,
-	   "state": "VA",
-	   "area_name": "Greene County",
-	   "household_income": 61762
-	 },
-	 {
-	   "fips": 51081,
-	   "state": "VA",
-	   "area_name": "Greensville County",
-	   "household_income": 36459
-	 },
-	 {
-	   "fips": 51083,
-	   "state": "VA",
-	   "area_name": "Halifax County",
-	   "household_income": 39079
-	 },
-	 {
-	   "fips": 51085,
-	   "state": "VA",
-	   "area_name": "Hanover County",
-	   "household_income": 81940
-	 },
-	 {
-	   "fips": 51087,
-	   "state": "VA",
-	   "area_name": "Henrico County",
-	   "household_income": 62446
-	 },
-	 {
-	   "fips": 51089,
-	   "state": "VA",
-	   "area_name": "Henry County",
-	   "household_income": 34842
-	 },
-	 {
-	   "fips": 51091,
-	   "state": "VA",
-	   "area_name": "Highland County",
-	   "household_income": 38636
-	 },
-	 {
-	   "fips": 51093,
-	   "state": "VA",
-	   "area_name": "Isle of Wight County",
-	   "household_income": 64350
-	 },
-	 {
-	   "fips": 51095,
-	   "state": "VA",
-	   "area_name": "James City County",
-	   "household_income": 75926
-	 },
-	 {
-	   "fips": 51097,
-	   "state": "VA",
-	   "area_name": "King and Queen County",
-	   "household_income": 46331
-	 },
-	 {
-	   "fips": 51099,
-	   "state": "VA",
-	   "area_name": "King George County",
-	   "household_income": 76206
-	 },
-	 {
-	   "fips": 51101,
-	   "state": "VA",
-	   "area_name": "King William County",
-	   "household_income": 64305
-	 },
-	 {
-	   "fips": 51103,
-	   "state": "VA",
-	   "area_name": "Lancaster County",
-	   "household_income": 45827
-	 },
-	 {
-	   "fips": 51105,
-	   "state": "VA",
-	   "area_name": "Lee County",
-	   "household_income": 31429
-	 },
-	 {
-	   "fips": 51107,
-	   "state": "VA",
-	   "area_name": "Loudoun County",
-	   "household_income": 122641
-	 },
-	 {
-	   "fips": 51109,
-	   "state": "VA",
-	   "area_name": "Louisa County",
-	   "household_income": 60121
-	 },
-	 {
-	   "fips": 51111,
-	   "state": "VA",
-	   "area_name": "Lunenburg County",
-	   "household_income": 37548
-	 },
-	 {
-	   "fips": 51113,
-	   "state": "VA",
-	   "area_name": "Madison County",
-	   "household_income": 52513
-	 },
-	 {
-	   "fips": 51115,
-	   "state": "VA",
-	   "area_name": "Mathews County",
-	   "household_income": 58268
-	 },
-	 {
-	   "fips": 51117,
-	   "state": "VA",
-	   "area_name": "Mecklenburg County",
-	   "household_income": 38500
-	 },
-	 {
-	   "fips": 51119,
-	   "state": "VA",
-	   "area_name": "Middlesex County",
-	   "household_income": 48921
-	 },
-	 {
-	   "fips": 51121,
-	   "state": "VA",
-	   "area_name": "Montgomery County",
-	   "household_income": 43484
-	 },
-	 {
-	   "fips": 51125,
-	   "state": "VA",
-	   "area_name": "Nelson County",
-	   "household_income": 48076
-	 },
-	 {
-	   "fips": 51127,
-	   "state": "VA",
-	   "area_name": "New Kent County",
-	   "household_income": 72406
-	 },
-	 {
-	   "fips": 51131,
-	   "state": "VA",
-	   "area_name": "Northampton County",
-	   "household_income": 36822
-	 },
-	 {
-	   "fips": 51133,
-	   "state": "VA",
-	   "area_name": "Northumberland County",
-	   "household_income": 51422
-	 },
-	 {
-	   "fips": 51135,
-	   "state": "VA",
-	   "area_name": "Nottoway County",
-	   "household_income": 37996
-	 },
-	 {
-	   "fips": 51137,
-	   "state": "VA",
-	   "area_name": "Orange County",
-	   "household_income": 59282
-	 },
-	 {
-	   "fips": 51139,
-	   "state": "VA",
-	   "area_name": "Page County",
-	   "household_income": 44851
-	 },
-	 {
-	   "fips": 51141,
-	   "state": "VA",
-	   "area_name": "Patrick County",
-	   "household_income": 34885
-	 },
-	 {
-	   "fips": 51143,
-	   "state": "VA",
-	   "area_name": "Pittsylvania County",
-	   "household_income": 44207
-	 },
-	 {
-	   "fips": 51145,
-	   "state": "VA",
-	   "area_name": "Powhatan County",
-	   "household_income": 75539
-	 },
-	 {
-	   "fips": 51147,
-	   "state": "VA",
-	   "area_name": "Prince Edward County",
-	   "household_income": 37543
-	 },
-	 {
-	   "fips": 51149,
-	   "state": "VA",
-	   "area_name": "Prince George County",
-	   "household_income": 61792
-	 },
-	 {
-	   "fips": 51153,
-	   "state": "VA",
-	   "area_name": "Prince William County",
-	   "household_income": 91886
-	 },
-	 {
-	   "fips": 51155,
-	   "state": "VA",
-	   "area_name": "Pulaski County",
-	   "household_income": 46186
-	 },
-	 {
-	   "fips": 51157,
-	   "state": "VA",
-	   "area_name": "Rappahannock County",
-	   "household_income": 62800
-	 },
-	 {
-	   "fips": 51159,
-	   "state": "VA",
-	   "area_name": "Richmond County",
-	   "household_income": 42204
-	 },
-	 {
-	   "fips": 51161,
-	   "state": "VA",
-	   "area_name": "Roanoke County",
-	   "household_income": 61935
-	 },
-	 {
-	   "fips": 51163,
-	   "state": "VA",
-	   "area_name": "Rockbridge County",
-	   "household_income": 48497
-	 },
-	 {
-	   "fips": 51165,
-	   "state": "VA",
-	   "area_name": "Rockingham County",
-	   "household_income": 55798
-	 },
-	 {
-	   "fips": 51167,
-	   "state": "VA",
-	   "area_name": "Russell County",
-	   "household_income": 37378
-	 },
-	 {
-	   "fips": 51169,
-	   "state": "VA",
-	   "area_name": "Scott County",
-	   "household_income": 36290
-	 },
-	 {
-	   "fips": 51171,
-	   "state": "VA",
-	   "area_name": "Shenandoah County",
-	   "household_income": 45430
-	 },
-	 {
-	   "fips": 51173,
-	   "state": "VA",
-	   "area_name": "Smyth County",
-	   "household_income": 37831
-	 },
-	 {
-	   "fips": 51175,
-	   "state": "VA",
-	   "area_name": "Southampton County",
-	   "household_income": 46521
-	 },
-	 {
-	   "fips": 51177,
-	   "state": "VA",
-	   "area_name": "Spotsylvania County",
-	   "household_income": 75714
-	 },
-	 {
-	   "fips": 51179,
-	   "state": "VA",
-	   "area_name": "Stafford County",
-	   "household_income": 92647
-	 },
-	 {
-	   "fips": 51181,
-	   "state": "VA",
-	   "area_name": "Surry County",
-	   "household_income": 48707
-	 },
-	 {
-	   "fips": 51183,
-	   "state": "VA",
-	   "area_name": "Sussex County",
-	   "household_income": 37748
-	 },
-	 {
-	   "fips": 51185,
-	   "state": "VA",
-	   "area_name": "Tazewell County",
-	   "household_income": 38292
-	 },
-	 {
-	   "fips": 51187,
-	   "state": "VA",
-	   "area_name": "Warren County",
-	   "household_income": 60714
-	 },
-	 {
-	   "fips": 51191,
-	   "state": "VA",
-	   "area_name": "Washington County",
-	   "household_income": 43353
-	 },
-	 {
-	   "fips": 51193,
-	   "state": "VA",
-	   "area_name": "Westmoreland County",
-	   "household_income": 48232
-	 },
-	 {
-	   "fips": 51195,
-	   "state": "VA",
-	   "area_name": "Wise County",
-	   "household_income": 38528
-	 },
-	 {
-	   "fips": 51197,
-	   "state": "VA",
-	   "area_name": "Wythe County",
-	   "household_income": 41132
-	 },
-	 {
-	   "fips": 51199,
-	   "state": "VA",
-	   "area_name": "York County",
-	   "household_income": 81169
-	 },
-	 {
-	   "fips": 51510,
-	   "state": "VA",
-	   "area_name": "Alexandria city",
-	   "household_income": 86419
-	 },
-	 {
-	   "fips": 51520,
-	   "state": "VA",
-	   "area_name": "Bristol city",
-	   "household_income": 34099
-	 },
-	 {
-	   "fips": 51530,
-	   "state": "VA",
-	   "area_name": "Buena Vista city",
-	   "household_income": 38331
-	 },
-	 {
-	   "fips": 51540,
-	   "state": "VA",
-	   "area_name": "Charlottesville city",
-	   "household_income": 45890
-	 },
-	 {
-	   "fips": 51550,
-	   "state": "VA",
-	   "area_name": "Chesapeake city",
-	   "household_income": 66625
-	 },
-	 {
-	   "fips": 51570,
-	   "state": "VA",
-	   "area_name": "Colonial Heights city",
-	   "household_income": 52355
-	 },
-	 {
-	   "fips": 51580,
-	   "state": "VA",
-	   "area_name": "Covington city",
-	   "household_income": 36503
-	 },
-	 {
-	   "fips": 51590,
-	   "state": "VA",
-	   "area_name": "Danville city",
-	   "household_income": 33646
-	 },
-	 {
-	   "fips": 51595,
-	   "state": "VA",
-	   "area_name": "Emporia city",
-	   "household_income": 33160
-	 },
-	 {
-	   "fips": 51600,
-	   "state": "VA",
-	   "area_name": "Fairfax city",
-	   "household_income": 94067
-	 },
-	 {
-	   "fips": 51610,
-	   "state": "VA",
-	   "area_name": "Falls Church city",
-	   "household_income": 125635
-	 },
-	 {
-	   "fips": 51620,
-	   "state": "VA",
-	   "area_name": "Franklin city",
-	   "household_income": 38583
-	 },
-	 {
-	   "fips": 51630,
-	   "state": "VA",
-	   "area_name": "Fredericksburg city",
-	   "household_income": 51195
-	 },
-	 {
-	   "fips": 51640,
-	   "state": "VA",
-	   "area_name": "Galax city",
-	   "household_income": 33182
-	 },
-	 {
-	   "fips": 51650,
-	   "state": "VA",
-	   "area_name": "Hampton city",
-	   "household_income": 47615
-	 },
-	 {
-	   "fips": 51660,
-	   "state": "VA",
-	   "area_name": "Harrisonburg city",
-	   "household_income": 38541
-	 },
-	 {
-	   "fips": 51670,
-	   "state": "VA",
-	   "area_name": "Hopewell city",
-	   "household_income": 40122
-	 },
-	 {
-	   "fips": 51678,
-	   "state": "VA",
-	   "area_name": "Lexington city",
-	   "household_income": 40829
-	 },
-	 {
-	   "fips": 51680,
-	   "state": "VA",
-	   "area_name": "Lynchburg city",
-	   "household_income": 40065
-	 },
-	 {
-	   "fips": 51683,
-	   "state": "VA",
-	   "area_name": "Manassas city",
-	   "household_income": 72510
-	 },
-	 {
-	   "fips": 51685,
-	   "state": "VA",
-	   "area_name": "Manassas Park city",
-	   "household_income": 73065
-	 },
-	 {
-	   "fips": 51690,
-	   "state": "VA",
-	   "area_name": "Martinsville city",
-	   "household_income": 29971
-	 },
-	 {
-	   "fips": 51700,
-	   "state": "VA",
-	   "area_name": "Newport News city",
-	   "household_income": 48440
-	 },
-	 {
-	   "fips": 51710,
-	   "state": "VA",
-	   "area_name": "Norfolk city",
-	   "household_income": 42567
-	 },
-	 {
-	   "fips": 51720,
-	   "state": "VA",
-	   "area_name": "Norton city",
-	   "household_income": 31620
-	 },
-	 {
-	   "fips": 51730,
-	   "state": "VA",
-	   "area_name": "Petersburg city",
-	   "household_income": 32749
-	 },
-	 {
-	   "fips": 51735,
-	   "state": "VA",
-	   "area_name": "Poquoson city",
-	   "household_income": 84213
-	 },
-	 {
-	   "fips": 51740,
-	   "state": "VA",
-	   "area_name": "Portsmouth city",
-	   "household_income": 43045
-	 },
-	 {
-	   "fips": 51750,
-	   "state": "VA",
-	   "area_name": "Radford city",
-	   "household_income": 34267
-	 },
-	 {
-	   "fips": 51760,
-	   "state": "VA",
-	   "area_name": "Richmond city",
-	   "household_income": 42074
-	 },
-	 {
-	   "fips": 51770,
-	   "state": "VA",
-	   "area_name": "Roanoke city",
-	   "household_income": 40735
-	 },
-	 {
-	   "fips": 51775,
-	   "state": "VA",
-	   "area_name": "Salem city",
-	   "household_income": 54195
-	 },
-	 {
-	   "fips": 51790,
-	   "state": "VA",
-	   "area_name": "Staunton city",
-	   "household_income": 42552
-	 },
-	 {
-	   "fips": 51800,
-	   "state": "VA",
-	   "area_name": "Suffolk city",
-	   "household_income": 60735
-	 },
-	 {
-	   "fips": 51810,
-	   "state": "VA",
-	   "area_name": "Virginia Beach city",
-	   "household_income": 67676
-	 },
-	 {
-	   "fips": 51820,
-	   "state": "VA",
-	   "area_name": "Waynesboro city",
-	   "household_income": 44843
-	 },
-	 {
-	   "fips": 51830,
-	   "state": "VA",
-	   "area_name": "Williamsburg city",
-	   "household_income": 46954
-	 },
-	 {
-	   "fips": 51840,
-	   "state": "VA",
-	   "area_name": "Winchester city",
-	   "household_income": 44537
-	 },
-	 {
-	   "fips": 53001,
-	   "state": "WA",
-	   "area_name": "Adams County",
-	   "household_income": 47423
-	 },
-	 {
-	   "fips": 53003,
-	   "state": "WA",
-	   "area_name": "Asotin County",
-	   "household_income": 44055
-	 },
-	 {
-	   "fips": 53005,
-	   "state": "WA",
-	   "area_name": "Benton County",
-	   "household_income": 58750
-	 },
-	 {
-	   "fips": 53007,
-	   "state": "WA",
-	   "area_name": "Chelan County",
-	   "household_income": 49174
-	 },
-	 {
-	   "fips": 53009,
-	   "state": "WA",
-	   "area_name": "Clallam County",
-	   "household_income": 47185
-	 },
-	 {
-	   "fips": 53011,
-	   "state": "WA",
-	   "area_name": "Clark County",
-	   "household_income": 61747
-	 },
-	 {
-	   "fips": 53013,
-	   "state": "WA",
-	   "area_name": "Columbia County",
-	   "household_income": 45465
-	 },
-	 {
-	   "fips": 53015,
-	   "state": "WA",
-	   "area_name": "Cowlitz County",
-	   "household_income": 44235
-	 },
-	 {
-	   "fips": 53017,
-	   "state": "WA",
-	   "area_name": "Douglas County",
-	   "household_income": 51151
-	 },
-	 {
-	   "fips": 53019,
-	   "state": "WA",
-	   "area_name": "Ferry County",
-	   "household_income": 39992
-	 },
-	 {
-	   "fips": 53021,
-	   "state": "WA",
-	   "area_name": "Franklin County",
-	   "household_income": 55006
-	 },
-	 {
-	   "fips": 53023,
-	   "state": "WA",
-	   "area_name": "Garfield County",
-	   "household_income": 46404
-	 },
-	 {
-	   "fips": 53025,
-	   "state": "WA",
-	   "area_name": "Grant County",
-	   "household_income": 50388
-	 },
-	 {
-	   "fips": 53027,
-	   "state": "WA",
-	   "area_name": "Grays Harbor County",
-	   "household_income": 43205
-	 },
-	 {
-	   "fips": 53029,
-	   "state": "WA",
-	   "area_name": "Island County",
-	   "household_income": 59358
-	 },
-	 {
-	   "fips": 53031,
-	   "state": "WA",
-	   "area_name": "Jefferson County",
-	   "household_income": 50964
-	 },
-	 {
-	   "fips": 53033,
-	   "state": "WA",
-	   "area_name": "King County",
-	   "household_income": 75738
-	 },
-	 {
-	   "fips": 53035,
-	   "state": "WA",
-	   "area_name": "Kitsap County",
-	   "household_income": 61898
-	 },
-	 {
-	   "fips": 53037,
-	   "state": "WA",
-	   "area_name": "Kittitas County",
-	   "household_income": 48127
-	 },
-	 {
-	   "fips": 53039,
-	   "state": "WA",
-	   "area_name": "Klickitat County",
-	   "household_income": 49348
-	 },
-	 {
-	   "fips": 53041,
-	   "state": "WA",
-	   "area_name": "Lewis County",
-	   "household_income": 44243
-	 },
-	 {
-	   "fips": 53043,
-	   "state": "WA",
-	   "area_name": "Lincoln County",
-	   "household_income": 49955
-	 },
-	 {
-	   "fips": 53045,
-	   "state": "WA",
-	   "area_name": "Mason County",
-	   "household_income": 52313
-	 },
-	 {
-	   "fips": 53047,
-	   "state": "WA",
-	   "area_name": "Okanogan County",
-	   "household_income": 37782
-	 },
-	 {
-	   "fips": 53049,
-	   "state": "WA",
-	   "area_name": "Pacific County",
-	   "household_income": 40189
-	 },
-	 {
-	   "fips": 53051,
-	   "state": "WA",
-	   "area_name": "Pend Oreille County",
-	   "household_income": 42579
-	 },
-	 {
-	   "fips": 53053,
-	   "state": "WA",
-	   "area_name": "Pierce County",
-	   "household_income": 60397
-	 },
-	 {
-	   "fips": 53055,
-	   "state": "WA",
-	   "area_name": "San Juan County",
-	   "household_income": 54721
-	 },
-	 {
-	   "fips": 53057,
-	   "state": "WA",
-	   "area_name": "Skagit County",
-	   "household_income": 51395
-	 },
-	 {
-	   "fips": 53059,
-	   "state": "WA",
-	   "area_name": "Skamania County",
-	   "household_income": 52673
-	 },
-	 {
-	   "fips": 53061,
-	   "state": "WA",
-	   "area_name": "Snohomish County",
-	   "household_income": 71890
-	 },
-	 {
-	   "fips": 53063,
-	   "state": "WA",
-	   "area_name": "Spokane County",
-	   "household_income": 50083
-	 },
-	 {
-	   "fips": 53065,
-	   "state": "WA",
-	   "area_name": "Stevens County",
-	   "household_income": 43823
-	 },
-	 {
-	   "fips": 53067,
-	   "state": "WA",
-	   "area_name": "Thurston County",
-	   "household_income": 61653
-	 },
-	 {
-	   "fips": 53069,
-	   "state": "WA",
-	   "area_name": "Wahkiakum County",
-	   "household_income": 51022
-	 },
-	 {
-	   "fips": 53071,
-	   "state": "WA",
-	   "area_name": "Walla Walla County",
-	   "household_income": 49819
-	 },
-	 {
-	   "fips": 53073,
-	   "state": "WA",
-	   "area_name": "Whatcom County",
-	   "household_income": 53733
-	 },
-	 {
-	   "fips": 53075,
-	   "state": "WA",
-	   "area_name": "Whitman County",
-	   "household_income": 41837
-	 },
-	 {
-	   "fips": 53077,
-	   "state": "WA",
-	   "area_name": "Yakima County",
-	   "household_income": 44342
-	 },
-	 {
-	   "fips": 54001,
-	   "state": "WV",
-	   "area_name": "Barbour County",
-	   "household_income": 35615
-	 },
-	 {
-	   "fips": 54003,
-	   "state": "WV",
-	   "area_name": "Berkeley County",
-	   "household_income": 56737
-	 },
-	 {
-	   "fips": 54005,
-	   "state": "WV",
-	   "area_name": "Boone County",
-	   "household_income": 37625
-	 },
-	 {
-	   "fips": 54007,
-	   "state": "WV",
-	   "area_name": "Braxton County",
-	   "household_income": 33817
-	 },
-	 {
-	   "fips": 54009,
-	   "state": "WV",
-	   "area_name": "Brooke County",
-	   "household_income": 43572
-	 },
-	 {
-	   "fips": 54011,
-	   "state": "WV",
-	   "area_name": "Cabell County",
-	   "household_income": 34887
-	 },
-	 {
-	   "fips": 54013,
-	   "state": "WV",
-	   "area_name": "Calhoun County",
-	   "household_income": 32162
-	 },
-	 {
-	   "fips": 54015,
-	   "state": "WV",
-	   "area_name": "Clay County",
-	   "household_income": 32961
-	 },
-	 {
-	   "fips": 54017,
-	   "state": "WV",
-	   "area_name": "Doddridge County",
-	   "household_income": 41838
-	 },
-	 {
-	   "fips": 54019,
-	   "state": "WV",
-	   "area_name": "Fayette County",
-	   "household_income": 36739
-	 },
-	 {
-	   "fips": 54021,
-	   "state": "WV",
-	   "area_name": "Gilmer County",
-	   "household_income": 32705
-	 },
-	 {
-	   "fips": 54023,
-	   "state": "WV",
-	   "area_name": "Grant County",
-	   "household_income": 41039
-	 },
-	 {
-	   "fips": 54025,
-	   "state": "WV",
-	   "area_name": "Greenbrier County",
-	   "household_income": 36996
-	 },
-	 {
-	   "fips": 54027,
-	   "state": "WV",
-	   "area_name": "Hampshire County",
-	   "household_income": 35980
-	 },
-	 {
-	   "fips": 54029,
-	   "state": "WV",
-	   "area_name": "Hancock County",
-	   "household_income": 48178
-	 },
-	 {
-	   "fips": 54031,
-	   "state": "WV",
-	   "area_name": "Hardy County",
-	   "household_income": 41010
-	 },
-	 {
-	   "fips": 54033,
-	   "state": "WV",
-	   "area_name": "Harrison County",
-	   "household_income": 42121
-	 },
-	 {
-	   "fips": 54035,
-	   "state": "WV",
-	   "area_name": "Jackson County",
-	   "household_income": 41121
-	 },
-	 {
-	   "fips": 54037,
-	   "state": "WV",
-	   "area_name": "Jefferson County",
-	   "household_income": 66950
-	 },
-	 {
-	   "fips": 54039,
-	   "state": "WV",
-	   "area_name": "Kanawha County",
-	   "household_income": 43936
-	 },
-	 {
-	   "fips": 54041,
-	   "state": "WV",
-	   "area_name": "Lewis County",
-	   "household_income": 40568
-	 },
-	 {
-	   "fips": 54043,
-	   "state": "WV",
-	   "area_name": "Lincoln County",
-	   "household_income": 34295
-	 },
-	 {
-	   "fips": 54045,
-	   "state": "WV",
-	   "area_name": "Logan County",
-	   "household_income": 36437
-	 },
-	 {
-	   "fips": 54047,
-	   "state": "WV",
-	   "area_name": "McDowell County",
-	   "household_income": 24707
-	 },
-	 {
-	   "fips": 54049,
-	   "state": "WV",
-	   "area_name": "Marion County",
-	   "household_income": 43729
-	 },
-	 {
-	   "fips": 54051,
-	   "state": "WV",
-	   "area_name": "Marshall County",
-	   "household_income": 43356
-	 },
-	 {
-	   "fips": 54053,
-	   "state": "WV",
-	   "area_name": "Mason County",
-	   "household_income": 35799
-	 },
-	 {
-	   "fips": 54055,
-	   "state": "WV",
-	   "area_name": "Mercer County",
-	   "household_income": 35046
-	 },
-	 {
-	   "fips": 54057,
-	   "state": "WV",
-	   "area_name": "Mineral County",
-	   "household_income": 40012
-	 },
-	 {
-	   "fips": 54059,
-	   "state": "WV",
-	   "area_name": "Mingo County",
-	   "household_income": 29839
-	 },
-	 {
-	   "fips": 54061,
-	   "state": "WV",
-	   "area_name": "Monongalia County",
-	   "household_income": 43835
-	 },
-	 {
-	   "fips": 54063,
-	   "state": "WV",
-	   "area_name": "Monroe County",
-	   "household_income": 36351
-	 },
-	 {
-	   "fips": 54065,
-	   "state": "WV",
-	   "area_name": "Morgan County",
-	   "household_income": 44446
-	 },
-	 {
-	   "fips": 54067,
-	   "state": "WV",
-	   "area_name": "Nicholas County",
-	   "household_income": 36375
-	 },
-	 {
-	   "fips": 54069,
-	   "state": "WV",
-	   "area_name": "Ohio County",
-	   "household_income": 40195
-	 },
-	 {
-	   "fips": 54071,
-	   "state": "WV",
-	   "area_name": "Pendleton County",
-	   "household_income": 38204
-	 },
-	 {
-	   "fips": 54073,
-	   "state": "WV",
-	   "area_name": "Pleasants County",
-	   "household_income": 44801
-	 },
-	 {
-	   "fips": 54075,
-	   "state": "WV",
-	   "area_name": "Pocahontas County",
-	   "household_income": 34341
-	 },
-	 {
-	   "fips": 54077,
-	   "state": "WV",
-	   "area_name": "Preston County",
-	   "household_income": 41420
-	 },
-	 {
-	   "fips": 54079,
-	   "state": "WV",
-	   "area_name": "Putnam County",
-	   "household_income": 59472
-	 },
-	 {
-	   "fips": 54081,
-	   "state": "WV",
-	   "area_name": "Raleigh County",
-	   "household_income": 40270
-	 },
-	 {
-	   "fips": 54083,
-	   "state": "WV",
-	   "area_name": "Randolph County",
-	   "household_income": 37468
-	 },
-	 {
-	   "fips": 54085,
-	   "state": "WV",
-	   "area_name": "Ritchie County",
-	   "household_income": 46383
-	 },
-	 {
-	   "fips": 54087,
-	   "state": "WV",
-	   "area_name": "Roane County",
-	   "household_income": 33041
-	 },
-	 {
-	   "fips": 54089,
-	   "state": "WV",
-	   "area_name": "Summers County",
-	   "household_income": 32456
-	 },
-	 {
-	   "fips": 54091,
-	   "state": "WV",
-	   "area_name": "Taylor County",
-	   "household_income": 40305
-	 },
-	 {
-	   "fips": 54093,
-	   "state": "WV",
-	   "area_name": "Tucker County",
-	   "household_income": 36466
-	 },
-	 {
-	   "fips": 54095,
-	   "state": "WV",
-	   "area_name": "Tyler County",
-	   "household_income": 41019
-	 },
-	 {
-	   "fips": 54097,
-	   "state": "WV",
-	   "area_name": "Upshur County",
-	   "household_income": 38387
-	 },
-	 {
-	   "fips": 54099,
-	   "state": "WV",
-	   "area_name": "Wayne County",
-	   "household_income": 37242
-	 },
-	 {
-	   "fips": 54101,
-	   "state": "WV",
-	   "area_name": "Webster County",
-	   "household_income": 29331
-	 },
-	 {
-	   "fips": 54103,
-	   "state": "WV",
-	   "area_name": "Wetzel County",
-	   "household_income": 40013
-	 },
-	 {
-	   "fips": 54105,
-	   "state": "WV",
-	   "area_name": "Wirt County",
-	   "household_income": 38600
-	 },
-	 {
-	   "fips": 54107,
-	   "state": "WV",
-	   "area_name": "Wood County",
-	   "household_income": 41932
-	 },
-	 {
-	   "fips": 54109,
-	   "state": "WV",
-	   "area_name": "Wyoming County",
-	   "household_income": 34419
-	 },
-	 {
-	   "fips": 55001,
-	   "state": "WI",
-	   "area_name": "Adams County",
-	   "household_income": 42063
-	 },
-	 {
-	   "fips": 55003,
-	   "state": "WI",
-	   "area_name": "Ashland County",
-	   "household_income": 41294
-	 },
-	 {
-	   "fips": 55005,
-	   "state": "WI",
-	   "area_name": "Barron County",
-	   "household_income": 46375
-	 },
-	 {
-	   "fips": 55007,
-	   "state": "WI",
-	   "area_name": "Bayfield County",
-	   "household_income": 44395
-	 },
-	 {
-	   "fips": 55009,
-	   "state": "WI",
-	   "area_name": "Brown County",
-	   "household_income": 54141
-	 },
-	 {
-	   "fips": 55011,
-	   "state": "WI",
-	   "area_name": "Buffalo County",
-	   "household_income": 50998
-	 },
-	 {
-	   "fips": 55013,
-	   "state": "WI",
-	   "area_name": "Burnett County",
-	   "household_income": 41810
-	 },
-	 {
-	   "fips": 55015,
-	   "state": "WI",
-	   "area_name": "Calumet County",
-	   "household_income": 68430
-	 },
-	 {
-	   "fips": 55017,
-	   "state": "WI",
-	   "area_name": "Chippewa County",
-	   "household_income": 52485
-	 },
-	 {
-	   "fips": 55019,
-	   "state": "WI",
-	   "area_name": "Clark County",
-	   "household_income": 45316
-	 },
-	 {
-	   "fips": 55021,
-	   "state": "WI",
-	   "area_name": "Columbia County",
-	   "household_income": 59020
-	 },
-	 {
-	   "fips": 55023,
-	   "state": "WI",
-	   "area_name": "Crawford County",
-	   "household_income": 43562
-	 },
-	 {
-	   "fips": 55025,
-	   "state": "WI",
-	   "area_name": "Dane County",
-	   "household_income": 61937
-	 },
-	 {
-	   "fips": 55027,
-	   "state": "WI",
-	   "area_name": "Dodge County",
-	   "household_income": 54359
-	 },
-	 {
-	   "fips": 55029,
-	   "state": "WI",
-	   "area_name": "Door County",
-	   "household_income": 49717
-	 },
-	 {
-	   "fips": 55031,
-	   "state": "WI",
-	   "area_name": "Douglas County",
-	   "household_income": 46475
-	 },
-	 {
-	   "fips": 55033,
-	   "state": "WI",
-	   "area_name": "Dunn County",
-	   "household_income": 52224
-	 },
-	 {
-	   "fips": 55035,
-	   "state": "WI",
-	   "area_name": "Eau Claire County",
-	   "household_income": 48102
-	 },
-	 {
-	   "fips": 55037,
-	   "state": "WI",
-	   "area_name": "Florence County",
-	   "household_income": 44562
-	 },
-	 {
-	   "fips": 55039,
-	   "state": "WI",
-	   "area_name": "Fond du Lac County",
-	   "household_income": 52149
-	 },
-	 {
-	   "fips": 55041,
-	   "state": "WI",
-	   "area_name": "Forest County",
-	   "household_income": 41418
-	 },
-	 {
-	   "fips": 55043,
-	   "state": "WI",
-	   "area_name": "Grant County",
-	   "household_income": 46972
-	 },
-	 {
-	   "fips": 55045,
-	   "state": "WI",
-	   "area_name": "Green County",
-	   "household_income": 53328
-	 },
-	 {
-	   "fips": 55047,
-	   "state": "WI",
-	   "area_name": "Green Lake County",
-	   "household_income": 51175
-	 },
-	 {
-	   "fips": 55049,
-	   "state": "WI",
-	   "area_name": "Iowa County",
-	   "household_income": 58419
-	 },
-	 {
-	   "fips": 55051,
-	   "state": "WI",
-	   "area_name": "Iron County",
-	   "household_income": 39408
-	 },
-	 {
-	   "fips": 55053,
-	   "state": "WI",
-	   "area_name": "Jackson County",
-	   "household_income": 47985
-	 },
-	 {
-	   "fips": 55055,
-	   "state": "WI",
-	   "area_name": "Jefferson County",
-	   "household_income": 56365
-	 },
-	 {
-	   "fips": 55057,
-	   "state": "WI",
-	   "area_name": "Juneau County",
-	   "household_income": 45158
-	 },
-	 {
-	   "fips": 55059,
-	   "state": "WI",
-	   "area_name": "Kenosha County",
-	   "household_income": 53945
-	 },
-	 {
-	   "fips": 55061,
-	   "state": "WI",
-	   "area_name": "Kewaunee County",
-	   "household_income": 56160
-	 },
-	 {
-	   "fips": 55063,
-	   "state": "WI",
-	   "area_name": "La Crosse County",
-	   "household_income": 49790
-	 },
-	 {
-	   "fips": 55065,
-	   "state": "WI",
-	   "area_name": "Lafayette County",
-	   "household_income": 52260
-	 },
-	 {
-	   "fips": 55067,
-	   "state": "WI",
-	   "area_name": "Langlade County",
-	   "household_income": 40968
-	 },
-	 {
-	   "fips": 55069,
-	   "state": "WI",
-	   "area_name": "Lincoln County",
-	   "household_income": 48881
-	 },
-	 {
-	   "fips": 55071,
-	   "state": "WI",
-	   "area_name": "Manitowoc County",
-	   "household_income": 48430
-	 },
-	 {
-	   "fips": 55073,
-	   "state": "WI",
-	   "area_name": "Marathon County",
-	   "household_income": 54400
-	 },
-	 {
-	   "fips": 55075,
-	   "state": "WI",
-	   "area_name": "Marinette County",
-	   "household_income": 43701
-	 },
-	 {
-	   "fips": 55077,
-	   "state": "WI",
-	   "area_name": "Marquette County",
-	   "household_income": 43661
-	 },
-	 {
-	   "fips": 55078,
-	   "state": "WI",
-	   "area_name": "Menominee County",
-	   "household_income": 36774
-	 },
-	 {
-	   "fips": 55079,
-	   "state": "WI",
-	   "area_name": "Milwaukee County",
-	   "household_income": 42946
-	 },
-	 {
-	   "fips": 55081,
-	   "state": "WI",
-	   "area_name": "Monroe County",
-	   "household_income": 52978
-	 },
-	 {
-	   "fips": 55083,
-	   "state": "WI",
-	   "area_name": "Oconto County",
-	   "household_income": 52776
-	 },
-	 {
-	   "fips": 55085,
-	   "state": "WI",
-	   "area_name": "Oneida County",
-	   "household_income": 49040
-	 },
-	 {
-	   "fips": 55087,
-	   "state": "WI",
-	   "area_name": "Outagamie County",
-	   "household_income": 59377
-	 },
-	 {
-	   "fips": 55089,
-	   "state": "WI",
-	   "area_name": "Ozaukee County",
-	   "household_income": 77364
-	 },
-	 {
-	   "fips": 55091,
-	   "state": "WI",
-	   "area_name": "Pepin County",
-	   "household_income": 53828
-	 },
-	 {
-	   "fips": 55093,
-	   "state": "WI",
-	   "area_name": "Pierce County",
-	   "household_income": 68471
-	 },
-	 {
-	   "fips": 55095,
-	   "state": "WI",
-	   "area_name": "Polk County",
-	   "household_income": 52411
-	 },
-	 {
-	   "fips": 55097,
-	   "state": "WI",
-	   "area_name": "Portage County",
-	   "household_income": 52075
-	 },
-	 {
-	   "fips": 55099,
-	   "state": "WI",
-	   "area_name": "Price County",
-	   "household_income": 42659
-	 },
-	 {
-	   "fips": 55101,
-	   "state": "WI",
-	   "area_name": "Racine County",
-	   "household_income": 54782
-	 },
-	 {
-	   "fips": 55103,
-	   "state": "WI",
-	   "area_name": "Richland County",
-	   "household_income": 44026
-	 },
-	 {
-	   "fips": 55105,
-	   "state": "WI",
-	   "area_name": "Rock County",
-	   "household_income": 51237
-	 },
-	 {
-	   "fips": 55107,
-	   "state": "WI",
-	   "area_name": "Rusk County",
-	   "household_income": 39999
-	 },
-	 {
-	   "fips": 55109,
-	   "state": "WI",
-	   "area_name": "St. Croix County",
-	   "household_income": 75920
-	 },
-	 {
-	   "fips": 55111,
-	   "state": "WI",
-	   "area_name": "Sauk County",
-	   "household_income": 50243
-	 },
-	 {
-	   "fips": 55113,
-	   "state": "WI",
-	   "area_name": "Sawyer County",
-	   "household_income": 40701
-	 },
-	 {
-	   "fips": 55115,
-	   "state": "WI",
-	   "area_name": "Shawano County",
-	   "household_income": 47841
-	 },
-	 {
-	   "fips": 55117,
-	   "state": "WI",
-	   "area_name": "Sheboygan County",
-	   "household_income": 55335
-	 },
-	 {
-	   "fips": 55119,
-	   "state": "WI",
-	   "area_name": "Taylor County",
-	   "household_income": 48683
-	 },
-	 {
-	   "fips": 55121,
-	   "state": "WI",
-	   "area_name": "Trempealeau County",
-	   "household_income": 50266
-	 },
-	 {
-	   "fips": 55123,
-	   "state": "WI",
-	   "area_name": "Vernon County",
-	   "household_income": 46943
-	 },
-	 {
-	   "fips": 55125,
-	   "state": "WI",
-	   "area_name": "Vilas County",
-	   "household_income": 41211
-	 },
-	 {
-	   "fips": 55127,
-	   "state": "WI",
-	   "area_name": "Walworth County",
-	   "household_income": 52852
-	 },
-	 {
-	   "fips": 55129,
-	   "state": "WI",
-	   "area_name": "Washburn County",
-	   "household_income": 42079
-	 },
-	 {
-	   "fips": 55131,
-	   "state": "WI",
-	   "area_name": "Washington County",
-	   "household_income": 69346
-	 },
-	 {
-	   "fips": 55133,
-	   "state": "WI",
-	   "area_name": "Waukesha County",
-	   "household_income": 76584
-	 },
-	 {
-	   "fips": 55135,
-	   "state": "WI",
-	   "area_name": "Waupaca County",
-	   "household_income": 52850
-	 },
-	 {
-	   "fips": 55137,
-	   "state": "WI",
-	   "area_name": "Waushara County",
-	   "household_income": 46835
-	 },
-	 {
-	   "fips": 55139,
-	   "state": "WI",
-	   "area_name": "Winnebago County",
-	   "household_income": 52711
-	 },
-	 {
-	   "fips": 55141,
-	   "state": "WI",
-	   "area_name": "Wood County",
-	   "household_income": 51003
-	 },
-	 {
-	   "fips": 56001,
-	   "state": "WY",
-	   "area_name": "Albany County",
-	   "household_income": 42838
-	 },
-	 {
-	   "fips": 56003,
-	   "state": "WY",
-	   "area_name": "Big Horn County",
-	   "household_income": 50437
-	 },
-	 {
-	   "fips": 56005,
-	   "state": "WY",
-	   "area_name": "Campbell County",
-	   "household_income": 79358
-	 },
-	 {
-	   "fips": 56007,
-	   "state": "WY",
-	   "area_name": "Carbon County",
-	   "household_income": 58225
-	 },
-	 {
-	   "fips": 56009,
-	   "state": "WY",
-	   "area_name": "Converse County",
-	   "household_income": 63166
-	 },
-	 {
-	   "fips": 56011,
-	   "state": "WY",
-	   "area_name": "Crook County",
-	   "household_income": 59701
-	 },
-	 {
-	   "fips": 56013,
-	   "state": "WY",
-	   "area_name": "Fremont County",
-	   "household_income": 48624
-	 },
-	 {
-	   "fips": 56015,
-	   "state": "WY",
-	   "area_name": "Goshen County",
-	   "household_income": 45721
-	 },
-	 {
-	   "fips": 56017,
-	   "state": "WY",
-	   "area_name": "Hot Springs County",
-	   "household_income": 44427
-	 },
-	 {
-	   "fips": 56019,
-	   "state": "WY",
-	   "area_name": "Johnson County",
-	   "household_income": 51434
-	 },
-	 {
-	   "fips": 56021,
-	   "state": "WY",
-	   "area_name": "Laramie County",
-	   "household_income": 57192
-	 },
-	 {
-	   "fips": 56023,
-	   "state": "WY",
-	   "area_name": "Lincoln County",
-	   "household_income": 63575
-	 },
-	 {
-	   "fips": 56025,
-	   "state": "WY",
-	   "area_name": "Natrona County",
-	   "household_income": 57427
-	 },
-	 {
-	   "fips": 56027,
-	   "state": "WY",
-	   "area_name": "Niobrara County",
-	   "household_income": 45251
-	 },
-	 {
-	   "fips": 56029,
-	   "state": "WY",
-	   "area_name": "Park County",
-	   "household_income": 55354
-	 },
-	 {
-	   "fips": 56031,
-	   "state": "WY",
-	   "area_name": "Platte County",
-	   "household_income": 49713
-	 },
-	 {
-	   "fips": 56033,
-	   "state": "WY",
-	   "area_name": "Sheridan County",
-	   "household_income": 54716
-	 },
-	 {
-	   "fips": 56035,
-	   "state": "WY",
-	   "area_name": "Sublette County",
-	   "household_income": 77222
-	 },
-	 {
-	   "fips": 56037,
-	   "state": "WY",
-	   "area_name": "Sweetwater County",
-	   "household_income": 72604
-	 },
-	 {
-	   "fips": 56039,
-	   "state": "WY",
-	   "area_name": "Teton County",
-	   "household_income": 75348
-	 },
-	 {
-	   "fips": 56041,
-	   "state": "WY",
-	   "area_name": "Uinta County",
-	   "household_income": 56800
-	 },
-	 {
-	   "fips": 56043,
-	   "state": "WY",
-	   "area_name": "Washakie County",
-	   "household_income": 50802
-	 },
-	 {
-	   "fips": 56045,
-	   "state": "WY",
-	   "area_name": "Weston County",
-	   "household_income": 55520
-	 }
+		{
+			"fips": 1001,
+			"state": "AL",
+			"area_name": "Autauga County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 1003,
+			"state": "AL",
+			"area_name": "Baldwin County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 1005,
+			"state": "AL",
+			"area_name": "Barbour County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 1007,
+			"state": "AL",
+			"area_name": "Bibb County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 1009,
+			"state": "AL",
+			"area_name": "Blount County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 1011,
+			"state": "AL",
+			"area_name": "Bullock County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 1013,
+			"state": "AL",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 1015,
+			"state": "AL",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 1017,
+			"state": "AL",
+			"area_name": "Chambers County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 1019,
+			"state": "AL",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 1021,
+			"state": "AL",
+			"area_name": "Chilton County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 1023,
+			"state": "AL",
+			"area_name": "Choctaw County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 1025,
+			"state": "AL",
+			"area_name": "Clarke County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 1027,
+			"state": "AL",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 1029,
+			"state": "AL",
+			"area_name": "Cleburne County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 1031,
+			"state": "AL",
+			"area_name": "Coffee County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 1033,
+			"state": "AL",
+			"area_name": "Colbert County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 1035,
+			"state": "AL",
+			"area_name": "Conecuh County",
+			"bachelorsOrHigher": 8.3
+		},
+		{
+			"fips": 1037,
+			"state": "AL",
+			"area_name": "Coosa County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 1039,
+			"state": "AL",
+			"area_name": "Covington County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 1041,
+			"state": "AL",
+			"area_name": "Crenshaw County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 1043,
+			"state": "AL",
+			"area_name": "Cullman County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 1045,
+			"state": "AL",
+			"area_name": "Dale County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 1047,
+			"state": "AL",
+			"area_name": "Dallas County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 1049,
+			"state": "AL",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 1051,
+			"state": "AL",
+			"area_name": "Elmore County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 1053,
+			"state": "AL",
+			"area_name": "Escambia County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 1055,
+			"state": "AL",
+			"area_name": "Etowah County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 1057,
+			"state": "AL",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 1059,
+			"state": "AL",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 1061,
+			"state": "AL",
+			"area_name": "Geneva County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 1063,
+			"state": "AL",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 1065,
+			"state": "AL",
+			"area_name": "Hale County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 1067,
+			"state": "AL",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 1069,
+			"state": "AL",
+			"area_name": "Houston County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 1071,
+			"state": "AL",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 1073,
+			"state": "AL",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 30.3
+		},
+		{
+			"fips": 1075,
+			"state": "AL",
+			"area_name": "Lamar County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 1077,
+			"state": "AL",
+			"area_name": "Lauderdale County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 1079,
+			"state": "AL",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 1081,
+			"state": "AL",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 33.2
+		},
+		{
+			"fips": 1083,
+			"state": "AL",
+			"area_name": "Limestone County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 1085,
+			"state": "AL",
+			"area_name": "Lowndes County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 1087,
+			"state": "AL",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 1089,
+			"state": "AL",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 38.6
+		},
+		{
+			"fips": 1091,
+			"state": "AL",
+			"area_name": "Marengo County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 1093,
+			"state": "AL",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 1095,
+			"state": "AL",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 1097,
+			"state": "AL",
+			"area_name": "Mobile County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 1099,
+			"state": "AL",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 1101,
+			"state": "AL",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 31.3
+		},
+		{
+			"fips": 1103,
+			"state": "AL",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 1105,
+			"state": "AL",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 1107,
+			"state": "AL",
+			"area_name": "Pickens County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 1109,
+			"state": "AL",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 1111,
+			"state": "AL",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 1113,
+			"state": "AL",
+			"area_name": "Russell County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 1115,
+			"state": "AL",
+			"area_name": "St. Clair County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 1117,
+			"state": "AL",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 40.2
+		},
+		{
+			"fips": 1119,
+			"state": "AL",
+			"area_name": "Sumter County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 1121,
+			"state": "AL",
+			"area_name": "Talladega County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 1123,
+			"state": "AL",
+			"area_name": "Tallapoosa County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 1125,
+			"state": "AL",
+			"area_name": "Tuscaloosa County",
+			"bachelorsOrHigher": 27.7
+		},
+		{
+			"fips": 1127,
+			"state": "AL",
+			"area_name": "Walker County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 1129,
+			"state": "AL",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 1131,
+			"state": "AL",
+			"area_name": "Wilcox County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 1133,
+			"state": "AL",
+			"area_name": "Winston County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 2013,
+			"state": "AK",
+			"area_name": "Aleutians East Borough",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 2016,
+			"state": "AK",
+			"area_name": "Aleutians West Census Area",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 2020,
+			"state": "AK",
+			"area_name": "Anchorage Municipality",
+			"bachelorsOrHigher": 32.9
+		},
+		{
+			"fips": 2050,
+			"state": "AK",
+			"area_name": "Bethel Census Area",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 2060,
+			"state": "AK",
+			"area_name": "Bristol Bay Borough",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 2068,
+			"state": "AK",
+			"area_name": "Denali Borough",
+			"bachelorsOrHigher": 29.5
+		},
+		{
+			"fips": 2070,
+			"state": "AK",
+			"area_name": "Dillingham Census Area",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 2090,
+			"state": "AK",
+			"area_name": "Fairbanks North Star Borough",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 2100,
+			"state": "AK",
+			"area_name": "Haines Borough",
+			"bachelorsOrHigher": 31.3
+		},
+		{
+			"fips": 2105,
+			"state": "AK",
+			"area_name": "Hoonah-Angoon Census Area",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 2110,
+			"state": "AK",
+			"area_name": "Juneau City and Borough",
+			"bachelorsOrHigher": 37.8
+		},
+		{
+			"fips": 2122,
+			"state": "AK",
+			"area_name": "Kenai Peninsula Borough",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 2130,
+			"state": "AK",
+			"area_name": "Ketchikan Gateway Borough",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 2150,
+			"state": "AK",
+			"area_name": "Kodiak Island Borough",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 2164,
+			"state": "AK",
+			"area_name": "Lake and Peninsula Borough",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 2170,
+			"state": "AK",
+			"area_name": "Matanuska-Susitna Borough",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 2180,
+			"state": "AK",
+			"area_name": "Nome Census Area",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 2185,
+			"state": "AK",
+			"area_name": "North Slope Borough",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 2188,
+			"state": "AK",
+			"area_name": "Northwest Arctic Borough",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 2195,
+			"state": "AK",
+			"area_name": "Petersburg Census Area",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 2198,
+			"state": "AK",
+			"area_name": "Prince of Wales-Hyder Census Area",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 2220,
+			"state": "AK",
+			"area_name": "Sitka City and Borough",
+			"bachelorsOrHigher": 32.9
+		},
+		{
+			"fips": 2230,
+			"state": "AK",
+			"area_name": "Skagway Municipality",
+			"bachelorsOrHigher": 34.6
+		},
+		{
+			"fips": 2240,
+			"state": "AK",
+			"area_name": "Southeast Fairbanks Census Area",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 2261,
+			"state": "AK",
+			"area_name": "Valdez-Cordova Census Area",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 2158,
+			"state": "AK",
+			"area_name": "Kusilvak Census Area",
+			"bachelorsOrHigher": 4.5
+		},
+		{
+			"fips": 2275,
+			"state": "AK",
+			"area_name": "Wrangell City and Borough",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 2282,
+			"state": "AK",
+			"area_name": "Yakutat City and Borough",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 2290,
+			"state": "AK",
+			"area_name": "Yukon-Koyukuk Census Area",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 4001,
+			"state": "AZ",
+			"area_name": "Apache County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 4003,
+			"state": "AZ",
+			"area_name": "Cochise County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 4005,
+			"state": "AZ",
+			"area_name": "Coconino County",
+			"bachelorsOrHigher": 32.8
+		},
+		{
+			"fips": 4007,
+			"state": "AZ",
+			"area_name": "Gila County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 4009,
+			"state": "AZ",
+			"area_name": "Graham County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 4011,
+			"state": "AZ",
+			"area_name": "Greenlee County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 4012,
+			"state": "AZ",
+			"area_name": "La Paz County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 4013,
+			"state": "AZ",
+			"area_name": "Maricopa County",
+			"bachelorsOrHigher": 30
+		},
+		{
+			"fips": 4015,
+			"state": "AZ",
+			"area_name": "Mohave County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 4017,
+			"state": "AZ",
+			"area_name": "Navajo County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 4019,
+			"state": "AZ",
+			"area_name": "Pima County",
+			"bachelorsOrHigher": 30.1
+		},
+		{
+			"fips": 4021,
+			"state": "AZ",
+			"area_name": "Pinal County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 4023,
+			"state": "AZ",
+			"area_name": "Santa Cruz County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 4025,
+			"state": "AZ",
+			"area_name": "Yavapai County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 4027,
+			"state": "AZ",
+			"area_name": "Yuma County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 5001,
+			"state": "AR",
+			"area_name": "Arkansas County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 5003,
+			"state": "AR",
+			"area_name": "Ashley County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 5005,
+			"state": "AR",
+			"area_name": "Baxter County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 5007,
+			"state": "AR",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 29.6
+		},
+		{
+			"fips": 5009,
+			"state": "AR",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 5011,
+			"state": "AR",
+			"area_name": "Bradley County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 5013,
+			"state": "AR",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 5015,
+			"state": "AR",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 5017,
+			"state": "AR",
+			"area_name": "Chicot County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 5019,
+			"state": "AR",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 5021,
+			"state": "AR",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 5023,
+			"state": "AR",
+			"area_name": "Cleburne County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 5025,
+			"state": "AR",
+			"area_name": "Cleveland County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 5027,
+			"state": "AR",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 5029,
+			"state": "AR",
+			"area_name": "Conway County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 5031,
+			"state": "AR",
+			"area_name": "Craighead County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 5033,
+			"state": "AR",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 5035,
+			"state": "AR",
+			"area_name": "Crittenden County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 5037,
+			"state": "AR",
+			"area_name": "Cross County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 5039,
+			"state": "AR",
+			"area_name": "Dallas County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 5041,
+			"state": "AR",
+			"area_name": "Desha County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 5043,
+			"state": "AR",
+			"area_name": "Drew County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 5045,
+			"state": "AR",
+			"area_name": "Faulkner County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 5047,
+			"state": "AR",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 5049,
+			"state": "AR",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 5051,
+			"state": "AR",
+			"area_name": "Garland County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 5053,
+			"state": "AR",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 5055,
+			"state": "AR",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 5057,
+			"state": "AR",
+			"area_name": "Hempstead County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 5059,
+			"state": "AR",
+			"area_name": "Hot Spring County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 5061,
+			"state": "AR",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 5063,
+			"state": "AR",
+			"area_name": "Independence County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 5065,
+			"state": "AR",
+			"area_name": "Izard County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 5067,
+			"state": "AR",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 7.9
+		},
+		{
+			"fips": 5069,
+			"state": "AR",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 5071,
+			"state": "AR",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 5073,
+			"state": "AR",
+			"area_name": "Lafayette County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 5075,
+			"state": "AR",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 5077,
+			"state": "AR",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 6.4
+		},
+		{
+			"fips": 5079,
+			"state": "AR",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 5081,
+			"state": "AR",
+			"area_name": "Little River County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 5083,
+			"state": "AR",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 5085,
+			"state": "AR",
+			"area_name": "Lonoke County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 5087,
+			"state": "AR",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 5089,
+			"state": "AR",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 5091,
+			"state": "AR",
+			"area_name": "Miller County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 5093,
+			"state": "AR",
+			"area_name": "Mississippi County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 5095,
+			"state": "AR",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 5097,
+			"state": "AR",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 5099,
+			"state": "AR",
+			"area_name": "Nevada County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 5101,
+			"state": "AR",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 5103,
+			"state": "AR",
+			"area_name": "Ouachita County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 5105,
+			"state": "AR",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 5107,
+			"state": "AR",
+			"area_name": "Phillips County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 5109,
+			"state": "AR",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 5111,
+			"state": "AR",
+			"area_name": "Poinsett County",
+			"bachelorsOrHigher": 8
+		},
+		{
+			"fips": 5113,
+			"state": "AR",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 5115,
+			"state": "AR",
+			"area_name": "Pope County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 5117,
+			"state": "AR",
+			"area_name": "Prairie County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 5119,
+			"state": "AR",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 5121,
+			"state": "AR",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 5123,
+			"state": "AR",
+			"area_name": "St. Francis County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 5125,
+			"state": "AR",
+			"area_name": "Saline County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 5127,
+			"state": "AR",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 5129,
+			"state": "AR",
+			"area_name": "Searcy County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 5131,
+			"state": "AR",
+			"area_name": "Sebastian County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 5133,
+			"state": "AR",
+			"area_name": "Sevier County",
+			"bachelorsOrHigher": 8.3
+		},
+		{
+			"fips": 5135,
+			"state": "AR",
+			"area_name": "Sharp County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 5137,
+			"state": "AR",
+			"area_name": "Stone County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 5139,
+			"state": "AR",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 5141,
+			"state": "AR",
+			"area_name": "Van Buren County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 5143,
+			"state": "AR",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 5145,
+			"state": "AR",
+			"area_name": "White County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 5147,
+			"state": "AR",
+			"area_name": "Woodruff County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 5149,
+			"state": "AR",
+			"area_name": "Yell County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 6001,
+			"state": "CA",
+			"area_name": "Alameda County",
+			"bachelorsOrHigher": 42.1
+		},
+		{
+			"fips": 6003,
+			"state": "CA",
+			"area_name": "Alpine County",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 6005,
+			"state": "CA",
+			"area_name": "Amador County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 6007,
+			"state": "CA",
+			"area_name": "Butte County",
+			"bachelorsOrHigher": 25
+		},
+		{
+			"fips": 6009,
+			"state": "CA",
+			"area_name": "Calaveras County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 6011,
+			"state": "CA",
+			"area_name": "Colusa County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 6013,
+			"state": "CA",
+			"area_name": "Contra Costa County",
+			"bachelorsOrHigher": 39.4
+		},
+		{
+			"fips": 6015,
+			"state": "CA",
+			"area_name": "Del Norte County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 6017,
+			"state": "CA",
+			"area_name": "El Dorado County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 6019,
+			"state": "CA",
+			"area_name": "Fresno County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 6021,
+			"state": "CA",
+			"area_name": "Glenn County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 6023,
+			"state": "CA",
+			"area_name": "Humboldt County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 6025,
+			"state": "CA",
+			"area_name": "Imperial County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 6027,
+			"state": "CA",
+			"area_name": "Inyo County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 6029,
+			"state": "CA",
+			"area_name": "Kern County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 6031,
+			"state": "CA",
+			"area_name": "Kings County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 6033,
+			"state": "CA",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 6035,
+			"state": "CA",
+			"area_name": "Lassen County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 6037,
+			"state": "CA",
+			"area_name": "Los Angeles County",
+			"bachelorsOrHigher": 29.9
+		},
+		{
+			"fips": 6039,
+			"state": "CA",
+			"area_name": "Madera County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 6041,
+			"state": "CA",
+			"area_name": "Marin County",
+			"bachelorsOrHigher": 54.8
+		},
+		{
+			"fips": 6043,
+			"state": "CA",
+			"area_name": "Mariposa County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 6045,
+			"state": "CA",
+			"area_name": "Mendocino County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 6047,
+			"state": "CA",
+			"area_name": "Merced County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 6049,
+			"state": "CA",
+			"area_name": "Modoc County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 6051,
+			"state": "CA",
+			"area_name": "Mono County",
+			"bachelorsOrHigher": 33.3
+		},
+		{
+			"fips": 6053,
+			"state": "CA",
+			"area_name": "Monterey County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 6055,
+			"state": "CA",
+			"area_name": "Napa County",
+			"bachelorsOrHigher": 31.9
+		},
+		{
+			"fips": 6057,
+			"state": "CA",
+			"area_name": "Nevada County",
+			"bachelorsOrHigher": 32.8
+		},
+		{
+			"fips": 6059,
+			"state": "CA",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 37.3
+		},
+		{
+			"fips": 6061,
+			"state": "CA",
+			"area_name": "Placer County",
+			"bachelorsOrHigher": 35.7
+		},
+		{
+			"fips": 6063,
+			"state": "CA",
+			"area_name": "Plumas County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 6065,
+			"state": "CA",
+			"area_name": "Riverside County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 6067,
+			"state": "CA",
+			"area_name": "Sacramento County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 6069,
+			"state": "CA",
+			"area_name": "San Benito County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 6071,
+			"state": "CA",
+			"area_name": "San Bernardino County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 6073,
+			"state": "CA",
+			"area_name": "San Diego County",
+			"bachelorsOrHigher": 35.1
+		},
+		{
+			"fips": 6075,
+			"state": "CA",
+			"area_name": "San Francisco County",
+			"bachelorsOrHigher": 52.9
+		},
+		{
+			"fips": 6077,
+			"state": "CA",
+			"area_name": "San Joaquin County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 6079,
+			"state": "CA",
+			"area_name": "San Luis Obispo County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 6081,
+			"state": "CA",
+			"area_name": "San Mateo County",
+			"bachelorsOrHigher": 45
+		},
+		{
+			"fips": 6083,
+			"state": "CA",
+			"area_name": "Santa Barbara County",
+			"bachelorsOrHigher": 31.4
+		},
+		{
+			"fips": 6085,
+			"state": "CA",
+			"area_name": "Santa Clara County",
+			"bachelorsOrHigher": 47.3
+		},
+		{
+			"fips": 6087,
+			"state": "CA",
+			"area_name": "Santa Cruz County",
+			"bachelorsOrHigher": 37.5
+		},
+		{
+			"fips": 6089,
+			"state": "CA",
+			"area_name": "Shasta County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 6091,
+			"state": "CA",
+			"area_name": "Sierra County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 6093,
+			"state": "CA",
+			"area_name": "Siskiyou County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 6095,
+			"state": "CA",
+			"area_name": "Solano County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 6097,
+			"state": "CA",
+			"area_name": "Sonoma County",
+			"bachelorsOrHigher": 32.6
+		},
+		{
+			"fips": 6099,
+			"state": "CA",
+			"area_name": "Stanislaus County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 6101,
+			"state": "CA",
+			"area_name": "Sutter County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 6103,
+			"state": "CA",
+			"area_name": "Tehama County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 6105,
+			"state": "CA",
+			"area_name": "Trinity County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 6107,
+			"state": "CA",
+			"area_name": "Tulare County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 6109,
+			"state": "CA",
+			"area_name": "Tuolumne County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 6111,
+			"state": "CA",
+			"area_name": "Ventura County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 6113,
+			"state": "CA",
+			"area_name": "Yolo County",
+			"bachelorsOrHigher": 38.3
+		},
+		{
+			"fips": 6115,
+			"state": "CA",
+			"area_name": "Yuba County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 8001,
+			"state": "CO",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 8003,
+			"state": "CO",
+			"area_name": "Alamosa County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 8005,
+			"state": "CO",
+			"area_name": "Arapahoe County",
+			"bachelorsOrHigher": 39.4
+		},
+		{
+			"fips": 8007,
+			"state": "CO",
+			"area_name": "Archuleta County",
+			"bachelorsOrHigher": 35.3
+		},
+		{
+			"fips": 8009,
+			"state": "CO",
+			"area_name": "Baca County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 8011,
+			"state": "CO",
+			"area_name": "Bent County",
+			"bachelorsOrHigher": 7.5
+		},
+		{
+			"fips": 8013,
+			"state": "CO",
+			"area_name": "Boulder County",
+			"bachelorsOrHigher": 58.2
+		},
+		{
+			"fips": 8014,
+			"state": "CO",
+			"area_name": "Broomfield County",
+			"bachelorsOrHigher": 49.5
+		},
+		{
+			"fips": 8015,
+			"state": "CO",
+			"area_name": "Chaffee County",
+			"bachelorsOrHigher": 34.2
+		},
+		{
+			"fips": 8017,
+			"state": "CO",
+			"area_name": "Cheyenne County",
+			"bachelorsOrHigher": 21.8
+		},
+		{
+			"fips": 8019,
+			"state": "CO",
+			"area_name": "Clear Creek County",
+			"bachelorsOrHigher": 40.8
+		},
+		{
+			"fips": 8021,
+			"state": "CO",
+			"area_name": "Conejos County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 8023,
+			"state": "CO",
+			"area_name": "Costilla County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 8025,
+			"state": "CO",
+			"area_name": "Crowley County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 8027,
+			"state": "CO",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 34.8
+		},
+		{
+			"fips": 8029,
+			"state": "CO",
+			"area_name": "Delta County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 8031,
+			"state": "CO",
+			"area_name": "Denver County",
+			"bachelorsOrHigher": 43.7
+		},
+		{
+			"fips": 8033,
+			"state": "CO",
+			"area_name": "Dolores County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 8035,
+			"state": "CO",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 55.9
+		},
+		{
+			"fips": 8037,
+			"state": "CO",
+			"area_name": "Eagle County",
+			"bachelorsOrHigher": 47.3
+		},
+		{
+			"fips": 8039,
+			"state": "CO",
+			"area_name": "Elbert County",
+			"bachelorsOrHigher": 29.5
+		},
+		{
+			"fips": 8041,
+			"state": "CO",
+			"area_name": "El Paso County",
+			"bachelorsOrHigher": 35.2
+		},
+		{
+			"fips": 8043,
+			"state": "CO",
+			"area_name": "Fremont County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 8045,
+			"state": "CO",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 8047,
+			"state": "CO",
+			"area_name": "Gilpin County",
+			"bachelorsOrHigher": 29.5
+		},
+		{
+			"fips": 8049,
+			"state": "CO",
+			"area_name": "Grand County",
+			"bachelorsOrHigher": 36.3
+		},
+		{
+			"fips": 8051,
+			"state": "CO",
+			"area_name": "Gunnison County",
+			"bachelorsOrHigher": 54.4
+		},
+		{
+			"fips": 8053,
+			"state": "CO",
+			"area_name": "Hinsdale County",
+			"bachelorsOrHigher": 41.3
+		},
+		{
+			"fips": 8055,
+			"state": "CO",
+			"area_name": "Huerfano County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 8057,
+			"state": "CO",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 8059,
+			"state": "CO",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 41.1
+		},
+		{
+			"fips": 8061,
+			"state": "CO",
+			"area_name": "Kiowa County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 8063,
+			"state": "CO",
+			"area_name": "Kit Carson County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 8065,
+			"state": "CO",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 30.3
+		},
+		{
+			"fips": 8067,
+			"state": "CO",
+			"area_name": "La Plata County",
+			"bachelorsOrHigher": 43.4
+		},
+		{
+			"fips": 8069,
+			"state": "CO",
+			"area_name": "Larimer County",
+			"bachelorsOrHigher": 44.1
+		},
+		{
+			"fips": 8071,
+			"state": "CO",
+			"area_name": "Las Animas County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 8073,
+			"state": "CO",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 8075,
+			"state": "CO",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 8077,
+			"state": "CO",
+			"area_name": "Mesa County",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 8079,
+			"state": "CO",
+			"area_name": "Mineral County",
+			"bachelorsOrHigher": 39.4
+		},
+		{
+			"fips": 8081,
+			"state": "CO",
+			"area_name": "Moffat County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 8083,
+			"state": "CO",
+			"area_name": "Montezuma County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 8085,
+			"state": "CO",
+			"area_name": "Montrose County",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 8087,
+			"state": "CO",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 8089,
+			"state": "CO",
+			"area_name": "Otero County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 8091,
+			"state": "CO",
+			"area_name": "Ouray County",
+			"bachelorsOrHigher": 50
+		},
+		{
+			"fips": 8093,
+			"state": "CO",
+			"area_name": "Park County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 8095,
+			"state": "CO",
+			"area_name": "Phillips County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 8097,
+			"state": "CO",
+			"area_name": "Pitkin County",
+			"bachelorsOrHigher": 56.4
+		},
+		{
+			"fips": 8099,
+			"state": "CO",
+			"area_name": "Prowers County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 8101,
+			"state": "CO",
+			"area_name": "Pueblo County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 8103,
+			"state": "CO",
+			"area_name": "Rio Blanco County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 8105,
+			"state": "CO",
+			"area_name": "Rio Grande County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 8107,
+			"state": "CO",
+			"area_name": "Routt County",
+			"bachelorsOrHigher": 48.7
+		},
+		{
+			"fips": 8109,
+			"state": "CO",
+			"area_name": "Saguache County",
+			"bachelorsOrHigher": 25.7
+		},
+		{
+			"fips": 8111,
+			"state": "CO",
+			"area_name": "San Juan County",
+			"bachelorsOrHigher": 27.1
+		},
+		{
+			"fips": 8113,
+			"state": "CO",
+			"area_name": "San Miguel County",
+			"bachelorsOrHigher": 54.4
+		},
+		{
+			"fips": 8115,
+			"state": "CO",
+			"area_name": "Sedgwick County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 8117,
+			"state": "CO",
+			"area_name": "Summit County",
+			"bachelorsOrHigher": 48.1
+		},
+		{
+			"fips": 8119,
+			"state": "CO",
+			"area_name": "Teller County",
+			"bachelorsOrHigher": 30.9
+		},
+		{
+			"fips": 8121,
+			"state": "CO",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 8123,
+			"state": "CO",
+			"area_name": "Weld County",
+			"bachelorsOrHigher": 25.9
+		},
+		{
+			"fips": 8125,
+			"state": "CO",
+			"area_name": "Yuma County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 9001,
+			"state": "CT",
+			"area_name": "Fairfield County",
+			"bachelorsOrHigher": 45.4
+		},
+		{
+			"fips": 9003,
+			"state": "CT",
+			"area_name": "Hartford County",
+			"bachelorsOrHigher": 35.6
+		},
+		{
+			"fips": 9005,
+			"state": "CT",
+			"area_name": "Litchfield County",
+			"bachelorsOrHigher": 33.7
+		},
+		{
+			"fips": 9007,
+			"state": "CT",
+			"area_name": "Middlesex County",
+			"bachelorsOrHigher": 39.7
+		},
+		{
+			"fips": 9009,
+			"state": "CT",
+			"area_name": "New Haven County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 9011,
+			"state": "CT",
+			"area_name": "New London County",
+			"bachelorsOrHigher": 31.5
+		},
+		{
+			"fips": 9013,
+			"state": "CT",
+			"area_name": "Tolland County",
+			"bachelorsOrHigher": 36.8
+		},
+		{
+			"fips": 9015,
+			"state": "CT",
+			"area_name": "Windham County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 10001,
+			"state": "DE",
+			"area_name": "Kent County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 10003,
+			"state": "DE",
+			"area_name": "New Castle County",
+			"bachelorsOrHigher": 34.5
+		},
+		{
+			"fips": 10005,
+			"state": "DE",
+			"area_name": "Sussex County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 11001,
+			"state": "DC",
+			"area_name": "District of Columbia",
+			"bachelorsOrHigher": 53.4
+		},
+		{
+			"fips": 12001,
+			"state": "FL",
+			"area_name": "Alachua County",
+			"bachelorsOrHigher": 40.8
+		},
+		{
+			"fips": 12003,
+			"state": "FL",
+			"area_name": "Baker County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 12005,
+			"state": "FL",
+			"area_name": "Bay County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 12007,
+			"state": "FL",
+			"area_name": "Bradford County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 12009,
+			"state": "FL",
+			"area_name": "Brevard County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 12011,
+			"state": "FL",
+			"area_name": "Broward County",
+			"bachelorsOrHigher": 30.2
+		},
+		{
+			"fips": 12013,
+			"state": "FL",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 12015,
+			"state": "FL",
+			"area_name": "Charlotte County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 12017,
+			"state": "FL",
+			"area_name": "Citrus County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 12019,
+			"state": "FL",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 12021,
+			"state": "FL",
+			"area_name": "Collier County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 12023,
+			"state": "FL",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 12027,
+			"state": "FL",
+			"area_name": "DeSoto County",
+			"bachelorsOrHigher": 9.9
+		},
+		{
+			"fips": 12029,
+			"state": "FL",
+			"area_name": "Dixie County",
+			"bachelorsOrHigher": 7.5
+		},
+		{
+			"fips": 12031,
+			"state": "FL",
+			"area_name": "Duval County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 12033,
+			"state": "FL",
+			"area_name": "Escambia County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 12035,
+			"state": "FL",
+			"area_name": "Flagler County",
+			"bachelorsOrHigher": 23.4
+		},
+		{
+			"fips": 12037,
+			"state": "FL",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 12039,
+			"state": "FL",
+			"area_name": "Gadsden County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 12041,
+			"state": "FL",
+			"area_name": "Gilchrist County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 12043,
+			"state": "FL",
+			"area_name": "Glades County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 12045,
+			"state": "FL",
+			"area_name": "Gulf County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 12047,
+			"state": "FL",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 12049,
+			"state": "FL",
+			"area_name": "Hardee County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 12051,
+			"state": "FL",
+			"area_name": "Hendry County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 12053,
+			"state": "FL",
+			"area_name": "Hernando County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 12055,
+			"state": "FL",
+			"area_name": "Highlands County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 12057,
+			"state": "FL",
+			"area_name": "Hillsborough County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 12059,
+			"state": "FL",
+			"area_name": "Holmes County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 12061,
+			"state": "FL",
+			"area_name": "Indian River County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 12063,
+			"state": "FL",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 12065,
+			"state": "FL",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 12067,
+			"state": "FL",
+			"area_name": "Lafayette County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 12069,
+			"state": "FL",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 12071,
+			"state": "FL",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 25.3
+		},
+		{
+			"fips": 12073,
+			"state": "FL",
+			"area_name": "Leon County",
+			"bachelorsOrHigher": 44.3
+		},
+		{
+			"fips": 12075,
+			"state": "FL",
+			"area_name": "Levy County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 12077,
+			"state": "FL",
+			"area_name": "Liberty County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 12079,
+			"state": "FL",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 12081,
+			"state": "FL",
+			"area_name": "Manatee County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 12083,
+			"state": "FL",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 12085,
+			"state": "FL",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 31.2
+		},
+		{
+			"fips": 12086,
+			"state": "FL",
+			"area_name": "Miami-Dade County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 12087,
+			"state": "FL",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 29.7
+		},
+		{
+			"fips": 12089,
+			"state": "FL",
+			"area_name": "Nassau County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 12091,
+			"state": "FL",
+			"area_name": "Okaloosa County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 12093,
+			"state": "FL",
+			"area_name": "Okeechobee County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 12095,
+			"state": "FL",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 30.6
+		},
+		{
+			"fips": 12097,
+			"state": "FL",
+			"area_name": "Osceola County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 12099,
+			"state": "FL",
+			"area_name": "Palm Beach County",
+			"bachelorsOrHigher": 32.8
+		},
+		{
+			"fips": 12101,
+			"state": "FL",
+			"area_name": "Pasco County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 12103,
+			"state": "FL",
+			"area_name": "Pinellas County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 12105,
+			"state": "FL",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 12107,
+			"state": "FL",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 12109,
+			"state": "FL",
+			"area_name": "St. Johns County",
+			"bachelorsOrHigher": 41.4
+		},
+		{
+			"fips": 12111,
+			"state": "FL",
+			"area_name": "St. Lucie County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 12113,
+			"state": "FL",
+			"area_name": "Santa Rosa County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 12115,
+			"state": "FL",
+			"area_name": "Sarasota County",
+			"bachelorsOrHigher": 31.1
+		},
+		{
+			"fips": 12117,
+			"state": "FL",
+			"area_name": "Seminole County",
+			"bachelorsOrHigher": 35
+		},
+		{
+			"fips": 12119,
+			"state": "FL",
+			"area_name": "Sumter County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 12121,
+			"state": "FL",
+			"area_name": "Suwannee County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 12123,
+			"state": "FL",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 12125,
+			"state": "FL",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 12127,
+			"state": "FL",
+			"area_name": "Volusia County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 12129,
+			"state": "FL",
+			"area_name": "Wakulla County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 12131,
+			"state": "FL",
+			"area_name": "Walton County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 12133,
+			"state": "FL",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 13001,
+			"state": "GA",
+			"area_name": "Appling County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 13003,
+			"state": "GA",
+			"area_name": "Atkinson County",
+			"bachelorsOrHigher": 7.7
+		},
+		{
+			"fips": 13005,
+			"state": "GA",
+			"area_name": "Bacon County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 13007,
+			"state": "GA",
+			"area_name": "Baker County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 13009,
+			"state": "GA",
+			"area_name": "Baldwin County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 13011,
+			"state": "GA",
+			"area_name": "Banks County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 13013,
+			"state": "GA",
+			"area_name": "Barrow County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 13015,
+			"state": "GA",
+			"area_name": "Bartow County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 13017,
+			"state": "GA",
+			"area_name": "Ben Hill County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 13019,
+			"state": "GA",
+			"area_name": "Berrien County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 13021,
+			"state": "GA",
+			"area_name": "Bibb County",
+			"bachelorsOrHigher": 23.4
+		},
+		{
+			"fips": 13023,
+			"state": "GA",
+			"area_name": "Bleckley County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 13025,
+			"state": "GA",
+			"area_name": "Brantley County",
+			"bachelorsOrHigher": 6.9
+		},
+		{
+			"fips": 13027,
+			"state": "GA",
+			"area_name": "Brooks County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 13029,
+			"state": "GA",
+			"area_name": "Bryan County",
+			"bachelorsOrHigher": 32.4
+		},
+		{
+			"fips": 13031,
+			"state": "GA",
+			"area_name": "Bulloch County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 13033,
+			"state": "GA",
+			"area_name": "Burke County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 13035,
+			"state": "GA",
+			"area_name": "Butts County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 13037,
+			"state": "GA",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 13039,
+			"state": "GA",
+			"area_name": "Camden County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 13043,
+			"state": "GA",
+			"area_name": "Candler County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 13045,
+			"state": "GA",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 13047,
+			"state": "GA",
+			"area_name": "Catoosa County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 13049,
+			"state": "GA",
+			"area_name": "Charlton County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 13051,
+			"state": "GA",
+			"area_name": "Chatham County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 13053,
+			"state": "GA",
+			"area_name": "Chattahoochee County",
+			"bachelorsOrHigher": 31.5
+		},
+		{
+			"fips": 13055,
+			"state": "GA",
+			"area_name": "Chattooga County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 13057,
+			"state": "GA",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 13059,
+			"state": "GA",
+			"area_name": "Clarke County",
+			"bachelorsOrHigher": 39.3
+		},
+		{
+			"fips": 13061,
+			"state": "GA",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 6.9
+		},
+		{
+			"fips": 13063,
+			"state": "GA",
+			"area_name": "Clayton County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 13065,
+			"state": "GA",
+			"area_name": "Clinch County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 13067,
+			"state": "GA",
+			"area_name": "Cobb County",
+			"bachelorsOrHigher": 43.8
+		},
+		{
+			"fips": 13069,
+			"state": "GA",
+			"area_name": "Coffee County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 13071,
+			"state": "GA",
+			"area_name": "Colquitt County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 13073,
+			"state": "GA",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 34.2
+		},
+		{
+			"fips": 13075,
+			"state": "GA",
+			"area_name": "Cook County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 13077,
+			"state": "GA",
+			"area_name": "Coweta County",
+			"bachelorsOrHigher": 26.6
+		},
+		{
+			"fips": 13079,
+			"state": "GA",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 13081,
+			"state": "GA",
+			"area_name": "Crisp County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 13083,
+			"state": "GA",
+			"area_name": "Dade County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 13085,
+			"state": "GA",
+			"area_name": "Dawson County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 13087,
+			"state": "GA",
+			"area_name": "Decatur County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 13089,
+			"state": "GA",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 40.3
+		},
+		{
+			"fips": 13091,
+			"state": "GA",
+			"area_name": "Dodge County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 13093,
+			"state": "GA",
+			"area_name": "Dooly County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 13095,
+			"state": "GA",
+			"area_name": "Dougherty County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 13097,
+			"state": "GA",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 13099,
+			"state": "GA",
+			"area_name": "Early County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 13101,
+			"state": "GA",
+			"area_name": "Echols County",
+			"bachelorsOrHigher": 7.5
+		},
+		{
+			"fips": 13103,
+			"state": "GA",
+			"area_name": "Effingham County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 13105,
+			"state": "GA",
+			"area_name": "Elbert County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 13107,
+			"state": "GA",
+			"area_name": "Emanuel County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 13109,
+			"state": "GA",
+			"area_name": "Evans County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 13111,
+			"state": "GA",
+			"area_name": "Fannin County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 13113,
+			"state": "GA",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 43.3
+		},
+		{
+			"fips": 13115,
+			"state": "GA",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 13117,
+			"state": "GA",
+			"area_name": "Forsyth County",
+			"bachelorsOrHigher": 44.6
+		},
+		{
+			"fips": 13119,
+			"state": "GA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 13121,
+			"state": "GA",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 48.6
+		},
+		{
+			"fips": 13123,
+			"state": "GA",
+			"area_name": "Gilmer County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 13125,
+			"state": "GA",
+			"area_name": "Glascock County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 13127,
+			"state": "GA",
+			"area_name": "Glynn County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 13129,
+			"state": "GA",
+			"area_name": "Gordon County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 13131,
+			"state": "GA",
+			"area_name": "Grady County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 13133,
+			"state": "GA",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 13135,
+			"state": "GA",
+			"area_name": "Gwinnett County",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 13137,
+			"state": "GA",
+			"area_name": "Habersham County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 13139,
+			"state": "GA",
+			"area_name": "Hall County",
+			"bachelorsOrHigher": 22.8
+		},
+		{
+			"fips": 13141,
+			"state": "GA",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 13143,
+			"state": "GA",
+			"area_name": "Haralson County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 13145,
+			"state": "GA",
+			"area_name": "Harris County",
+			"bachelorsOrHigher": 27.8
+		},
+		{
+			"fips": 13147,
+			"state": "GA",
+			"area_name": "Hart County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 13149,
+			"state": "GA",
+			"area_name": "Heard County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 13151,
+			"state": "GA",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 13153,
+			"state": "GA",
+			"area_name": "Houston County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 13155,
+			"state": "GA",
+			"area_name": "Irwin County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 13157,
+			"state": "GA",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 13159,
+			"state": "GA",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 13161,
+			"state": "GA",
+			"area_name": "Jeff Davis County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 13163,
+			"state": "GA",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 13165,
+			"state": "GA",
+			"area_name": "Jenkins County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 13167,
+			"state": "GA",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 13169,
+			"state": "GA",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 13171,
+			"state": "GA",
+			"area_name": "Lamar County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 13173,
+			"state": "GA",
+			"area_name": "Lanier County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 13175,
+			"state": "GA",
+			"area_name": "Laurens County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 13177,
+			"state": "GA",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 13179,
+			"state": "GA",
+			"area_name": "Liberty County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 13181,
+			"state": "GA",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 13183,
+			"state": "GA",
+			"area_name": "Long County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 13185,
+			"state": "GA",
+			"area_name": "Lowndes County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 13187,
+			"state": "GA",
+			"area_name": "Lumpkin County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 13189,
+			"state": "GA",
+			"area_name": "McDuffie County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 13191,
+			"state": "GA",
+			"area_name": "McIntosh County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 13193,
+			"state": "GA",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 13195,
+			"state": "GA",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 13197,
+			"state": "GA",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 13199,
+			"state": "GA",
+			"area_name": "Meriwether County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 13201,
+			"state": "GA",
+			"area_name": "Miller County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 13205,
+			"state": "GA",
+			"area_name": "Mitchell County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 13207,
+			"state": "GA",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 13209,
+			"state": "GA",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 13211,
+			"state": "GA",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 13213,
+			"state": "GA",
+			"area_name": "Murray County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 13215,
+			"state": "GA",
+			"area_name": "Muscogee County",
+			"bachelorsOrHigher": 23.7
+		},
+		{
+			"fips": 13217,
+			"state": "GA",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 13219,
+			"state": "GA",
+			"area_name": "Oconee County",
+			"bachelorsOrHigher": 44.6
+		},
+		{
+			"fips": 13221,
+			"state": "GA",
+			"area_name": "Oglethorpe County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 13223,
+			"state": "GA",
+			"area_name": "Paulding County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 13225,
+			"state": "GA",
+			"area_name": "Peach County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 13227,
+			"state": "GA",
+			"area_name": "Pickens County",
+			"bachelorsOrHigher": 23.7
+		},
+		{
+			"fips": 13229,
+			"state": "GA",
+			"area_name": "Pierce County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 13231,
+			"state": "GA",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 13233,
+			"state": "GA",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 13235,
+			"state": "GA",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 13237,
+			"state": "GA",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 13239,
+			"state": "GA",
+			"area_name": "Quitman County",
+			"bachelorsOrHigher": 7.2
+		},
+		{
+			"fips": 13241,
+			"state": "GA",
+			"area_name": "Rabun County",
+			"bachelorsOrHigher": 25.8
+		},
+		{
+			"fips": 13243,
+			"state": "GA",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 13245,
+			"state": "GA",
+			"area_name": "Richmond County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 13247,
+			"state": "GA",
+			"area_name": "Rockdale County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 13249,
+			"state": "GA",
+			"area_name": "Schley County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 13251,
+			"state": "GA",
+			"area_name": "Screven County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 13253,
+			"state": "GA",
+			"area_name": "Seminole County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 13255,
+			"state": "GA",
+			"area_name": "Spalding County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 13257,
+			"state": "GA",
+			"area_name": "Stephens County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 13259,
+			"state": "GA",
+			"area_name": "Stewart County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 13261,
+			"state": "GA",
+			"area_name": "Sumter County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 13263,
+			"state": "GA",
+			"area_name": "Talbot County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 13265,
+			"state": "GA",
+			"area_name": "Taliaferro County",
+			"bachelorsOrHigher": 8.3
+		},
+		{
+			"fips": 13267,
+			"state": "GA",
+			"area_name": "Tattnall County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 13269,
+			"state": "GA",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 13271,
+			"state": "GA",
+			"area_name": "Telfair County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 13273,
+			"state": "GA",
+			"area_name": "Terrell County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 13275,
+			"state": "GA",
+			"area_name": "Thomas County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 13277,
+			"state": "GA",
+			"area_name": "Tift County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 13279,
+			"state": "GA",
+			"area_name": "Toombs County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 13281,
+			"state": "GA",
+			"area_name": "Towns County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 13283,
+			"state": "GA",
+			"area_name": "Treutlen County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 13285,
+			"state": "GA",
+			"area_name": "Troup County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 13287,
+			"state": "GA",
+			"area_name": "Turner County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 13289,
+			"state": "GA",
+			"area_name": "Twiggs County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 13291,
+			"state": "GA",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 13293,
+			"state": "GA",
+			"area_name": "Upson County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 13295,
+			"state": "GA",
+			"area_name": "Walker County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 13297,
+			"state": "GA",
+			"area_name": "Walton County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 13299,
+			"state": "GA",
+			"area_name": "Ware County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 13301,
+			"state": "GA",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 8
+		},
+		{
+			"fips": 13303,
+			"state": "GA",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 13305,
+			"state": "GA",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 13307,
+			"state": "GA",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 6
+		},
+		{
+			"fips": 13309,
+			"state": "GA",
+			"area_name": "Wheeler County",
+			"bachelorsOrHigher": 8.1
+		},
+		{
+			"fips": 13311,
+			"state": "GA",
+			"area_name": "White County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 13313,
+			"state": "GA",
+			"area_name": "Whitfield County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 13315,
+			"state": "GA",
+			"area_name": "Wilcox County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 13317,
+			"state": "GA",
+			"area_name": "Wilkes County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 13319,
+			"state": "GA",
+			"area_name": "Wilkinson County",
+			"bachelorsOrHigher": 8.2
+		},
+		{
+			"fips": 13321,
+			"state": "GA",
+			"area_name": "Worth County",
+			"bachelorsOrHigher": 7.8
+		},
+		{
+			"fips": 15001,
+			"state": "HI",
+			"area_name": "Hawaii County",
+			"bachelorsOrHigher": 25.9
+		},
+		{
+			"fips": 15003,
+			"state": "HI",
+			"area_name": "Honolulu County",
+			"bachelorsOrHigher": 32.5
+		},
+		{
+			"fips": 15005,
+			"state": "HI",
+			"area_name": "Kalawao County",
+			"bachelorsOrHigher": 43.3
+		},
+		{
+			"fips": 15007,
+			"state": "HI",
+			"area_name": "Kauai County",
+			"bachelorsOrHigher": 26.9
+		},
+		{
+			"fips": 15009,
+			"state": "HI",
+			"area_name": "Maui County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 16001,
+			"state": "ID",
+			"area_name": "Ada County",
+			"bachelorsOrHigher": 36.4
+		},
+		{
+			"fips": 16003,
+			"state": "ID",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 16005,
+			"state": "ID",
+			"area_name": "Bannock County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 16007,
+			"state": "ID",
+			"area_name": "Bear Lake County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 16009,
+			"state": "ID",
+			"area_name": "Benewah County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 16011,
+			"state": "ID",
+			"area_name": "Bingham County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 16013,
+			"state": "ID",
+			"area_name": "Blaine County",
+			"bachelorsOrHigher": 44.8
+		},
+		{
+			"fips": 16015,
+			"state": "ID",
+			"area_name": "Boise County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 16017,
+			"state": "ID",
+			"area_name": "Bonner County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 16019,
+			"state": "ID",
+			"area_name": "Bonneville County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 16021,
+			"state": "ID",
+			"area_name": "Boundary County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 16023,
+			"state": "ID",
+			"area_name": "Butte County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 16025,
+			"state": "ID",
+			"area_name": "Camas County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 16027,
+			"state": "ID",
+			"area_name": "Canyon County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 16029,
+			"state": "ID",
+			"area_name": "Caribou County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 16031,
+			"state": "ID",
+			"area_name": "Cassia County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 16033,
+			"state": "ID",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 16035,
+			"state": "ID",
+			"area_name": "Clearwater County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 16037,
+			"state": "ID",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 16039,
+			"state": "ID",
+			"area_name": "Elmore County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 16041,
+			"state": "ID",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 16043,
+			"state": "ID",
+			"area_name": "Fremont County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 16045,
+			"state": "ID",
+			"area_name": "Gem County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 16047,
+			"state": "ID",
+			"area_name": "Gooding County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 16049,
+			"state": "ID",
+			"area_name": "Idaho County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 16051,
+			"state": "ID",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 16053,
+			"state": "ID",
+			"area_name": "Jerome County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 16055,
+			"state": "ID",
+			"area_name": "Kootenai County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 16057,
+			"state": "ID",
+			"area_name": "Latah County",
+			"bachelorsOrHigher": 44
+		},
+		{
+			"fips": 16059,
+			"state": "ID",
+			"area_name": "Lemhi County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 16061,
+			"state": "ID",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 16063,
+			"state": "ID",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 16065,
+			"state": "ID",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 16067,
+			"state": "ID",
+			"area_name": "Minidoka County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 16069,
+			"state": "ID",
+			"area_name": "Nez Perce County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 16071,
+			"state": "ID",
+			"area_name": "Oneida County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 16073,
+			"state": "ID",
+			"area_name": "Owyhee County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 16075,
+			"state": "ID",
+			"area_name": "Payette County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 16077,
+			"state": "ID",
+			"area_name": "Power County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 16079,
+			"state": "ID",
+			"area_name": "Shoshone County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 16081,
+			"state": "ID",
+			"area_name": "Teton County",
+			"bachelorsOrHigher": 38.2
+		},
+		{
+			"fips": 16083,
+			"state": "ID",
+			"area_name": "Twin Falls County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 16085,
+			"state": "ID",
+			"area_name": "Valley County",
+			"bachelorsOrHigher": 34
+		},
+		{
+			"fips": 16087,
+			"state": "ID",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 17001,
+			"state": "IL",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 17003,
+			"state": "IL",
+			"area_name": "Alexander County",
+			"bachelorsOrHigher": 7.7
+		},
+		{
+			"fips": 17005,
+			"state": "IL",
+			"area_name": "Bond County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 17007,
+			"state": "IL",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 17009,
+			"state": "IL",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 17011,
+			"state": "IL",
+			"area_name": "Bureau County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 17013,
+			"state": "IL",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 17015,
+			"state": "IL",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 17017,
+			"state": "IL",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 17019,
+			"state": "IL",
+			"area_name": "Champaign County",
+			"bachelorsOrHigher": 42.5
+		},
+		{
+			"fips": 17021,
+			"state": "IL",
+			"area_name": "Christian County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 17023,
+			"state": "IL",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 17025,
+			"state": "IL",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 17027,
+			"state": "IL",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 17029,
+			"state": "IL",
+			"area_name": "Coles County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 17031,
+			"state": "IL",
+			"area_name": "Cook County",
+			"bachelorsOrHigher": 35.3
+		},
+		{
+			"fips": 17033,
+			"state": "IL",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 17035,
+			"state": "IL",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 17037,
+			"state": "IL",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 29.9
+		},
+		{
+			"fips": 17039,
+			"state": "IL",
+			"area_name": "De Witt County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 17041,
+			"state": "IL",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 17043,
+			"state": "IL",
+			"area_name": "DuPage County",
+			"bachelorsOrHigher": 46.7
+		},
+		{
+			"fips": 17045,
+			"state": "IL",
+			"area_name": "Edgar County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 17047,
+			"state": "IL",
+			"area_name": "Edwards County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 17049,
+			"state": "IL",
+			"area_name": "Effingham County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 17051,
+			"state": "IL",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 17053,
+			"state": "IL",
+			"area_name": "Ford County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 17055,
+			"state": "IL",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 17057,
+			"state": "IL",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 17059,
+			"state": "IL",
+			"area_name": "Gallatin County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 17061,
+			"state": "IL",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 17063,
+			"state": "IL",
+			"area_name": "Grundy County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 17065,
+			"state": "IL",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 17067,
+			"state": "IL",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 17069,
+			"state": "IL",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 17071,
+			"state": "IL",
+			"area_name": "Henderson County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 17073,
+			"state": "IL",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 17075,
+			"state": "IL",
+			"area_name": "Iroquois County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 17077,
+			"state": "IL",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 33.8
+		},
+		{
+			"fips": 17079,
+			"state": "IL",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 17081,
+			"state": "IL",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 17083,
+			"state": "IL",
+			"area_name": "Jersey County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 17085,
+			"state": "IL",
+			"area_name": "Jo Daviess County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 17087,
+			"state": "IL",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 17089,
+			"state": "IL",
+			"area_name": "Kane County",
+			"bachelorsOrHigher": 31.8
+		},
+		{
+			"fips": 17091,
+			"state": "IL",
+			"area_name": "Kankakee County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 17093,
+			"state": "IL",
+			"area_name": "Kendall County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 17095,
+			"state": "IL",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 17097,
+			"state": "IL",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 42.7
+		},
+		{
+			"fips": 17099,
+			"state": "IL",
+			"area_name": "La Salle County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 17101,
+			"state": "IL",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 17103,
+			"state": "IL",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 17105,
+			"state": "IL",
+			"area_name": "Livingston County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 17107,
+			"state": "IL",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 17109,
+			"state": "IL",
+			"area_name": "McDonough County",
+			"bachelorsOrHigher": 33.5
+		},
+		{
+			"fips": 17111,
+			"state": "IL",
+			"area_name": "McHenry County",
+			"bachelorsOrHigher": 32.2
+		},
+		{
+			"fips": 17113,
+			"state": "IL",
+			"area_name": "McLean County",
+			"bachelorsOrHigher": 43.4
+		},
+		{
+			"fips": 17115,
+			"state": "IL",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 17117,
+			"state": "IL",
+			"area_name": "Macoupin County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 17119,
+			"state": "IL",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 17121,
+			"state": "IL",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 17123,
+			"state": "IL",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 17125,
+			"state": "IL",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 17127,
+			"state": "IL",
+			"area_name": "Massac County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 17129,
+			"state": "IL",
+			"area_name": "Menard County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 17131,
+			"state": "IL",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 17133,
+			"state": "IL",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 17135,
+			"state": "IL",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 17137,
+			"state": "IL",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 17139,
+			"state": "IL",
+			"area_name": "Moultrie County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 17141,
+			"state": "IL",
+			"area_name": "Ogle County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 17143,
+			"state": "IL",
+			"area_name": "Peoria County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 17145,
+			"state": "IL",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 17147,
+			"state": "IL",
+			"area_name": "Piatt County",
+			"bachelorsOrHigher": 26.6
+		},
+		{
+			"fips": 17149,
+			"state": "IL",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 17151,
+			"state": "IL",
+			"area_name": "Pope County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 17153,
+			"state": "IL",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 17155,
+			"state": "IL",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 17157,
+			"state": "IL",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 17159,
+			"state": "IL",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 17161,
+			"state": "IL",
+			"area_name": "Rock Island County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 17163,
+			"state": "IL",
+			"area_name": "St. Clair County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 17165,
+			"state": "IL",
+			"area_name": "Saline County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 17167,
+			"state": "IL",
+			"area_name": "Sangamon County",
+			"bachelorsOrHigher": 33
+		},
+		{
+			"fips": 17169,
+			"state": "IL",
+			"area_name": "Schuyler County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 17171,
+			"state": "IL",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 17173,
+			"state": "IL",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 17175,
+			"state": "IL",
+			"area_name": "Stark County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 17177,
+			"state": "IL",
+			"area_name": "Stephenson County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 17179,
+			"state": "IL",
+			"area_name": "Tazewell County",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 17181,
+			"state": "IL",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 17183,
+			"state": "IL",
+			"area_name": "Vermilion County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 17185,
+			"state": "IL",
+			"area_name": "Wabash County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 17187,
+			"state": "IL",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 17189,
+			"state": "IL",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 17191,
+			"state": "IL",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 17193,
+			"state": "IL",
+			"area_name": "White County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 17195,
+			"state": "IL",
+			"area_name": "Whiteside County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 17197,
+			"state": "IL",
+			"area_name": "Will County",
+			"bachelorsOrHigher": 32.6
+		},
+		{
+			"fips": 17199,
+			"state": "IL",
+			"area_name": "Williamson County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 17201,
+			"state": "IL",
+			"area_name": "Winnebago County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 17203,
+			"state": "IL",
+			"area_name": "Woodford County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 18001,
+			"state": "IN",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 18003,
+			"state": "IN",
+			"area_name": "Allen County",
+			"bachelorsOrHigher": 26.6
+		},
+		{
+			"fips": 18005,
+			"state": "IN",
+			"area_name": "Bartholomew County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 18007,
+			"state": "IN",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 18009,
+			"state": "IN",
+			"area_name": "Blackford County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 18011,
+			"state": "IN",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 42.5
+		},
+		{
+			"fips": 18013,
+			"state": "IN",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 18015,
+			"state": "IN",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 18017,
+			"state": "IN",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 18019,
+			"state": "IN",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 18021,
+			"state": "IN",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 18023,
+			"state": "IN",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 18025,
+			"state": "IN",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 18027,
+			"state": "IN",
+			"area_name": "Daviess County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 18029,
+			"state": "IN",
+			"area_name": "Dearborn County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 18031,
+			"state": "IN",
+			"area_name": "Decatur County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 18033,
+			"state": "IN",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 18035,
+			"state": "IN",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 18037,
+			"state": "IN",
+			"area_name": "Dubois County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 18039,
+			"state": "IN",
+			"area_name": "Elkhart County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 18041,
+			"state": "IN",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 18043,
+			"state": "IN",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 18045,
+			"state": "IN",
+			"area_name": "Fountain County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 18047,
+			"state": "IN",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 18049,
+			"state": "IN",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 18051,
+			"state": "IN",
+			"area_name": "Gibson County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 18053,
+			"state": "IN",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 18055,
+			"state": "IN",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 18057,
+			"state": "IN",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 55.6
+		},
+		{
+			"fips": 18059,
+			"state": "IN",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 18061,
+			"state": "IN",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 18063,
+			"state": "IN",
+			"area_name": "Hendricks County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 18065,
+			"state": "IN",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 18067,
+			"state": "IN",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 18069,
+			"state": "IN",
+			"area_name": "Huntington County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 18071,
+			"state": "IN",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 18073,
+			"state": "IN",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 18075,
+			"state": "IN",
+			"area_name": "Jay County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 18077,
+			"state": "IN",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 18079,
+			"state": "IN",
+			"area_name": "Jennings County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 18081,
+			"state": "IN",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 18083,
+			"state": "IN",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 18085,
+			"state": "IN",
+			"area_name": "Kosciusko County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 18087,
+			"state": "IN",
+			"area_name": "LaGrange County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 18089,
+			"state": "IN",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 18091,
+			"state": "IN",
+			"area_name": "LaPorte County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 18093,
+			"state": "IN",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 18095,
+			"state": "IN",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 18097,
+			"state": "IN",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 27.7
+		},
+		{
+			"fips": 18099,
+			"state": "IN",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 18101,
+			"state": "IN",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 18103,
+			"state": "IN",
+			"area_name": "Miami County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 18105,
+			"state": "IN",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 44.2
+		},
+		{
+			"fips": 18107,
+			"state": "IN",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 18109,
+			"state": "IN",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 18111,
+			"state": "IN",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 18113,
+			"state": "IN",
+			"area_name": "Noble County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 18115,
+			"state": "IN",
+			"area_name": "Ohio County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 18117,
+			"state": "IN",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 18119,
+			"state": "IN",
+			"area_name": "Owen County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 18121,
+			"state": "IN",
+			"area_name": "Parke County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 18123,
+			"state": "IN",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 18125,
+			"state": "IN",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 18127,
+			"state": "IN",
+			"area_name": "Porter County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 18129,
+			"state": "IN",
+			"area_name": "Posey County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 18131,
+			"state": "IN",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 18133,
+			"state": "IN",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 18135,
+			"state": "IN",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 18137,
+			"state": "IN",
+			"area_name": "Ripley County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 18139,
+			"state": "IN",
+			"area_name": "Rush County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 18141,
+			"state": "IN",
+			"area_name": "St. Joseph County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 18143,
+			"state": "IN",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 18145,
+			"state": "IN",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 18147,
+			"state": "IN",
+			"area_name": "Spencer County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 18149,
+			"state": "IN",
+			"area_name": "Starke County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 18151,
+			"state": "IN",
+			"area_name": "Steuben County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 18153,
+			"state": "IN",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 18155,
+			"state": "IN",
+			"area_name": "Switzerland County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 18157,
+			"state": "IN",
+			"area_name": "Tippecanoe County",
+			"bachelorsOrHigher": 35.2
+		},
+		{
+			"fips": 18159,
+			"state": "IN",
+			"area_name": "Tipton County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 18161,
+			"state": "IN",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 18163,
+			"state": "IN",
+			"area_name": "Vanderburgh County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 18165,
+			"state": "IN",
+			"area_name": "Vermillion County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 18167,
+			"state": "IN",
+			"area_name": "Vigo County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 18169,
+			"state": "IN",
+			"area_name": "Wabash County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 18171,
+			"state": "IN",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 18173,
+			"state": "IN",
+			"area_name": "Warrick County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 18175,
+			"state": "IN",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 18177,
+			"state": "IN",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 18179,
+			"state": "IN",
+			"area_name": "Wells County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 18181,
+			"state": "IN",
+			"area_name": "White County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 18183,
+			"state": "IN",
+			"area_name": "Whitley County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 19001,
+			"state": "IA",
+			"area_name": "Adair County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 19003,
+			"state": "IA",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 19005,
+			"state": "IA",
+			"area_name": "Allamakee County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 19007,
+			"state": "IA",
+			"area_name": "Appanoose County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 19009,
+			"state": "IA",
+			"area_name": "Audubon County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 19011,
+			"state": "IA",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 19013,
+			"state": "IA",
+			"area_name": "Black Hawk County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 19015,
+			"state": "IA",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 19017,
+			"state": "IA",
+			"area_name": "Bremer County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 19019,
+			"state": "IA",
+			"area_name": "Buchanan County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 19021,
+			"state": "IA",
+			"area_name": "Buena Vista County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 19023,
+			"state": "IA",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 19025,
+			"state": "IA",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 19027,
+			"state": "IA",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 19029,
+			"state": "IA",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 19031,
+			"state": "IA",
+			"area_name": "Cedar County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 19033,
+			"state": "IA",
+			"area_name": "Cerro Gordo County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 19035,
+			"state": "IA",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 19037,
+			"state": "IA",
+			"area_name": "Chickasaw County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 19039,
+			"state": "IA",
+			"area_name": "Clarke County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 19041,
+			"state": "IA",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 19043,
+			"state": "IA",
+			"area_name": "Clayton County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 19045,
+			"state": "IA",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 19047,
+			"state": "IA",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 19049,
+			"state": "IA",
+			"area_name": "Dallas County",
+			"bachelorsOrHigher": 43.7
+		},
+		{
+			"fips": 19051,
+			"state": "IA",
+			"area_name": "Davis County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 19053,
+			"state": "IA",
+			"area_name": "Decatur County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 19055,
+			"state": "IA",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 19057,
+			"state": "IA",
+			"area_name": "Des Moines County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 19059,
+			"state": "IA",
+			"area_name": "Dickinson County",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 19061,
+			"state": "IA",
+			"area_name": "Dubuque County",
+			"bachelorsOrHigher": 27.8
+		},
+		{
+			"fips": 19063,
+			"state": "IA",
+			"area_name": "Emmet County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 19065,
+			"state": "IA",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 19067,
+			"state": "IA",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 19069,
+			"state": "IA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 19071,
+			"state": "IA",
+			"area_name": "Fremont County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 19073,
+			"state": "IA",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 19075,
+			"state": "IA",
+			"area_name": "Grundy County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 19077,
+			"state": "IA",
+			"area_name": "Guthrie County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 19079,
+			"state": "IA",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 19081,
+			"state": "IA",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 19083,
+			"state": "IA",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 19085,
+			"state": "IA",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 19087,
+			"state": "IA",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 19089,
+			"state": "IA",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 19091,
+			"state": "IA",
+			"area_name": "Humboldt County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 19093,
+			"state": "IA",
+			"area_name": "Ida County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 19095,
+			"state": "IA",
+			"area_name": "Iowa County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 19097,
+			"state": "IA",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 19099,
+			"state": "IA",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 19101,
+			"state": "IA",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 33
+		},
+		{
+			"fips": 19103,
+			"state": "IA",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 51.7
+		},
+		{
+			"fips": 19105,
+			"state": "IA",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 19107,
+			"state": "IA",
+			"area_name": "Keokuk County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 19109,
+			"state": "IA",
+			"area_name": "Kossuth County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 19111,
+			"state": "IA",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 19113,
+			"state": "IA",
+			"area_name": "Linn County",
+			"bachelorsOrHigher": 31.7
+		},
+		{
+			"fips": 19115,
+			"state": "IA",
+			"area_name": "Louisa County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 19117,
+			"state": "IA",
+			"area_name": "Lucas County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 19119,
+			"state": "IA",
+			"area_name": "Lyon County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 19121,
+			"state": "IA",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 19123,
+			"state": "IA",
+			"area_name": "Mahaska County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 19125,
+			"state": "IA",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 19127,
+			"state": "IA",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 19129,
+			"state": "IA",
+			"area_name": "Mills County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 19131,
+			"state": "IA",
+			"area_name": "Mitchell County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 19133,
+			"state": "IA",
+			"area_name": "Monona County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 19135,
+			"state": "IA",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 19137,
+			"state": "IA",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 19139,
+			"state": "IA",
+			"area_name": "Muscatine County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 19141,
+			"state": "IA",
+			"area_name": "O'Brien County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 19143,
+			"state": "IA",
+			"area_name": "Osceola County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 19145,
+			"state": "IA",
+			"area_name": "Page County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 19147,
+			"state": "IA",
+			"area_name": "Palo Alto County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 19149,
+			"state": "IA",
+			"area_name": "Plymouth County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 19151,
+			"state": "IA",
+			"area_name": "Pocahontas County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 19153,
+			"state": "IA",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 35.4
+		},
+		{
+			"fips": 19155,
+			"state": "IA",
+			"area_name": "Pottawattamie County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 19157,
+			"state": "IA",
+			"area_name": "Poweshiek County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 19159,
+			"state": "IA",
+			"area_name": "Ringgold County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 19161,
+			"state": "IA",
+			"area_name": "Sac County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 19163,
+			"state": "IA",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 31.9
+		},
+		{
+			"fips": 19165,
+			"state": "IA",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 19167,
+			"state": "IA",
+			"area_name": "Sioux County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 19169,
+			"state": "IA",
+			"area_name": "Story County",
+			"bachelorsOrHigher": 48.5
+		},
+		{
+			"fips": 19171,
+			"state": "IA",
+			"area_name": "Tama County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 19173,
+			"state": "IA",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 19175,
+			"state": "IA",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 19177,
+			"state": "IA",
+			"area_name": "Van Buren County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 19179,
+			"state": "IA",
+			"area_name": "Wapello County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 19181,
+			"state": "IA",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 28.5
+		},
+		{
+			"fips": 19183,
+			"state": "IA",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 19185,
+			"state": "IA",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 19187,
+			"state": "IA",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 19189,
+			"state": "IA",
+			"area_name": "Winnebago County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 19191,
+			"state": "IA",
+			"area_name": "Winneshiek County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 19193,
+			"state": "IA",
+			"area_name": "Woodbury County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 19195,
+			"state": "IA",
+			"area_name": "Worth County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 19197,
+			"state": "IA",
+			"area_name": "Wright County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 20001,
+			"state": "KS",
+			"area_name": "Allen County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 20003,
+			"state": "KS",
+			"area_name": "Anderson County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 20005,
+			"state": "KS",
+			"area_name": "Atchison County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 20007,
+			"state": "KS",
+			"area_name": "Barber County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 20009,
+			"state": "KS",
+			"area_name": "Barton County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 20011,
+			"state": "KS",
+			"area_name": "Bourbon County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 20013,
+			"state": "KS",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 20015,
+			"state": "KS",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 20017,
+			"state": "KS",
+			"area_name": "Chase County",
+			"bachelorsOrHigher": 24.7
+		},
+		{
+			"fips": 20019,
+			"state": "KS",
+			"area_name": "Chautauqua County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 20021,
+			"state": "KS",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 20023,
+			"state": "KS",
+			"area_name": "Cheyenne County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 20025,
+			"state": "KS",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 30.7
+		},
+		{
+			"fips": 20027,
+			"state": "KS",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 20029,
+			"state": "KS",
+			"area_name": "Cloud County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 20031,
+			"state": "KS",
+			"area_name": "Coffey County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 20033,
+			"state": "KS",
+			"area_name": "Comanche County",
+			"bachelorsOrHigher": 26
+		},
+		{
+			"fips": 20035,
+			"state": "KS",
+			"area_name": "Cowley County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 20037,
+			"state": "KS",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 20039,
+			"state": "KS",
+			"area_name": "Decatur County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 20041,
+			"state": "KS",
+			"area_name": "Dickinson County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 20043,
+			"state": "KS",
+			"area_name": "Doniphan County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 20045,
+			"state": "KS",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 49.4
+		},
+		{
+			"fips": 20047,
+			"state": "KS",
+			"area_name": "Edwards County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 20049,
+			"state": "KS",
+			"area_name": "Elk County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 20051,
+			"state": "KS",
+			"area_name": "Ellis County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 20053,
+			"state": "KS",
+			"area_name": "Ellsworth County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 20055,
+			"state": "KS",
+			"area_name": "Finney County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 20057,
+			"state": "KS",
+			"area_name": "Ford County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 20059,
+			"state": "KS",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 20061,
+			"state": "KS",
+			"area_name": "Geary County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 20063,
+			"state": "KS",
+			"area_name": "Gove County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 20065,
+			"state": "KS",
+			"area_name": "Graham County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 20067,
+			"state": "KS",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 20069,
+			"state": "KS",
+			"area_name": "Gray County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 20071,
+			"state": "KS",
+			"area_name": "Greeley County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 20073,
+			"state": "KS",
+			"area_name": "Greenwood County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 20075,
+			"state": "KS",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 20077,
+			"state": "KS",
+			"area_name": "Harper County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 20079,
+			"state": "KS",
+			"area_name": "Harvey County",
+			"bachelorsOrHigher": 25.8
+		},
+		{
+			"fips": 20081,
+			"state": "KS",
+			"area_name": "Haskell County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 20083,
+			"state": "KS",
+			"area_name": "Hodgeman County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 20085,
+			"state": "KS",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 20087,
+			"state": "KS",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 20089,
+			"state": "KS",
+			"area_name": "Jewell County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 20091,
+			"state": "KS",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 52.1
+		},
+		{
+			"fips": 20093,
+			"state": "KS",
+			"area_name": "Kearny County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 20095,
+			"state": "KS",
+			"area_name": "Kingman County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 20097,
+			"state": "KS",
+			"area_name": "Kiowa County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 20099,
+			"state": "KS",
+			"area_name": "Labette County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 20101,
+			"state": "KS",
+			"area_name": "Lane County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 20103,
+			"state": "KS",
+			"area_name": "Leavenworth County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 20105,
+			"state": "KS",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 20107,
+			"state": "KS",
+			"area_name": "Linn County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 20109,
+			"state": "KS",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 20111,
+			"state": "KS",
+			"area_name": "Lyon County",
+			"bachelorsOrHigher": 25
+		},
+		{
+			"fips": 20113,
+			"state": "KS",
+			"area_name": "McPherson County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 20115,
+			"state": "KS",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 20117,
+			"state": "KS",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 20119,
+			"state": "KS",
+			"area_name": "Meade County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 20121,
+			"state": "KS",
+			"area_name": "Miami County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 20123,
+			"state": "KS",
+			"area_name": "Mitchell County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 20125,
+			"state": "KS",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 20127,
+			"state": "KS",
+			"area_name": "Morris County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 20129,
+			"state": "KS",
+			"area_name": "Morton County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 20131,
+			"state": "KS",
+			"area_name": "Nemaha County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 20133,
+			"state": "KS",
+			"area_name": "Neosho County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 20135,
+			"state": "KS",
+			"area_name": "Ness County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 20137,
+			"state": "KS",
+			"area_name": "Norton County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 20139,
+			"state": "KS",
+			"area_name": "Osage County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 20141,
+			"state": "KS",
+			"area_name": "Osborne County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 20143,
+			"state": "KS",
+			"area_name": "Ottawa County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 20145,
+			"state": "KS",
+			"area_name": "Pawnee County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 20147,
+			"state": "KS",
+			"area_name": "Phillips County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 20149,
+			"state": "KS",
+			"area_name": "Pottawatomie County",
+			"bachelorsOrHigher": 32.2
+		},
+		{
+			"fips": 20151,
+			"state": "KS",
+			"area_name": "Pratt County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 20153,
+			"state": "KS",
+			"area_name": "Rawlins County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 20155,
+			"state": "KS",
+			"area_name": "Reno County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 20157,
+			"state": "KS",
+			"area_name": "Republic County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 20159,
+			"state": "KS",
+			"area_name": "Rice County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 20161,
+			"state": "KS",
+			"area_name": "Riley County",
+			"bachelorsOrHigher": 45.5
+		},
+		{
+			"fips": 20163,
+			"state": "KS",
+			"area_name": "Rooks County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 20165,
+			"state": "KS",
+			"area_name": "Rush County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 20167,
+			"state": "KS",
+			"area_name": "Russell County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 20169,
+			"state": "KS",
+			"area_name": "Saline County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 20171,
+			"state": "KS",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 20173,
+			"state": "KS",
+			"area_name": "Sedgwick County",
+			"bachelorsOrHigher": 29.4
+		},
+		{
+			"fips": 20175,
+			"state": "KS",
+			"area_name": "Seward County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 20177,
+			"state": "KS",
+			"area_name": "Shawnee County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 20179,
+			"state": "KS",
+			"area_name": "Sheridan County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 20181,
+			"state": "KS",
+			"area_name": "Sherman County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 20183,
+			"state": "KS",
+			"area_name": "Smith County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 20185,
+			"state": "KS",
+			"area_name": "Stafford County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 20187,
+			"state": "KS",
+			"area_name": "Stanton County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 20189,
+			"state": "KS",
+			"area_name": "Stevens County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 20191,
+			"state": "KS",
+			"area_name": "Sumner County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 20193,
+			"state": "KS",
+			"area_name": "Thomas County",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 20195,
+			"state": "KS",
+			"area_name": "Trego County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 20197,
+			"state": "KS",
+			"area_name": "Wabaunsee County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 20199,
+			"state": "KS",
+			"area_name": "Wallace County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 20201,
+			"state": "KS",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 20203,
+			"state": "KS",
+			"area_name": "Wichita County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 20205,
+			"state": "KS",
+			"area_name": "Wilson County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 20207,
+			"state": "KS",
+			"area_name": "Woodson County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 20209,
+			"state": "KS",
+			"area_name": "Wyandotte County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 21001,
+			"state": "KY",
+			"area_name": "Adair County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 21003,
+			"state": "KY",
+			"area_name": "Allen County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 21005,
+			"state": "KY",
+			"area_name": "Anderson County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 21007,
+			"state": "KY",
+			"area_name": "Ballard County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 21009,
+			"state": "KY",
+			"area_name": "Barren County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 21011,
+			"state": "KY",
+			"area_name": "Bath County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 21013,
+			"state": "KY",
+			"area_name": "Bell County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 21015,
+			"state": "KY",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 21017,
+			"state": "KY",
+			"area_name": "Bourbon County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 21019,
+			"state": "KY",
+			"area_name": "Boyd County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 21021,
+			"state": "KY",
+			"area_name": "Boyle County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 21023,
+			"state": "KY",
+			"area_name": "Bracken County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 21025,
+			"state": "KY",
+			"area_name": "Breathitt County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 21027,
+			"state": "KY",
+			"area_name": "Breckinridge County",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 21029,
+			"state": "KY",
+			"area_name": "Bullitt County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 21031,
+			"state": "KY",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 21033,
+			"state": "KY",
+			"area_name": "Caldwell County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 21035,
+			"state": "KY",
+			"area_name": "Calloway County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 21037,
+			"state": "KY",
+			"area_name": "Campbell County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 21039,
+			"state": "KY",
+			"area_name": "Carlisle County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 21041,
+			"state": "KY",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 21043,
+			"state": "KY",
+			"area_name": "Carter County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 21045,
+			"state": "KY",
+			"area_name": "Casey County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 21047,
+			"state": "KY",
+			"area_name": "Christian County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 21049,
+			"state": "KY",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 21051,
+			"state": "KY",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 21053,
+			"state": "KY",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 21055,
+			"state": "KY",
+			"area_name": "Crittenden County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 21057,
+			"state": "KY",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 21059,
+			"state": "KY",
+			"area_name": "Daviess County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 21061,
+			"state": "KY",
+			"area_name": "Edmonson County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 21063,
+			"state": "KY",
+			"area_name": "Elliott County",
+			"bachelorsOrHigher": 6.4
+		},
+		{
+			"fips": 21065,
+			"state": "KY",
+			"area_name": "Estill County",
+			"bachelorsOrHigher": 8.4
+		},
+		{
+			"fips": 21067,
+			"state": "KY",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 40.2
+		},
+		{
+			"fips": 21069,
+			"state": "KY",
+			"area_name": "Fleming County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 21071,
+			"state": "KY",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 21073,
+			"state": "KY",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 27.4
+		},
+		{
+			"fips": 21075,
+			"state": "KY",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 21077,
+			"state": "KY",
+			"area_name": "Gallatin County",
+			"bachelorsOrHigher": 9.9
+		},
+		{
+			"fips": 21079,
+			"state": "KY",
+			"area_name": "Garrard County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 21081,
+			"state": "KY",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 21083,
+			"state": "KY",
+			"area_name": "Graves County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 21085,
+			"state": "KY",
+			"area_name": "Grayson County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 21087,
+			"state": "KY",
+			"area_name": "Green County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 21089,
+			"state": "KY",
+			"area_name": "Greenup County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 21091,
+			"state": "KY",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 21093,
+			"state": "KY",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 21095,
+			"state": "KY",
+			"area_name": "Harlan County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 21097,
+			"state": "KY",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 21099,
+			"state": "KY",
+			"area_name": "Hart County",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 21101,
+			"state": "KY",
+			"area_name": "Henderson County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 21103,
+			"state": "KY",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 21105,
+			"state": "KY",
+			"area_name": "Hickman County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 21107,
+			"state": "KY",
+			"area_name": "Hopkins County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 21109,
+			"state": "KY",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 21111,
+			"state": "KY",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 21113,
+			"state": "KY",
+			"area_name": "Jessamine County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 21115,
+			"state": "KY",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 21117,
+			"state": "KY",
+			"area_name": "Kenton County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 21119,
+			"state": "KY",
+			"area_name": "Knott County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 21121,
+			"state": "KY",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 21123,
+			"state": "KY",
+			"area_name": "Larue County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 21125,
+			"state": "KY",
+			"area_name": "Laurel County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 21127,
+			"state": "KY",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 21129,
+			"state": "KY",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 7
+		},
+		{
+			"fips": 21131,
+			"state": "KY",
+			"area_name": "Leslie County",
+			"bachelorsOrHigher": 8.2
+		},
+		{
+			"fips": 21133,
+			"state": "KY",
+			"area_name": "Letcher County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 21135,
+			"state": "KY",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 21137,
+			"state": "KY",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 21139,
+			"state": "KY",
+			"area_name": "Livingston County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 21141,
+			"state": "KY",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 21143,
+			"state": "KY",
+			"area_name": "Lyon County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 21145,
+			"state": "KY",
+			"area_name": "McCracken County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 21147,
+			"state": "KY",
+			"area_name": "McCreary County",
+			"bachelorsOrHigher": 7.5
+		},
+		{
+			"fips": 21149,
+			"state": "KY",
+			"area_name": "McLean County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 21151,
+			"state": "KY",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 21153,
+			"state": "KY",
+			"area_name": "Magoffin County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 21155,
+			"state": "KY",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 21157,
+			"state": "KY",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 21159,
+			"state": "KY",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 7.3
+		},
+		{
+			"fips": 21161,
+			"state": "KY",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 21163,
+			"state": "KY",
+			"area_name": "Meade County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 21165,
+			"state": "KY",
+			"area_name": "Menifee County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 21167,
+			"state": "KY",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 21169,
+			"state": "KY",
+			"area_name": "Metcalfe County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 21171,
+			"state": "KY",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 21173,
+			"state": "KY",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 21175,
+			"state": "KY",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 21177,
+			"state": "KY",
+			"area_name": "Muhlenberg County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 21179,
+			"state": "KY",
+			"area_name": "Nelson County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 21181,
+			"state": "KY",
+			"area_name": "Nicholas County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 21183,
+			"state": "KY",
+			"area_name": "Ohio County",
+			"bachelorsOrHigher": 8.2
+		},
+		{
+			"fips": 21185,
+			"state": "KY",
+			"area_name": "Oldham County",
+			"bachelorsOrHigher": 39.8
+		},
+		{
+			"fips": 21187,
+			"state": "KY",
+			"area_name": "Owen County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 21189,
+			"state": "KY",
+			"area_name": "Owsley County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 21191,
+			"state": "KY",
+			"area_name": "Pendleton County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 21193,
+			"state": "KY",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 21195,
+			"state": "KY",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 21197,
+			"state": "KY",
+			"area_name": "Powell County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 21199,
+			"state": "KY",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 21201,
+			"state": "KY",
+			"area_name": "Robertson County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 21203,
+			"state": "KY",
+			"area_name": "Rockcastle County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 21205,
+			"state": "KY",
+			"area_name": "Rowan County",
+			"bachelorsOrHigher": 25.5
+		},
+		{
+			"fips": 21207,
+			"state": "KY",
+			"area_name": "Russell County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 21209,
+			"state": "KY",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 21211,
+			"state": "KY",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 23.7
+		},
+		{
+			"fips": 21213,
+			"state": "KY",
+			"area_name": "Simpson County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 21215,
+			"state": "KY",
+			"area_name": "Spencer County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 21217,
+			"state": "KY",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 21219,
+			"state": "KY",
+			"area_name": "Todd County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 21221,
+			"state": "KY",
+			"area_name": "Trigg County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 21223,
+			"state": "KY",
+			"area_name": "Trimble County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 21225,
+			"state": "KY",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 21227,
+			"state": "KY",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 21229,
+			"state": "KY",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 21231,
+			"state": "KY",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 21233,
+			"state": "KY",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 7.9
+		},
+		{
+			"fips": 21235,
+			"state": "KY",
+			"area_name": "Whitley County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 21237,
+			"state": "KY",
+			"area_name": "Wolfe County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 21239,
+			"state": "KY",
+			"area_name": "Woodford County",
+			"bachelorsOrHigher": 32.4
+		},
+		{
+			"fips": 22001,
+			"state": "LA",
+			"area_name": "Acadia Parish",
+			"bachelorsOrHigher": 9.9
+		},
+		{
+			"fips": 22003,
+			"state": "LA",
+			"area_name": "Allen Parish",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 22005,
+			"state": "LA",
+			"area_name": "Ascension Parish",
+			"bachelorsOrHigher": 25.8
+		},
+		{
+			"fips": 22007,
+			"state": "LA",
+			"area_name": "Assumption Parish",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 22009,
+			"state": "LA",
+			"area_name": "Avoyelles Parish",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 22011,
+			"state": "LA",
+			"area_name": "Beauregard Parish",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 22013,
+			"state": "LA",
+			"area_name": "Bienville Parish",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 22015,
+			"state": "LA",
+			"area_name": "Bossier Parish",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 22017,
+			"state": "LA",
+			"area_name": "Caddo Parish",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 22019,
+			"state": "LA",
+			"area_name": "Calcasieu Parish",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 22021,
+			"state": "LA",
+			"area_name": "Caldwell Parish",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 22023,
+			"state": "LA",
+			"area_name": "Cameron Parish",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 22025,
+			"state": "LA",
+			"area_name": "Catahoula Parish",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 22027,
+			"state": "LA",
+			"area_name": "Claiborne Parish",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 22029,
+			"state": "LA",
+			"area_name": "Concordia Parish",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 22031,
+			"state": "LA",
+			"area_name": "De Soto Parish",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 22033,
+			"state": "LA",
+			"area_name": "East Baton Rouge Parish",
+			"bachelorsOrHigher": 34.1
+		},
+		{
+			"fips": 22035,
+			"state": "LA",
+			"area_name": "East Carroll Parish",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 22037,
+			"state": "LA",
+			"area_name": "East Feliciana Parish",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 22039,
+			"state": "LA",
+			"area_name": "Evangeline Parish",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 22041,
+			"state": "LA",
+			"area_name": "Franklin Parish",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 22043,
+			"state": "LA",
+			"area_name": "Grant Parish",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 22045,
+			"state": "LA",
+			"area_name": "Iberia Parish",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 22047,
+			"state": "LA",
+			"area_name": "Iberville Parish",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 22049,
+			"state": "LA",
+			"area_name": "Jackson Parish",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 22051,
+			"state": "LA",
+			"area_name": "Jefferson Parish",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 22053,
+			"state": "LA",
+			"area_name": "Jefferson Davis Parish",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 22055,
+			"state": "LA",
+			"area_name": "Lafayette Parish",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 22057,
+			"state": "LA",
+			"area_name": "Lafourche Parish",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 22059,
+			"state": "LA",
+			"area_name": "La Salle Parish",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 22061,
+			"state": "LA",
+			"area_name": "Lincoln Parish",
+			"bachelorsOrHigher": 34.6
+		},
+		{
+			"fips": 22063,
+			"state": "LA",
+			"area_name": "Livingston Parish",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 22065,
+			"state": "LA",
+			"area_name": "Madison Parish",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 22067,
+			"state": "LA",
+			"area_name": "Morehouse Parish",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 22069,
+			"state": "LA",
+			"area_name": "Natchitoches Parish",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 22071,
+			"state": "LA",
+			"area_name": "Orleans Parish",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 22073,
+			"state": "LA",
+			"area_name": "Ouachita Parish",
+			"bachelorsOrHigher": 22.8
+		},
+		{
+			"fips": 22075,
+			"state": "LA",
+			"area_name": "Plaquemines Parish",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 22077,
+			"state": "LA",
+			"area_name": "Pointe Coupee Parish",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 22079,
+			"state": "LA",
+			"area_name": "Rapides Parish",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 22081,
+			"state": "LA",
+			"area_name": "Red River Parish",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 22083,
+			"state": "LA",
+			"area_name": "Richland Parish",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 22085,
+			"state": "LA",
+			"area_name": "Sabine Parish",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 22087,
+			"state": "LA",
+			"area_name": "St. Bernard Parish",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 22089,
+			"state": "LA",
+			"area_name": "St. Charles Parish",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 22091,
+			"state": "LA",
+			"area_name": "St. Helena Parish",
+			"bachelorsOrHigher": 8.9
+		},
+		{
+			"fips": 22093,
+			"state": "LA",
+			"area_name": "St. James Parish",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 22095,
+			"state": "LA",
+			"area_name": "St. John the Baptist Parish",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 22097,
+			"state": "LA",
+			"area_name": "St. Landry Parish",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 22099,
+			"state": "LA",
+			"area_name": "St. Martin Parish",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 22101,
+			"state": "LA",
+			"area_name": "St. Mary Parish",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 22103,
+			"state": "LA",
+			"area_name": "St. Tammany Parish",
+			"bachelorsOrHigher": 30.4
+		},
+		{
+			"fips": 22105,
+			"state": "LA",
+			"area_name": "Tangipahoa Parish",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 22107,
+			"state": "LA",
+			"area_name": "Tensas Parish",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 22109,
+			"state": "LA",
+			"area_name": "Terrebonne Parish",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 22111,
+			"state": "LA",
+			"area_name": "Union Parish",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 22113,
+			"state": "LA",
+			"area_name": "Vermilion Parish",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 22115,
+			"state": "LA",
+			"area_name": "Vernon Parish",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 22117,
+			"state": "LA",
+			"area_name": "Washington Parish",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 22119,
+			"state": "LA",
+			"area_name": "Webster Parish",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 22121,
+			"state": "LA",
+			"area_name": "West Baton Rouge Parish",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 22123,
+			"state": "LA",
+			"area_name": "West Carroll Parish",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 22125,
+			"state": "LA",
+			"area_name": "West Feliciana Parish",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 22127,
+			"state": "LA",
+			"area_name": "Winn Parish",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 23001,
+			"state": "ME",
+			"area_name": "Androscoggin County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 23003,
+			"state": "ME",
+			"area_name": "Aroostook County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 23005,
+			"state": "ME",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 42
+		},
+		{
+			"fips": 23007,
+			"state": "ME",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 23009,
+			"state": "ME",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 32.6
+		},
+		{
+			"fips": 23011,
+			"state": "ME",
+			"area_name": "Kennebec County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 23013,
+			"state": "ME",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 30.7
+		},
+		{
+			"fips": 23015,
+			"state": "ME",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 23017,
+			"state": "ME",
+			"area_name": "Oxford County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 23019,
+			"state": "ME",
+			"area_name": "Penobscot County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 23021,
+			"state": "ME",
+			"area_name": "Piscataquis County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 23023,
+			"state": "ME",
+			"area_name": "Sagadahoc County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 23025,
+			"state": "ME",
+			"area_name": "Somerset County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 23027,
+			"state": "ME",
+			"area_name": "Waldo County",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 23029,
+			"state": "ME",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 23031,
+			"state": "ME",
+			"area_name": "York County",
+			"bachelorsOrHigher": 29.1
+		},
+		{
+			"fips": 24001,
+			"state": "MD",
+			"area_name": "Allegany County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 24003,
+			"state": "MD",
+			"area_name": "Anne Arundel County",
+			"bachelorsOrHigher": 37.6
+		},
+		{
+			"fips": 24005,
+			"state": "MD",
+			"area_name": "Baltimore County",
+			"bachelorsOrHigher": 36
+		},
+		{
+			"fips": 24009,
+			"state": "MD",
+			"area_name": "Calvert County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 24011,
+			"state": "MD",
+			"area_name": "Caroline County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 24013,
+			"state": "MD",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 32.7
+		},
+		{
+			"fips": 24015,
+			"state": "MD",
+			"area_name": "Cecil County",
+			"bachelorsOrHigher": 21.8
+		},
+		{
+			"fips": 24017,
+			"state": "MD",
+			"area_name": "Charles County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 24019,
+			"state": "MD",
+			"area_name": "Dorchester County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 24021,
+			"state": "MD",
+			"area_name": "Frederick County",
+			"bachelorsOrHigher": 38.8
+		},
+		{
+			"fips": 24023,
+			"state": "MD",
+			"area_name": "Garrett County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 24025,
+			"state": "MD",
+			"area_name": "Harford County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 24027,
+			"state": "MD",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 60.4
+		},
+		{
+			"fips": 24029,
+			"state": "MD",
+			"area_name": "Kent County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 24031,
+			"state": "MD",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 57.4
+		},
+		{
+			"fips": 24033,
+			"state": "MD",
+			"area_name": "Prince George's County",
+			"bachelorsOrHigher": 30.4
+		},
+		{
+			"fips": 24035,
+			"state": "MD",
+			"area_name": "Queen Anne's County",
+			"bachelorsOrHigher": 34.1
+		},
+		{
+			"fips": 24037,
+			"state": "MD",
+			"area_name": "St. Mary's County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 24039,
+			"state": "MD",
+			"area_name": "Somerset County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 24041,
+			"state": "MD",
+			"area_name": "Talbot County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 24043,
+			"state": "MD",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 24045,
+			"state": "MD",
+			"area_name": "Wicomico County",
+			"bachelorsOrHigher": 27.7
+		},
+		{
+			"fips": 24047,
+			"state": "MD",
+			"area_name": "Worcester County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 24510,
+			"state": "MD",
+			"area_name": "Baltimore city",
+			"bachelorsOrHigher": 27.7
+		},
+		{
+			"fips": 25001,
+			"state": "MA",
+			"area_name": "Barnstable County",
+			"bachelorsOrHigher": 39.9
+		},
+		{
+			"fips": 25003,
+			"state": "MA",
+			"area_name": "Berkshire County",
+			"bachelorsOrHigher": 31.3
+		},
+		{
+			"fips": 25005,
+			"state": "MA",
+			"area_name": "Bristol County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 25007,
+			"state": "MA",
+			"area_name": "Dukes County",
+			"bachelorsOrHigher": 41.2
+		},
+		{
+			"fips": 25009,
+			"state": "MA",
+			"area_name": "Essex County",
+			"bachelorsOrHigher": 37.2
+		},
+		{
+			"fips": 25011,
+			"state": "MA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 25013,
+			"state": "MA",
+			"area_name": "Hampden County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 25015,
+			"state": "MA",
+			"area_name": "Hampshire County",
+			"bachelorsOrHigher": 43.2
+		},
+		{
+			"fips": 25017,
+			"state": "MA",
+			"area_name": "Middlesex County",
+			"bachelorsOrHigher": 51.3
+		},
+		{
+			"fips": 25019,
+			"state": "MA",
+			"area_name": "Nantucket County",
+			"bachelorsOrHigher": 45.7
+		},
+		{
+			"fips": 25021,
+			"state": "MA",
+			"area_name": "Norfolk County",
+			"bachelorsOrHigher": 49.9
+		},
+		{
+			"fips": 25023,
+			"state": "MA",
+			"area_name": "Plymouth County",
+			"bachelorsOrHigher": 34
+		},
+		{
+			"fips": 25025,
+			"state": "MA",
+			"area_name": "Suffolk County",
+			"bachelorsOrHigher": 41
+		},
+		{
+			"fips": 25027,
+			"state": "MA",
+			"area_name": "Worcester County",
+			"bachelorsOrHigher": 34.1
+		},
+		{
+			"fips": 26001,
+			"state": "MI",
+			"area_name": "Alcona County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 26003,
+			"state": "MI",
+			"area_name": "Alger County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 26005,
+			"state": "MI",
+			"area_name": "Allegan County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 26007,
+			"state": "MI",
+			"area_name": "Alpena County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 26009,
+			"state": "MI",
+			"area_name": "Antrim County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 26011,
+			"state": "MI",
+			"area_name": "Arenac County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 26013,
+			"state": "MI",
+			"area_name": "Baraga County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 26015,
+			"state": "MI",
+			"area_name": "Barry County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 26017,
+			"state": "MI",
+			"area_name": "Bay County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 26019,
+			"state": "MI",
+			"area_name": "Benzie County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 26021,
+			"state": "MI",
+			"area_name": "Berrien County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 26023,
+			"state": "MI",
+			"area_name": "Branch County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 26025,
+			"state": "MI",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 26027,
+			"state": "MI",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 26029,
+			"state": "MI",
+			"area_name": "Charlevoix County",
+			"bachelorsOrHigher": 27.1
+		},
+		{
+			"fips": 26031,
+			"state": "MI",
+			"area_name": "Cheboygan County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 26033,
+			"state": "MI",
+			"area_name": "Chippewa County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 26035,
+			"state": "MI",
+			"area_name": "Clare County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 26037,
+			"state": "MI",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 26039,
+			"state": "MI",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 26041,
+			"state": "MI",
+			"area_name": "Delta County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 26043,
+			"state": "MI",
+			"area_name": "Dickinson County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 26045,
+			"state": "MI",
+			"area_name": "Eaton County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 26047,
+			"state": "MI",
+			"area_name": "Emmet County",
+			"bachelorsOrHigher": 33.3
+		},
+		{
+			"fips": 26049,
+			"state": "MI",
+			"area_name": "Genesee County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 26051,
+			"state": "MI",
+			"area_name": "Gladwin County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 26053,
+			"state": "MI",
+			"area_name": "Gogebic County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 26055,
+			"state": "MI",
+			"area_name": "Grand Traverse County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 26057,
+			"state": "MI",
+			"area_name": "Gratiot County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 26059,
+			"state": "MI",
+			"area_name": "Hillsdale County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 26061,
+			"state": "MI",
+			"area_name": "Houghton County",
+			"bachelorsOrHigher": 29.6
+		},
+		{
+			"fips": 26063,
+			"state": "MI",
+			"area_name": "Huron County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 26065,
+			"state": "MI",
+			"area_name": "Ingham County",
+			"bachelorsOrHigher": 36.5
+		},
+		{
+			"fips": 26067,
+			"state": "MI",
+			"area_name": "Ionia County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 26069,
+			"state": "MI",
+			"area_name": "Iosco County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 26071,
+			"state": "MI",
+			"area_name": "Iron County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 26073,
+			"state": "MI",
+			"area_name": "Isabella County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 26075,
+			"state": "MI",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 26077,
+			"state": "MI",
+			"area_name": "Kalamazoo County",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 26079,
+			"state": "MI",
+			"area_name": "Kalkaska County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 26081,
+			"state": "MI",
+			"area_name": "Kent County",
+			"bachelorsOrHigher": 32.6
+		},
+		{
+			"fips": 26083,
+			"state": "MI",
+			"area_name": "Keweenaw County",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 26085,
+			"state": "MI",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 26087,
+			"state": "MI",
+			"area_name": "Lapeer County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 26089,
+			"state": "MI",
+			"area_name": "Leelanau County",
+			"bachelorsOrHigher": 39.5
+		},
+		{
+			"fips": 26091,
+			"state": "MI",
+			"area_name": "Lenawee County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 26093,
+			"state": "MI",
+			"area_name": "Livingston County",
+			"bachelorsOrHigher": 33
+		},
+		{
+			"fips": 26095,
+			"state": "MI",
+			"area_name": "Luce County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 26097,
+			"state": "MI",
+			"area_name": "Mackinac County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 26099,
+			"state": "MI",
+			"area_name": "Macomb County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 26101,
+			"state": "MI",
+			"area_name": "Manistee County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 26103,
+			"state": "MI",
+			"area_name": "Marquette County",
+			"bachelorsOrHigher": 28.8
+		},
+		{
+			"fips": 26105,
+			"state": "MI",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 26107,
+			"state": "MI",
+			"area_name": "Mecosta County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 26109,
+			"state": "MI",
+			"area_name": "Menominee County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 26111,
+			"state": "MI",
+			"area_name": "Midland County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 26113,
+			"state": "MI",
+			"area_name": "Missaukee County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 26115,
+			"state": "MI",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 26117,
+			"state": "MI",
+			"area_name": "Montcalm County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 26119,
+			"state": "MI",
+			"area_name": "Montmorency County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 26121,
+			"state": "MI",
+			"area_name": "Muskegon County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 26123,
+			"state": "MI",
+			"area_name": "Newaygo County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 26125,
+			"state": "MI",
+			"area_name": "Oakland County",
+			"bachelorsOrHigher": 43.7
+		},
+		{
+			"fips": 26127,
+			"state": "MI",
+			"area_name": "Oceana County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 26129,
+			"state": "MI",
+			"area_name": "Ogemaw County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 26131,
+			"state": "MI",
+			"area_name": "Ontonagon County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 26133,
+			"state": "MI",
+			"area_name": "Osceola County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 26135,
+			"state": "MI",
+			"area_name": "Oscoda County",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 26137,
+			"state": "MI",
+			"area_name": "Otsego County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 26139,
+			"state": "MI",
+			"area_name": "Ottawa County",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 26141,
+			"state": "MI",
+			"area_name": "Presque Isle County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 26143,
+			"state": "MI",
+			"area_name": "Roscommon County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 26145,
+			"state": "MI",
+			"area_name": "Saginaw County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 26147,
+			"state": "MI",
+			"area_name": "St. Clair County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 26149,
+			"state": "MI",
+			"area_name": "St. Joseph County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 26151,
+			"state": "MI",
+			"area_name": "Sanilac County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 26153,
+			"state": "MI",
+			"area_name": "Schoolcraft County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 26155,
+			"state": "MI",
+			"area_name": "Shiawassee County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 26157,
+			"state": "MI",
+			"area_name": "Tuscola County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 26159,
+			"state": "MI",
+			"area_name": "Van Buren County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 26161,
+			"state": "MI",
+			"area_name": "Washtenaw County",
+			"bachelorsOrHigher": 51.8
+		},
+		{
+			"fips": 26163,
+			"state": "MI",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 26165,
+			"state": "MI",
+			"area_name": "Wexford County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 27001,
+			"state": "MN",
+			"area_name": "Aitkin County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 27003,
+			"state": "MN",
+			"area_name": "Anoka County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 27005,
+			"state": "MN",
+			"area_name": "Becker County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 27007,
+			"state": "MN",
+			"area_name": "Beltrami County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 27009,
+			"state": "MN",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 27011,
+			"state": "MN",
+			"area_name": "Big Stone County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 27013,
+			"state": "MN",
+			"area_name": "Blue Earth County",
+			"bachelorsOrHigher": 30.4
+		},
+		{
+			"fips": 27015,
+			"state": "MN",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 27017,
+			"state": "MN",
+			"area_name": "Carlton County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 27019,
+			"state": "MN",
+			"area_name": "Carver County",
+			"bachelorsOrHigher": 45
+		},
+		{
+			"fips": 27021,
+			"state": "MN",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 27023,
+			"state": "MN",
+			"area_name": "Chippewa County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 27025,
+			"state": "MN",
+			"area_name": "Chisago County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 27027,
+			"state": "MN",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 27029,
+			"state": "MN",
+			"area_name": "Clearwater County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 27031,
+			"state": "MN",
+			"area_name": "Cook County",
+			"bachelorsOrHigher": 40.6
+		},
+		{
+			"fips": 27033,
+			"state": "MN",
+			"area_name": "Cottonwood County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 27035,
+			"state": "MN",
+			"area_name": "Crow Wing County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 27037,
+			"state": "MN",
+			"area_name": "Dakota County",
+			"bachelorsOrHigher": 39.5
+		},
+		{
+			"fips": 27039,
+			"state": "MN",
+			"area_name": "Dodge County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 27041,
+			"state": "MN",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 27043,
+			"state": "MN",
+			"area_name": "Faribault County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 27045,
+			"state": "MN",
+			"area_name": "Fillmore County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 27047,
+			"state": "MN",
+			"area_name": "Freeborn County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 27049,
+			"state": "MN",
+			"area_name": "Goodhue County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 27051,
+			"state": "MN",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 27053,
+			"state": "MN",
+			"area_name": "Hennepin County",
+			"bachelorsOrHigher": 46.4
+		},
+		{
+			"fips": 27055,
+			"state": "MN",
+			"area_name": "Houston County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 27057,
+			"state": "MN",
+			"area_name": "Hubbard County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 27059,
+			"state": "MN",
+			"area_name": "Isanti County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 27061,
+			"state": "MN",
+			"area_name": "Itasca County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 27063,
+			"state": "MN",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 27065,
+			"state": "MN",
+			"area_name": "Kanabec County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 27067,
+			"state": "MN",
+			"area_name": "Kandiyohi County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 27069,
+			"state": "MN",
+			"area_name": "Kittson County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 27071,
+			"state": "MN",
+			"area_name": "Koochiching County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 27073,
+			"state": "MN",
+			"area_name": "Lac qui Parle County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 27075,
+			"state": "MN",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 27077,
+			"state": "MN",
+			"area_name": "Lake of the Woods County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 27079,
+			"state": "MN",
+			"area_name": "Le Sueur County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 27081,
+			"state": "MN",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 27083,
+			"state": "MN",
+			"area_name": "Lyon County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 27085,
+			"state": "MN",
+			"area_name": "McLeod County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 27087,
+			"state": "MN",
+			"area_name": "Mahnomen County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 27089,
+			"state": "MN",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 27091,
+			"state": "MN",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 27093,
+			"state": "MN",
+			"area_name": "Meeker County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 27095,
+			"state": "MN",
+			"area_name": "Mille Lacs County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 27097,
+			"state": "MN",
+			"area_name": "Morrison County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 27099,
+			"state": "MN",
+			"area_name": "Mower County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 27101,
+			"state": "MN",
+			"area_name": "Murray County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 27103,
+			"state": "MN",
+			"area_name": "Nicollet County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 27105,
+			"state": "MN",
+			"area_name": "Nobles County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 27107,
+			"state": "MN",
+			"area_name": "Norman County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 27109,
+			"state": "MN",
+			"area_name": "Olmsted County",
+			"bachelorsOrHigher": 40.2
+		},
+		{
+			"fips": 27111,
+			"state": "MN",
+			"area_name": "Otter Tail County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 27113,
+			"state": "MN",
+			"area_name": "Pennington County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 27115,
+			"state": "MN",
+			"area_name": "Pine County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 27117,
+			"state": "MN",
+			"area_name": "Pipestone County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 27119,
+			"state": "MN",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 27121,
+			"state": "MN",
+			"area_name": "Pope County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 27123,
+			"state": "MN",
+			"area_name": "Ramsey County",
+			"bachelorsOrHigher": 39.8
+		},
+		{
+			"fips": 27125,
+			"state": "MN",
+			"area_name": "Red Lake County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 27127,
+			"state": "MN",
+			"area_name": "Redwood County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 27129,
+			"state": "MN",
+			"area_name": "Renville County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 27131,
+			"state": "MN",
+			"area_name": "Rice County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 27133,
+			"state": "MN",
+			"area_name": "Rock County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 27135,
+			"state": "MN",
+			"area_name": "Roseau County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 27137,
+			"state": "MN",
+			"area_name": "St. Louis County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 27139,
+			"state": "MN",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 38.3
+		},
+		{
+			"fips": 27141,
+			"state": "MN",
+			"area_name": "Sherburne County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 27143,
+			"state": "MN",
+			"area_name": "Sibley County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 27145,
+			"state": "MN",
+			"area_name": "Stearns County",
+			"bachelorsOrHigher": 25.5
+		},
+		{
+			"fips": 27147,
+			"state": "MN",
+			"area_name": "Steele County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 27149,
+			"state": "MN",
+			"area_name": "Stevens County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 27151,
+			"state": "MN",
+			"area_name": "Swift County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 27153,
+			"state": "MN",
+			"area_name": "Todd County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 27155,
+			"state": "MN",
+			"area_name": "Traverse County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 27157,
+			"state": "MN",
+			"area_name": "Wabasha County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 27159,
+			"state": "MN",
+			"area_name": "Wadena County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 27161,
+			"state": "MN",
+			"area_name": "Waseca County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 27163,
+			"state": "MN",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 41.3
+		},
+		{
+			"fips": 27165,
+			"state": "MN",
+			"area_name": "Watonwan County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 27167,
+			"state": "MN",
+			"area_name": "Wilkin County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 27169,
+			"state": "MN",
+			"area_name": "Winona County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 27171,
+			"state": "MN",
+			"area_name": "Wright County",
+			"bachelorsOrHigher": 27.4
+		},
+		{
+			"fips": 27173,
+			"state": "MN",
+			"area_name": "Yellow Medicine County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 28001,
+			"state": "MS",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 28003,
+			"state": "MS",
+			"area_name": "Alcorn County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 28005,
+			"state": "MS",
+			"area_name": "Amite County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 28007,
+			"state": "MS",
+			"area_name": "Attala County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 28009,
+			"state": "MS",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 28011,
+			"state": "MS",
+			"area_name": "Bolivar County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 28013,
+			"state": "MS",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 28015,
+			"state": "MS",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 28017,
+			"state": "MS",
+			"area_name": "Chickasaw County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 28019,
+			"state": "MS",
+			"area_name": "Choctaw County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 28021,
+			"state": "MS",
+			"area_name": "Claiborne County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 28023,
+			"state": "MS",
+			"area_name": "Clarke County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 28025,
+			"state": "MS",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 28027,
+			"state": "MS",
+			"area_name": "Coahoma County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 28029,
+			"state": "MS",
+			"area_name": "Copiah County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 28031,
+			"state": "MS",
+			"area_name": "Covington County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 28033,
+			"state": "MS",
+			"area_name": "DeSoto County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 28035,
+			"state": "MS",
+			"area_name": "Forrest County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 28037,
+			"state": "MS",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 28039,
+			"state": "MS",
+			"area_name": "George County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 28041,
+			"state": "MS",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 28043,
+			"state": "MS",
+			"area_name": "Grenada County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 28045,
+			"state": "MS",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 28047,
+			"state": "MS",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 28049,
+			"state": "MS",
+			"area_name": "Hinds County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 28051,
+			"state": "MS",
+			"area_name": "Holmes County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 28053,
+			"state": "MS",
+			"area_name": "Humphreys County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 28055,
+			"state": "MS",
+			"area_name": "Issaquena County",
+			"bachelorsOrHigher": 7.8
+		},
+		{
+			"fips": 28057,
+			"state": "MS",
+			"area_name": "Itawamba County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 28059,
+			"state": "MS",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 28061,
+			"state": "MS",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 28063,
+			"state": "MS",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 28065,
+			"state": "MS",
+			"area_name": "Jefferson Davis County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 28067,
+			"state": "MS",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 28069,
+			"state": "MS",
+			"area_name": "Kemper County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 28071,
+			"state": "MS",
+			"area_name": "Lafayette County",
+			"bachelorsOrHigher": 36.9
+		},
+		{
+			"fips": 28073,
+			"state": "MS",
+			"area_name": "Lamar County",
+			"bachelorsOrHigher": 34.1
+		},
+		{
+			"fips": 28075,
+			"state": "MS",
+			"area_name": "Lauderdale County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 28077,
+			"state": "MS",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 28079,
+			"state": "MS",
+			"area_name": "Leake County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 28081,
+			"state": "MS",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 28083,
+			"state": "MS",
+			"area_name": "Leflore County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 28085,
+			"state": "MS",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 28087,
+			"state": "MS",
+			"area_name": "Lowndes County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 28089,
+			"state": "MS",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 46.3
+		},
+		{
+			"fips": 28091,
+			"state": "MS",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 28093,
+			"state": "MS",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 28095,
+			"state": "MS",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 28097,
+			"state": "MS",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 28099,
+			"state": "MS",
+			"area_name": "Neshoba County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 28101,
+			"state": "MS",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 28103,
+			"state": "MS",
+			"area_name": "Noxubee County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 28105,
+			"state": "MS",
+			"area_name": "Oktibbeha County",
+			"bachelorsOrHigher": 42.6
+		},
+		{
+			"fips": 28107,
+			"state": "MS",
+			"area_name": "Panola County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 28109,
+			"state": "MS",
+			"area_name": "Pearl River County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 28111,
+			"state": "MS",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 8.4
+		},
+		{
+			"fips": 28113,
+			"state": "MS",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 28115,
+			"state": "MS",
+			"area_name": "Pontotoc County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 28117,
+			"state": "MS",
+			"area_name": "Prentiss County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 28119,
+			"state": "MS",
+			"area_name": "Quitman County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 28121,
+			"state": "MS",
+			"area_name": "Rankin County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 28123,
+			"state": "MS",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 28125,
+			"state": "MS",
+			"area_name": "Sharkey County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 28127,
+			"state": "MS",
+			"area_name": "Simpson County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 28129,
+			"state": "MS",
+			"area_name": "Smith County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 28131,
+			"state": "MS",
+			"area_name": "Stone County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 28133,
+			"state": "MS",
+			"area_name": "Sunflower County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 28135,
+			"state": "MS",
+			"area_name": "Tallahatchie County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 28137,
+			"state": "MS",
+			"area_name": "Tate County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 28139,
+			"state": "MS",
+			"area_name": "Tippah County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 28141,
+			"state": "MS",
+			"area_name": "Tishomingo County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 28143,
+			"state": "MS",
+			"area_name": "Tunica County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 28145,
+			"state": "MS",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 28147,
+			"state": "MS",
+			"area_name": "Walthall County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 28149,
+			"state": "MS",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 28151,
+			"state": "MS",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 28153,
+			"state": "MS",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 28155,
+			"state": "MS",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 28157,
+			"state": "MS",
+			"area_name": "Wilkinson County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 28159,
+			"state": "MS",
+			"area_name": "Winston County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 28161,
+			"state": "MS",
+			"area_name": "Yalobusha County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 28163,
+			"state": "MS",
+			"area_name": "Yazoo County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 29001,
+			"state": "MO",
+			"area_name": "Adair County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 29003,
+			"state": "MO",
+			"area_name": "Andrew County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 29005,
+			"state": "MO",
+			"area_name": "Atchison County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 29007,
+			"state": "MO",
+			"area_name": "Audrain County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 29009,
+			"state": "MO",
+			"area_name": "Barry County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 29011,
+			"state": "MO",
+			"area_name": "Barton County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 29013,
+			"state": "MO",
+			"area_name": "Bates County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 29015,
+			"state": "MO",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 29017,
+			"state": "MO",
+			"area_name": "Bollinger County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 29019,
+			"state": "MO",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 47.7
+		},
+		{
+			"fips": 29021,
+			"state": "MO",
+			"area_name": "Buchanan County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 29023,
+			"state": "MO",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 29025,
+			"state": "MO",
+			"area_name": "Caldwell County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 29027,
+			"state": "MO",
+			"area_name": "Callaway County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 29029,
+			"state": "MO",
+			"area_name": "Camden County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 29031,
+			"state": "MO",
+			"area_name": "Cape Girardeau County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 29033,
+			"state": "MO",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 29035,
+			"state": "MO",
+			"area_name": "Carter County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 29037,
+			"state": "MO",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 29039,
+			"state": "MO",
+			"area_name": "Cedar County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 29041,
+			"state": "MO",
+			"area_name": "Chariton County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 29043,
+			"state": "MO",
+			"area_name": "Christian County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 29045,
+			"state": "MO",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 29047,
+			"state": "MO",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 30.7
+		},
+		{
+			"fips": 29049,
+			"state": "MO",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 29051,
+			"state": "MO",
+			"area_name": "Cole County",
+			"bachelorsOrHigher": 30.9
+		},
+		{
+			"fips": 29053,
+			"state": "MO",
+			"area_name": "Cooper County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 29055,
+			"state": "MO",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 29057,
+			"state": "MO",
+			"area_name": "Dade County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 29059,
+			"state": "MO",
+			"area_name": "Dallas County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 29061,
+			"state": "MO",
+			"area_name": "Daviess County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 29063,
+			"state": "MO",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 29065,
+			"state": "MO",
+			"area_name": "Dent County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 29067,
+			"state": "MO",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 29069,
+			"state": "MO",
+			"area_name": "Dunklin County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 29071,
+			"state": "MO",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 29073,
+			"state": "MO",
+			"area_name": "Gasconade County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 29075,
+			"state": "MO",
+			"area_name": "Gentry County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 29077,
+			"state": "MO",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 29079,
+			"state": "MO",
+			"area_name": "Grundy County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 29081,
+			"state": "MO",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 29083,
+			"state": "MO",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 29085,
+			"state": "MO",
+			"area_name": "Hickory County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 29087,
+			"state": "MO",
+			"area_name": "Holt County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 29089,
+			"state": "MO",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 29091,
+			"state": "MO",
+			"area_name": "Howell County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 29093,
+			"state": "MO",
+			"area_name": "Iron County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 29095,
+			"state": "MO",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 29097,
+			"state": "MO",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 29099,
+			"state": "MO",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 29101,
+			"state": "MO",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 26
+		},
+		{
+			"fips": 29103,
+			"state": "MO",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 29105,
+			"state": "MO",
+			"area_name": "Laclede County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 29107,
+			"state": "MO",
+			"area_name": "Lafayette County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 29109,
+			"state": "MO",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 29111,
+			"state": "MO",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 29113,
+			"state": "MO",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 29115,
+			"state": "MO",
+			"area_name": "Linn County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 29117,
+			"state": "MO",
+			"area_name": "Livingston County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 29119,
+			"state": "MO",
+			"area_name": "McDonald County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 29121,
+			"state": "MO",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 29123,
+			"state": "MO",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 9.9
+		},
+		{
+			"fips": 29125,
+			"state": "MO",
+			"area_name": "Maries County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 29127,
+			"state": "MO",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 29129,
+			"state": "MO",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 29131,
+			"state": "MO",
+			"area_name": "Miller County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 29133,
+			"state": "MO",
+			"area_name": "Mississippi County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 29135,
+			"state": "MO",
+			"area_name": "Moniteau County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 29137,
+			"state": "MO",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 29139,
+			"state": "MO",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 29141,
+			"state": "MO",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 29143,
+			"state": "MO",
+			"area_name": "New Madrid County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 29145,
+			"state": "MO",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 29147,
+			"state": "MO",
+			"area_name": "Nodaway County",
+			"bachelorsOrHigher": 23.4
+		},
+		{
+			"fips": 29149,
+			"state": "MO",
+			"area_name": "Oregon County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 29151,
+			"state": "MO",
+			"area_name": "Osage County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 29153,
+			"state": "MO",
+			"area_name": "Ozark County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 29155,
+			"state": "MO",
+			"area_name": "Pemiscot County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 29157,
+			"state": "MO",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 29159,
+			"state": "MO",
+			"area_name": "Pettis County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 29161,
+			"state": "MO",
+			"area_name": "Phelps County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 29163,
+			"state": "MO",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 29165,
+			"state": "MO",
+			"area_name": "Platte County",
+			"bachelorsOrHigher": 39.2
+		},
+		{
+			"fips": 29167,
+			"state": "MO",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 29169,
+			"state": "MO",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 29171,
+			"state": "MO",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 29173,
+			"state": "MO",
+			"area_name": "Ralls County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 29175,
+			"state": "MO",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 29177,
+			"state": "MO",
+			"area_name": "Ray County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 29179,
+			"state": "MO",
+			"area_name": "Reynolds County",
+			"bachelorsOrHigher": 6.2
+		},
+		{
+			"fips": 29181,
+			"state": "MO",
+			"area_name": "Ripley County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 29183,
+			"state": "MO",
+			"area_name": "St. Charles County",
+			"bachelorsOrHigher": 35.5
+		},
+		{
+			"fips": 29185,
+			"state": "MO",
+			"area_name": "St. Clair County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 29186,
+			"state": "MO",
+			"area_name": "Ste. Genevieve County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 29187,
+			"state": "MO",
+			"area_name": "St. Francois County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 29189,
+			"state": "MO",
+			"area_name": "St. Louis County",
+			"bachelorsOrHigher": 41.4
+		},
+		{
+			"fips": 29195,
+			"state": "MO",
+			"area_name": "Saline County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 29197,
+			"state": "MO",
+			"area_name": "Schuyler County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 29199,
+			"state": "MO",
+			"area_name": "Scotland County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 29201,
+			"state": "MO",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 29203,
+			"state": "MO",
+			"area_name": "Shannon County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 29205,
+			"state": "MO",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 29207,
+			"state": "MO",
+			"area_name": "Stoddard County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 29209,
+			"state": "MO",
+			"area_name": "Stone County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 29211,
+			"state": "MO",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 29213,
+			"state": "MO",
+			"area_name": "Taney County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 29215,
+			"state": "MO",
+			"area_name": "Texas County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 29217,
+			"state": "MO",
+			"area_name": "Vernon County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 29219,
+			"state": "MO",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 29221,
+			"state": "MO",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 7.8
+		},
+		{
+			"fips": 29223,
+			"state": "MO",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 29225,
+			"state": "MO",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 29227,
+			"state": "MO",
+			"area_name": "Worth County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 29229,
+			"state": "MO",
+			"area_name": "Wright County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 29510,
+			"state": "MO",
+			"area_name": "St. Louis city",
+			"bachelorsOrHigher": 30.4
+		},
+		{
+			"fips": 30001,
+			"state": "MT",
+			"area_name": "Beaverhead County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 30003,
+			"state": "MT",
+			"area_name": "Big Horn County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 30005,
+			"state": "MT",
+			"area_name": "Blaine County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 30007,
+			"state": "MT",
+			"area_name": "Broadwater County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 30009,
+			"state": "MT",
+			"area_name": "Carbon County",
+			"bachelorsOrHigher": 29.1
+		},
+		{
+			"fips": 30011,
+			"state": "MT",
+			"area_name": "Carter County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 30013,
+			"state": "MT",
+			"area_name": "Cascade County",
+			"bachelorsOrHigher": 25.5
+		},
+		{
+			"fips": 30015,
+			"state": "MT",
+			"area_name": "Chouteau County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 30017,
+			"state": "MT",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 30019,
+			"state": "MT",
+			"area_name": "Daniels County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 30021,
+			"state": "MT",
+			"area_name": "Dawson County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 30023,
+			"state": "MT",
+			"area_name": "Deer Lodge County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 30025,
+			"state": "MT",
+			"area_name": "Fallon County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 30027,
+			"state": "MT",
+			"area_name": "Fergus County",
+			"bachelorsOrHigher": 27.6
+		},
+		{
+			"fips": 30029,
+			"state": "MT",
+			"area_name": "Flathead County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 30031,
+			"state": "MT",
+			"area_name": "Gallatin County",
+			"bachelorsOrHigher": 46.7
+		},
+		{
+			"fips": 30033,
+			"state": "MT",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 30035,
+			"state": "MT",
+			"area_name": "Glacier County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 30037,
+			"state": "MT",
+			"area_name": "Golden Valley County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 30039,
+			"state": "MT",
+			"area_name": "Granite County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 30041,
+			"state": "MT",
+			"area_name": "Hill County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 30043,
+			"state": "MT",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 33.5
+		},
+		{
+			"fips": 30045,
+			"state": "MT",
+			"area_name": "Judith Basin County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 30047,
+			"state": "MT",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 30049,
+			"state": "MT",
+			"area_name": "Lewis and Clark County",
+			"bachelorsOrHigher": 37.6
+		},
+		{
+			"fips": 30051,
+			"state": "MT",
+			"area_name": "Liberty County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 30053,
+			"state": "MT",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 30055,
+			"state": "MT",
+			"area_name": "McCone County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 30057,
+			"state": "MT",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 29.4
+		},
+		{
+			"fips": 30059,
+			"state": "MT",
+			"area_name": "Meagher County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 30061,
+			"state": "MT",
+			"area_name": "Mineral County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 30063,
+			"state": "MT",
+			"area_name": "Missoula County",
+			"bachelorsOrHigher": 40.2
+		},
+		{
+			"fips": 30065,
+			"state": "MT",
+			"area_name": "Musselshell County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 30067,
+			"state": "MT",
+			"area_name": "Park County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 30069,
+			"state": "MT",
+			"area_name": "Petroleum County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 30071,
+			"state": "MT",
+			"area_name": "Phillips County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 30073,
+			"state": "MT",
+			"area_name": "Pondera County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 30075,
+			"state": "MT",
+			"area_name": "Powder River County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 30077,
+			"state": "MT",
+			"area_name": "Powell County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 30079,
+			"state": "MT",
+			"area_name": "Prairie County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 30081,
+			"state": "MT",
+			"area_name": "Ravalli County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 30083,
+			"state": "MT",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 30085,
+			"state": "MT",
+			"area_name": "Roosevelt County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 30087,
+			"state": "MT",
+			"area_name": "Rosebud County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 30089,
+			"state": "MT",
+			"area_name": "Sanders County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 30091,
+			"state": "MT",
+			"area_name": "Sheridan County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 30093,
+			"state": "MT",
+			"area_name": "Silver Bow County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 30095,
+			"state": "MT",
+			"area_name": "Stillwater County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 30097,
+			"state": "MT",
+			"area_name": "Sweet Grass County",
+			"bachelorsOrHigher": 27.8
+		},
+		{
+			"fips": 30099,
+			"state": "MT",
+			"area_name": "Teton County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 30101,
+			"state": "MT",
+			"area_name": "Toole County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 30103,
+			"state": "MT",
+			"area_name": "Treasure County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 30105,
+			"state": "MT",
+			"area_name": "Valley County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 30107,
+			"state": "MT",
+			"area_name": "Wheatland County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 30109,
+			"state": "MT",
+			"area_name": "Wibaux County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 30111,
+			"state": "MT",
+			"area_name": "Yellowstone County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 31001,
+			"state": "NE",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 31003,
+			"state": "NE",
+			"area_name": "Antelope County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 31005,
+			"state": "NE",
+			"area_name": "Arthur County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 31007,
+			"state": "NE",
+			"area_name": "Banner County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 31009,
+			"state": "NE",
+			"area_name": "Blaine County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 31011,
+			"state": "NE",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 31013,
+			"state": "NE",
+			"area_name": "Box Butte County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 31015,
+			"state": "NE",
+			"area_name": "Boyd County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 31017,
+			"state": "NE",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 31019,
+			"state": "NE",
+			"area_name": "Buffalo County",
+			"bachelorsOrHigher": 32.8
+		},
+		{
+			"fips": 31021,
+			"state": "NE",
+			"area_name": "Burt County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 31023,
+			"state": "NE",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 31025,
+			"state": "NE",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 31027,
+			"state": "NE",
+			"area_name": "Cedar County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 31029,
+			"state": "NE",
+			"area_name": "Chase County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 31031,
+			"state": "NE",
+			"area_name": "Cherry County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 31033,
+			"state": "NE",
+			"area_name": "Cheyenne County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 31035,
+			"state": "NE",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 31037,
+			"state": "NE",
+			"area_name": "Colfax County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 31039,
+			"state": "NE",
+			"area_name": "Cuming County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 31041,
+			"state": "NE",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 31043,
+			"state": "NE",
+			"area_name": "Dakota County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 31045,
+			"state": "NE",
+			"area_name": "Dawes County",
+			"bachelorsOrHigher": 39.1
+		},
+		{
+			"fips": 31047,
+			"state": "NE",
+			"area_name": "Dawson County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 31049,
+			"state": "NE",
+			"area_name": "Deuel County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 31051,
+			"state": "NE",
+			"area_name": "Dixon County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 31053,
+			"state": "NE",
+			"area_name": "Dodge County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 31055,
+			"state": "NE",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 36.6
+		},
+		{
+			"fips": 31057,
+			"state": "NE",
+			"area_name": "Dundy County",
+			"bachelorsOrHigher": 21.8
+		},
+		{
+			"fips": 31059,
+			"state": "NE",
+			"area_name": "Fillmore County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 31061,
+			"state": "NE",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 31063,
+			"state": "NE",
+			"area_name": "Frontier County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 31065,
+			"state": "NE",
+			"area_name": "Furnas County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 31067,
+			"state": "NE",
+			"area_name": "Gage County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 31069,
+			"state": "NE",
+			"area_name": "Garden County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 31071,
+			"state": "NE",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 31073,
+			"state": "NE",
+			"area_name": "Gosper County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 31075,
+			"state": "NE",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 31077,
+			"state": "NE",
+			"area_name": "Greeley County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 31079,
+			"state": "NE",
+			"area_name": "Hall County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 31081,
+			"state": "NE",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 31083,
+			"state": "NE",
+			"area_name": "Harlan County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 31085,
+			"state": "NE",
+			"area_name": "Hayes County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 31087,
+			"state": "NE",
+			"area_name": "Hitchcock County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 31089,
+			"state": "NE",
+			"area_name": "Holt County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 31091,
+			"state": "NE",
+			"area_name": "Hooker County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 31093,
+			"state": "NE",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 31095,
+			"state": "NE",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 31097,
+			"state": "NE",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 31099,
+			"state": "NE",
+			"area_name": "Kearney County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 31101,
+			"state": "NE",
+			"area_name": "Keith County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 31103,
+			"state": "NE",
+			"area_name": "Keya Paha County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 31105,
+			"state": "NE",
+			"area_name": "Kimball County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 31107,
+			"state": "NE",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 31109,
+			"state": "NE",
+			"area_name": "Lancaster County",
+			"bachelorsOrHigher": 36.2
+		},
+		{
+			"fips": 31111,
+			"state": "NE",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 31113,
+			"state": "NE",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 31115,
+			"state": "NE",
+			"area_name": "Loup County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 31117,
+			"state": "NE",
+			"area_name": "McPherson County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 31119,
+			"state": "NE",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 31121,
+			"state": "NE",
+			"area_name": "Merrick County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 31123,
+			"state": "NE",
+			"area_name": "Morrill County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 31125,
+			"state": "NE",
+			"area_name": "Nance County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 31127,
+			"state": "NE",
+			"area_name": "Nemaha County",
+			"bachelorsOrHigher": 27.1
+		},
+		{
+			"fips": 31129,
+			"state": "NE",
+			"area_name": "Nuckolls County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 31131,
+			"state": "NE",
+			"area_name": "Otoe County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 31133,
+			"state": "NE",
+			"area_name": "Pawnee County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 31135,
+			"state": "NE",
+			"area_name": "Perkins County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 31137,
+			"state": "NE",
+			"area_name": "Phelps County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 31139,
+			"state": "NE",
+			"area_name": "Pierce County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 31141,
+			"state": "NE",
+			"area_name": "Platte County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 31143,
+			"state": "NE",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 31145,
+			"state": "NE",
+			"area_name": "Red Willow County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 31147,
+			"state": "NE",
+			"area_name": "Richardson County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 31149,
+			"state": "NE",
+			"area_name": "Rock County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 31151,
+			"state": "NE",
+			"area_name": "Saline County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 31153,
+			"state": "NE",
+			"area_name": "Sarpy County",
+			"bachelorsOrHigher": 36.6
+		},
+		{
+			"fips": 31155,
+			"state": "NE",
+			"area_name": "Saunders County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 31157,
+			"state": "NE",
+			"area_name": "Scotts Bluff County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 31159,
+			"state": "NE",
+			"area_name": "Seward County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 31161,
+			"state": "NE",
+			"area_name": "Sheridan County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 31163,
+			"state": "NE",
+			"area_name": "Sherman County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 31165,
+			"state": "NE",
+			"area_name": "Sioux County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 31167,
+			"state": "NE",
+			"area_name": "Stanton County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 31169,
+			"state": "NE",
+			"area_name": "Thayer County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 31171,
+			"state": "NE",
+			"area_name": "Thomas County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 31173,
+			"state": "NE",
+			"area_name": "Thurston County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 31175,
+			"state": "NE",
+			"area_name": "Valley County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 31177,
+			"state": "NE",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 31179,
+			"state": "NE",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 36.4
+		},
+		{
+			"fips": 31181,
+			"state": "NE",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 31183,
+			"state": "NE",
+			"area_name": "Wheeler County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 31185,
+			"state": "NE",
+			"area_name": "York County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 32001,
+			"state": "NV",
+			"area_name": "Churchill County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 32003,
+			"state": "NV",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 32005,
+			"state": "NV",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 32007,
+			"state": "NV",
+			"area_name": "Elko County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 32009,
+			"state": "NV",
+			"area_name": "Esmeralda County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 32011,
+			"state": "NV",
+			"area_name": "Eureka County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 32013,
+			"state": "NV",
+			"area_name": "Humboldt County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 32015,
+			"state": "NV",
+			"area_name": "Lander County",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 32017,
+			"state": "NV",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 32019,
+			"state": "NV",
+			"area_name": "Lyon County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 32021,
+			"state": "NV",
+			"area_name": "Mineral County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 32023,
+			"state": "NV",
+			"area_name": "Nye County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 32027,
+			"state": "NV",
+			"area_name": "Pershing County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 32029,
+			"state": "NV",
+			"area_name": "Storey County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 32031,
+			"state": "NV",
+			"area_name": "Washoe County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 32033,
+			"state": "NV",
+			"area_name": "White Pine County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 32510,
+			"state": "NV",
+			"area_name": "Carson City",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 33001,
+			"state": "NH",
+			"area_name": "Belknap County",
+			"bachelorsOrHigher": 29.2
+		},
+		{
+			"fips": 33003,
+			"state": "NH",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 32.2
+		},
+		{
+			"fips": 33005,
+			"state": "NH",
+			"area_name": "Cheshire County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 33007,
+			"state": "NH",
+			"area_name": "Coos County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 33009,
+			"state": "NH",
+			"area_name": "Grafton County",
+			"bachelorsOrHigher": 37.5
+		},
+		{
+			"fips": 33011,
+			"state": "NH",
+			"area_name": "Hillsborough County",
+			"bachelorsOrHigher": 35.5
+		},
+		{
+			"fips": 33013,
+			"state": "NH",
+			"area_name": "Merrimack County",
+			"bachelorsOrHigher": 33.7
+		},
+		{
+			"fips": 33015,
+			"state": "NH",
+			"area_name": "Rockingham County",
+			"bachelorsOrHigher": 38
+		},
+		{
+			"fips": 33017,
+			"state": "NH",
+			"area_name": "Strafford County",
+			"bachelorsOrHigher": 33.2
+		},
+		{
+			"fips": 33019,
+			"state": "NH",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 27.4
+		},
+		{
+			"fips": 34001,
+			"state": "NJ",
+			"area_name": "Atlantic County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 34003,
+			"state": "NJ",
+			"area_name": "Bergen County",
+			"bachelorsOrHigher": 46.1
+		},
+		{
+			"fips": 34005,
+			"state": "NJ",
+			"area_name": "Burlington County",
+			"bachelorsOrHigher": 35.3
+		},
+		{
+			"fips": 34007,
+			"state": "NJ",
+			"area_name": "Camden County",
+			"bachelorsOrHigher": 29.7
+		},
+		{
+			"fips": 34009,
+			"state": "NJ",
+			"area_name": "Cape May County",
+			"bachelorsOrHigher": 29.2
+		},
+		{
+			"fips": 34011,
+			"state": "NJ",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 34013,
+			"state": "NJ",
+			"area_name": "Essex County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 34015,
+			"state": "NJ",
+			"area_name": "Gloucester County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 34017,
+			"state": "NJ",
+			"area_name": "Hudson County",
+			"bachelorsOrHigher": 36.8
+		},
+		{
+			"fips": 34019,
+			"state": "NJ",
+			"area_name": "Hunterdon County",
+			"bachelorsOrHigher": 48.3
+		},
+		{
+			"fips": 34021,
+			"state": "NJ",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 39.8
+		},
+		{
+			"fips": 34023,
+			"state": "NJ",
+			"area_name": "Middlesex County",
+			"bachelorsOrHigher": 40.7
+		},
+		{
+			"fips": 34025,
+			"state": "NJ",
+			"area_name": "Monmouth County",
+			"bachelorsOrHigher": 42
+		},
+		{
+			"fips": 34027,
+			"state": "NJ",
+			"area_name": "Morris County",
+			"bachelorsOrHigher": 50.6
+		},
+		{
+			"fips": 34029,
+			"state": "NJ",
+			"area_name": "Ocean County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 34031,
+			"state": "NJ",
+			"area_name": "Passaic County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 34033,
+			"state": "NJ",
+			"area_name": "Salem County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 34035,
+			"state": "NJ",
+			"area_name": "Somerset County",
+			"bachelorsOrHigher": 52
+		},
+		{
+			"fips": 34037,
+			"state": "NJ",
+			"area_name": "Sussex County",
+			"bachelorsOrHigher": 33.1
+		},
+		{
+			"fips": 34039,
+			"state": "NJ",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 34041,
+			"state": "NJ",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 29.5
+		},
+		{
+			"fips": 35001,
+			"state": "NM",
+			"area_name": "Bernalillo County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 35003,
+			"state": "NM",
+			"area_name": "Catron County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 35005,
+			"state": "NM",
+			"area_name": "Chaves County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 35006,
+			"state": "NM",
+			"area_name": "Cibola County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 35007,
+			"state": "NM",
+			"area_name": "Colfax County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 35009,
+			"state": "NM",
+			"area_name": "Curry County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 35011,
+			"state": "NM",
+			"area_name": "De Baca County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 35013,
+			"state": "NM",
+			"area_name": "Dona Ana County",
+			"bachelorsOrHigher": 27.4
+		},
+		{
+			"fips": 35015,
+			"state": "NM",
+			"area_name": "Eddy County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 35017,
+			"state": "NM",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 35019,
+			"state": "NM",
+			"area_name": "Guadalupe County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 35021,
+			"state": "NM",
+			"area_name": "Harding County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 35023,
+			"state": "NM",
+			"area_name": "Hidalgo County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 35025,
+			"state": "NM",
+			"area_name": "Lea County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 35027,
+			"state": "NM",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 35028,
+			"state": "NM",
+			"area_name": "Los Alamos County",
+			"bachelorsOrHigher": 64
+		},
+		{
+			"fips": 35029,
+			"state": "NM",
+			"area_name": "Luna County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 35031,
+			"state": "NM",
+			"area_name": "McKinley County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 35033,
+			"state": "NM",
+			"area_name": "Mora County",
+			"bachelorsOrHigher": 8
+		},
+		{
+			"fips": 35035,
+			"state": "NM",
+			"area_name": "Otero County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 35037,
+			"state": "NM",
+			"area_name": "Quay County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 35039,
+			"state": "NM",
+			"area_name": "Rio Arriba County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 35041,
+			"state": "NM",
+			"area_name": "Roosevelt County",
+			"bachelorsOrHigher": 22.8
+		},
+		{
+			"fips": 35043,
+			"state": "NM",
+			"area_name": "Sandoval County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 35045,
+			"state": "NM",
+			"area_name": "San Juan County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 35047,
+			"state": "NM",
+			"area_name": "San Miguel County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 35049,
+			"state": "NM",
+			"area_name": "Santa Fe County",
+			"bachelorsOrHigher": 39.9
+		},
+		{
+			"fips": 35051,
+			"state": "NM",
+			"area_name": "Sierra County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 35053,
+			"state": "NM",
+			"area_name": "Socorro County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 35055,
+			"state": "NM",
+			"area_name": "Taos County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 35057,
+			"state": "NM",
+			"area_name": "Torrance County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 35059,
+			"state": "NM",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 35061,
+			"state": "NM",
+			"area_name": "Valencia County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 36001,
+			"state": "NY",
+			"area_name": "Albany County",
+			"bachelorsOrHigher": 38.7
+		},
+		{
+			"fips": 36003,
+			"state": "NY",
+			"area_name": "Allegany County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 36005,
+			"state": "NY",
+			"area_name": "Bronx County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 36007,
+			"state": "NY",
+			"area_name": "Broome County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 36009,
+			"state": "NY",
+			"area_name": "Cattaraugus County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 36011,
+			"state": "NY",
+			"area_name": "Cayuga County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 36013,
+			"state": "NY",
+			"area_name": "Chautauqua County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 36015,
+			"state": "NY",
+			"area_name": "Chemung County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 36017,
+			"state": "NY",
+			"area_name": "Chenango County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 36019,
+			"state": "NY",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 36021,
+			"state": "NY",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 28.5
+		},
+		{
+			"fips": 36023,
+			"state": "NY",
+			"area_name": "Cortland County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 36025,
+			"state": "NY",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 36027,
+			"state": "NY",
+			"area_name": "Dutchess County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 36029,
+			"state": "NY",
+			"area_name": "Erie County",
+			"bachelorsOrHigher": 31.2
+		},
+		{
+			"fips": 36031,
+			"state": "NY",
+			"area_name": "Essex County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 36033,
+			"state": "NY",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 36035,
+			"state": "NY",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 36037,
+			"state": "NY",
+			"area_name": "Genesee County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 36039,
+			"state": "NY",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 36041,
+			"state": "NY",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 36043,
+			"state": "NY",
+			"area_name": "Herkimer County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 36045,
+			"state": "NY",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 36047,
+			"state": "NY",
+			"area_name": "Kings County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 36049,
+			"state": "NY",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 36051,
+			"state": "NY",
+			"area_name": "Livingston County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 36053,
+			"state": "NY",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 36055,
+			"state": "NY",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 35.9
+		},
+		{
+			"fips": 36057,
+			"state": "NY",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 36059,
+			"state": "NY",
+			"area_name": "Nassau County",
+			"bachelorsOrHigher": 42.3
+		},
+		{
+			"fips": 36061,
+			"state": "NY",
+			"area_name": "New York County",
+			"bachelorsOrHigher": 59.3
+		},
+		{
+			"fips": 36063,
+			"state": "NY",
+			"area_name": "Niagara County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 36065,
+			"state": "NY",
+			"area_name": "Oneida County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 36067,
+			"state": "NY",
+			"area_name": "Onondaga County",
+			"bachelorsOrHigher": 33.5
+		},
+		{
+			"fips": 36069,
+			"state": "NY",
+			"area_name": "Ontario County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 36071,
+			"state": "NY",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 36073,
+			"state": "NY",
+			"area_name": "Orleans County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 36075,
+			"state": "NY",
+			"area_name": "Oswego County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 36077,
+			"state": "NY",
+			"area_name": "Otsego County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 36079,
+			"state": "NY",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 38.2
+		},
+		{
+			"fips": 36081,
+			"state": "NY",
+			"area_name": "Queens County",
+			"bachelorsOrHigher": 30.2
+		},
+		{
+			"fips": 36083,
+			"state": "NY",
+			"area_name": "Rensselaer County",
+			"bachelorsOrHigher": 28.5
+		},
+		{
+			"fips": 36085,
+			"state": "NY",
+			"area_name": "Richmond County",
+			"bachelorsOrHigher": 30.6
+		},
+		{
+			"fips": 36087,
+			"state": "NY",
+			"area_name": "Rockland County",
+			"bachelorsOrHigher": 40.7
+		},
+		{
+			"fips": 36089,
+			"state": "NY",
+			"area_name": "St. Lawrence County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 36091,
+			"state": "NY",
+			"area_name": "Saratoga County",
+			"bachelorsOrHigher": 38
+		},
+		{
+			"fips": 36093,
+			"state": "NY",
+			"area_name": "Schenectady County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 36095,
+			"state": "NY",
+			"area_name": "Schoharie County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 36097,
+			"state": "NY",
+			"area_name": "Schuyler County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 36099,
+			"state": "NY",
+			"area_name": "Seneca County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 36101,
+			"state": "NY",
+			"area_name": "Steuben County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 36103,
+			"state": "NY",
+			"area_name": "Suffolk County",
+			"bachelorsOrHigher": 33.5
+		},
+		{
+			"fips": 36105,
+			"state": "NY",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 36107,
+			"state": "NY",
+			"area_name": "Tioga County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 36109,
+			"state": "NY",
+			"area_name": "Tompkins County",
+			"bachelorsOrHigher": 50.3
+		},
+		{
+			"fips": 36111,
+			"state": "NY",
+			"area_name": "Ulster County",
+			"bachelorsOrHigher": 30.1
+		},
+		{
+			"fips": 36113,
+			"state": "NY",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 36115,
+			"state": "NY",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 36117,
+			"state": "NY",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 36119,
+			"state": "NY",
+			"area_name": "Westchester County",
+			"bachelorsOrHigher": 46
+		},
+		{
+			"fips": 36121,
+			"state": "NY",
+			"area_name": "Wyoming County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 36123,
+			"state": "NY",
+			"area_name": "Yates County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 37001,
+			"state": "NC",
+			"area_name": "Alamance County",
+			"bachelorsOrHigher": 21
+		},
+		{
+			"fips": 37003,
+			"state": "NC",
+			"area_name": "Alexander County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 37005,
+			"state": "NC",
+			"area_name": "Alleghany County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 37007,
+			"state": "NC",
+			"area_name": "Anson County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 37009,
+			"state": "NC",
+			"area_name": "Ashe County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 37011,
+			"state": "NC",
+			"area_name": "Avery County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 37013,
+			"state": "NC",
+			"area_name": "Beaufort County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 37015,
+			"state": "NC",
+			"area_name": "Bertie County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 37017,
+			"state": "NC",
+			"area_name": "Bladen County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 37019,
+			"state": "NC",
+			"area_name": "Brunswick County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 37021,
+			"state": "NC",
+			"area_name": "Buncombe County",
+			"bachelorsOrHigher": 35.1
+		},
+		{
+			"fips": 37023,
+			"state": "NC",
+			"area_name": "Burke County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 37025,
+			"state": "NC",
+			"area_name": "Cabarrus County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 37027,
+			"state": "NC",
+			"area_name": "Caldwell County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 37029,
+			"state": "NC",
+			"area_name": "Camden County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 37031,
+			"state": "NC",
+			"area_name": "Carteret County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 37033,
+			"state": "NC",
+			"area_name": "Caswell County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 37035,
+			"state": "NC",
+			"area_name": "Catawba County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 37037,
+			"state": "NC",
+			"area_name": "Chatham County",
+			"bachelorsOrHigher": 36.2
+		},
+		{
+			"fips": 37039,
+			"state": "NC",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 37041,
+			"state": "NC",
+			"area_name": "Chowan County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 37043,
+			"state": "NC",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 37045,
+			"state": "NC",
+			"area_name": "Cleveland County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 37047,
+			"state": "NC",
+			"area_name": "Columbus County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 37049,
+			"state": "NC",
+			"area_name": "Craven County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 37051,
+			"state": "NC",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 37053,
+			"state": "NC",
+			"area_name": "Currituck County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 37055,
+			"state": "NC",
+			"area_name": "Dare County",
+			"bachelorsOrHigher": 29.4
+		},
+		{
+			"fips": 37057,
+			"state": "NC",
+			"area_name": "Davidson County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 37059,
+			"state": "NC",
+			"area_name": "Davie County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 37061,
+			"state": "NC",
+			"area_name": "Duplin County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 37063,
+			"state": "NC",
+			"area_name": "Durham County",
+			"bachelorsOrHigher": 45.6
+		},
+		{
+			"fips": 37065,
+			"state": "NC",
+			"area_name": "Edgecombe County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 37067,
+			"state": "NC",
+			"area_name": "Forsyth County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 37069,
+			"state": "NC",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 37071,
+			"state": "NC",
+			"area_name": "Gaston County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 37073,
+			"state": "NC",
+			"area_name": "Gates County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 37075,
+			"state": "NC",
+			"area_name": "Graham County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 37077,
+			"state": "NC",
+			"area_name": "Granville County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 37079,
+			"state": "NC",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 37081,
+			"state": "NC",
+			"area_name": "Guilford County",
+			"bachelorsOrHigher": 33.7
+		},
+		{
+			"fips": 37083,
+			"state": "NC",
+			"area_name": "Halifax County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 37085,
+			"state": "NC",
+			"area_name": "Harnett County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 37087,
+			"state": "NC",
+			"area_name": "Haywood County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 37089,
+			"state": "NC",
+			"area_name": "Henderson County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 37091,
+			"state": "NC",
+			"area_name": "Hertford County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 37093,
+			"state": "NC",
+			"area_name": "Hoke County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 37095,
+			"state": "NC",
+			"area_name": "Hyde County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 37097,
+			"state": "NC",
+			"area_name": "Iredell County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 37099,
+			"state": "NC",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 37101,
+			"state": "NC",
+			"area_name": "Johnston County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 37103,
+			"state": "NC",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 37105,
+			"state": "NC",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 37107,
+			"state": "NC",
+			"area_name": "Lenoir County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 37109,
+			"state": "NC",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 37111,
+			"state": "NC",
+			"area_name": "McDowell County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 37113,
+			"state": "NC",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 37115,
+			"state": "NC",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 37117,
+			"state": "NC",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 37119,
+			"state": "NC",
+			"area_name": "Mecklenburg County",
+			"bachelorsOrHigher": 41.5
+		},
+		{
+			"fips": 37121,
+			"state": "NC",
+			"area_name": "Mitchell County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 37123,
+			"state": "NC",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 37125,
+			"state": "NC",
+			"area_name": "Moore County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 37127,
+			"state": "NC",
+			"area_name": "Nash County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 37129,
+			"state": "NC",
+			"area_name": "New Hanover County",
+			"bachelorsOrHigher": 37.2
+		},
+		{
+			"fips": 37131,
+			"state": "NC",
+			"area_name": "Northampton County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 37133,
+			"state": "NC",
+			"area_name": "Onslow County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 37135,
+			"state": "NC",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 56.2
+		},
+		{
+			"fips": 37137,
+			"state": "NC",
+			"area_name": "Pamlico County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 37139,
+			"state": "NC",
+			"area_name": "Pasquotank County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 37141,
+			"state": "NC",
+			"area_name": "Pender County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 37143,
+			"state": "NC",
+			"area_name": "Perquimans County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 37145,
+			"state": "NC",
+			"area_name": "Person County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 37147,
+			"state": "NC",
+			"area_name": "Pitt County",
+			"bachelorsOrHigher": 28.8
+		},
+		{
+			"fips": 37149,
+			"state": "NC",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 30
+		},
+		{
+			"fips": 37151,
+			"state": "NC",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 37153,
+			"state": "NC",
+			"area_name": "Richmond County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 37155,
+			"state": "NC",
+			"area_name": "Robeson County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 37157,
+			"state": "NC",
+			"area_name": "Rockingham County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 37159,
+			"state": "NC",
+			"area_name": "Rowan County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 37161,
+			"state": "NC",
+			"area_name": "Rutherford County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 37163,
+			"state": "NC",
+			"area_name": "Sampson County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 37165,
+			"state": "NC",
+			"area_name": "Scotland County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 37167,
+			"state": "NC",
+			"area_name": "Stanly County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 37169,
+			"state": "NC",
+			"area_name": "Stokes County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 37171,
+			"state": "NC",
+			"area_name": "Surry County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 37173,
+			"state": "NC",
+			"area_name": "Swain County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 37175,
+			"state": "NC",
+			"area_name": "Transylvania County",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 37177,
+			"state": "NC",
+			"area_name": "Tyrrell County",
+			"bachelorsOrHigher": 8
+		},
+		{
+			"fips": 37179,
+			"state": "NC",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 37181,
+			"state": "NC",
+			"area_name": "Vance County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 37183,
+			"state": "NC",
+			"area_name": "Wake County",
+			"bachelorsOrHigher": 48.3
+		},
+		{
+			"fips": 37185,
+			"state": "NC",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 37187,
+			"state": "NC",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 37189,
+			"state": "NC",
+			"area_name": "Watauga County",
+			"bachelorsOrHigher": 38
+		},
+		{
+			"fips": 37191,
+			"state": "NC",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 37193,
+			"state": "NC",
+			"area_name": "Wilkes County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 37195,
+			"state": "NC",
+			"area_name": "Wilson County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 37197,
+			"state": "NC",
+			"area_name": "Yadkin County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 37199,
+			"state": "NC",
+			"area_name": "Yancey County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 38001,
+			"state": "ND",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 38003,
+			"state": "ND",
+			"area_name": "Barnes County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 38005,
+			"state": "ND",
+			"area_name": "Benson County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 38007,
+			"state": "ND",
+			"area_name": "Billings County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 38009,
+			"state": "ND",
+			"area_name": "Bottineau County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 38011,
+			"state": "ND",
+			"area_name": "Bowman County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 38013,
+			"state": "ND",
+			"area_name": "Burke County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 38015,
+			"state": "ND",
+			"area_name": "Burleigh County",
+			"bachelorsOrHigher": 33.4
+		},
+		{
+			"fips": 38017,
+			"state": "ND",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 37.4
+		},
+		{
+			"fips": 38019,
+			"state": "ND",
+			"area_name": "Cavalier County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 38021,
+			"state": "ND",
+			"area_name": "Dickey County",
+			"bachelorsOrHigher": 25
+		},
+		{
+			"fips": 38023,
+			"state": "ND",
+			"area_name": "Divide County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 38025,
+			"state": "ND",
+			"area_name": "Dunn County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 38027,
+			"state": "ND",
+			"area_name": "Eddy County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 38029,
+			"state": "ND",
+			"area_name": "Emmons County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 38031,
+			"state": "ND",
+			"area_name": "Foster County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 38033,
+			"state": "ND",
+			"area_name": "Golden Valley County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 38035,
+			"state": "ND",
+			"area_name": "Grand Forks County",
+			"bachelorsOrHigher": 32.6
+		},
+		{
+			"fips": 38037,
+			"state": "ND",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 38039,
+			"state": "ND",
+			"area_name": "Griggs County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 38041,
+			"state": "ND",
+			"area_name": "Hettinger County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 38043,
+			"state": "ND",
+			"area_name": "Kidder County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 38045,
+			"state": "ND",
+			"area_name": "LaMoure County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 38047,
+			"state": "ND",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 38049,
+			"state": "ND",
+			"area_name": "McHenry County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 38051,
+			"state": "ND",
+			"area_name": "McIntosh County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 38053,
+			"state": "ND",
+			"area_name": "McKenzie County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 38055,
+			"state": "ND",
+			"area_name": "McLean County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 38057,
+			"state": "ND",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 38059,
+			"state": "ND",
+			"area_name": "Morton County",
+			"bachelorsOrHigher": 25.3
+		},
+		{
+			"fips": 38061,
+			"state": "ND",
+			"area_name": "Mountrail County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 38063,
+			"state": "ND",
+			"area_name": "Nelson County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 38065,
+			"state": "ND",
+			"area_name": "Oliver County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 38067,
+			"state": "ND",
+			"area_name": "Pembina County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 38069,
+			"state": "ND",
+			"area_name": "Pierce County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 38071,
+			"state": "ND",
+			"area_name": "Ramsey County",
+			"bachelorsOrHigher": 22.8
+		},
+		{
+			"fips": 38073,
+			"state": "ND",
+			"area_name": "Ransom County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 38075,
+			"state": "ND",
+			"area_name": "Renville County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 38077,
+			"state": "ND",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 38079,
+			"state": "ND",
+			"area_name": "Rolette County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 38081,
+			"state": "ND",
+			"area_name": "Sargent County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 38083,
+			"state": "ND",
+			"area_name": "Sheridan County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 38085,
+			"state": "ND",
+			"area_name": "Sioux County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 38087,
+			"state": "ND",
+			"area_name": "Slope County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 38089,
+			"state": "ND",
+			"area_name": "Stark County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 38091,
+			"state": "ND",
+			"area_name": "Steele County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 38093,
+			"state": "ND",
+			"area_name": "Stutsman County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 38095,
+			"state": "ND",
+			"area_name": "Towner County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 38097,
+			"state": "ND",
+			"area_name": "Traill County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 38099,
+			"state": "ND",
+			"area_name": "Walsh County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 38101,
+			"state": "ND",
+			"area_name": "Ward County",
+			"bachelorsOrHigher": 25.3
+		},
+		{
+			"fips": 38103,
+			"state": "ND",
+			"area_name": "Wells County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 38105,
+			"state": "ND",
+			"area_name": "Williams County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 39001,
+			"state": "OH",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 9.8
+		},
+		{
+			"fips": 39003,
+			"state": "OH",
+			"area_name": "Allen County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 39005,
+			"state": "OH",
+			"area_name": "Ashland County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 39007,
+			"state": "OH",
+			"area_name": "Ashtabula County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 39009,
+			"state": "OH",
+			"area_name": "Athens County",
+			"bachelorsOrHigher": 28.8
+		},
+		{
+			"fips": 39011,
+			"state": "OH",
+			"area_name": "Auglaize County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 39013,
+			"state": "OH",
+			"area_name": "Belmont County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 39015,
+			"state": "OH",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 39017,
+			"state": "OH",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 39019,
+			"state": "OH",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 39021,
+			"state": "OH",
+			"area_name": "Champaign County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 39023,
+			"state": "OH",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 39025,
+			"state": "OH",
+			"area_name": "Clermont County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 39027,
+			"state": "OH",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 39029,
+			"state": "OH",
+			"area_name": "Columbiana County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 39031,
+			"state": "OH",
+			"area_name": "Coshocton County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 39033,
+			"state": "OH",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 39035,
+			"state": "OH",
+			"area_name": "Cuyahoga County",
+			"bachelorsOrHigher": 30.3
+		},
+		{
+			"fips": 39037,
+			"state": "OH",
+			"area_name": "Darke County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 39039,
+			"state": "OH",
+			"area_name": "Defiance County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 39041,
+			"state": "OH",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 51.1
+		},
+		{
+			"fips": 39043,
+			"state": "OH",
+			"area_name": "Erie County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 39045,
+			"state": "OH",
+			"area_name": "Fairfield County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 39047,
+			"state": "OH",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 39049,
+			"state": "OH",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 36.7
+		},
+		{
+			"fips": 39051,
+			"state": "OH",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 39053,
+			"state": "OH",
+			"area_name": "Gallia County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 39055,
+			"state": "OH",
+			"area_name": "Geauga County",
+			"bachelorsOrHigher": 36
+		},
+		{
+			"fips": 39057,
+			"state": "OH",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 36.9
+		},
+		{
+			"fips": 39059,
+			"state": "OH",
+			"area_name": "Guernsey County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 39061,
+			"state": "OH",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 39063,
+			"state": "OH",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 39065,
+			"state": "OH",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 39067,
+			"state": "OH",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 39069,
+			"state": "OH",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 39071,
+			"state": "OH",
+			"area_name": "Highland County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 39073,
+			"state": "OH",
+			"area_name": "Hocking County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 39075,
+			"state": "OH",
+			"area_name": "Holmes County",
+			"bachelorsOrHigher": 7.8
+		},
+		{
+			"fips": 39077,
+			"state": "OH",
+			"area_name": "Huron County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 39079,
+			"state": "OH",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 39081,
+			"state": "OH",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 39083,
+			"state": "OH",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 39085,
+			"state": "OH",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 26
+		},
+		{
+			"fips": 39087,
+			"state": "OH",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 39089,
+			"state": "OH",
+			"area_name": "Licking County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 39091,
+			"state": "OH",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 39093,
+			"state": "OH",
+			"area_name": "Lorain County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 39095,
+			"state": "OH",
+			"area_name": "Lucas County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 39097,
+			"state": "OH",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 39099,
+			"state": "OH",
+			"area_name": "Mahoning County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 39101,
+			"state": "OH",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 39103,
+			"state": "OH",
+			"area_name": "Medina County",
+			"bachelorsOrHigher": 29.9
+		},
+		{
+			"fips": 39105,
+			"state": "OH",
+			"area_name": "Meigs County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 39107,
+			"state": "OH",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 39109,
+			"state": "OH",
+			"area_name": "Miami County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 39111,
+			"state": "OH",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 39113,
+			"state": "OH",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 39115,
+			"state": "OH",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 39117,
+			"state": "OH",
+			"area_name": "Morrow County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 39119,
+			"state": "OH",
+			"area_name": "Muskingum County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 39121,
+			"state": "OH",
+			"area_name": "Noble County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 39123,
+			"state": "OH",
+			"area_name": "Ottawa County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 39125,
+			"state": "OH",
+			"area_name": "Paulding County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 39127,
+			"state": "OH",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 39129,
+			"state": "OH",
+			"area_name": "Pickaway County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 39131,
+			"state": "OH",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 39133,
+			"state": "OH",
+			"area_name": "Portage County",
+			"bachelorsOrHigher": 25.5
+		},
+		{
+			"fips": 39135,
+			"state": "OH",
+			"area_name": "Preble County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 39137,
+			"state": "OH",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 39139,
+			"state": "OH",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 39141,
+			"state": "OH",
+			"area_name": "Ross County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 39143,
+			"state": "OH",
+			"area_name": "Sandusky County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 39145,
+			"state": "OH",
+			"area_name": "Scioto County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 39147,
+			"state": "OH",
+			"area_name": "Seneca County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 39149,
+			"state": "OH",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 39151,
+			"state": "OH",
+			"area_name": "Stark County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 39153,
+			"state": "OH",
+			"area_name": "Summit County",
+			"bachelorsOrHigher": 29.9
+		},
+		{
+			"fips": 39155,
+			"state": "OH",
+			"area_name": "Trumbull County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 39157,
+			"state": "OH",
+			"area_name": "Tuscarawas County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 39159,
+			"state": "OH",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 26
+		},
+		{
+			"fips": 39161,
+			"state": "OH",
+			"area_name": "Van Wert County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 39163,
+			"state": "OH",
+			"area_name": "Vinton County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 39165,
+			"state": "OH",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 38.7
+		},
+		{
+			"fips": 39167,
+			"state": "OH",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 39169,
+			"state": "OH",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 39171,
+			"state": "OH",
+			"area_name": "Williams County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 39173,
+			"state": "OH",
+			"area_name": "Wood County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 39175,
+			"state": "OH",
+			"area_name": "Wyandot County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 40001,
+			"state": "OK",
+			"area_name": "Adair County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 40003,
+			"state": "OK",
+			"area_name": "Alfalfa County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 40005,
+			"state": "OK",
+			"area_name": "Atoka County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 40007,
+			"state": "OK",
+			"area_name": "Beaver County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 40009,
+			"state": "OK",
+			"area_name": "Beckham County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 40011,
+			"state": "OK",
+			"area_name": "Blaine County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 40013,
+			"state": "OK",
+			"area_name": "Bryan County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 40015,
+			"state": "OK",
+			"area_name": "Caddo County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 40017,
+			"state": "OK",
+			"area_name": "Canadian County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 40019,
+			"state": "OK",
+			"area_name": "Carter County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 40021,
+			"state": "OK",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 40023,
+			"state": "OK",
+			"area_name": "Choctaw County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 40025,
+			"state": "OK",
+			"area_name": "Cimarron County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 40027,
+			"state": "OK",
+			"area_name": "Cleveland County",
+			"bachelorsOrHigher": 31
+		},
+		{
+			"fips": 40029,
+			"state": "OK",
+			"area_name": "Coal County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 40031,
+			"state": "OK",
+			"area_name": "Comanche County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 40033,
+			"state": "OK",
+			"area_name": "Cotton County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 40035,
+			"state": "OK",
+			"area_name": "Craig County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 40037,
+			"state": "OK",
+			"area_name": "Creek County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 40039,
+			"state": "OK",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 27.3
+		},
+		{
+			"fips": 40041,
+			"state": "OK",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 40043,
+			"state": "OK",
+			"area_name": "Dewey County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 40045,
+			"state": "OK",
+			"area_name": "Ellis County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 40047,
+			"state": "OK",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 40049,
+			"state": "OK",
+			"area_name": "Garvin County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 40051,
+			"state": "OK",
+			"area_name": "Grady County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 40053,
+			"state": "OK",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 40055,
+			"state": "OK",
+			"area_name": "Greer County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 40057,
+			"state": "OK",
+			"area_name": "Harmon County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 40059,
+			"state": "OK",
+			"area_name": "Harper County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 40061,
+			"state": "OK",
+			"area_name": "Haskell County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 40063,
+			"state": "OK",
+			"area_name": "Hughes County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 40065,
+			"state": "OK",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 40067,
+			"state": "OK",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 40069,
+			"state": "OK",
+			"area_name": "Johnston County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 40071,
+			"state": "OK",
+			"area_name": "Kay County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 40073,
+			"state": "OK",
+			"area_name": "Kingfisher County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 40075,
+			"state": "OK",
+			"area_name": "Kiowa County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 40077,
+			"state": "OK",
+			"area_name": "Latimer County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 40079,
+			"state": "OK",
+			"area_name": "Le Flore County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 40081,
+			"state": "OK",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 40083,
+			"state": "OK",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 40085,
+			"state": "OK",
+			"area_name": "Love County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 40087,
+			"state": "OK",
+			"area_name": "McClain County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 40089,
+			"state": "OK",
+			"area_name": "McCurtain County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 40091,
+			"state": "OK",
+			"area_name": "McIntosh County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 40093,
+			"state": "OK",
+			"area_name": "Major County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 40095,
+			"state": "OK",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 40097,
+			"state": "OK",
+			"area_name": "Mayes County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 40099,
+			"state": "OK",
+			"area_name": "Murray County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 40101,
+			"state": "OK",
+			"area_name": "Muskogee County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 40103,
+			"state": "OK",
+			"area_name": "Noble County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 40105,
+			"state": "OK",
+			"area_name": "Nowata County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 40107,
+			"state": "OK",
+			"area_name": "Okfuskee County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 40109,
+			"state": "OK",
+			"area_name": "Oklahoma County",
+			"bachelorsOrHigher": 30.2
+		},
+		{
+			"fips": 40111,
+			"state": "OK",
+			"area_name": "Okmulgee County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 40113,
+			"state": "OK",
+			"area_name": "Osage County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 40115,
+			"state": "OK",
+			"area_name": "Ottawa County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 40117,
+			"state": "OK",
+			"area_name": "Pawnee County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 40119,
+			"state": "OK",
+			"area_name": "Payne County",
+			"bachelorsOrHigher": 36.4
+		},
+		{
+			"fips": 40121,
+			"state": "OK",
+			"area_name": "Pittsburg County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 40123,
+			"state": "OK",
+			"area_name": "Pontotoc County",
+			"bachelorsOrHigher": 27.1
+		},
+		{
+			"fips": 40125,
+			"state": "OK",
+			"area_name": "Pottawatomie County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 40127,
+			"state": "OK",
+			"area_name": "Pushmataha County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 40129,
+			"state": "OK",
+			"area_name": "Roger Mills County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 40131,
+			"state": "OK",
+			"area_name": "Rogers County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 40133,
+			"state": "OK",
+			"area_name": "Seminole County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 40135,
+			"state": "OK",
+			"area_name": "Sequoyah County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 40137,
+			"state": "OK",
+			"area_name": "Stephens County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 40139,
+			"state": "OK",
+			"area_name": "Texas County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 40141,
+			"state": "OK",
+			"area_name": "Tillman County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 40143,
+			"state": "OK",
+			"area_name": "Tulsa County",
+			"bachelorsOrHigher": 30
+		},
+		{
+			"fips": 40145,
+			"state": "OK",
+			"area_name": "Wagoner County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 40147,
+			"state": "OK",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 40149,
+			"state": "OK",
+			"area_name": "Washita County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 40151,
+			"state": "OK",
+			"area_name": "Woods County",
+			"bachelorsOrHigher": 25.7
+		},
+		{
+			"fips": 40153,
+			"state": "OK",
+			"area_name": "Woodward County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 41001,
+			"state": "OR",
+			"area_name": "Baker County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 41003,
+			"state": "OR",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 51.4
+		},
+		{
+			"fips": 41005,
+			"state": "OR",
+			"area_name": "Clackamas County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 41007,
+			"state": "OR",
+			"area_name": "Clatsop County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 41009,
+			"state": "OR",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 41011,
+			"state": "OR",
+			"area_name": "Coos County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 41013,
+			"state": "OR",
+			"area_name": "Crook County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 41015,
+			"state": "OR",
+			"area_name": "Curry County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 41017,
+			"state": "OR",
+			"area_name": "Deschutes County",
+			"bachelorsOrHigher": 31.3
+		},
+		{
+			"fips": 41019,
+			"state": "OR",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 41021,
+			"state": "OR",
+			"area_name": "Gilliam County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 41023,
+			"state": "OR",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 41025,
+			"state": "OR",
+			"area_name": "Harney County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 41027,
+			"state": "OR",
+			"area_name": "Hood River County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 41029,
+			"state": "OR",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 41031,
+			"state": "OR",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 41033,
+			"state": "OR",
+			"area_name": "Josephine County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 41035,
+			"state": "OR",
+			"area_name": "Klamath County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 41037,
+			"state": "OR",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 41039,
+			"state": "OR",
+			"area_name": "Lane County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 41041,
+			"state": "OR",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 41043,
+			"state": "OR",
+			"area_name": "Linn County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 41045,
+			"state": "OR",
+			"area_name": "Malheur County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 41047,
+			"state": "OR",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 41049,
+			"state": "OR",
+			"area_name": "Morrow County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 41051,
+			"state": "OR",
+			"area_name": "Multnomah County",
+			"bachelorsOrHigher": 40.3
+		},
+		{
+			"fips": 41053,
+			"state": "OR",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 41055,
+			"state": "OR",
+			"area_name": "Sherman County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 41057,
+			"state": "OR",
+			"area_name": "Tillamook County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 41059,
+			"state": "OR",
+			"area_name": "Umatilla County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 41061,
+			"state": "OR",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 41063,
+			"state": "OR",
+			"area_name": "Wallowa County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 41065,
+			"state": "OR",
+			"area_name": "Wasco County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 41067,
+			"state": "OR",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 39.7
+		},
+		{
+			"fips": 41069,
+			"state": "OR",
+			"area_name": "Wheeler County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 41071,
+			"state": "OR",
+			"area_name": "Yamhill County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 42001,
+			"state": "PA",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 42003,
+			"state": "PA",
+			"area_name": "Allegheny County",
+			"bachelorsOrHigher": 36.9
+		},
+		{
+			"fips": 42005,
+			"state": "PA",
+			"area_name": "Armstrong County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 42007,
+			"state": "PA",
+			"area_name": "Beaver County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 42009,
+			"state": "PA",
+			"area_name": "Bedford County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 42011,
+			"state": "PA",
+			"area_name": "Berks County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 42013,
+			"state": "PA",
+			"area_name": "Blair County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 42015,
+			"state": "PA",
+			"area_name": "Bradford County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 42017,
+			"state": "PA",
+			"area_name": "Bucks County",
+			"bachelorsOrHigher": 36.5
+		},
+		{
+			"fips": 42019,
+			"state": "PA",
+			"area_name": "Butler County",
+			"bachelorsOrHigher": 31.7
+		},
+		{
+			"fips": 42021,
+			"state": "PA",
+			"area_name": "Cambria County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 42023,
+			"state": "PA",
+			"area_name": "Cameron County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 42025,
+			"state": "PA",
+			"area_name": "Carbon County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 42027,
+			"state": "PA",
+			"area_name": "Centre County",
+			"bachelorsOrHigher": 40.4
+		},
+		{
+			"fips": 42029,
+			"state": "PA",
+			"area_name": "Chester County",
+			"bachelorsOrHigher": 48.8
+		},
+		{
+			"fips": 42031,
+			"state": "PA",
+			"area_name": "Clarion County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 42033,
+			"state": "PA",
+			"area_name": "Clearfield County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 42035,
+			"state": "PA",
+			"area_name": "Clinton County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 42037,
+			"state": "PA",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 42039,
+			"state": "PA",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 42041,
+			"state": "PA",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 32.8
+		},
+		{
+			"fips": 42043,
+			"state": "PA",
+			"area_name": "Dauphin County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 42045,
+			"state": "PA",
+			"area_name": "Delaware County",
+			"bachelorsOrHigher": 35.5
+		},
+		{
+			"fips": 42047,
+			"state": "PA",
+			"area_name": "Elk County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 42049,
+			"state": "PA",
+			"area_name": "Erie County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 42051,
+			"state": "PA",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 42053,
+			"state": "PA",
+			"area_name": "Forest County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 42055,
+			"state": "PA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 42057,
+			"state": "PA",
+			"area_name": "Fulton County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 42059,
+			"state": "PA",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 42061,
+			"state": "PA",
+			"area_name": "Huntingdon County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 42063,
+			"state": "PA",
+			"area_name": "Indiana County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 42065,
+			"state": "PA",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 42067,
+			"state": "PA",
+			"area_name": "Juniata County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 42069,
+			"state": "PA",
+			"area_name": "Lackawanna County",
+			"bachelorsOrHigher": 25.7
+		},
+		{
+			"fips": 42071,
+			"state": "PA",
+			"area_name": "Lancaster County",
+			"bachelorsOrHigher": 24.7
+		},
+		{
+			"fips": 42073,
+			"state": "PA",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 42075,
+			"state": "PA",
+			"area_name": "Lebanon County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 42077,
+			"state": "PA",
+			"area_name": "Lehigh County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 42079,
+			"state": "PA",
+			"area_name": "Luzerne County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 42081,
+			"state": "PA",
+			"area_name": "Lycoming County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 42083,
+			"state": "PA",
+			"area_name": "McKean County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 42085,
+			"state": "PA",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 42087,
+			"state": "PA",
+			"area_name": "Mifflin County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 42089,
+			"state": "PA",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 42091,
+			"state": "PA",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 46.2
+		},
+		{
+			"fips": 42093,
+			"state": "PA",
+			"area_name": "Montour County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 42095,
+			"state": "PA",
+			"area_name": "Northampton County",
+			"bachelorsOrHigher": 27.2
+		},
+		{
+			"fips": 42097,
+			"state": "PA",
+			"area_name": "Northumberland County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 42099,
+			"state": "PA",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 42101,
+			"state": "PA",
+			"area_name": "Philadelphia County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 42103,
+			"state": "PA",
+			"area_name": "Pike County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 42105,
+			"state": "PA",
+			"area_name": "Potter County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 42107,
+			"state": "PA",
+			"area_name": "Schuylkill County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 42109,
+			"state": "PA",
+			"area_name": "Snyder County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 42111,
+			"state": "PA",
+			"area_name": "Somerset County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 42113,
+			"state": "PA",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 42115,
+			"state": "PA",
+			"area_name": "Susquehanna County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 42117,
+			"state": "PA",
+			"area_name": "Tioga County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 42119,
+			"state": "PA",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 42121,
+			"state": "PA",
+			"area_name": "Venango County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 42123,
+			"state": "PA",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 42125,
+			"state": "PA",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 26.6
+		},
+		{
+			"fips": 42127,
+			"state": "PA",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 42129,
+			"state": "PA",
+			"area_name": "Westmoreland County",
+			"bachelorsOrHigher": 26.2
+		},
+		{
+			"fips": 42131,
+			"state": "PA",
+			"area_name": "Wyoming County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 42133,
+			"state": "PA",
+			"area_name": "York County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 44001,
+			"state": "RI",
+			"area_name": "Bristol County",
+			"bachelorsOrHigher": 43.5
+		},
+		{
+			"fips": 44003,
+			"state": "RI",
+			"area_name": "Kent County",
+			"bachelorsOrHigher": 30.1
+		},
+		{
+			"fips": 44005,
+			"state": "RI",
+			"area_name": "Newport County",
+			"bachelorsOrHigher": 44.9
+		},
+		{
+			"fips": 44007,
+			"state": "RI",
+			"area_name": "Providence County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 44009,
+			"state": "RI",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 43.8
+		},
+		{
+			"fips": 45001,
+			"state": "SC",
+			"area_name": "Abbeville County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 45003,
+			"state": "SC",
+			"area_name": "Aiken County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 45005,
+			"state": "SC",
+			"area_name": "Allendale County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 45007,
+			"state": "SC",
+			"area_name": "Anderson County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 45009,
+			"state": "SC",
+			"area_name": "Bamberg County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 45011,
+			"state": "SC",
+			"area_name": "Barnwell County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 45013,
+			"state": "SC",
+			"area_name": "Beaufort County",
+			"bachelorsOrHigher": 37.4
+		},
+		{
+			"fips": 45015,
+			"state": "SC",
+			"area_name": "Berkeley County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 45017,
+			"state": "SC",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 45019,
+			"state": "SC",
+			"area_name": "Charleston County",
+			"bachelorsOrHigher": 40
+		},
+		{
+			"fips": 45021,
+			"state": "SC",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 45023,
+			"state": "SC",
+			"area_name": "Chester County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 45025,
+			"state": "SC",
+			"area_name": "Chesterfield County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 45027,
+			"state": "SC",
+			"area_name": "Clarendon County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 45029,
+			"state": "SC",
+			"area_name": "Colleton County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 45031,
+			"state": "SC",
+			"area_name": "Darlington County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 45033,
+			"state": "SC",
+			"area_name": "Dillon County",
+			"bachelorsOrHigher": 8.3
+		},
+		{
+			"fips": 45035,
+			"state": "SC",
+			"area_name": "Dorchester County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 45037,
+			"state": "SC",
+			"area_name": "Edgefield County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 45039,
+			"state": "SC",
+			"area_name": "Fairfield County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 45041,
+			"state": "SC",
+			"area_name": "Florence County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 45043,
+			"state": "SC",
+			"area_name": "Georgetown County",
+			"bachelorsOrHigher": 23.8
+		},
+		{
+			"fips": 45045,
+			"state": "SC",
+			"area_name": "Greenville County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 45047,
+			"state": "SC",
+			"area_name": "Greenwood County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 45049,
+			"state": "SC",
+			"area_name": "Hampton County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 45051,
+			"state": "SC",
+			"area_name": "Horry County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 45053,
+			"state": "SC",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 45055,
+			"state": "SC",
+			"area_name": "Kershaw County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 45057,
+			"state": "SC",
+			"area_name": "Lancaster County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 45059,
+			"state": "SC",
+			"area_name": "Laurens County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 45061,
+			"state": "SC",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 45063,
+			"state": "SC",
+			"area_name": "Lexington County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 45065,
+			"state": "SC",
+			"area_name": "McCormick County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 45067,
+			"state": "SC",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 45069,
+			"state": "SC",
+			"area_name": "Marlboro County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 45071,
+			"state": "SC",
+			"area_name": "Newberry County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 45073,
+			"state": "SC",
+			"area_name": "Oconee County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 45075,
+			"state": "SC",
+			"area_name": "Orangeburg County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 45077,
+			"state": "SC",
+			"area_name": "Pickens County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 45079,
+			"state": "SC",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 36.2
+		},
+		{
+			"fips": 45081,
+			"state": "SC",
+			"area_name": "Saluda County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 45083,
+			"state": "SC",
+			"area_name": "Spartanburg County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 45085,
+			"state": "SC",
+			"area_name": "Sumter County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 45087,
+			"state": "SC",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 45089,
+			"state": "SC",
+			"area_name": "Williamsburg County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 45091,
+			"state": "SC",
+			"area_name": "York County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 46003,
+			"state": "SD",
+			"area_name": "Aurora County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 46005,
+			"state": "SD",
+			"area_name": "Beadle County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 46007,
+			"state": "SD",
+			"area_name": "Bennett County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 46009,
+			"state": "SD",
+			"area_name": "Bon Homme County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 46011,
+			"state": "SD",
+			"area_name": "Brookings County",
+			"bachelorsOrHigher": 41.4
+		},
+		{
+			"fips": 46013,
+			"state": "SD",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 26.9
+		},
+		{
+			"fips": 46015,
+			"state": "SD",
+			"area_name": "Brule County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 46017,
+			"state": "SD",
+			"area_name": "Buffalo County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 46019,
+			"state": "SD",
+			"area_name": "Butte County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 46021,
+			"state": "SD",
+			"area_name": "Campbell County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 46023,
+			"state": "SD",
+			"area_name": "Charles Mix County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 46025,
+			"state": "SD",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 46027,
+			"state": "SD",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 43.1
+		},
+		{
+			"fips": 46029,
+			"state": "SD",
+			"area_name": "Codington County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 46031,
+			"state": "SD",
+			"area_name": "Corson County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 46033,
+			"state": "SD",
+			"area_name": "Custer County",
+			"bachelorsOrHigher": 27.4
+		},
+		{
+			"fips": 46035,
+			"state": "SD",
+			"area_name": "Davison County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 46037,
+			"state": "SD",
+			"area_name": "Day County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 46039,
+			"state": "SD",
+			"area_name": "Deuel County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 46041,
+			"state": "SD",
+			"area_name": "Dewey County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 46043,
+			"state": "SD",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 46045,
+			"state": "SD",
+			"area_name": "Edmunds County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 46047,
+			"state": "SD",
+			"area_name": "Fall River County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 46049,
+			"state": "SD",
+			"area_name": "Faulk County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 46051,
+			"state": "SD",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 46053,
+			"state": "SD",
+			"area_name": "Gregory County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 46055,
+			"state": "SD",
+			"area_name": "Haakon County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 46057,
+			"state": "SD",
+			"area_name": "Hamlin County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 46059,
+			"state": "SD",
+			"area_name": "Hand County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 46061,
+			"state": "SD",
+			"area_name": "Hanson County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 46063,
+			"state": "SD",
+			"area_name": "Harding County",
+			"bachelorsOrHigher": 30.5
+		},
+		{
+			"fips": 46065,
+			"state": "SD",
+			"area_name": "Hughes County",
+			"bachelorsOrHigher": 32.1
+		},
+		{
+			"fips": 46067,
+			"state": "SD",
+			"area_name": "Hutchinson County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 46069,
+			"state": "SD",
+			"area_name": "Hyde County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 46071,
+			"state": "SD",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 46073,
+			"state": "SD",
+			"area_name": "Jerauld County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 46075,
+			"state": "SD",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 46077,
+			"state": "SD",
+			"area_name": "Kingsbury County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 46079,
+			"state": "SD",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 28.4
+		},
+		{
+			"fips": 46081,
+			"state": "SD",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 29.5
+		},
+		{
+			"fips": 46083,
+			"state": "SD",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 41
+		},
+		{
+			"fips": 46085,
+			"state": "SD",
+			"area_name": "Lyman County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 46087,
+			"state": "SD",
+			"area_name": "McCook County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 46089,
+			"state": "SD",
+			"area_name": "McPherson County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 46091,
+			"state": "SD",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 46093,
+			"state": "SD",
+			"area_name": "Meade County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 46095,
+			"state": "SD",
+			"area_name": "Mellette County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 46097,
+			"state": "SD",
+			"area_name": "Miner County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 46099,
+			"state": "SD",
+			"area_name": "Minnehaha County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 46101,
+			"state": "SD",
+			"area_name": "Moody County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 46103,
+			"state": "SD",
+			"area_name": "Pennington County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 46105,
+			"state": "SD",
+			"area_name": "Perkins County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 46107,
+			"state": "SD",
+			"area_name": "Potter County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 46109,
+			"state": "SD",
+			"area_name": "Roberts County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 46111,
+			"state": "SD",
+			"area_name": "Sanborn County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 46102,
+			"state": "SD",
+			"area_name": "Oglala Lakota County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 46115,
+			"state": "SD",
+			"area_name": "Spink County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 46117,
+			"state": "SD",
+			"area_name": "Stanley County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 46119,
+			"state": "SD",
+			"area_name": "Sully County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 46121,
+			"state": "SD",
+			"area_name": "Todd County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 46123,
+			"state": "SD",
+			"area_name": "Tripp County",
+			"bachelorsOrHigher": 21.8
+		},
+		{
+			"fips": 46125,
+			"state": "SD",
+			"area_name": "Turner County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 46127,
+			"state": "SD",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 32.7
+		},
+		{
+			"fips": 46129,
+			"state": "SD",
+			"area_name": "Walworth County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 46135,
+			"state": "SD",
+			"area_name": "Yankton County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 46137,
+			"state": "SD",
+			"area_name": "Ziebach County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 47001,
+			"state": "TN",
+			"area_name": "Anderson County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 47003,
+			"state": "TN",
+			"area_name": "Bedford County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 47005,
+			"state": "TN",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 47007,
+			"state": "TN",
+			"area_name": "Bledsoe County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 47009,
+			"state": "TN",
+			"area_name": "Blount County",
+			"bachelorsOrHigher": 21.7
+		},
+		{
+			"fips": 47011,
+			"state": "TN",
+			"area_name": "Bradley County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 47013,
+			"state": "TN",
+			"area_name": "Campbell County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 47015,
+			"state": "TN",
+			"area_name": "Cannon County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 47017,
+			"state": "TN",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 47019,
+			"state": "TN",
+			"area_name": "Carter County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 47021,
+			"state": "TN",
+			"area_name": "Cheatham County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 47023,
+			"state": "TN",
+			"area_name": "Chester County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 47025,
+			"state": "TN",
+			"area_name": "Claiborne County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 47027,
+			"state": "TN",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 47029,
+			"state": "TN",
+			"area_name": "Cocke County",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 47031,
+			"state": "TN",
+			"area_name": "Coffee County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 47033,
+			"state": "TN",
+			"area_name": "Crockett County",
+			"bachelorsOrHigher": 12
+		},
+		{
+			"fips": 47035,
+			"state": "TN",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 47037,
+			"state": "TN",
+			"area_name": "Davidson County",
+			"bachelorsOrHigher": 36.5
+		},
+		{
+			"fips": 47039,
+			"state": "TN",
+			"area_name": "Decatur County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 47041,
+			"state": "TN",
+			"area_name": "DeKalb County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 47043,
+			"state": "TN",
+			"area_name": "Dickson County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 47045,
+			"state": "TN",
+			"area_name": "Dyer County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 47047,
+			"state": "TN",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 22.7
+		},
+		{
+			"fips": 47049,
+			"state": "TN",
+			"area_name": "Fentress County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 47051,
+			"state": "TN",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 47053,
+			"state": "TN",
+			"area_name": "Gibson County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 47055,
+			"state": "TN",
+			"area_name": "Giles County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 47057,
+			"state": "TN",
+			"area_name": "Grainger County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 47059,
+			"state": "TN",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 47061,
+			"state": "TN",
+			"area_name": "Grundy County",
+			"bachelorsOrHigher": 9.7
+		},
+		{
+			"fips": 47063,
+			"state": "TN",
+			"area_name": "Hamblen County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 47065,
+			"state": "TN",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 47067,
+			"state": "TN",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 47069,
+			"state": "TN",
+			"area_name": "Hardeman County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 47071,
+			"state": "TN",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 47073,
+			"state": "TN",
+			"area_name": "Hawkins County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 47075,
+			"state": "TN",
+			"area_name": "Haywood County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 47077,
+			"state": "TN",
+			"area_name": "Henderson County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 47079,
+			"state": "TN",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 47081,
+			"state": "TN",
+			"area_name": "Hickman County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 47083,
+			"state": "TN",
+			"area_name": "Houston County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 47085,
+			"state": "TN",
+			"area_name": "Humphreys County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 47087,
+			"state": "TN",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 9.5
+		},
+		{
+			"fips": 47089,
+			"state": "TN",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 47091,
+			"state": "TN",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 47093,
+			"state": "TN",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 34.5
+		},
+		{
+			"fips": 47095,
+			"state": "TN",
+			"area_name": "Lake County",
+			"bachelorsOrHigher": 8.2
+		},
+		{
+			"fips": 47097,
+			"state": "TN",
+			"area_name": "Lauderdale County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 47099,
+			"state": "TN",
+			"area_name": "Lawrence County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 47101,
+			"state": "TN",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 47103,
+			"state": "TN",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 47105,
+			"state": "TN",
+			"area_name": "Loudon County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 47107,
+			"state": "TN",
+			"area_name": "McMinn County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 47109,
+			"state": "TN",
+			"area_name": "McNairy County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 47111,
+			"state": "TN",
+			"area_name": "Macon County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 47113,
+			"state": "TN",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 25.1
+		},
+		{
+			"fips": 47115,
+			"state": "TN",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 47117,
+			"state": "TN",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 47119,
+			"state": "TN",
+			"area_name": "Maury County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 47121,
+			"state": "TN",
+			"area_name": "Meigs County",
+			"bachelorsOrHigher": 7.8
+		},
+		{
+			"fips": 47123,
+			"state": "TN",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 47125,
+			"state": "TN",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 47127,
+			"state": "TN",
+			"area_name": "Moore County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 47129,
+			"state": "TN",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 7.3
+		},
+		{
+			"fips": 47131,
+			"state": "TN",
+			"area_name": "Obion County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 47133,
+			"state": "TN",
+			"area_name": "Overton County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 47135,
+			"state": "TN",
+			"area_name": "Perry County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 47137,
+			"state": "TN",
+			"area_name": "Pickett County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 47139,
+			"state": "TN",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 47141,
+			"state": "TN",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 22.8
+		},
+		{
+			"fips": 47143,
+			"state": "TN",
+			"area_name": "Rhea County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 47145,
+			"state": "TN",
+			"area_name": "Roane County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 47147,
+			"state": "TN",
+			"area_name": "Robertson County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 47149,
+			"state": "TN",
+			"area_name": "Rutherford County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 47151,
+			"state": "TN",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 47153,
+			"state": "TN",
+			"area_name": "Sequatchie County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 47155,
+			"state": "TN",
+			"area_name": "Sevier County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 47157,
+			"state": "TN",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 29.8
+		},
+		{
+			"fips": 47159,
+			"state": "TN",
+			"area_name": "Smith County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 47161,
+			"state": "TN",
+			"area_name": "Stewart County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 47163,
+			"state": "TN",
+			"area_name": "Sullivan County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 47165,
+			"state": "TN",
+			"area_name": "Sumner County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 47167,
+			"state": "TN",
+			"area_name": "Tipton County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 47169,
+			"state": "TN",
+			"area_name": "Trousdale County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 47171,
+			"state": "TN",
+			"area_name": "Unicoi County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 47173,
+			"state": "TN",
+			"area_name": "Union County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 47175,
+			"state": "TN",
+			"area_name": "Van Buren County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 47177,
+			"state": "TN",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 47179,
+			"state": "TN",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 47181,
+			"state": "TN",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 8.2
+		},
+		{
+			"fips": 47183,
+			"state": "TN",
+			"area_name": "Weakley County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 47185,
+			"state": "TN",
+			"area_name": "White County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 47187,
+			"state": "TN",
+			"area_name": "Williamson County",
+			"bachelorsOrHigher": 54.1
+		},
+		{
+			"fips": 47189,
+			"state": "TN",
+			"area_name": "Wilson County",
+			"bachelorsOrHigher": 26.7
+		},
+		{
+			"fips": 48001,
+			"state": "TX",
+			"area_name": "Anderson County",
+			"bachelorsOrHigher": 11.3
+		},
+		{
+			"fips": 48003,
+			"state": "TX",
+			"area_name": "Andrews County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 48005,
+			"state": "TX",
+			"area_name": "Angelina County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 48007,
+			"state": "TX",
+			"area_name": "Aransas County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 48009,
+			"state": "TX",
+			"area_name": "Archer County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 48011,
+			"state": "TX",
+			"area_name": "Armstrong County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 48013,
+			"state": "TX",
+			"area_name": "Atascosa County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 48015,
+			"state": "TX",
+			"area_name": "Austin County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 48017,
+			"state": "TX",
+			"area_name": "Bailey County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 48019,
+			"state": "TX",
+			"area_name": "Bandera County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 48021,
+			"state": "TX",
+			"area_name": "Bastrop County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 48023,
+			"state": "TX",
+			"area_name": "Baylor County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 48025,
+			"state": "TX",
+			"area_name": "Bee County",
+			"bachelorsOrHigher": 8.9
+		},
+		{
+			"fips": 48027,
+			"state": "TX",
+			"area_name": "Bell County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 48029,
+			"state": "TX",
+			"area_name": "Bexar County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 48031,
+			"state": "TX",
+			"area_name": "Blanco County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 48033,
+			"state": "TX",
+			"area_name": "Borden County",
+			"bachelorsOrHigher": 33.1
+		},
+		{
+			"fips": 48035,
+			"state": "TX",
+			"area_name": "Bosque County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 48037,
+			"state": "TX",
+			"area_name": "Bowie County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 48039,
+			"state": "TX",
+			"area_name": "Brazoria County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 48041,
+			"state": "TX",
+			"area_name": "Brazos County",
+			"bachelorsOrHigher": 38.3
+		},
+		{
+			"fips": 48043,
+			"state": "TX",
+			"area_name": "Brewster County",
+			"bachelorsOrHigher": 36.3
+		},
+		{
+			"fips": 48045,
+			"state": "TX",
+			"area_name": "Briscoe County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 48047,
+			"state": "TX",
+			"area_name": "Brooks County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 48049,
+			"state": "TX",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 48051,
+			"state": "TX",
+			"area_name": "Burleson County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 48053,
+			"state": "TX",
+			"area_name": "Burnet County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 48055,
+			"state": "TX",
+			"area_name": "Caldwell County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 48057,
+			"state": "TX",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 48059,
+			"state": "TX",
+			"area_name": "Callahan County",
+			"bachelorsOrHigher": 13.4
+		},
+		{
+			"fips": 48061,
+			"state": "TX",
+			"area_name": "Cameron County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 48063,
+			"state": "TX",
+			"area_name": "Camp County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 48065,
+			"state": "TX",
+			"area_name": "Carson County",
+			"bachelorsOrHigher": 22.6
+		},
+		{
+			"fips": 48067,
+			"state": "TX",
+			"area_name": "Cass County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 48069,
+			"state": "TX",
+			"area_name": "Castro County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 48071,
+			"state": "TX",
+			"area_name": "Chambers County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 48073,
+			"state": "TX",
+			"area_name": "Cherokee County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 48075,
+			"state": "TX",
+			"area_name": "Childress County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 48077,
+			"state": "TX",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 48079,
+			"state": "TX",
+			"area_name": "Cochran County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 48081,
+			"state": "TX",
+			"area_name": "Coke County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 48083,
+			"state": "TX",
+			"area_name": "Coleman County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 48085,
+			"state": "TX",
+			"area_name": "Collin County",
+			"bachelorsOrHigher": 49.4
+		},
+		{
+			"fips": 48087,
+			"state": "TX",
+			"area_name": "Collingsworth County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 48089,
+			"state": "TX",
+			"area_name": "Colorado County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 48091,
+			"state": "TX",
+			"area_name": "Comal County",
+			"bachelorsOrHigher": 33.2
+		},
+		{
+			"fips": 48093,
+			"state": "TX",
+			"area_name": "Comanche County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 48095,
+			"state": "TX",
+			"area_name": "Concho County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 48097,
+			"state": "TX",
+			"area_name": "Cooke County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 48099,
+			"state": "TX",
+			"area_name": "Coryell County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 48101,
+			"state": "TX",
+			"area_name": "Cottle County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 48103,
+			"state": "TX",
+			"area_name": "Crane County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 48105,
+			"state": "TX",
+			"area_name": "Crockett County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 48107,
+			"state": "TX",
+			"area_name": "Crosby County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 48109,
+			"state": "TX",
+			"area_name": "Culberson County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 48111,
+			"state": "TX",
+			"area_name": "Dallam County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 48113,
+			"state": "TX",
+			"area_name": "Dallas County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 48115,
+			"state": "TX",
+			"area_name": "Dawson County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 48117,
+			"state": "TX",
+			"area_name": "Deaf Smith County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 48119,
+			"state": "TX",
+			"area_name": "Delta County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 48121,
+			"state": "TX",
+			"area_name": "Denton County",
+			"bachelorsOrHigher": 41
+		},
+		{
+			"fips": 48123,
+			"state": "TX",
+			"area_name": "DeWitt County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 48125,
+			"state": "TX",
+			"area_name": "Dickens County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 48127,
+			"state": "TX",
+			"area_name": "Dimmit County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 48129,
+			"state": "TX",
+			"area_name": "Donley County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 48131,
+			"state": "TX",
+			"area_name": "Duval County",
+			"bachelorsOrHigher": 7
+		},
+		{
+			"fips": 48133,
+			"state": "TX",
+			"area_name": "Eastland County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 48135,
+			"state": "TX",
+			"area_name": "Ector County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 48137,
+			"state": "TX",
+			"area_name": "Edwards County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 48139,
+			"state": "TX",
+			"area_name": "Ellis County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 48141,
+			"state": "TX",
+			"area_name": "El Paso County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 48143,
+			"state": "TX",
+			"area_name": "Erath County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 48145,
+			"state": "TX",
+			"area_name": "Falls County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 48147,
+			"state": "TX",
+			"area_name": "Fannin County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 48149,
+			"state": "TX",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 48151,
+			"state": "TX",
+			"area_name": "Fisher County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 48153,
+			"state": "TX",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 48155,
+			"state": "TX",
+			"area_name": "Foard County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 48157,
+			"state": "TX",
+			"area_name": "Fort Bend County",
+			"bachelorsOrHigher": 42.3
+		},
+		{
+			"fips": 48159,
+			"state": "TX",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 48161,
+			"state": "TX",
+			"area_name": "Freestone County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 48163,
+			"state": "TX",
+			"area_name": "Frio County",
+			"bachelorsOrHigher": 7.9
+		},
+		{
+			"fips": 48165,
+			"state": "TX",
+			"area_name": "Gaines County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 48167,
+			"state": "TX",
+			"area_name": "Galveston County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 48169,
+			"state": "TX",
+			"area_name": "Garza County",
+			"bachelorsOrHigher": 8.9
+		},
+		{
+			"fips": 48171,
+			"state": "TX",
+			"area_name": "Gillespie County",
+			"bachelorsOrHigher": 33.3
+		},
+		{
+			"fips": 48173,
+			"state": "TX",
+			"area_name": "Glasscock County",
+			"bachelorsOrHigher": 24.8
+		},
+		{
+			"fips": 48175,
+			"state": "TX",
+			"area_name": "Goliad County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 48177,
+			"state": "TX",
+			"area_name": "Gonzales County",
+			"bachelorsOrHigher": 14.7
+		},
+		{
+			"fips": 48179,
+			"state": "TX",
+			"area_name": "Gray County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 48181,
+			"state": "TX",
+			"area_name": "Grayson County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 48183,
+			"state": "TX",
+			"area_name": "Gregg County",
+			"bachelorsOrHigher": 19.9
+		},
+		{
+			"fips": 48185,
+			"state": "TX",
+			"area_name": "Grimes County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 48187,
+			"state": "TX",
+			"area_name": "Guadalupe County",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 48189,
+			"state": "TX",
+			"area_name": "Hale County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 48191,
+			"state": "TX",
+			"area_name": "Hall County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 48193,
+			"state": "TX",
+			"area_name": "Hamilton County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 48195,
+			"state": "TX",
+			"area_name": "Hansford County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 48197,
+			"state": "TX",
+			"area_name": "Hardeman County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 48199,
+			"state": "TX",
+			"area_name": "Hardin County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 48201,
+			"state": "TX",
+			"area_name": "Harris County",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 48203,
+			"state": "TX",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 18.6
+		},
+		{
+			"fips": 48205,
+			"state": "TX",
+			"area_name": "Hartley County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 48207,
+			"state": "TX",
+			"area_name": "Haskell County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 48209,
+			"state": "TX",
+			"area_name": "Hays County",
+			"bachelorsOrHigher": 36.8
+		},
+		{
+			"fips": 48211,
+			"state": "TX",
+			"area_name": "Hemphill County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 48213,
+			"state": "TX",
+			"area_name": "Henderson County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 48215,
+			"state": "TX",
+			"area_name": "Hidalgo County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 48217,
+			"state": "TX",
+			"area_name": "Hill County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 48219,
+			"state": "TX",
+			"area_name": "Hockley County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 48221,
+			"state": "TX",
+			"area_name": "Hood County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 48223,
+			"state": "TX",
+			"area_name": "Hopkins County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 48225,
+			"state": "TX",
+			"area_name": "Houston County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 48227,
+			"state": "TX",
+			"area_name": "Howard County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 48229,
+			"state": "TX",
+			"area_name": "Hudspeth County",
+			"bachelorsOrHigher": 8.4
+		},
+		{
+			"fips": 48231,
+			"state": "TX",
+			"area_name": "Hunt County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 48233,
+			"state": "TX",
+			"area_name": "Hutchinson County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 48235,
+			"state": "TX",
+			"area_name": "Irion County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 48237,
+			"state": "TX",
+			"area_name": "Jack County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 48239,
+			"state": "TX",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 48241,
+			"state": "TX",
+			"area_name": "Jasper County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 48243,
+			"state": "TX",
+			"area_name": "Jeff Davis County",
+			"bachelorsOrHigher": 38.4
+		},
+		{
+			"fips": 48245,
+			"state": "TX",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 18
+		},
+		{
+			"fips": 48247,
+			"state": "TX",
+			"area_name": "Jim Hogg County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 48249,
+			"state": "TX",
+			"area_name": "Jim Wells County",
+			"bachelorsOrHigher": 10.7
+		},
+		{
+			"fips": 48251,
+			"state": "TX",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 48253,
+			"state": "TX",
+			"area_name": "Jones County",
+			"bachelorsOrHigher": 9.3
+		},
+		{
+			"fips": 48255,
+			"state": "TX",
+			"area_name": "Karnes County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 48257,
+			"state": "TX",
+			"area_name": "Kaufman County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 48259,
+			"state": "TX",
+			"area_name": "Kendall County",
+			"bachelorsOrHigher": 40.7
+		},
+		{
+			"fips": 48261,
+			"state": "TX",
+			"area_name": "Kenedy County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 48263,
+			"state": "TX",
+			"area_name": "Kent County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 48265,
+			"state": "TX",
+			"area_name": "Kerr County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 48267,
+			"state": "TX",
+			"area_name": "Kimble County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 48269,
+			"state": "TX",
+			"area_name": "King County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 48271,
+			"state": "TX",
+			"area_name": "Kinney County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 48273,
+			"state": "TX",
+			"area_name": "Kleberg County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 48275,
+			"state": "TX",
+			"area_name": "Knox County",
+			"bachelorsOrHigher": 13.2
+		},
+		{
+			"fips": 48277,
+			"state": "TX",
+			"area_name": "Lamar County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 48279,
+			"state": "TX",
+			"area_name": "Lamb County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 48281,
+			"state": "TX",
+			"area_name": "Lampasas County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 48283,
+			"state": "TX",
+			"area_name": "La Salle County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 48285,
+			"state": "TX",
+			"area_name": "Lavaca County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 48287,
+			"state": "TX",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 48289,
+			"state": "TX",
+			"area_name": "Leon County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 48291,
+			"state": "TX",
+			"area_name": "Liberty County",
+			"bachelorsOrHigher": 8.8
+		},
+		{
+			"fips": 48293,
+			"state": "TX",
+			"area_name": "Limestone County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 48295,
+			"state": "TX",
+			"area_name": "Lipscomb County",
+			"bachelorsOrHigher": 21.1
+		},
+		{
+			"fips": 48297,
+			"state": "TX",
+			"area_name": "Live Oak County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 48299,
+			"state": "TX",
+			"area_name": "Llano County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 48301,
+			"state": "TX",
+			"area_name": "Loving County",
+			"bachelorsOrHigher": 2.6
+		},
+		{
+			"fips": 48303,
+			"state": "TX",
+			"area_name": "Lubbock County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 48305,
+			"state": "TX",
+			"area_name": "Lynn County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 48307,
+			"state": "TX",
+			"area_name": "McCulloch County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 48309,
+			"state": "TX",
+			"area_name": "McLennan County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 48311,
+			"state": "TX",
+			"area_name": "McMullen County",
+			"bachelorsOrHigher": 4.4
+		},
+		{
+			"fips": 48313,
+			"state": "TX",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 48315,
+			"state": "TX",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 14.5
+		},
+		{
+			"fips": 48317,
+			"state": "TX",
+			"area_name": "Martin County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 48319,
+			"state": "TX",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 48321,
+			"state": "TX",
+			"area_name": "Matagorda County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 48323,
+			"state": "TX",
+			"area_name": "Maverick County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 48325,
+			"state": "TX",
+			"area_name": "Medina County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 48327,
+			"state": "TX",
+			"area_name": "Menard County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 48329,
+			"state": "TX",
+			"area_name": "Midland County",
+			"bachelorsOrHigher": 25
+		},
+		{
+			"fips": 48331,
+			"state": "TX",
+			"area_name": "Milam County",
+			"bachelorsOrHigher": 16
+		},
+		{
+			"fips": 48333,
+			"state": "TX",
+			"area_name": "Mills County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 48335,
+			"state": "TX",
+			"area_name": "Mitchell County",
+			"bachelorsOrHigher": 9.9
+		},
+		{
+			"fips": 48337,
+			"state": "TX",
+			"area_name": "Montague County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 48339,
+			"state": "TX",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 31.7
+		},
+		{
+			"fips": 48341,
+			"state": "TX",
+			"area_name": "Moore County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 48343,
+			"state": "TX",
+			"area_name": "Morris County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 48345,
+			"state": "TX",
+			"area_name": "Motley County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 48347,
+			"state": "TX",
+			"area_name": "Nacogdoches County",
+			"bachelorsOrHigher": 25
+		},
+		{
+			"fips": 48349,
+			"state": "TX",
+			"area_name": "Navarro County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 48351,
+			"state": "TX",
+			"area_name": "Newton County",
+			"bachelorsOrHigher": 6.9
+		},
+		{
+			"fips": 48353,
+			"state": "TX",
+			"area_name": "Nolan County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 48355,
+			"state": "TX",
+			"area_name": "Nueces County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 48357,
+			"state": "TX",
+			"area_name": "Ochiltree County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 48359,
+			"state": "TX",
+			"area_name": "Oldham County",
+			"bachelorsOrHigher": 30.3
+		},
+		{
+			"fips": 48361,
+			"state": "TX",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 48363,
+			"state": "TX",
+			"area_name": "Palo Pinto County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 48365,
+			"state": "TX",
+			"area_name": "Panola County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 48367,
+			"state": "TX",
+			"area_name": "Parker County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 48369,
+			"state": "TX",
+			"area_name": "Parmer County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 48371,
+			"state": "TX",
+			"area_name": "Pecos County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 48373,
+			"state": "TX",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 12.1
+		},
+		{
+			"fips": 48375,
+			"state": "TX",
+			"area_name": "Potter County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 48377,
+			"state": "TX",
+			"area_name": "Presidio County",
+			"bachelorsOrHigher": 22
+		},
+		{
+			"fips": 48379,
+			"state": "TX",
+			"area_name": "Rains County",
+			"bachelorsOrHigher": 11.4
+		},
+		{
+			"fips": 48381,
+			"state": "TX",
+			"area_name": "Randall County",
+			"bachelorsOrHigher": 30.7
+		},
+		{
+			"fips": 48383,
+			"state": "TX",
+			"area_name": "Reagan County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 48385,
+			"state": "TX",
+			"area_name": "Real County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 48387,
+			"state": "TX",
+			"area_name": "Red River County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 48389,
+			"state": "TX",
+			"area_name": "Reeves County",
+			"bachelorsOrHigher": 10.6
+		},
+		{
+			"fips": 48391,
+			"state": "TX",
+			"area_name": "Refugio County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 48393,
+			"state": "TX",
+			"area_name": "Roberts County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 48395,
+			"state": "TX",
+			"area_name": "Robertson County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 48397,
+			"state": "TX",
+			"area_name": "Rockwall County",
+			"bachelorsOrHigher": 36.7
+		},
+		{
+			"fips": 48399,
+			"state": "TX",
+			"area_name": "Runnels County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 48401,
+			"state": "TX",
+			"area_name": "Rusk County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 48403,
+			"state": "TX",
+			"area_name": "Sabine County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 48405,
+			"state": "TX",
+			"area_name": "San Augustine County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 48407,
+			"state": "TX",
+			"area_name": "San Jacinto County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 48409,
+			"state": "TX",
+			"area_name": "San Patricio County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 48411,
+			"state": "TX",
+			"area_name": "San Saba County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 48413,
+			"state": "TX",
+			"area_name": "Schleicher County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 48415,
+			"state": "TX",
+			"area_name": "Scurry County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 48417,
+			"state": "TX",
+			"area_name": "Shackelford County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 48419,
+			"state": "TX",
+			"area_name": "Shelby County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 48421,
+			"state": "TX",
+			"area_name": "Sherman County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 48423,
+			"state": "TX",
+			"area_name": "Smith County",
+			"bachelorsOrHigher": 25.2
+		},
+		{
+			"fips": 48425,
+			"state": "TX",
+			"area_name": "Somervell County",
+			"bachelorsOrHigher": 27
+		},
+		{
+			"fips": 48427,
+			"state": "TX",
+			"area_name": "Starr County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 48429,
+			"state": "TX",
+			"area_name": "Stephens County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 48431,
+			"state": "TX",
+			"area_name": "Sterling County",
+			"bachelorsOrHigher": 26.6
+		},
+		{
+			"fips": 48433,
+			"state": "TX",
+			"area_name": "Stonewall County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 48435,
+			"state": "TX",
+			"area_name": "Sutton County",
+			"bachelorsOrHigher": 17.8
+		},
+		{
+			"fips": 48437,
+			"state": "TX",
+			"area_name": "Swisher County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 48439,
+			"state": "TX",
+			"area_name": "Tarrant County",
+			"bachelorsOrHigher": 29.7
+		},
+		{
+			"fips": 48441,
+			"state": "TX",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 48443,
+			"state": "TX",
+			"area_name": "Terrell County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 48445,
+			"state": "TX",
+			"area_name": "Terry County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 48447,
+			"state": "TX",
+			"area_name": "Throckmorton County",
+			"bachelorsOrHigher": 20.7
+		},
+		{
+			"fips": 48449,
+			"state": "TX",
+			"area_name": "Titus County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 48451,
+			"state": "TX",
+			"area_name": "Tom Green County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 48453,
+			"state": "TX",
+			"area_name": "Travis County",
+			"bachelorsOrHigher": 45.2
+		},
+		{
+			"fips": 48455,
+			"state": "TX",
+			"area_name": "Trinity County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 48457,
+			"state": "TX",
+			"area_name": "Tyler County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 48459,
+			"state": "TX",
+			"area_name": "Upshur County",
+			"bachelorsOrHigher": 14.3
+		},
+		{
+			"fips": 48461,
+			"state": "TX",
+			"area_name": "Upton County",
+			"bachelorsOrHigher": 11
+		},
+		{
+			"fips": 48463,
+			"state": "TX",
+			"area_name": "Uvalde County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 48465,
+			"state": "TX",
+			"area_name": "Val Verde County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 48467,
+			"state": "TX",
+			"area_name": "Van Zandt County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 48469,
+			"state": "TX",
+			"area_name": "Victoria County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 48471,
+			"state": "TX",
+			"area_name": "Walker County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 48473,
+			"state": "TX",
+			"area_name": "Waller County",
+			"bachelorsOrHigher": 18.4
+		},
+		{
+			"fips": 48475,
+			"state": "TX",
+			"area_name": "Ward County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 48477,
+			"state": "TX",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 48479,
+			"state": "TX",
+			"area_name": "Webb County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 48481,
+			"state": "TX",
+			"area_name": "Wharton County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 48483,
+			"state": "TX",
+			"area_name": "Wheeler County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 48485,
+			"state": "TX",
+			"area_name": "Wichita County",
+			"bachelorsOrHigher": 20.8
+		},
+		{
+			"fips": 48487,
+			"state": "TX",
+			"area_name": "Wilbarger County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 48489,
+			"state": "TX",
+			"area_name": "Willacy County",
+			"bachelorsOrHigher": 9.2
+		},
+		{
+			"fips": 48491,
+			"state": "TX",
+			"area_name": "Williamson County",
+			"bachelorsOrHigher": 38.6
+		},
+		{
+			"fips": 48493,
+			"state": "TX",
+			"area_name": "Wilson County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 48495,
+			"state": "TX",
+			"area_name": "Winkler County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 48497,
+			"state": "TX",
+			"area_name": "Wise County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 48499,
+			"state": "TX",
+			"area_name": "Wood County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 48501,
+			"state": "TX",
+			"area_name": "Yoakum County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 48503,
+			"state": "TX",
+			"area_name": "Young County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 48505,
+			"state": "TX",
+			"area_name": "Zapata County",
+			"bachelorsOrHigher": 9.6
+		},
+		{
+			"fips": 48507,
+			"state": "TX",
+			"area_name": "Zavala County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 49001,
+			"state": "UT",
+			"area_name": "Beaver County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 49003,
+			"state": "UT",
+			"area_name": "Box Elder County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 49005,
+			"state": "UT",
+			"area_name": "Cache County",
+			"bachelorsOrHigher": 35.9
+		},
+		{
+			"fips": 49007,
+			"state": "UT",
+			"area_name": "Carbon County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 49009,
+			"state": "UT",
+			"area_name": "Daggett County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 49011,
+			"state": "UT",
+			"area_name": "Davis County",
+			"bachelorsOrHigher": 34.6
+		},
+		{
+			"fips": 49013,
+			"state": "UT",
+			"area_name": "Duchesne County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 49015,
+			"state": "UT",
+			"area_name": "Emery County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 49017,
+			"state": "UT",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 49019,
+			"state": "UT",
+			"area_name": "Grand County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 49021,
+			"state": "UT",
+			"area_name": "Iron County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 49023,
+			"state": "UT",
+			"area_name": "Juab County",
+			"bachelorsOrHigher": 16.3
+		},
+		{
+			"fips": 49025,
+			"state": "UT",
+			"area_name": "Kane County",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 49027,
+			"state": "UT",
+			"area_name": "Millard County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 49029,
+			"state": "UT",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 34.5
+		},
+		{
+			"fips": 49031,
+			"state": "UT",
+			"area_name": "Piute County",
+			"bachelorsOrHigher": 17.4
+		},
+		{
+			"fips": 49033,
+			"state": "UT",
+			"area_name": "Rich County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 49035,
+			"state": "UT",
+			"area_name": "Salt Lake County",
+			"bachelorsOrHigher": 31.3
+		},
+		{
+			"fips": 49037,
+			"state": "UT",
+			"area_name": "San Juan County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 49039,
+			"state": "UT",
+			"area_name": "Sanpete County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 49041,
+			"state": "UT",
+			"area_name": "Sevier County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 49043,
+			"state": "UT",
+			"area_name": "Summit County",
+			"bachelorsOrHigher": 50.1
+		},
+		{
+			"fips": 49045,
+			"state": "UT",
+			"area_name": "Tooele County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 49047,
+			"state": "UT",
+			"area_name": "Uintah County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 49049,
+			"state": "UT",
+			"area_name": "Utah County",
+			"bachelorsOrHigher": 36.9
+		},
+		{
+			"fips": 49051,
+			"state": "UT",
+			"area_name": "Wasatch County",
+			"bachelorsOrHigher": 34.4
+		},
+		{
+			"fips": 49053,
+			"state": "UT",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 27.1
+		},
+		{
+			"fips": 49055,
+			"state": "UT",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 49057,
+			"state": "UT",
+			"area_name": "Weber County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 50001,
+			"state": "VT",
+			"area_name": "Addison County",
+			"bachelorsOrHigher": 35.4
+		},
+		{
+			"fips": 50003,
+			"state": "VT",
+			"area_name": "Bennington County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 50005,
+			"state": "VT",
+			"area_name": "Caledonia County",
+			"bachelorsOrHigher": 25.8
+		},
+		{
+			"fips": 50007,
+			"state": "VT",
+			"area_name": "Chittenden County",
+			"bachelorsOrHigher": 48
+		},
+		{
+			"fips": 50009,
+			"state": "VT",
+			"area_name": "Essex County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 50011,
+			"state": "VT",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 50013,
+			"state": "VT",
+			"area_name": "Grand Isle County",
+			"bachelorsOrHigher": 32.4
+		},
+		{
+			"fips": 50015,
+			"state": "VT",
+			"area_name": "Lamoille County",
+			"bachelorsOrHigher": 35.3
+		},
+		{
+			"fips": 50017,
+			"state": "VT",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 31.6
+		},
+		{
+			"fips": 50019,
+			"state": "VT",
+			"area_name": "Orleans County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 50021,
+			"state": "VT",
+			"area_name": "Rutland County",
+			"bachelorsOrHigher": 28.8
+		},
+		{
+			"fips": 50023,
+			"state": "VT",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 39
+		},
+		{
+			"fips": 50025,
+			"state": "VT",
+			"area_name": "Windham County",
+			"bachelorsOrHigher": 34.5
+		},
+		{
+			"fips": 50027,
+			"state": "VT",
+			"area_name": "Windsor County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 51001,
+			"state": "VA",
+			"area_name": "Accomack County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 51003,
+			"state": "VA",
+			"area_name": "Albemarle County",
+			"bachelorsOrHigher": 52.1
+		},
+		{
+			"fips": 51005,
+			"state": "VA",
+			"area_name": "Alleghany County",
+			"bachelorsOrHigher": 16.9
+		},
+		{
+			"fips": 51007,
+			"state": "VA",
+			"area_name": "Amelia County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 51009,
+			"state": "VA",
+			"area_name": "Amherst County",
+			"bachelorsOrHigher": 18.3
+		},
+		{
+			"fips": 51011,
+			"state": "VA",
+			"area_name": "Appomattox County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 51013,
+			"state": "VA",
+			"area_name": "Arlington County",
+			"bachelorsOrHigher": 72
+		},
+		{
+			"fips": 51015,
+			"state": "VA",
+			"area_name": "Augusta County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 51017,
+			"state": "VA",
+			"area_name": "Bath County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 51019,
+			"state": "VA",
+			"area_name": "Bedford County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 51021,
+			"state": "VA",
+			"area_name": "Bland County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 51023,
+			"state": "VA",
+			"area_name": "Botetourt County",
+			"bachelorsOrHigher": 25.4
+		},
+		{
+			"fips": 51025,
+			"state": "VA",
+			"area_name": "Brunswick County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 51027,
+			"state": "VA",
+			"area_name": "Buchanan County",
+			"bachelorsOrHigher": 8.6
+		},
+		{
+			"fips": 51029,
+			"state": "VA",
+			"area_name": "Buckingham County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 51031,
+			"state": "VA",
+			"area_name": "Campbell County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 51033,
+			"state": "VA",
+			"area_name": "Caroline County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 51035,
+			"state": "VA",
+			"area_name": "Carroll County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 51036,
+			"state": "VA",
+			"area_name": "Charles City County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 51037,
+			"state": "VA",
+			"area_name": "Charlotte County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 51041,
+			"state": "VA",
+			"area_name": "Chesterfield County",
+			"bachelorsOrHigher": 36.6
+		},
+		{
+			"fips": 51043,
+			"state": "VA",
+			"area_name": "Clarke County",
+			"bachelorsOrHigher": 32.2
+		},
+		{
+			"fips": 51045,
+			"state": "VA",
+			"area_name": "Craig County",
+			"bachelorsOrHigher": 13.1
+		},
+		{
+			"fips": 51047,
+			"state": "VA",
+			"area_name": "Culpeper County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 51049,
+			"state": "VA",
+			"area_name": "Cumberland County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 51051,
+			"state": "VA",
+			"area_name": "Dickenson County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 51053,
+			"state": "VA",
+			"area_name": "Dinwiddie County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 51057,
+			"state": "VA",
+			"area_name": "Essex County",
+			"bachelorsOrHigher": 13.7
+		},
+		{
+			"fips": 51059,
+			"state": "VA",
+			"area_name": "Fairfax County",
+			"bachelorsOrHigher": 59.2
+		},
+		{
+			"fips": 51061,
+			"state": "VA",
+			"area_name": "Fauquier County",
+			"bachelorsOrHigher": 34.3
+		},
+		{
+			"fips": 51063,
+			"state": "VA",
+			"area_name": "Floyd County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 51065,
+			"state": "VA",
+			"area_name": "Fluvanna County",
+			"bachelorsOrHigher": 29.6
+		},
+		{
+			"fips": 51067,
+			"state": "VA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 51069,
+			"state": "VA",
+			"area_name": "Frederick County",
+			"bachelorsOrHigher": 28.2
+		},
+		{
+			"fips": 51071,
+			"state": "VA",
+			"area_name": "Giles County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 51073,
+			"state": "VA",
+			"area_name": "Gloucester County",
+			"bachelorsOrHigher": 22.9
+		},
+		{
+			"fips": 51075,
+			"state": "VA",
+			"area_name": "Goochland County",
+			"bachelorsOrHigher": 38.3
+		},
+		{
+			"fips": 51077,
+			"state": "VA",
+			"area_name": "Grayson County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 51079,
+			"state": "VA",
+			"area_name": "Greene County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 51081,
+			"state": "VA",
+			"area_name": "Greensville County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 51083,
+			"state": "VA",
+			"area_name": "Halifax County",
+			"bachelorsOrHigher": 14.6
+		},
+		{
+			"fips": 51085,
+			"state": "VA",
+			"area_name": "Hanover County",
+			"bachelorsOrHigher": 36.3
+		},
+		{
+			"fips": 51087,
+			"state": "VA",
+			"area_name": "Henrico County",
+			"bachelorsOrHigher": 39.7
+		},
+		{
+			"fips": 51089,
+			"state": "VA",
+			"area_name": "Henry County",
+			"bachelorsOrHigher": 11.5
+		},
+		{
+			"fips": 51091,
+			"state": "VA",
+			"area_name": "Highland County",
+			"bachelorsOrHigher": 19.4
+		},
+		{
+			"fips": 51093,
+			"state": "VA",
+			"area_name": "Isle of Wight County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 51095,
+			"state": "VA",
+			"area_name": "James City County",
+			"bachelorsOrHigher": 46.1
+		},
+		{
+			"fips": 51097,
+			"state": "VA",
+			"area_name": "King and Queen County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 51099,
+			"state": "VA",
+			"area_name": "King George County",
+			"bachelorsOrHigher": 31.8
+		},
+		{
+			"fips": 51101,
+			"state": "VA",
+			"area_name": "King William County",
+			"bachelorsOrHigher": 19.1
+		},
+		{
+			"fips": 51103,
+			"state": "VA",
+			"area_name": "Lancaster County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 51105,
+			"state": "VA",
+			"area_name": "Lee County",
+			"bachelorsOrHigher": 11.1
+		},
+		{
+			"fips": 51107,
+			"state": "VA",
+			"area_name": "Loudoun County",
+			"bachelorsOrHigher": 58
+		},
+		{
+			"fips": 51109,
+			"state": "VA",
+			"area_name": "Louisa County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 51111,
+			"state": "VA",
+			"area_name": "Lunenburg County",
+			"bachelorsOrHigher": 12.5
+		},
+		{
+			"fips": 51113,
+			"state": "VA",
+			"area_name": "Madison County",
+			"bachelorsOrHigher": 23.1
+		},
+		{
+			"fips": 51115,
+			"state": "VA",
+			"area_name": "Mathews County",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 51117,
+			"state": "VA",
+			"area_name": "Mecklenburg County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 51119,
+			"state": "VA",
+			"area_name": "Middlesex County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 51121,
+			"state": "VA",
+			"area_name": "Montgomery County",
+			"bachelorsOrHigher": 44.3
+		},
+		{
+			"fips": 51125,
+			"state": "VA",
+			"area_name": "Nelson County",
+			"bachelorsOrHigher": 29
+		},
+		{
+			"fips": 51127,
+			"state": "VA",
+			"area_name": "New Kent County",
+			"bachelorsOrHigher": 24.6
+		},
+		{
+			"fips": 51131,
+			"state": "VA",
+			"area_name": "Northampton County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 51133,
+			"state": "VA",
+			"area_name": "Northumberland County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 51135,
+			"state": "VA",
+			"area_name": "Nottoway County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 51137,
+			"state": "VA",
+			"area_name": "Orange County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 51139,
+			"state": "VA",
+			"area_name": "Page County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 51141,
+			"state": "VA",
+			"area_name": "Patrick County",
+			"bachelorsOrHigher": 11.2
+		},
+		{
+			"fips": 51143,
+			"state": "VA",
+			"area_name": "Pittsylvania County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 51145,
+			"state": "VA",
+			"area_name": "Powhatan County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 51147,
+			"state": "VA",
+			"area_name": "Prince Edward County",
+			"bachelorsOrHigher": 22.4
+		},
+		{
+			"fips": 51149,
+			"state": "VA",
+			"area_name": "Prince George County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 51153,
+			"state": "VA",
+			"area_name": "Prince William County",
+			"bachelorsOrHigher": 38.1
+		},
+		{
+			"fips": 51155,
+			"state": "VA",
+			"area_name": "Pulaski County",
+			"bachelorsOrHigher": 16.4
+		},
+		{
+			"fips": 51157,
+			"state": "VA",
+			"area_name": "Rappahannock County",
+			"bachelorsOrHigher": 32
+		},
+		{
+			"fips": 51159,
+			"state": "VA",
+			"area_name": "Richmond County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 51161,
+			"state": "VA",
+			"area_name": "Roanoke County",
+			"bachelorsOrHigher": 34
+		},
+		{
+			"fips": 51163,
+			"state": "VA",
+			"area_name": "Rockbridge County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 51165,
+			"state": "VA",
+			"area_name": "Rockingham County",
+			"bachelorsOrHigher": 23.7
+		},
+		{
+			"fips": 51167,
+			"state": "VA",
+			"area_name": "Russell County",
+			"bachelorsOrHigher": 11.9
+		},
+		{
+			"fips": 51169,
+			"state": "VA",
+			"area_name": "Scott County",
+			"bachelorsOrHigher": 11.6
+		},
+		{
+			"fips": 51171,
+			"state": "VA",
+			"area_name": "Shenandoah County",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 51173,
+			"state": "VA",
+			"area_name": "Smyth County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 51175,
+			"state": "VA",
+			"area_name": "Southampton County",
+			"bachelorsOrHigher": 14.8
+		},
+		{
+			"fips": 51177,
+			"state": "VA",
+			"area_name": "Spotsylvania County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 51179,
+			"state": "VA",
+			"area_name": "Stafford County",
+			"bachelorsOrHigher": 37.1
+		},
+		{
+			"fips": 51181,
+			"state": "VA",
+			"area_name": "Surry County",
+			"bachelorsOrHigher": 18.8
+		},
+		{
+			"fips": 51183,
+			"state": "VA",
+			"area_name": "Sussex County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 51185,
+			"state": "VA",
+			"area_name": "Tazewell County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 51187,
+			"state": "VA",
+			"area_name": "Warren County",
+			"bachelorsOrHigher": 19.7
+		},
+		{
+			"fips": 51191,
+			"state": "VA",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 23.5
+		},
+		{
+			"fips": 51193,
+			"state": "VA",
+			"area_name": "Westmoreland County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 51195,
+			"state": "VA",
+			"area_name": "Wise County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 51197,
+			"state": "VA",
+			"area_name": "Wythe County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 51199,
+			"state": "VA",
+			"area_name": "York County",
+			"bachelorsOrHigher": 42
+		},
+		{
+			"fips": 51510,
+			"state": "VA",
+			"area_name": "Alexandria city",
+			"bachelorsOrHigher": 61.5
+		},
+		{
+			"fips": 51520,
+			"state": "VA",
+			"area_name": "Bristol city",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 51530,
+			"state": "VA",
+			"area_name": "Buena Vista city",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 51540,
+			"state": "VA",
+			"area_name": "Charlottesville city",
+			"bachelorsOrHigher": 49.3
+		},
+		{
+			"fips": 51550,
+			"state": "VA",
+			"area_name": "Chesapeake city",
+			"bachelorsOrHigher": 29.4
+		},
+		{
+			"fips": 51570,
+			"state": "VA",
+			"area_name": "Colonial Heights city",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 51580,
+			"state": "VA",
+			"area_name": "Covington city",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 51590,
+			"state": "VA",
+			"area_name": "Danville city",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 51595,
+			"state": "VA",
+			"area_name": "Emporia city",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 51600,
+			"state": "VA",
+			"area_name": "Fairfax city",
+			"bachelorsOrHigher": 53.5
+		},
+		{
+			"fips": 51610,
+			"state": "VA",
+			"area_name": "Falls Church city",
+			"bachelorsOrHigher": 75.1
+		},
+		{
+			"fips": 51620,
+			"state": "VA",
+			"area_name": "Franklin city",
+			"bachelorsOrHigher": 19.8
+		},
+		{
+			"fips": 51630,
+			"state": "VA",
+			"area_name": "Fredericksburg city",
+			"bachelorsOrHigher": 37.7
+		},
+		{
+			"fips": 51640,
+			"state": "VA",
+			"area_name": "Galax city",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 51650,
+			"state": "VA",
+			"area_name": "Hampton city",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 51660,
+			"state": "VA",
+			"area_name": "Harrisonburg city",
+			"bachelorsOrHigher": 35.6
+		},
+		{
+			"fips": 51670,
+			"state": "VA",
+			"area_name": "Hopewell city",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 51678,
+			"state": "VA",
+			"area_name": "Lexington city",
+			"bachelorsOrHigher": 44.8
+		},
+		{
+			"fips": 51680,
+			"state": "VA",
+			"area_name": "Lynchburg city",
+			"bachelorsOrHigher": 32.3
+		},
+		{
+			"fips": 51683,
+			"state": "VA",
+			"area_name": "Manassas city",
+			"bachelorsOrHigher": 29.1
+		},
+		{
+			"fips": 51685,
+			"state": "VA",
+			"area_name": "Manassas Park city",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 51690,
+			"state": "VA",
+			"area_name": "Martinsville city",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 51700,
+			"state": "VA",
+			"area_name": "Newport News city",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 51710,
+			"state": "VA",
+			"area_name": "Norfolk city",
+			"bachelorsOrHigher": 25.6
+		},
+		{
+			"fips": 51720,
+			"state": "VA",
+			"area_name": "Norton city",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 51730,
+			"state": "VA",
+			"area_name": "Petersburg city",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 51735,
+			"state": "VA",
+			"area_name": "Poquoson city",
+			"bachelorsOrHigher": 35.8
+		},
+		{
+			"fips": 51740,
+			"state": "VA",
+			"area_name": "Portsmouth city",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 51750,
+			"state": "VA",
+			"area_name": "Radford city",
+			"bachelorsOrHigher": 34.9
+		},
+		{
+			"fips": 51760,
+			"state": "VA",
+			"area_name": "Richmond city",
+			"bachelorsOrHigher": 35.4
+		},
+		{
+			"fips": 51770,
+			"state": "VA",
+			"area_name": "Roanoke city",
+			"bachelorsOrHigher": 24.1
+		},
+		{
+			"fips": 51775,
+			"state": "VA",
+			"area_name": "Salem city",
+			"bachelorsOrHigher": 30.7
+		},
+		{
+			"fips": 51790,
+			"state": "VA",
+			"area_name": "Staunton city",
+			"bachelorsOrHigher": 31.5
+		},
+		{
+			"fips": 51800,
+			"state": "VA",
+			"area_name": "Suffolk city",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 51810,
+			"state": "VA",
+			"area_name": "Virginia Beach city",
+			"bachelorsOrHigher": 33.5
+		},
+		{
+			"fips": 51820,
+			"state": "VA",
+			"area_name": "Waynesboro city",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 51830,
+			"state": "VA",
+			"area_name": "Williamsburg city",
+			"bachelorsOrHigher": 48.6
+		},
+		{
+			"fips": 51840,
+			"state": "VA",
+			"area_name": "Winchester city",
+			"bachelorsOrHigher": 28.1
+		},
+		{
+			"fips": 53001,
+			"state": "WA",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 53003,
+			"state": "WA",
+			"area_name": "Asotin County",
+			"bachelorsOrHigher": 18.5
+		},
+		{
+			"fips": 53005,
+			"state": "WA",
+			"area_name": "Benton County",
+			"bachelorsOrHigher": 29.2
+		},
+		{
+			"fips": 53007,
+			"state": "WA",
+			"area_name": "Chelan County",
+			"bachelorsOrHigher": 24
+		},
+		{
+			"fips": 53009,
+			"state": "WA",
+			"area_name": "Clallam County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 53011,
+			"state": "WA",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 53013,
+			"state": "WA",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 20.4
+		},
+		{
+			"fips": 53015,
+			"state": "WA",
+			"area_name": "Cowlitz County",
+			"bachelorsOrHigher": 15.6
+		},
+		{
+			"fips": 53017,
+			"state": "WA",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 53019,
+			"state": "WA",
+			"area_name": "Ferry County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 53021,
+			"state": "WA",
+			"area_name": "Franklin County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 53023,
+			"state": "WA",
+			"area_name": "Garfield County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 53025,
+			"state": "WA",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 15.5
+		},
+		{
+			"fips": 53027,
+			"state": "WA",
+			"area_name": "Grays Harbor County",
+			"bachelorsOrHigher": 15
+		},
+		{
+			"fips": 53029,
+			"state": "WA",
+			"area_name": "Island County",
+			"bachelorsOrHigher": 31.7
+		},
+		{
+			"fips": 53031,
+			"state": "WA",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 37.3
+		},
+		{
+			"fips": 53033,
+			"state": "WA",
+			"area_name": "King County",
+			"bachelorsOrHigher": 47.1
+		},
+		{
+			"fips": 53035,
+			"state": "WA",
+			"area_name": "Kitsap County",
+			"bachelorsOrHigher": 30
+		},
+		{
+			"fips": 53037,
+			"state": "WA",
+			"area_name": "Kittitas County",
+			"bachelorsOrHigher": 34
+		},
+		{
+			"fips": 53039,
+			"state": "WA",
+			"area_name": "Klickitat County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 53041,
+			"state": "WA",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 14.1
+		},
+		{
+			"fips": 53043,
+			"state": "WA",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 19.3
+		},
+		{
+			"fips": 53045,
+			"state": "WA",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 17.9
+		},
+		{
+			"fips": 53047,
+			"state": "WA",
+			"area_name": "Okanogan County",
+			"bachelorsOrHigher": 17
+		},
+		{
+			"fips": 53049,
+			"state": "WA",
+			"area_name": "Pacific County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 53051,
+			"state": "WA",
+			"area_name": "Pend Oreille County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 53053,
+			"state": "WA",
+			"area_name": "Pierce County",
+			"bachelorsOrHigher": 24.2
+		},
+		{
+			"fips": 53055,
+			"state": "WA",
+			"area_name": "San Juan County",
+			"bachelorsOrHigher": 45.2
+		},
+		{
+			"fips": 53057,
+			"state": "WA",
+			"area_name": "Skagit County",
+			"bachelorsOrHigher": 24.5
+		},
+		{
+			"fips": 53059,
+			"state": "WA",
+			"area_name": "Skamania County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 53061,
+			"state": "WA",
+			"area_name": "Snohomish County",
+			"bachelorsOrHigher": 29.3
+		},
+		{
+			"fips": 53063,
+			"state": "WA",
+			"area_name": "Spokane County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 53065,
+			"state": "WA",
+			"area_name": "Stevens County",
+			"bachelorsOrHigher": 17.6
+		},
+		{
+			"fips": 53067,
+			"state": "WA",
+			"area_name": "Thurston County",
+			"bachelorsOrHigher": 32.9
+		},
+		{
+			"fips": 53069,
+			"state": "WA",
+			"area_name": "Wahkiakum County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 53071,
+			"state": "WA",
+			"area_name": "Walla Walla County",
+			"bachelorsOrHigher": 26.5
+		},
+		{
+			"fips": 53073,
+			"state": "WA",
+			"area_name": "Whatcom County",
+			"bachelorsOrHigher": 32.4
+		},
+		{
+			"fips": 53075,
+			"state": "WA",
+			"area_name": "Whitman County",
+			"bachelorsOrHigher": 47.8
+		},
+		{
+			"fips": 53077,
+			"state": "WA",
+			"area_name": "Yakima County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 54001,
+			"state": "WV",
+			"area_name": "Barbour County",
+			"bachelorsOrHigher": 12.3
+		},
+		{
+			"fips": 54003,
+			"state": "WV",
+			"area_name": "Berkeley County",
+			"bachelorsOrHigher": 20.3
+		},
+		{
+			"fips": 54005,
+			"state": "WV",
+			"area_name": "Boone County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 54007,
+			"state": "WV",
+			"area_name": "Braxton County",
+			"bachelorsOrHigher": 10.8
+		},
+		{
+			"fips": 54009,
+			"state": "WV",
+			"area_name": "Brooke County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 54011,
+			"state": "WV",
+			"area_name": "Cabell County",
+			"bachelorsOrHigher": 26.4
+		},
+		{
+			"fips": 54013,
+			"state": "WV",
+			"area_name": "Calhoun County",
+			"bachelorsOrHigher": 8.9
+		},
+		{
+			"fips": 54015,
+			"state": "WV",
+			"area_name": "Clay County",
+			"bachelorsOrHigher": 9.4
+		},
+		{
+			"fips": 54017,
+			"state": "WV",
+			"area_name": "Doddridge County",
+			"bachelorsOrHigher": 12.7
+		},
+		{
+			"fips": 54019,
+			"state": "WV",
+			"area_name": "Fayette County",
+			"bachelorsOrHigher": 11.8
+		},
+		{
+			"fips": 54021,
+			"state": "WV",
+			"area_name": "Gilmer County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 54023,
+			"state": "WV",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 54025,
+			"state": "WV",
+			"area_name": "Greenbrier County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 54027,
+			"state": "WV",
+			"area_name": "Hampshire County",
+			"bachelorsOrHigher": 8.7
+		},
+		{
+			"fips": 54029,
+			"state": "WV",
+			"area_name": "Hancock County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 54031,
+			"state": "WV",
+			"area_name": "Hardy County",
+			"bachelorsOrHigher": 12.2
+		},
+		{
+			"fips": 54033,
+			"state": "WV",
+			"area_name": "Harrison County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 54035,
+			"state": "WV",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 16.2
+		},
+		{
+			"fips": 54037,
+			"state": "WV",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 54039,
+			"state": "WV",
+			"area_name": "Kanawha County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 54041,
+			"state": "WV",
+			"area_name": "Lewis County",
+			"bachelorsOrHigher": 14.9
+		},
+		{
+			"fips": 54043,
+			"state": "WV",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 54045,
+			"state": "WV",
+			"area_name": "Logan County",
+			"bachelorsOrHigher": 8.5
+		},
+		{
+			"fips": 54047,
+			"state": "WV",
+			"area_name": "McDowell County",
+			"bachelorsOrHigher": 5.8
+		},
+		{
+			"fips": 54049,
+			"state": "WV",
+			"area_name": "Marion County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 54051,
+			"state": "WV",
+			"area_name": "Marshall County",
+			"bachelorsOrHigher": 15.9
+		},
+		{
+			"fips": 54053,
+			"state": "WV",
+			"area_name": "Mason County",
+			"bachelorsOrHigher": 10.1
+		},
+		{
+			"fips": 54055,
+			"state": "WV",
+			"area_name": "Mercer County",
+			"bachelorsOrHigher": 19
+		},
+		{
+			"fips": 54057,
+			"state": "WV",
+			"area_name": "Mineral County",
+			"bachelorsOrHigher": 12.8
+		},
+		{
+			"fips": 54059,
+			"state": "WV",
+			"area_name": "Mingo County",
+			"bachelorsOrHigher": 10.5
+		},
+		{
+			"fips": 54061,
+			"state": "WV",
+			"area_name": "Monongalia County",
+			"bachelorsOrHigher": 38.8
+		},
+		{
+			"fips": 54063,
+			"state": "WV",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 54065,
+			"state": "WV",
+			"area_name": "Morgan County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 54067,
+			"state": "WV",
+			"area_name": "Nicholas County",
+			"bachelorsOrHigher": 13.6
+		},
+		{
+			"fips": 54069,
+			"state": "WV",
+			"area_name": "Ohio County",
+			"bachelorsOrHigher": 28.6
+		},
+		{
+			"fips": 54071,
+			"state": "WV",
+			"area_name": "Pendleton County",
+			"bachelorsOrHigher": 14
+		},
+		{
+			"fips": 54073,
+			"state": "WV",
+			"area_name": "Pleasants County",
+			"bachelorsOrHigher": 13.3
+		},
+		{
+			"fips": 54075,
+			"state": "WV",
+			"area_name": "Pocahontas County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 54077,
+			"state": "WV",
+			"area_name": "Preston County",
+			"bachelorsOrHigher": 12.9
+		},
+		{
+			"fips": 54079,
+			"state": "WV",
+			"area_name": "Putnam County",
+			"bachelorsOrHigher": 23.9
+		},
+		{
+			"fips": 54081,
+			"state": "WV",
+			"area_name": "Raleigh County",
+			"bachelorsOrHigher": 18.2
+		},
+		{
+			"fips": 54083,
+			"state": "WV",
+			"area_name": "Randolph County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 54085,
+			"state": "WV",
+			"area_name": "Ritchie County",
+			"bachelorsOrHigher": 10.4
+		},
+		{
+			"fips": 54087,
+			"state": "WV",
+			"area_name": "Roane County",
+			"bachelorsOrHigher": 10.3
+		},
+		{
+			"fips": 54089,
+			"state": "WV",
+			"area_name": "Summers County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 54091,
+			"state": "WV",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 54093,
+			"state": "WV",
+			"area_name": "Tucker County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 54095,
+			"state": "WV",
+			"area_name": "Tyler County",
+			"bachelorsOrHigher": 10
+		},
+		{
+			"fips": 54097,
+			"state": "WV",
+			"area_name": "Upshur County",
+			"bachelorsOrHigher": 15.8
+		},
+		{
+			"fips": 54099,
+			"state": "WV",
+			"area_name": "Wayne County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 54101,
+			"state": "WV",
+			"area_name": "Webster County",
+			"bachelorsOrHigher": 9.1
+		},
+		{
+			"fips": 54103,
+			"state": "WV",
+			"area_name": "Wetzel County",
+			"bachelorsOrHigher": 10.2
+		},
+		{
+			"fips": 54105,
+			"state": "WV",
+			"area_name": "Wirt County",
+			"bachelorsOrHigher": 10.9
+		},
+		{
+			"fips": 54107,
+			"state": "WV",
+			"area_name": "Wood County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 54109,
+			"state": "WV",
+			"area_name": "Wyoming County",
+			"bachelorsOrHigher": 9
+		},
+		{
+			"fips": 55001,
+			"state": "WI",
+			"area_name": "Adams County",
+			"bachelorsOrHigher": 12.6
+		},
+		{
+			"fips": 55003,
+			"state": "WI",
+			"area_name": "Ashland County",
+			"bachelorsOrHigher": 22.3
+		},
+		{
+			"fips": 55005,
+			"state": "WI",
+			"area_name": "Barron County",
+			"bachelorsOrHigher": 16.6
+		},
+		{
+			"fips": 55007,
+			"state": "WI",
+			"area_name": "Bayfield County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 55009,
+			"state": "WI",
+			"area_name": "Brown County",
+			"bachelorsOrHigher": 27.5
+		},
+		{
+			"fips": 55011,
+			"state": "WI",
+			"area_name": "Buffalo County",
+			"bachelorsOrHigher": 17.7
+		},
+		{
+			"fips": 55013,
+			"state": "WI",
+			"area_name": "Burnett County",
+			"bachelorsOrHigher": 16.8
+		},
+		{
+			"fips": 55015,
+			"state": "WI",
+			"area_name": "Calumet County",
+			"bachelorsOrHigher": 28
+		},
+		{
+			"fips": 55017,
+			"state": "WI",
+			"area_name": "Chippewa County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 55019,
+			"state": "WI",
+			"area_name": "Clark County",
+			"bachelorsOrHigher": 11.7
+		},
+		{
+			"fips": 55021,
+			"state": "WI",
+			"area_name": "Columbia County",
+			"bachelorsOrHigher": 22.2
+		},
+		{
+			"fips": 55023,
+			"state": "WI",
+			"area_name": "Crawford County",
+			"bachelorsOrHigher": 15.3
+		},
+		{
+			"fips": 55025,
+			"state": "WI",
+			"area_name": "Dane County",
+			"bachelorsOrHigher": 47.6
+		},
+		{
+			"fips": 55027,
+			"state": "WI",
+			"area_name": "Dodge County",
+			"bachelorsOrHigher": 15.7
+		},
+		{
+			"fips": 55029,
+			"state": "WI",
+			"area_name": "Door County",
+			"bachelorsOrHigher": 29.4
+		},
+		{
+			"fips": 55031,
+			"state": "WI",
+			"area_name": "Douglas County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 55033,
+			"state": "WI",
+			"area_name": "Dunn County",
+			"bachelorsOrHigher": 25.3
+		},
+		{
+			"fips": 55035,
+			"state": "WI",
+			"area_name": "Eau Claire County",
+			"bachelorsOrHigher": 31.1
+		},
+		{
+			"fips": 55037,
+			"state": "WI",
+			"area_name": "Florence County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 55039,
+			"state": "WI",
+			"area_name": "Fond du Lac County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 55041,
+			"state": "WI",
+			"area_name": "Forest County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 55043,
+			"state": "WI",
+			"area_name": "Grant County",
+			"bachelorsOrHigher": 20.2
+		},
+		{
+			"fips": 55045,
+			"state": "WI",
+			"area_name": "Green County",
+			"bachelorsOrHigher": 20.9
+		},
+		{
+			"fips": 55047,
+			"state": "WI",
+			"area_name": "Green Lake County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 55049,
+			"state": "WI",
+			"area_name": "Iowa County",
+			"bachelorsOrHigher": 23.2
+		},
+		{
+			"fips": 55051,
+			"state": "WI",
+			"area_name": "Iron County",
+			"bachelorsOrHigher": 20.6
+		},
+		{
+			"fips": 55053,
+			"state": "WI",
+			"area_name": "Jackson County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 55055,
+			"state": "WI",
+			"area_name": "Jefferson County",
+			"bachelorsOrHigher": 23.3
+		},
+		{
+			"fips": 55057,
+			"state": "WI",
+			"area_name": "Juneau County",
+			"bachelorsOrHigher": 12.4
+		},
+		{
+			"fips": 55059,
+			"state": "WI",
+			"area_name": "Kenosha County",
+			"bachelorsOrHigher": 24.3
+		},
+		{
+			"fips": 55061,
+			"state": "WI",
+			"area_name": "Kewaunee County",
+			"bachelorsOrHigher": 14.4
+		},
+		{
+			"fips": 55063,
+			"state": "WI",
+			"area_name": "La Crosse County",
+			"bachelorsOrHigher": 30.8
+		},
+		{
+			"fips": 55065,
+			"state": "WI",
+			"area_name": "Lafayette County",
+			"bachelorsOrHigher": 17.3
+		},
+		{
+			"fips": 55067,
+			"state": "WI",
+			"area_name": "Langlade County",
+			"bachelorsOrHigher": 13.5
+		},
+		{
+			"fips": 55069,
+			"state": "WI",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 55071,
+			"state": "WI",
+			"area_name": "Manitowoc County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 55073,
+			"state": "WI",
+			"area_name": "Marathon County",
+			"bachelorsOrHigher": 23
+		},
+		{
+			"fips": 55075,
+			"state": "WI",
+			"area_name": "Marinette County",
+			"bachelorsOrHigher": 13.9
+		},
+		{
+			"fips": 55077,
+			"state": "WI",
+			"area_name": "Marquette County",
+			"bachelorsOrHigher": 13
+		},
+		{
+			"fips": 55078,
+			"state": "WI",
+			"area_name": "Menominee County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 55079,
+			"state": "WI",
+			"area_name": "Milwaukee County",
+			"bachelorsOrHigher": 28.7
+		},
+		{
+			"fips": 55081,
+			"state": "WI",
+			"area_name": "Monroe County",
+			"bachelorsOrHigher": 17.5
+		},
+		{
+			"fips": 55083,
+			"state": "WI",
+			"area_name": "Oconto County",
+			"bachelorsOrHigher": 15.4
+		},
+		{
+			"fips": 55085,
+			"state": "WI",
+			"area_name": "Oneida County",
+			"bachelorsOrHigher": 24.4
+		},
+		{
+			"fips": 55087,
+			"state": "WI",
+			"area_name": "Outagamie County",
+			"bachelorsOrHigher": 26.9
+		},
+		{
+			"fips": 55089,
+			"state": "WI",
+			"area_name": "Ozaukee County",
+			"bachelorsOrHigher": 46.4
+		},
+		{
+			"fips": 55091,
+			"state": "WI",
+			"area_name": "Pepin County",
+			"bachelorsOrHigher": 17.1
+		},
+		{
+			"fips": 55093,
+			"state": "WI",
+			"area_name": "Pierce County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 55095,
+			"state": "WI",
+			"area_name": "Polk County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 55097,
+			"state": "WI",
+			"area_name": "Portage County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 55099,
+			"state": "WI",
+			"area_name": "Price County",
+			"bachelorsOrHigher": 16.1
+		},
+		{
+			"fips": 55101,
+			"state": "WI",
+			"area_name": "Racine County",
+			"bachelorsOrHigher": 23.4
+		},
+		{
+			"fips": 55103,
+			"state": "WI",
+			"area_name": "Richland County",
+			"bachelorsOrHigher": 16.7
+		},
+		{
+			"fips": 55105,
+			"state": "WI",
+			"area_name": "Rock County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 55107,
+			"state": "WI",
+			"area_name": "Rusk County",
+			"bachelorsOrHigher": 14.2
+		},
+		{
+			"fips": 55109,
+			"state": "WI",
+			"area_name": "St. Croix County",
+			"bachelorsOrHigher": 32.4
+		},
+		{
+			"fips": 55111,
+			"state": "WI",
+			"area_name": "Sauk County",
+			"bachelorsOrHigher": 21.9
+		},
+		{
+			"fips": 55113,
+			"state": "WI",
+			"area_name": "Sawyer County",
+			"bachelorsOrHigher": 22.1
+		},
+		{
+			"fips": 55115,
+			"state": "WI",
+			"area_name": "Shawano County",
+			"bachelorsOrHigher": 15.1
+		},
+		{
+			"fips": 55117,
+			"state": "WI",
+			"area_name": "Sheboygan County",
+			"bachelorsOrHigher": 22.5
+		},
+		{
+			"fips": 55119,
+			"state": "WI",
+			"area_name": "Taylor County",
+			"bachelorsOrHigher": 13.8
+		},
+		{
+			"fips": 55121,
+			"state": "WI",
+			"area_name": "Trempealeau County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 55123,
+			"state": "WI",
+			"area_name": "Vernon County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 55125,
+			"state": "WI",
+			"area_name": "Vilas County",
+			"bachelorsOrHigher": 24.9
+		},
+		{
+			"fips": 55127,
+			"state": "WI",
+			"area_name": "Walworth County",
+			"bachelorsOrHigher": 26.3
+		},
+		{
+			"fips": 55129,
+			"state": "WI",
+			"area_name": "Washburn County",
+			"bachelorsOrHigher": 20.5
+		},
+		{
+			"fips": 55131,
+			"state": "WI",
+			"area_name": "Washington County",
+			"bachelorsOrHigher": 27.9
+		},
+		{
+			"fips": 55133,
+			"state": "WI",
+			"area_name": "Waukesha County",
+			"bachelorsOrHigher": 41
+		},
+		{
+			"fips": 55135,
+			"state": "WI",
+			"area_name": "Waupaca County",
+			"bachelorsOrHigher": 16.5
+		},
+		{
+			"fips": 55137,
+			"state": "WI",
+			"area_name": "Waushara County",
+			"bachelorsOrHigher": 15.2
+		},
+		{
+			"fips": 55139,
+			"state": "WI",
+			"area_name": "Winnebago County",
+			"bachelorsOrHigher": 26.1
+		},
+		{
+			"fips": 55141,
+			"state": "WI",
+			"area_name": "Wood County",
+			"bachelorsOrHigher": 18.9
+		},
+		{
+			"fips": 56001,
+			"state": "WY",
+			"area_name": "Albany County",
+			"bachelorsOrHigher": 48.8
+		},
+		{
+			"fips": 56003,
+			"state": "WY",
+			"area_name": "Big Horn County",
+			"bachelorsOrHigher": 20
+		},
+		{
+			"fips": 56005,
+			"state": "WY",
+			"area_name": "Campbell County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 56007,
+			"state": "WY",
+			"area_name": "Carbon County",
+			"bachelorsOrHigher": 17.2
+		},
+		{
+			"fips": 56009,
+			"state": "WY",
+			"area_name": "Converse County",
+			"bachelorsOrHigher": 19.6
+		},
+		{
+			"fips": 56011,
+			"state": "WY",
+			"area_name": "Crook County",
+			"bachelorsOrHigher": 21.6
+		},
+		{
+			"fips": 56013,
+			"state": "WY",
+			"area_name": "Fremont County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 56015,
+			"state": "WY",
+			"area_name": "Goshen County",
+			"bachelorsOrHigher": 21.5
+		},
+		{
+			"fips": 56017,
+			"state": "WY",
+			"area_name": "Hot Springs County",
+			"bachelorsOrHigher": 19.5
+		},
+		{
+			"fips": 56019,
+			"state": "WY",
+			"area_name": "Johnson County",
+			"bachelorsOrHigher": 27
+		},
+		{
+			"fips": 56021,
+			"state": "WY",
+			"area_name": "Laramie County",
+			"bachelorsOrHigher": 26.8
+		},
+		{
+			"fips": 56023,
+			"state": "WY",
+			"area_name": "Lincoln County",
+			"bachelorsOrHigher": 20.1
+		},
+		{
+			"fips": 56025,
+			"state": "WY",
+			"area_name": "Natrona County",
+			"bachelorsOrHigher": 21.3
+		},
+		{
+			"fips": 56027,
+			"state": "WY",
+			"area_name": "Niobrara County",
+			"bachelorsOrHigher": 21.4
+		},
+		{
+			"fips": 56029,
+			"state": "WY",
+			"area_name": "Park County",
+			"bachelorsOrHigher": 28.3
+		},
+		{
+			"fips": 56031,
+			"state": "WY",
+			"area_name": "Platte County",
+			"bachelorsOrHigher": 19.2
+		},
+		{
+			"fips": 56033,
+			"state": "WY",
+			"area_name": "Sheridan County",
+			"bachelorsOrHigher": 28.9
+		},
+		{
+			"fips": 56035,
+			"state": "WY",
+			"area_name": "Sublette County",
+			"bachelorsOrHigher": 23.6
+		},
+		{
+			"fips": 56037,
+			"state": "WY",
+			"area_name": "Sweetwater County",
+			"bachelorsOrHigher": 18.1
+		},
+		{
+			"fips": 56039,
+			"state": "WY",
+			"area_name": "Teton County",
+			"bachelorsOrHigher": 51.9
+		},
+		{
+			"fips": 56041,
+			"state": "WY",
+			"area_name": "Uinta County",
+			"bachelorsOrHigher": 18.7
+		},
+		{
+			"fips": 56043,
+			"state": "WY",
+			"area_name": "Washakie County",
+			"bachelorsOrHigher": 21.2
+		},
+		{
+			"fips": 56045,
+			"state": "WY",
+			"area_name": "Weston County",
+			"bachelorsOrHigher": 16.8
+		}
 	]
-
 
 /***/ },
 /* 57 */
