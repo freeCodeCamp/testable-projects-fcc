@@ -20335,7 +20335,9 @@ var FCC_Global =
 
 	            it('11. I can select an option from a dropdown.', function () {
 	                var selects = document.getElementsByTagName('select');
-	                FCC_Global.assert.isAtLeast(selects.length, 1, "There should be at least 1 select field ");
+	                // need to check to make sure there is more than one <select>, as our default code contains a <select> as well
+	                // if we are detecting only one, it is ours
+	                FCC_Global.assert.isAtLeast(selects.length, 2, "There should be at least 1 select field ");
 	                for (var i = 0; i < selects.length; i++) {
 	                    var select = selects[i];
 	                    FCC_Global.assert.isAtLeast(getNumActive(select.options), 1, "Select should contain at least 1 selectable option ");
@@ -20350,7 +20352,9 @@ var FCC_Global =
 
 	            it('13. I can select several fields from a series of checkboxes.', function () {
 	                var checkboxes = (0, _jquery2.default)(":checkbox");
-	                FCC_Global.assert.isAtLeast(checkboxes.length, 1, "There should be at least 1 checkbox ");
+	                // need to check to make sure there is more than one checkbox, as our default code contains a checkbox as well
+	                // if we are detecting only one, it is ours
+	                FCC_Global.assert.isAtLeast(checkboxes.length, 2, "There should be at least 1 checkbox ");
 	                FCC_Global.assert.isAtLeast(getNumActive(checkboxes), 1, "There should be at least 1 active checkbox ");
 	            });
 
