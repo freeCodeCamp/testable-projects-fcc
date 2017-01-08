@@ -238,7 +238,7 @@ export function FCCInitTestRunner() {
         case 'scatter-plot':
             createScatterPlotTests();
             break;
-        case 'heat-map';
+        case 'heat-map':
             createHeatMapTests();
             break;
     };
