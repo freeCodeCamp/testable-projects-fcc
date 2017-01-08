@@ -14,6 +14,7 @@ import createTechnicalDocsPageTests from './project-tests/technical-docs-tests';
 import createBarChartTests from './project-tests/bar-chart-tests';
 import createScatterPlotTests from './project-tests/scatter-plot-tests';
 import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
+import createHeatMapTests from './project-tests/heat-map-tests';
 
 export const assert = chai.assert;
 //export let project_selector;
@@ -236,6 +237,9 @@ export function FCCInitTestRunner() {
             break;
         case 'scatter-plot':
             createScatterPlotTests();
+            break;
+        case 'heat-map';
+            createHeatMapTests();
             break;
     };
 

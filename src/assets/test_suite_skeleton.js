@@ -328,8 +328,9 @@ const test_suite_skeleton = `
                 <option value="drum-machine">Drum Machine</option>
                 <option value="pomodoro-clock">Pomodoro Clock</option>
                 <option value="javascript-calculator">Javascript Calculator</option>  
-                <option value="bar-chart">Bar Chart</option>
-                <option value="scatter-plot">Scatter Plot</option>
+                <option value="bar-chart">D3: Bar Chart</option>
+                <option value="scatter-plot">D3: Scatter Plot</option>
+                <option value="heat-map">D3: Heat Map</option>
             </select>
             <button id="fcc_test_message-box-rerun-button" type="button" class="fcc_foldout_buttons" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
                 Run Tests

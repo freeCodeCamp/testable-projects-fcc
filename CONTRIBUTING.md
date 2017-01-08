@@ -24,7 +24,7 @@ OR
 - We are using Chai's `assert` library.
 - Wherever possible, try to avoid using jQuery in your tests, if there is a simple and easy JS equivalent that should take precedence.
 - If you do use jQuery as a fallback, you must import `jQuery` into your test suite file before exporting your test function.
-- Each exported test suite must be imported into `index.js`, and a corresponding variable name and call to the imported function must be added to the `switch` in `index.js`.
+- Each exported test suite must be imported into `index.js`, and a corresponding variable name and call to the imported function must be added to the `switch` in `index.js`. Additionally, for the test suite to appear as an option in the drop-down menu, a new `<option>` tag must be added to the `<select>` in the HTML found in `test_suite_skeleton.js` (which starts somewhere around line 320). The `value` attribute of the `<option>` must be the same as the variable added to the switch statement. 
 - Please follow naming conventions for naming files and functions.
 
 ### To test your code locally:
