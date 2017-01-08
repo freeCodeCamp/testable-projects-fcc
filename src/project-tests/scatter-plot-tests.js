@@ -147,7 +147,7 @@ export default function createScatterPlotTests() {
                 const firstRequestTimeout = 100;
                 const secondRequestTimeout = 2000;
                 this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
 
                 function getToolTipStatus(tooltip) {
                     // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
