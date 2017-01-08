@@ -21121,7 +21121,7 @@ var FCC_Global =
 
 	                // NOTE:  This test contains the same exact tests from 6 and 7.  Is there a way to only run test 8 if test 6 and 7 pass?  Should we be putting this code in a utility function?
 	                var cells = document.querySelectorAll('.cell');
-	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell"');
+	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
 	                for (var i = 0; i < cells.length; i++) {
 	                    var cell = cells[i];
@@ -21149,11 +21149,11 @@ var FCC_Global =
 	                    }
 	                    return true;
 	                }
-	                FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11');
-	                FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015');
+	                FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
+	                FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
 	            });
 
-	            it('9. My heat map should have cells that align with the corresponding month on the y-axis', function () {
+	            it('9. My heat map should have cells that align with the corresponding month on the y-axis.', function () {
 	                var cellsCollection = document.querySelectorAll('.cell');
 	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
@@ -21169,7 +21169,7 @@ var FCC_Global =
 	                }
 	            });
 
-	            it('10. My heat map should have cells that align with the corresponding year on the x-axis', function () {
+	            it('10. My heat map should have cells that align with the corresponding year on the x-axis.', function () {
 	                var cellsCollection = document.querySelectorAll('.cell');
 	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
@@ -21185,7 +21185,7 @@ var FCC_Global =
 	                }
 	            });
 
-	            it('11. My heat map should have multiple tick labels on the y-axis with the full month name', function () {
+	            it('11. My heat map should have multiple tick labels on the y-axis with the full month name.', function () {
 	                var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
 
 	                FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis");
@@ -21197,7 +21197,7 @@ var FCC_Global =
 	                }
 	            });
 
-	            it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015', function () {
+	            it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015.', function () {
 	                var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
 	                FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis");
@@ -21210,22 +21210,22 @@ var FCC_Global =
 	                }
 	            });
 
-	            it('13. My heat map should have a legend with corresponding id="legend"', function () {
+	            it('13. My heat map should have a legend with corresponding id="legend".', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
 	            });
 
-	            it('14. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell ', function () {
+	            it('14. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell.', function () {
 
 	                var firstRequestTimeout = 100;
 	                var secondRequestTimeout = 2000;
 	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'Could not find an element with id="tooltip" ');
 
 	                function getToolTipStatus(tooltip) {
 	                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
 	                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
 	                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	                    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
+	                    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.dsiplay === 'none') {
 	                        return 'hidden';
 	                    } else {
 	                        return 'visible';
