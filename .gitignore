@@ -47,3 +47,6 @@ local_test/css/*
 
 # local test code
 localTestCode.txt
+
+# Apple files
+*.DS_Store

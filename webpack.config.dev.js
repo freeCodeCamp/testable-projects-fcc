@@ -1,9 +1,9 @@
-
+const PROJECT_PATH = __dirname + '/local_test'
 module.exports = {
     entry: "./src/index.js",
     output: {
         library: 'FCC_Global',
-        path: __dirname + '/local_test/js',
+        path: PROJECT_PATH + '/js',
         filename: "bundle.js"
     },
     module: {

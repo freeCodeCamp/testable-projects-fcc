@@ -13,6 +13,7 @@ import createSurveyFormTests from './project-tests/survey-form-tests';
 import createTechnicalDocsPageTests from './project-tests/technical-docs-tests';
 import createBarChartTests from './project-tests/bar-chart-tests';
 import createScatterPlotTests from './project-tests/scatter-plot-tests';
+import createChoroplethTests from './project-tests/choropleth-tests';
 import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 import createHeatMapTests from './project-tests/heat-map-tests';
 
@@ -237,6 +238,9 @@ export function FCCInitTestRunner() {
             break;
         case 'scatter-plot':
             createScatterPlotTests();
+            break;    
+        case 'choropleth':
+            createChoroplethTests();
             break;
         case 'heat-map':
             createHeatMapTests();
