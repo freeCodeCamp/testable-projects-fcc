@@ -15,6 +15,7 @@ import createBarChartTests from './project-tests/bar-chart-tests';
 import createScatterPlotTests from './project-tests/scatter-plot-tests';
 import createChoroplethTests from './project-tests/choropleth-tests';
 import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
+import createHeatMapTests from './project-tests/heat-map-tests';
 
 export const assert = chai.assert;
 //export let project_selector;
@@ -240,6 +241,9 @@ export function FCCInitTestRunner() {
             break;    
         case 'choropleth':
             createChoroplethTests();
+            break;
+        case 'heat-map':
+            createHeatMapTests();
             break;
     };
 

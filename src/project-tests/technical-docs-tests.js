@@ -39,8 +39,8 @@ export default function createTechnicalDocsPageTests() {
                     FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
                     FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' " +
                         "have a <header> element as a first element child ");
-                    FCC_Global.assert.strictEqual(mustContainText.length, classQty, "Not all first-child <header> elements within " +
-                        "'main-section' elements contain text ");
+                    FCC_Global.assert.strictEqual(mustContainText.length, classQty, 'Not all first-child <header> elements within ' +
+                        '"main-section" elements contain text ');
                 });
 
             it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' +

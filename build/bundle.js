@@ -131,6 +131,10 @@ var FCC_Global =
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
+	var _heatMapTests = __webpack_require__(58);
+
+	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var assert = exports.assert = _chai2.default.assert;
@@ -359,6 +363,9 @@ var FCC_Global =
 	            break;
 	        case 'choropleth':
 	            (0, _choroplethTests2.default)();
+	            break;
+	        case 'heat-map':
+	            (0, _heatMapTests2.default)();
 	            break;
 	    };
 
@@ -18939,7 +18946,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	var test_suite_skeleton = "\n    <style>\n        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n        /* TEST/MESSAGE CENTER CSS */ \n\n        #fcc_test_message-box {\n            font-size: 20px !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n            position: fixed;\n            left: 0;\n            bottom: 0;\n            right: 0;\n            text-align: center;\n            background-color: rgba(0, 0, 0, 0.8);\n            transition: all .5s;\n            z-index: 100000;\n            overflow: auto;\n        }\n    \n        .fcc_test_message-box-hidden {\n            visibility: hidden;\n            opacity: 0;\n            top: -300px;\n        }\n    \n        .fcc_test_message-box-shown {\n            visibility: visible;\n            opacity: 1;\n            top: 0;\n        }\n\n        .fcc_test_message-box-content {\n            position: relative;\n            color: black;\n            background-color: white;\n            top: 10vh;\n            width: 80%;\n            margin: 0 auto !important;\n            text-align: initial;\n            border-radius: 10px;\n            display: flex;\n            flex-direction: column;\n        }\n        .fcc_test_message-box-header,\n        .fcc_test_message-box-footer{\n            position: relative;\n            height: 60px;\n            flex: none;\n            box-sizing: border-box !important;\n            padding: 10px !important;\n        }\n        .fcc_test_message-box-header {\n            border-bottom: 1px solid rgb(229,229,229);\n        }\n    \n        .fcc_test_message-box-header .title {\n            float: left;\n            font-size: 30px !important;\n            line-height: 40px !important;\n            margin-left: 10px !important;\n        }\n\n        .fcc_test_message-box-body {\n            flex: 1;\n        }\n\n        .fcc_test_message-box-footer {\n            border-top: 1px solid rgb(229,229,229);\n        }\n    \n        .fcc_test_message-box-close-btn {\n            float: right;\n            color: black;\n            background-color: white;\n            border: 1px solid rgb(229,229,229);\n            border-radius: 4px;\n            padding: 10px 20px !important;\n            transition: all .3s;\n        }\n        .fcc_test_message-box-close-btn:hover {\n            color: white;\n            background-color: black;\n        }\n\n        #mocha {\n            margin: 10px !important;\n        }\n        #mocha .test pre {\n            background-color: rgb(245, 245, 245);\n        }\n        #mocha-stats {\n            position: absolute;\n        }\n        #mocha ul {\n            max-width: initial;\n            margin: initial !important;\n            text-align: initial;\n        }\n\n        div {\n            position: static;\n        }\n\n        .fcc_test_message-box-close-fixed {\n            position: fixed;\n            top: 10px;\n            right: 10px;\n            height: 30px;\n            width: 30px;\n            border-radius: 50%;\n            border: 3px solid grey;\n            text-align: center;\n            transition: all .4s;\n        }\n        .fcc_test_message-box-close-fixed:after {\n            color: grey;\n            font-family: Noto Sans, arial, sans-serif !important;\n            font-size: 30px !important;\n            font weight: bold;\n            content: \"X\";\n            line-height: 30px !important;\n        }\n\n        /* FOLDOUT MENU CSS */\n\n        #fcc_foldout_menu {\n            position: absolute;\n            top: 0;\n            left: -320px;\n            width: 320px;\n            height: 195px;\n            border-bottom-right-radius: 5px;\n            background-color: rgba(255, 255, 204, 0.6);\n            z-index: 99997;\n            font-family: Noto Sans, arial, sans-serif !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            transition: .5s;\n        }\n        input[type=checkbox]:checked ~ #fcc_foldout_menu {\n            left: 0;\n            transition: .5s ease-in-out;\n        }\n        #fcc_foldout_menu_inner {\n            position: relative;\n        }\n        input[type=checkbox] {\n            height: 24px;\n            width: 25px;\n            position: fixed;\n            top: 7px;\n            left: 20px;\n            border: 1px solid black;\n            opacity: 0;\n            cursor: pointer;\n            z-index: 99999;\n        }\n        #fcc_foldout_toggler {\n            position: fixed;\n            top: 20px;\n            left: 20px;\n            z-index: 99998;   \n        }\n\n        .fcc_hamburger {\n            position: relative;\n            width: 25px;\n            height: 3px;\n            display: block;\n            background: black;\n            border-radius: 5px;\n            content: '';\n            transform-origin: 4px 0px;\n            transition: transform 0.4s ease, opacity 0.55s ease;\n        }\n        #hamburger_top {\n            position: absolute;\n            top: -6px;\n            transform-origin: 0% 80%;\n        }\n        #hamburger_bottom {\n            position: absolute;\n            bottom: -6px;\n            transform-origin: 20% 80%;\n        }\n        .transform_top {\n            opacity: 1;\n            transform: rotate(45deg) translate(-2px, -1px);\n        }\n        .transform_middle {\n            opacity: 0;\n            transform: rotate(0deg) scale(0.2, 0.2);\n        }\n        .transform_bottom {\n            opacity: 1;\n            transform: rotate(-45deg) translate(-1px, -1px);\n        }\n\n        #fcc_foldout_menu label {\n            top: 38px;\n            left: 20px;\n            position: absolute;\n            font-size: 15px !important;\n        }\n        #fcc_foldout_menu select {\n            top: 61px;\n            left: 18px;\n            position: absolute;\n            font-family: Noto Sans, Arial, sans-serif !important;\n        }\n\n        .fcc_foldout_buttons {\n            position: absolute;\n            left: 20px;\n            height: 20px;\n            width: 110px;\n            padding: 10px !important;\n            display: block; \n            font-size: 15px !important;\n            line-height: 15px !important;\n            text-align: center;\n            border: none;\n            outline: none;\n            color: white;\n            background-color: rgba(128, 128, 128, 0.7);\n            border-radius: 4px;\n            box-sizing: content-box !important;\n            z-index: 0;\n            cursor: pointer;\n            box-shadow: 1px 1px 4px black;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n        #fcc_test_message-box-rerun-button {\n            top: 88px;\n            transition: all .3s;    \n        }\n        #fcc_test_message-box-rerun-button:hover {\n            color: white;\n            background-color: black;\n        }\n        #fcc_test_button {\n            top: 138px;\n        }\n        .fcc_test_btn-default {\n            background-color: rgba(128, 128, 128, 0.7);\n        }\n        .fcc_test_btn-executing {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_test_btn-error {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .fcc_test_btn-success {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n\n        #fcc_legend_wrapper {\n            position: absolute;\n            top: 95px;\n            left: 160px;\n            height: 400px;\n            width: 125px;\n            vertical-align: top;\n            text-align: left !important;\n            font-size: 15px;\n        }\n        #fcc_legend_wrapper span {\n            height: 15px;\n            margin-top: 6px !important;\n            font-size: 12px  !important;\n        }\n        .key {\n            height: 15px;\n            width: 15px;\n            margin: 5px !important;\n            vertical-align: top;\n        }\n        .key:first-of-type {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .key:nth-of-type(2) {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        .key:nth-of-type(3) {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_legend {\n            position: relative;\n            display: inline-block;\n        }\n\n        #fcc_test_suite_indicator_wrapper {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n        }\n        #fcc_test_suite_indicator {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n            font-size: 12px !important;\n            background-color: rgba(255, 255, 204, 0.6);\n            padding: 3px 5px !important;\n            border-radius: 5px;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n    </style>\n    <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n    <div id=\"fcc_foldout_toggler\">\n        <span id=\"hamburger_top\" class=\"fcc_hamburger\"></span>    \n        <span id=\"hamburger_middle\" class=\"fcc_hamburger\"></span>  \n        <span id=\"hamburger_bottom\" class=\"fcc_hamburger\"></span>      \n    </div>\n    <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n    <div id=\"fcc_foldout_menu\">\n        <div id=\"fcc_foldout_menu_inner\">\n            <label for=\"test-suite-selector\">Select Test Suite: </label>\n            <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n                <option id=\"placeholder\" value=\"\">- - -</option>\n                <option value=\"tribute-page\">Tribute Page</option>\n                <option value=\"portfolio\">Personal Portfolio</option>\n                <option value=\"survey-form\">Survey Form</option>\n                <option value=\"product-landing-page\">Product Landing Page</option>\n                <option value=\"technical-docs-page\">Technical Documentation Page</option>\n                <option value=\"random-quote-machine\">Random Quote Machine</option>\n                <option value=\"markdown-previewer\">Markdown Previewer</option>\n                <option value=\"drum-machine\">Drum Machine</option>\n                <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n                <option value=\"javascript-calculator\">Javascript Calculator</option>  \n                <option value=\"bar-chart\">Bar Chart</option>\n                <option value=\"scatter-plot\">Scatter Plot</option>\n                <option value=\"choropleth\">Choropleth</option>\n            </select>\n            <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n                Run Tests\n            </button>\n            <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n                Tests\n            </button>\n            <div id=\"fcc_legend_wrapper\">\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>  \n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n            </div>\n        </div>\n    </div>\n    <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n        <div class=\"fcc_test_message-box-content\">\n            <div class=\"fcc_test_message-box-header\">\n                <div class=\"title\">Unit tests</div>\n            </div>\n            <div class=\"fcc_test_message-box-body\">\n                <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n            </div>\n            <div class=\"fcc_test_message-box-footer\">\n                <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n            </div>\n        </div>\n        <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n    </div>";
+	var test_suite_skeleton = "\n    <style>\n        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n        /* TEST/MESSAGE CENTER CSS */ \n\n        #fcc_test_message-box {\n            font-size: 20px !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n            position: fixed;\n            left: 0;\n            bottom: 0;\n            right: 0;\n            text-align: center;\n            background-color: rgba(0, 0, 0, 0.8);\n            transition: all .5s;\n            z-index: 100000;\n            overflow: auto;\n        }\n    \n        .fcc_test_message-box-hidden {\n            visibility: hidden;\n            opacity: 0;\n            top: -300px;\n        }\n    \n        .fcc_test_message-box-shown {\n            visibility: visible;\n            opacity: 1;\n            top: 0;\n        }\n\n        .fcc_test_message-box-content {\n            position: relative;\n            color: black;\n            background-color: white;\n            top: 10vh;\n            width: 80%;\n            margin: 0 auto !important;\n            text-align: initial;\n            border-radius: 10px;\n            display: flex;\n            flex-direction: column;\n        }\n        .fcc_test_message-box-header,\n        .fcc_test_message-box-footer{\n            position: relative;\n            height: 60px;\n            flex: none;\n            box-sizing: border-box !important;\n            padding: 10px !important;\n        }\n        .fcc_test_message-box-header {\n            border-bottom: 1px solid rgb(229,229,229);\n        }\n    \n        .fcc_test_message-box-header .title {\n            float: left;\n            font-size: 30px !important;\n            line-height: 40px !important;\n            margin-left: 10px !important;\n        }\n\n        .fcc_test_message-box-body {\n            flex: 1;\n        }\n\n        .fcc_test_message-box-footer {\n            border-top: 1px solid rgb(229,229,229);\n        }\n    \n        .fcc_test_message-box-close-btn {\n            float: right;\n            color: black;\n            background-color: white;\n            border: 1px solid rgb(229,229,229);\n            border-radius: 4px;\n            padding: 10px 20px !important;\n            transition: all .3s;\n        }\n        .fcc_test_message-box-close-btn:hover {\n            color: white;\n            background-color: black;\n        }\n\n        #mocha {\n            margin: 10px !important;\n        }\n        #mocha .test pre {\n            background-color: rgb(245, 245, 245);\n        }\n        #mocha-stats {\n            position: absolute;\n        }\n        #mocha ul {\n            max-width: initial;\n            margin: initial !important;\n            text-align: initial;\n        }\n\n        div {\n            position: static;\n        }\n\n        .fcc_test_message-box-close-fixed {\n            position: fixed;\n            top: 10px;\n            right: 10px;\n            height: 30px;\n            width: 30px;\n            border-radius: 50%;\n            border: 3px solid grey;\n            text-align: center;\n            transition: all .4s;\n        }\n        .fcc_test_message-box-close-fixed:after {\n            color: grey;\n            font-family: Noto Sans, arial, sans-serif !important;\n            font-size: 30px !important;\n            font weight: bold;\n            content: \"X\";\n            line-height: 30px !important;\n        }\n\n        /* FOLDOUT MENU CSS */\n\n        #fcc_foldout_menu {\n            position: absolute;\n            top: 0;\n            left: -320px;\n            width: 320px;\n            height: 195px;\n            border-bottom-right-radius: 5px;\n            background-color: rgba(255, 255, 204, 0.6);\n            z-index: 99997;\n            font-family: Noto Sans, arial, sans-serif !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            transition: .5s;\n        }\n        input[type=checkbox]:checked ~ #fcc_foldout_menu {\n            left: 0;\n            transition: .5s ease-in-out;\n        }\n        #fcc_foldout_menu_inner {\n            position: relative;\n        }\n        input[type=checkbox] {\n            height: 24px;\n            width: 25px;\n            position: fixed;\n            top: 7px;\n            left: 20px;\n            border: 1px solid black;\n            opacity: 0;\n            cursor: pointer;\n            z-index: 99999;\n        }\n        #fcc_foldout_toggler {\n            position: fixed;\n            top: 20px;\n            left: 20px;\n            z-index: 99998;   \n        }\n\n        .fcc_hamburger {\n            position: relative;\n            width: 25px;\n            height: 3px;\n            display: block;\n            background: black;\n            border-radius: 5px;\n            content: '';\n            transform-origin: 4px 0px;\n            transition: transform 0.4s ease, opacity 0.55s ease;\n        }\n        #hamburger_top {\n            position: absolute;\n            top: -6px;\n            transform-origin: 0% 80%;\n        }\n        #hamburger_bottom {\n            position: absolute;\n            bottom: -6px;\n            transform-origin: 20% 80%;\n        }\n        .transform_top {\n            opacity: 1;\n            transform: rotate(45deg) translate(-2px, -1px);\n        }\n        .transform_middle {\n            opacity: 0;\n            transform: rotate(0deg) scale(0.2, 0.2);\n        }\n        .transform_bottom {\n            opacity: 1;\n            transform: rotate(-45deg) translate(-1px, -1px);\n        }\n\n        #fcc_foldout_menu label {\n            top: 38px;\n            left: 20px;\n            position: absolute;\n            font-size: 15px !important;\n        }\n        #fcc_foldout_menu select {\n            top: 61px;\n            left: 18px;\n            position: absolute;\n            font-family: Noto Sans, Arial, sans-serif !important;\n        }\n\n        .fcc_foldout_buttons {\n            position: absolute;\n            left: 20px;\n            height: 20px;\n            width: 110px;\n            padding: 10px !important;\n            display: block; \n            font-size: 15px !important;\n            line-height: 15px !important;\n            text-align: center;\n            border: none;\n            outline: none;\n            color: white;\n            background-color: rgba(128, 128, 128, 0.7);\n            border-radius: 4px;\n            box-sizing: content-box !important;\n            z-index: 0;\n            cursor: pointer;\n            box-shadow: 1px 1px 4px black;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n        #fcc_test_message-box-rerun-button {\n            top: 88px;\n            transition: all .3s;    \n        }\n        #fcc_test_message-box-rerun-button:hover {\n            color: white;\n            background-color: black;\n        }\n        #fcc_test_button {\n            top: 138px;\n        }\n        .fcc_test_btn-default {\n            background-color: rgba(128, 128, 128, 0.7);\n        }\n        .fcc_test_btn-executing {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_test_btn-error {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .fcc_test_btn-success {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n\n        #fcc_legend_wrapper {\n            position: absolute;\n            top: 95px;\n            left: 160px;\n            height: 400px;\n            width: 125px;\n            vertical-align: top;\n            text-align: left !important;\n            font-size: 15px;\n        }\n        #fcc_legend_wrapper span {\n            height: 15px;\n            margin-top: 6px !important;\n            font-size: 12px  !important;\n        }\n        .key {\n            height: 15px;\n            width: 15px;\n            margin: 5px !important;\n            vertical-align: top;\n        }\n        .key:first-of-type {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .key:nth-of-type(2) {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        .key:nth-of-type(3) {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_legend {\n            position: relative;\n            display: inline-block;\n        }\n\n        #fcc_test_suite_indicator_wrapper {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n        }\n        #fcc_test_suite_indicator {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n            font-size: 12px !important;\n            background-color: rgba(255, 255, 204, 0.6);\n            padding: 3px 5px !important;\n            border-radius: 5px;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n    </style>\n    <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n    <div id=\"fcc_foldout_toggler\">\n        <span id=\"hamburger_top\" class=\"fcc_hamburger\"></span>    \n        <span id=\"hamburger_middle\" class=\"fcc_hamburger\"></span>  \n        <span id=\"hamburger_bottom\" class=\"fcc_hamburger\"></span>      \n    </div>\n    <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n    <div id=\"fcc_foldout_menu\">\n        <div id=\"fcc_foldout_menu_inner\">\n            <label for=\"test-suite-selector\">Select Test Suite: </label>\n            <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n                <option id=\"placeholder\" value=\"\">- - -</option>\n                <option value=\"tribute-page\">Tribute Page</option>\n                <option value=\"portfolio\">Personal Portfolio</option>\n                <option value=\"survey-form\">Survey Form</option>\n                <option value=\"product-landing-page\">Product Landing Page</option>\n                <option value=\"technical-docs-page\">Technical Documentation Page</option>\n                <option value=\"random-quote-machine\">Random Quote Machine</option>\n                <option value=\"markdown-previewer\">Markdown Previewer</option>\n                <option value=\"drum-machine\">Drum Machine</option>\n                <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n                <option value=\"javascript-calculator\">Javascript Calculator</option>  \n                <option value=\"bar-chart\">D3: Bar Chart</option>\n                <option value=\"scatter-plot\">D3: Scatter Plot</option>\n                <option value=\"heat-map\">D3: Heat Map</option>\n                <option value=\"choropleth\">D3: Choropleth</option>\n            </select>\n            <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n                Run Tests\n            </button>\n            <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n                Tests\n            </button>\n            <div id=\"fcc_legend_wrapper\">\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>  \n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n            </div>\n        </div>\n    </div>\n    <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n        <div class=\"fcc_test_message-box-content\">\n            <div class=\"fcc_test_message-box-header\">\n                <div class=\"title\">Unit tests</div>\n            </div>\n            <div class=\"fcc_test_message-box-body\">\n                <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n            </div>\n            <div class=\"fcc_test_message-box-footer\">\n                <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n            </div>\n        </div>\n        <div class=\"fcc_test_message-box-close-fixed\" onclick=\"FCC_Global.FCCCloseTestModal()\"></div>\n    </div>";
 
 	exports.default = test_suite_skeleton;
 
@@ -20335,7 +20342,9 @@ var FCC_Global =
 
 	            it('11. I can select an option from a dropdown.', function () {
 	                var selects = document.getElementsByTagName('select');
-	                FCC_Global.assert.isAtLeast(selects.length, 1, "There should be at least 1 select field ");
+	                // need to check to make sure there is more than one <select>, as our default code contains a <select> as well
+	                // if we are detecting only one, it is ours
+	                FCC_Global.assert.isAtLeast(selects.length, 2, "There should be at least 1 select field ");
 	                for (var i = 0; i < selects.length; i++) {
 	                    var select = selects[i];
 	                    FCC_Global.assert.isAtLeast(getNumActive(select.options), 1, "Select should contain at least 1 selectable option ");
@@ -20350,7 +20359,9 @@ var FCC_Global =
 
 	            it('13. I can select several fields from a series of checkboxes.', function () {
 	                var checkboxes = (0, _jquery2.default)(":checkbox");
-	                FCC_Global.assert.isAtLeast(checkboxes.length, 1, "There should be at least 1 checkbox ");
+	                // need to check to make sure there is more than one checkbox, as our default code contains a checkbox as well
+	                // if we are detecting only one, it is ours
+	                FCC_Global.assert.isAtLeast(checkboxes.length, 2, "There should be at least 1 checkbox ");
 	                FCC_Global.assert.isAtLeast(getNumActive(checkboxes), 1, "There should be at least 1 active checkbox ");
 	            });
 
@@ -20406,7 +20417,7 @@ var FCC_Global =
 	                });
 	                FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
 	                FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' " + "have a <header> element as a first element child ");
-	                FCC_Global.assert.strictEqual(mustContainText.length, classQty, "Not all first-child <header> elements within " + "'main-section' elements contain text ");
+	                FCC_Global.assert.strictEqual(mustContainText.length, classQty, 'Not all first-child <header> elements within ' + '"main-section" elements contain text ');
 	            });
 
 	            it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' + 'text of each <header> contained within it. Any spaces should be replaced with underscores (e.g. The ' + '<section> that contains the header "Javascript and Java" should have a corresponding ' + 'id="Javascript_and_Java").', function () {
@@ -20867,7 +20878,7 @@ var FCC_Global =
 	                var firstRequestTimeout = 100;
 	                var secondRequestTimeout = 2000;
 	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
 
 	                function getToolTipStatus(tooltip) {
 	                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
@@ -40105,6 +40116,244 @@ var FCC_Global =
 	        }); // END #Layout
 	    }); // END Random Quote Machine tests
 	} // END createRandomQuoteMachineTests()
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = createHeatMapTests;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// HEAT MAP TESTS: 
+	function createHeatMapTests() {
+	    // returns a random index number
+	    function getRandomIndex(max) {
+	        return Math.floor(Math.random() * max);
+	    }
+	    describe('#HeatMapTests', function () {
+	        describe('#Content', function () {
+	            it('1. My heat map should have a title with a corresponding id="title".', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('title'), "Could not find an element with id=\"title\" ");
+	            });
+
+	            it('2. My heat map should have a description with a corresponding id="description".', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('description'), "Could not find an element with id=\"description\" ");
+	            });
+
+	            it('3. My heat map should have an x-axis with a corresponding id="x-axis".', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('x-axis'), "Could not find an element with id=\"x-axis\" ");
+	            });
+
+	            it('4. My heat map should have a y-axis with a corresponding id="y-axis".', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('y-axis'), "Could not find an element with id=\"y-axis\" ");
+	            });
+
+	            it('5. My heat map should have cells with a corresponding class="cell" that represent the data.', function () {
+	                FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, "Could not find any elements with a class=\"cell\" ");
+	            });
+
+	            it('6. There should be at least 4 different fill colors used for the cells.', function () {
+	                var cells = document.querySelectorAll('.cell');
+	                var uniqueColors = [];
+
+	                for (var i = 0; i < cells.length; i++) {
+	                    var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
+
+	                    // if the current color isn't in the uniqueColors arr, push it 
+	                    if (uniqueColors.indexOf(cellColor) === -1) {
+	                        uniqueColors.push(cellColor);
+	                    }
+	                }
+	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
+	            });
+
+	            it('7. Each cell will have the properties "data-month", "data-year", "data-temp" containing their corresponding month, year, and temperature values.', function () {
+	                var cells = document.querySelectorAll('.cell');
+
+	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+
+	                for (var i = 0; i < cells.length; i++) {
+	                    var cell = cells[i];
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	                }
+	            });
+
+	            it('8. The \"data-month\", \"data-year\" of each cell should be within the range of the data.', function () {
+
+	                // NOTE:  This test contains the same exact tests from 6 and 7.  Is there a way to only run test 8 if test 6 and 7 pass?  Should we be putting this code in a utility function?
+	                var cells = document.querySelectorAll('.cell');
+	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+
+	                for (var i = 0; i < cells.length; i++) {
+	                    var cell = cells[i];
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
+	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	                }
+
+	                var cellMonths = [];
+	                var cellYears = [];
+
+	                for (var i = 0; i < cells.length; i++) {
+	                    var cell = cells[i];
+
+	                    cellMonths.push(cell.getAttribute("data-month"));
+	                    cellYears.push(cell.getAttribute("data-year"));
+	                }
+
+	                function valuesAreBetween(min, max, data) {
+	                    for (var i = 0; i < data.length; i++) {
+	                        var item = data[i];
+	                        if (item < min || item > max) {
+	                            return false;
+	                        }
+	                    }
+	                    return true;
+	                }
+	                FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
+	                FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
+	            });
+
+	            it('9. My heat map should have cells that align with the corresponding month on the y-axis.', function () {
+	                var cellsCollection = document.querySelectorAll('.cell');
+	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+
+	                //convert to array    
+	                var cells = [].slice.call(cellsCollection);
+	                var sortedCells = cells.sort(function (a, b) {
+	                    return a.getAttribute("data-month") - b.getAttribute("data-month");
+	                });
+
+	                //check to see if the y locations of the new sorted array are in ascending order
+	                for (var i = 0; i < sortedCells.length - 1; ++i) {
+	                    FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("y"), +sortedCells[i + 1].getAttribute("y"), "month values don't line up with y locations ");
+	                }
+	            });
+
+	            it('10. My heat map should have cells that align with the corresponding year on the x-axis.', function () {
+	                var cellsCollection = document.querySelectorAll('.cell');
+	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+
+	                //convert to array    
+	                var cells = [].slice.call(cellsCollection);
+	                var sortedCells = cells.sort(function (a, b) {
+	                    return a.getAttribute("data-year") - b.getAttribute("data-year");
+	                });
+
+	                //check to see if the x locations of the new sorted array are in ascending order
+	                for (var i = 0; i < sortedCells.length - 1; ++i) {
+	                    FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("x"), +sortedCells[i + 1].getAttribute("x"), "year values don't line up with x locations");
+	                }
+	            });
+
+	            it('11. My heat map should have multiple tick labels on the y-axis with the full month name.', function () {
+	                var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+
+	                FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis");
+
+	                var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+	                for (var i = 0; i < yAxisTickLabels.length; i++) {
+	                    FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), "Y axis labels should contain month names ");
+	                }
+	            });
+
+	            it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015.', function () {
+	                var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
+
+	                FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis");
+
+	                for (var i = 0; i < xAxisTickLabels.length; i++) {
+
+	                    FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, "X axis labels should contain a year that's at least 1754 ");
+
+	                    FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, "X axis labels should contain a year that's at most 2015 ");
+	                }
+	            });
+
+	            it('13. My heat map should have a legend with corresponding id="legend".', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
+	            });
+
+	            it('14. I can mouse over a cell and see a tooltip with a corresponding id="tooltip" which displays more information about the cell.', function () {
+
+	                var firstRequestTimeout = 100;
+	                var secondRequestTimeout = 2000;
+	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'Could not find an element with id="tooltip" ');
+
+	                function getToolTipStatus(tooltip) {
+	                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
+	                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
+	                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+	                    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.dsiplay === 'none') {
+	                        return 'hidden';
+	                    } else {
+	                        return 'visible';
+	                    }
+	                }
+
+	                var tooltip = document.getElementById('tooltip');
+
+	                var cells = document.querySelectorAll('.cell');
+
+	                // place mouse on random bar and check if tooltip is visible
+	                var randomIndex = getRandomIndex(cells.length);
+	                var randomCell = cells[randomIndex];
+	                randomCell.dispatchEvent(new MouseEvent('mouseover'));
+
+	                // promise is used to prevent test from ending prematurely
+	                return new Promise(function (resolve, reject) {
+	                    // timeout is used to accomodate tooltip transitions
+	                    setTimeout(function (_) {
+	                        if (getToolTipStatus(tooltip) !== 'visible') {
+	                            reject(new Error('Tooltip should be visible when mouse is on a cell'));
+	                        }
+
+	                        // remove mouse from cell and check if tooltip is hidden again
+	                        randomCell.dispatchEvent(new MouseEvent('mouseout'));
+	                        setTimeout(function (_) {
+	                            if (getToolTipStatus(tooltip) !== 'hidden') {
+	                                reject(new Error('Tooltip should be hidden when mouse is not on a cell'));
+	                            } else {
+	                                resolve();
+	                            }
+	                        }, secondRequestTimeout);
+	                    }, firstRequestTimeout);
+	                });
+	            });
+
+	            it('15. My tooltip should have a \"data-year\" property that corresponds to the given year of the active cell.', function () {
+	                var tooltip = document.getElementById('tooltip');
+	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property \"data-year\" in tooltip ');
+
+	                var cells = document.querySelectorAll('.cell');
+	                var randomIndex = getRandomIndex(cells.length);
+
+	                var randomCell = cells[randomIndex];
+
+	                randomCell.dispatchEvent(new MouseEvent('mouseover'));
+
+	                FCC_Global.assert.equal(tooltip.getAttribute('data-year'), randomCell.getAttribute('data-year'), 'Tooltip\'s \"data-year\" property should be equal to the active cell\'s \"data-year\" property ');
+
+	                //clear out tooltip
+	                randomCell.dispatchEvent(new MouseEvent('mouseoff'));
+	            });
+	        });
+	    });
+	}
 
 /***/ }
 /******/ ]);
