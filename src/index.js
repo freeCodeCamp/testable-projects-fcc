@@ -18,7 +18,6 @@ import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 import createHeatMapTests from './project-tests/heat-map-tests';
 
 export const assert = chai.assert;
-//export let project_selector;
 
 // load mocha
 (function() {
@@ -51,11 +50,20 @@ $(document).ready(function() {
                 testDiv.innerHTML = test_suite_skeleton;
                 document.body.appendChild(testDiv);
                 let project_titleCase = localStorage.getItem('project_titleCase');
-                document.getElementById('placeholder').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '- - -' : 
-                                                                   typeof project_name === 'undefined' ? project_titleCase : project_name.replace(/-/g, ' ');
-                document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '' : 
-                                                                                        typeof project_name === 'undefined' ? `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>` : 
-                                                                                        `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_name.replace(/-/g, ' ')}</span>`;
+                // project_name variable is defined in our example projects so the correct test suite is automatically 
+                // loaded. This Sets default text for <option> text and project indicator in top right corner.
+                if (typeof project_name === 'undefined' && project_titleCase === null) {
+                    document.getElementById('placeholder').innerHTML = '- - -';
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+                } else if (typeof project_name === 'undefined') {
+                    document.getElementById('placeholder').innerHTML = project_titleCase;
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = 
+                    `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
+                } else {
+                    document.getElementById('placeholder').innerHTML = project_name.replace(/-/g, ' ');
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = 
+                    `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_name.replace(/-/g, ' ')}</span>`;
+                }
             };
         } catch (err) {
             console.warn('mocha not loaded yet');
@@ -272,3 +280,19 @@ export function FCCInitTestRunner() {
     testRunner.on("test end", updateProgress);
     testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 };
+
+// GLOBAL D3 TEST FUNCTIONS:
+export function getToolTipStatus(tooltip) {
+    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
+    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
+    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+    if ($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
+        return 'hidden'
+    } else {
+        return 'visible'
+    }
+}
+
+export function getRandomIndex(max) {
+    return Math.floor(Math.random() * max);
+}

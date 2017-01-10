@@ -2,11 +2,6 @@ import $ from 'jquery';
 
 export default function createScatterPlotTests() {
 
-    // returns a random index number
-    function getRandomIndex(max) {
-        return Math.floor(Math.random() * max);
-    }
-
     describe('#ScatterPlotTests', function() {
         const MIN_YEAR = 1990;
         const MAX_YEAR = 2020;
@@ -149,22 +144,11 @@ export default function createScatterPlotTests() {
                 this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
                 FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
 
-                function getToolTipStatus(tooltip) {
-                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-                    if ($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.display === 'none') {
-                        return 'hidden'
-                    } else {
-                        return 'visible'
-                    }
-                }
-
                 const tooltip = document.getElementById('tooltip');
                 const dots = $('.dot');
 
                 // place mouse on random bar and check if tooltip is visible
-                const randomIndex = getRandomIndex(dots.length);
+                const randomIndex = FCC_Global.getRandomIndex(dots.length);
                 var randomDot = dots[randomIndex];
                 randomDot.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -172,14 +156,14 @@ export default function createScatterPlotTests() {
                 return new Promise((resolve, reject) => {
                     // timeout is used to accomodate tooltip transitions
                     setTimeout(_ => {
-                        if (getToolTipStatus(tooltip) !== 'visible') {
+                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
                             reject('Tooltip should be visible when mouse is on a dot ');
                         }
 
                         // remove mouse from cell and check if tooltip is hidden again
                         randomDot.dispatchEvent(new MouseEvent('mouseout'));
                         setTimeout(_ => {
-                            if (getToolTipStatus(tooltip) !== 'hidden') {
+                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
                                 reject('Tooltip should be hidden when mouse is not on a dot ');
                             } else {
                                 resolve()
@@ -193,7 +177,7 @@ export default function createScatterPlotTests() {
                 const tooltip = document.getElementById('tooltip');
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property "data-year" in tooltip ');
                 const dots = $('.dot');
-                const randomIndex = getRandomIndex(dots.length);
+                const randomIndex = FCC_Global.getRandomIndex(dots.length);
 
                 var randomDot = dots[randomIndex];
 

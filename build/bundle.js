@@ -62,6 +62,8 @@ var FCC_Global =
 	exports.alertOnce = alertOnce;
 	exports.hamburger_transform = hamburger_transform;
 	exports.FCCInitTestRunner = FCCInitTestRunner;
+	exports.getToolTipStatus = getToolTipStatus;
+	exports.getRandomIndex = getRandomIndex;
 
 	var _jquery = __webpack_require__(1);
 
@@ -138,7 +140,6 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var assert = exports.assert = _chai2.default.assert;
-	//export let project_selector;
 
 	// load mocha
 	(function () {
@@ -173,8 +174,18 @@ var FCC_Global =
 	                testDiv.innerHTML = _test_suite_skeleton2.default;
 	                document.body.appendChild(testDiv);
 	                var project_titleCase = localStorage.getItem('project_titleCase');
-	                document.getElementById('placeholder').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '- - -' : typeof project_name === 'undefined' ? project_titleCase : project_name.replace(/-/g, ' ');
-	                document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = typeof project_name === 'undefined' && project_titleCase === null ? '' : typeof project_name === 'undefined' ? '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>' : '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_name.replace(/-/g, ' ') + '</span>';
+	                // project_name variable is defined in our example projects so the correct test suite is automatically 
+	                // loaded. This Sets default text for <option> text and project indicator in top right corner.
+	                if (typeof project_name === 'undefined' && project_titleCase === null) {
+	                    document.getElementById('placeholder').innerHTML = '- - -';
+	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+	                } else if (typeof project_name === 'undefined') {
+	                    document.getElementById('placeholder').innerHTML = project_titleCase;
+	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
+	                } else {
+	                    document.getElementById('placeholder').innerHTML = project_name.replace(/-/g, ' ');
+	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_name.replace(/-/g, ' ') + '</span>';
+	                }
 	            };
 	        } catch (err) {
 	            console.warn('mocha not loaded yet');
@@ -404,6 +415,22 @@ var FCC_Global =
 	    testRunner.on("test end", updateProgress);
 	    testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 	};
+
+	// GLOBAL D3 TEST FUNCTIONS:
+	function getToolTipStatus(tooltip) {
+	    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
+	    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
+	    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+	    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
+	        return 'hidden';
+	    } else {
+	        return 'visible';
+	    }
+	}
+
+	function getRandomIndex(max) {
+	    return Math.floor(Math.random() * max);
+	}
 
 /***/ },
 /* 1 */
@@ -20556,10 +20583,6 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createBarChartTests() {
-	    // returns a random index number
-	    function getRandomIndex(max) {
-	        return Math.floor(Math.random() * max);
-	    }
 
 	    describe('#BarChartTests', function () {
 
@@ -20659,22 +20682,11 @@ var FCC_Global =
 
 	            FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
 
-	            function getToolTipStatus(tooltip) {
-	                // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	                // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	                // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	                if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.display === 'none') {
-	                    return 'hidden';
-	                } else {
-	                    return 'visible';
-	                }
-	            }
-
 	            var tooltip = document.getElementById('tooltip');
 	            var bars = (0, _jquery2.default)('.bar');
 
 	            // place mouse on random bar and check if tooltip is visible
-	            var randomIndex = getRandomIndex(bars.length);
+	            var randomIndex = FCC_Global.getRandomIndex(bars.length);
 	            var randomBar = bars[randomIndex];
 	            randomBar.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -20682,14 +20694,14 @@ var FCC_Global =
 	            return new Promise(function (resolve, reject) {
 	                // timeout is used to accomodate tooltip transitions
 	                setTimeout(function (_) {
-	                    if (getToolTipStatus(tooltip) !== 'visible') {
+	                    if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                        reject('Tooltip should be visible when mouse is on a bar ');
 	                    }
 
 	                    // remove mouse from bar and check if tooltip is hidden again
 	                    randomBar.dispatchEvent(new MouseEvent('mouseout'));
 	                    setTimeout(function (_) {
-	                        if (getToolTipStatus(tooltip) !== 'hidden') {
+	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
 	                            reject('Tooltip should be hidden when mouse is not on a bar ');
 	                        } else {
 	                            resolve();
@@ -20704,7 +20716,7 @@ var FCC_Global =
 	            FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
 
 	            var bars = (0, _jquery2.default)('.bar');
-	            var randomIndex = getRandomIndex(bars.length);
+	            var randomIndex = FCC_Global.getRandomIndex(bars.length);
 
 	            var randomBar = bars[randomIndex];
 
@@ -20733,11 +20745,6 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createScatterPlotTests() {
-
-	    // returns a random index number
-	    function getRandomIndex(max) {
-	        return Math.floor(Math.random() * max);
-	    }
 
 	    describe('#ScatterPlotTests', function () {
 	        var MIN_YEAR = 1990;
@@ -20880,22 +20887,11 @@ var FCC_Global =
 	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
 	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
 
-	                function getToolTipStatus(tooltip) {
-	                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	                    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.display === 'none') {
-	                        return 'hidden';
-	                    } else {
-	                        return 'visible';
-	                    }
-	                }
-
 	                var tooltip = document.getElementById('tooltip');
 	                var dots = (0, _jquery2.default)('.dot');
 
 	                // place mouse on random bar and check if tooltip is visible
-	                var randomIndex = getRandomIndex(dots.length);
+	                var randomIndex = FCC_Global.getRandomIndex(dots.length);
 	                var randomDot = dots[randomIndex];
 	                randomDot.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -20903,14 +20899,14 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    // timeout is used to accomodate tooltip transitions
 	                    setTimeout(function (_) {
-	                        if (getToolTipStatus(tooltip) !== 'visible') {
+	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                            reject('Tooltip should be visible when mouse is on a dot ');
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomDot.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
-	                            if (getToolTipStatus(tooltip) !== 'hidden') {
+	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
 	                                reject('Tooltip should be hidden when mouse is not on a dot ');
 	                            } else {
 	                                resolve();
@@ -20924,7 +20920,7 @@ var FCC_Global =
 	                var tooltip = document.getElementById('tooltip');
 	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property "data-year" in tooltip ');
 	                var dots = (0, _jquery2.default)('.dot');
-	                var randomIndex = getRandomIndex(dots.length);
+	                var randomIndex = FCC_Global.getRandomIndex(dots.length);
 
 	                var randomDot = dots[randomIndex];
 
@@ -20942,7 +20938,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = createChoroplethTests;
 
@@ -20958,184 +20954,167 @@ var FCC_Global =
 
 	function createChoroplethTests() {
 
-	  // returns a random index number
-	  function getRandomIndex(max) {
-	    return Math.floor(Math.random() * max);
-	  }
+	    describe('#ChoroplethTests', function () {
 
-	  describe('#ChoroplethTests', function () {
+	        describe('#Content', function () {
 
-	    describe('#Content', function () {
+	            it('1. My Choropleth should have a title with a corresponding id=\"title\"', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
+	            });
 
-	      it('1. My Choropleth should have a title with a corresponding id=\"title\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\"');
-	      });
+	            it('2. My Choropleth should have a description with a corresponding id=\"description\"', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\" ');
+	            });
 
-	      it('2. My Choropleth should have a description with a corresponding id=\"description\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\"');
-	      });
+	            it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
+	                FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\" ");
+	            });
 
-	      it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\"");
-	      });
+	            it('4. There should be at least 4 different fill colors used for the counties', function () {
+	                var counties = document.querySelectorAll('.county');
+	                var uniqueColors = [];
 
-	      it('4. There should be at least 4 different fill colors used for the counties', function () {
-	        var counties = document.querySelectorAll('.county');
-	        var uniqueColors = [];
+	                for (var i = 0; i < counties.length; i++) {
+	                    var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
 
-	        for (var i = 0; i < counties.length; i++) {
-	          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
+	                    // if the current color isn't in the uniqueColors arr, push it
+	                    if (uniqueColors.indexOf(countyColor) === -1) {
+	                        uniqueColors.push(countyColor);
+	                    }
+	                }
 
-	          // if the current color isn't in the uniqueColors arr, push it
-	          if (uniqueColors.indexOf(countyColor) === -1) {
-	            uniqueColors.push(countyColor);
-	          }
-	        }
+	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
+	            });
 
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties');
-	      });
+	            it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
+	                var counties = document.querySelectorAll('.county');
+	                FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\" ");
 
-	      it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
-	        var counties = document.querySelectorAll('.county');
-	        FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\"");
+	                for (var i = 0; i < counties.length; i++) {
+	                    var county = counties[i];
+	                    FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county ");
+	                    FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county ");
+	                }
+	            });
 
-	        for (var i = 0; i < counties.length; i++) {
-	          var county = counties[i];
-	          FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county");
-	          FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county");
-	        }
-	      });
+	            it('6. My Choropleth should have a county for each provided data point', function () {
+	                var counties = document.querySelectorAll('.county');
 
-	      it('6. My Choropleth should have a county for each provided data point', function () {
-	        var counties = document.querySelectorAll('.county');
+	                FCC_Global.assert.equal(counties.length, _education2.default.length);
+	            });
 
-	        FCC_Global.assert.equal(counties.length, _education2.default.length);
-	      });
+	            it('7. The counties should have data-fips and data-education values that match the sample data', function () {
+	                var counties = document.querySelectorAll('.county');
+	                var educationDataFips = _education2.default.map(function (item) {
+	                    return item.fips;
+	                });
+	                var uniqueFipsFromChoropleth = [];
 
-	      it('7. The counties should have data-fips and data-education values that match the sample data', function () {
-	        var counties = document.querySelectorAll('.county');
-	        var educationDataFips = _education2.default.map(function (item) {
-	          return item.fips;
+	                // check for any duplicate fips values
+	                for (var i = 0; i < counties.length; i++) {
+	                    var fips = counties[i].getAttribute('data-fips');
+
+	                    FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values ");
+	                    uniqueFipsFromChoropleth.push(+fips);
+	                }
+
+	                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data                      
+	                for (var j = 0; j < _education2.default.length; j++) {
+	                    // test that every value in the sample data is in the Choropleth
+	                    FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ");
+
+	                    // test that every value in the Choropleth is in the sample data
+	                    FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data ");
+	                }
+
+	                // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
+	                for (var k = 0; k < counties.length; k++) {
+	                    var countyFips = +counties[k].getAttribute('data-fips');
+	                    var countyEducation = counties[k].getAttribute('data-education');
+
+	                    // get the index of the object in the sample data with a fips that matches the current county
+	                    var sampleIndex = _education2.default.findIndex(function (item) {
+	                        return item.fips === countyFips;
+	                    });
+	                    var sampleEducation = _education2.default[sampleIndex].bachelorsOrHigher;
+
+	                    FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match ");
+	                }
+	            });
+
+	            it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function () {
+	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\" ');
+	            });
+
+	            it('9. There should be at least 4 different fill colors used for the legend', function () {
+	                var rects = document.querySelectorAll('#legend rect');
+	                var uniqueColors = [];
+
+	                for (var i = 0; i < rects.length; i++) {
+	                    var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
+
+	                    // if the current color isn't in the uniqueColors arr, push it 
+	                    if (uniqueColors.indexOf(rectColor) === -1) {
+	                        uniqueColors.push(rectColor);
+	                    }
+	                }
+	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
+	            });
+
+	            it('10. When I mouse over a county, a \"div\" element with a corresponding id=\"tooltip\" should become visible ', function () {
+	                var firstRequestTimeout = 100;
+	                var secondRequestTimeout = 2000;
+	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id=\"tooltip\" ');
+
+	                var tooltip = document.getElementById('tooltip');
+	                var counties = document.querySelectorAll('.county');
+
+	                // place mouse on random bar and check if tooltip is visible
+	                var randomIndex = FCC_Global.getRandomIndex(counties.length);
+	                var randomCounty = counties[randomIndex];
+	                randomCounty.dispatchEvent(new MouseEvent('mouseover'));
+
+	                // promise is used to prevent test from ending prematurely
+	                return new Promise(function (resolve, reject) {
+	                    // timeout is used to accomodate tooltip transitions
+	                    setTimeout(function (_) {
+	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	                            reject(new Error('Tooltip should be visible when mouse is on an area'));
+	                        }
+
+	                        // remove mouse from cell and check if tooltip is hidden again
+	                        randomCounty.dispatchEvent(new MouseEvent('mouseout'));
+	                        setTimeout(function (_) {
+	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
+	                            } else {
+	                                resolve();
+	                            }
+	                        }, secondRequestTimeout);
+	                    }, firstRequestTimeout);
+	                });
+	            });
+
+	            it('11. My tooltip should have a \"data-education\" property that corresponds to the given education of the active county', function () {
+	                var tooltip = document.getElementById('tooltip');
+	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-education"), 'Could not find property \"data-education\" in tooltip ');
+
+	                var counties = document.querySelectorAll('.county');
+
+	                var randomIndex = FCC_Global.getRandomIndex(counties.length);
+
+	                var randomCounty = counties[randomIndex];
+
+	                randomCounty.dispatchEvent(new MouseEvent('mouseover'));
+
+	                FCC_Global.assert.equal(tooltip.getAttribute('data-education'), randomCounty.getAttribute('data-education'), 'Tooltip\'s \"data-education\" property should be equal to the active county\'s \"data-education\" property ');
+
+	                //clear out tooltip
+	                randomCounty.dispatchEvent(new MouseEvent('mouseoff'));
+	            });
 	        });
-	        var uniqueFipsFromChoropleth = [];
-
-	        // check for any duplicate fips values
-	        for (var i = 0; i < counties.length; i++) {
-	          var fips = counties[i].getAttribute('data-fips');
-
-	          FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values");
-	          uniqueFipsFromChoropleth.push(+fips);
-	        }
-
-	        // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data                      
-	        for (var j = 0; j < _education2.default.length; j++) {
-	          // test that every value in the sample data is in the Choropleth
-	          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data");
-
-	          // test that every value in the Choropleth is in the sample data
-	          FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data");
-	        }
-
-	        // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
-	        for (var k = 0; k < counties.length; k++) {
-	          var countyFips = +counties[k].getAttribute('data-fips');
-	          var countyEducation = counties[k].getAttribute('data-education');
-
-	          // get the index of the object in the sample data with a fips that matches the current county
-	          var sampleIndex = _education2.default.findIndex(function (item) {
-	            return item.fips === countyFips;
-	          });
-	          var sampleEducation = _education2.default[sampleIndex].bachelorsOrHigher;
-
-	          FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match");
-	        }
-	      });
-
-	      it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\"');
-	      });
-
-	      it('9. There should be at least 4 different fill colors used for the legend', function () {
-	        var rects = document.querySelectorAll('#legend rect');
-	        var uniqueColors = [];
-
-	        for (var i = 0; i < rects.length; i++) {
-	          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
-
-	          // if the current color isn't in the uniqueColors arr, push it 
-	          if (uniqueColors.indexOf(rectColor) === -1) {
-	            uniqueColors.push(rectColor);
-	          }
-	        }
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend');
-	      });
-
-	      it('10. When I mouse over a county, a \"div\" element with a corresponding id=\"tooltip\" should become visible', function () {
-
-	        var firstRequestTimeout = 100;
-	        var secondRequestTimeout = 2000;
-	        this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id=\"tooltip\"');
-
-	        function getToolTipStatus(tooltip) {
-	          // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	          // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	          // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	          if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
-	            return 'hidden';
-	          } else {
-	            return 'visible';
-	          }
-	        }
-
-	        var tooltip = document.getElementById('tooltip');
-
-	        var counties = document.querySelectorAll('.county');
-
-	        // place mouse on random bar and check if tooltip is visible
-	        var randomIndex = getRandomIndex(counties.length);
-	        var randomCounty = counties[randomIndex];
-	        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
-
-	        // promise is used to prevent test from ending prematurely
-	        return new Promise(function (resolve, reject) {
-	          // timeout is used to accomodate tooltip transitions
-	          setTimeout(function (_) {
-	            if (getToolTipStatus(tooltip) !== 'visible') {
-	              reject(new Error('Tooltip should be visible when mouse is on an area'));
-	            }
-
-	            // remove mouse from cell and check if tooltip is hidden again
-	            randomCounty.dispatchEvent(new MouseEvent('mouseout'));
-	            setTimeout(function (_) {
-	              if (getToolTipStatus(tooltip) !== 'hidden') {
-	                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
-	              } else {
-	                resolve();
-	              }
-	            }, secondRequestTimeout);
-	          }, firstRequestTimeout);
-	        });
-	      });
-	      it('11. My tooltip should have a \"data-education\" property that corresponds to the given education of the active county', function () {
-	        var tooltip = document.getElementById('tooltip');
-	        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-education"), 'Could not find property \"data-education\" in tooltip');
-
-	        var counties = document.querySelectorAll('.county');
-
-	        var randomIndex = getRandomIndex(counties.length);
-
-	        var randomCounty = counties[randomIndex];
-
-	        randomCounty.dispatchEvent(new MouseEvent('mouseover'));
-
-	        FCC_Global.assert.equal(tooltip.getAttribute('data-education'), randomCounty.getAttribute('data-education'), 'Tooltip\'s \"data-education\" property should be equal to the active county\'s \"data-education\" property');
-
-	        //clear out tooltip
-	        randomCounty.dispatchEvent(new MouseEvent('mouseoff'));
-	      });
 	    });
-	  });
 	}
 
 /***/ },
@@ -40136,10 +40115,7 @@ var FCC_Global =
 
 	// HEAT MAP TESTS: 
 	function createHeatMapTests() {
-	    // returns a random index number
-	    function getRandomIndex(max) {
-	        return Math.floor(Math.random() * max);
-	    }
+
 	    describe('#HeatMapTests', function () {
 	        describe('#Content', function () {
 	            it('1. My heat map should have a title with a corresponding id="title".', function () {
@@ -40294,23 +40270,12 @@ var FCC_Global =
 	                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
 	                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'Could not find an element with id="tooltip" ');
 
-	                function getToolTipStatus(tooltip) {
-	                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	                    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.dsiplay === 'none') {
-	                        return 'hidden';
-	                    } else {
-	                        return 'visible';
-	                    }
-	                }
-
 	                var tooltip = document.getElementById('tooltip');
 
 	                var cells = document.querySelectorAll('.cell');
 
 	                // place mouse on random bar and check if tooltip is visible
-	                var randomIndex = getRandomIndex(cells.length);
+	                var randomIndex = FCC_Global.getRandomIndex(cells.length);
 	                var randomCell = cells[randomIndex];
 	                randomCell.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -40318,14 +40283,14 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    // timeout is used to accomodate tooltip transitions
 	                    setTimeout(function (_) {
-	                        if (getToolTipStatus(tooltip) !== 'visible') {
+	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on a cell'));
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomCell.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
-	                            if (getToolTipStatus(tooltip) !== 'hidden') {
+	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
 	                                reject(new Error('Tooltip should be hidden when mouse is not on a cell'));
 	                            } else {
 	                                resolve();
@@ -40340,7 +40305,7 @@ var FCC_Global =
 	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property \"data-year\" in tooltip ');
 
 	                var cells = document.querySelectorAll('.cell');
-	                var randomIndex = getRandomIndex(cells.length);
+	                var randomIndex = FCC_Global.getRandomIndex(cells.length);
 
 	                var randomCell = cells[randomIndex];
 

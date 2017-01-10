@@ -1,10 +1,7 @@
 import $ from 'jquery';
 // HEAT MAP TESTS: 
 export default function createHeatMapTests() {
-    // returns a random index number
-    function getRandomIndex(max) {
-        return Math.floor(Math.random() * max);
-    }
+
     describe('#HeatMapTests', function() {
         describe('#Content', function() {
             it('1. My heat map should have a title with a corresponding id="title".', function() {
@@ -161,23 +158,12 @@ export default function createHeatMapTests() {
                 this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
                 FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'Could not find an element with id="tooltip" ');
 
-                function getToolTipStatus(tooltip) {
-                    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-                    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-                    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-                    if ($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden' || tooltip.style.dsiplay === 'none') {
-                        return 'hidden'
-                    } else {
-                        return 'visible'
-                    }
-                }
-
                 const tooltip = document.getElementById('tooltip');
 
                 const cells = document.querySelectorAll('.cell');
 
                 // place mouse on random bar and check if tooltip is visible
-                const randomIndex = getRandomIndex(cells.length);
+                const randomIndex = FCC_Global.getRandomIndex(cells.length);
                 var randomCell = cells[randomIndex];
                 randomCell.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -185,14 +171,14 @@ export default function createHeatMapTests() {
                 return new Promise((resolve, reject) => {
                     // timeout is used to accomodate tooltip transitions
                     setTimeout(_ => {
-                        if (getToolTipStatus(tooltip) !== 'visible') {
+                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
                             reject(new Error('Tooltip should be visible when mouse is on a cell'))
                         }
 
                         // remove mouse from cell and check if tooltip is hidden again
                         randomCell.dispatchEvent(new MouseEvent('mouseout'));
                         setTimeout(_ => {
-                            if (getToolTipStatus(tooltip) !== 'hidden') {
+                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
                                 reject(new Error('Tooltip should be hidden when mouse is not on a cell'))
                             } else {
                                 resolve()
@@ -207,7 +193,7 @@ export default function createHeatMapTests() {
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property \"data-year\" in tooltip ');
 
                 const cells = document.querySelectorAll('.cell');
-                const randomIndex = getRandomIndex(cells.length);
+                const randomIndex = FCC_Global.getRandomIndex(cells.length);
 
                 var randomCell = cells[randomIndex];
 
