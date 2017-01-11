@@ -19102,7 +19102,7 @@ var FCC_Global =
 
 /***/ },
 /* 45 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
@@ -19110,13 +19110,6 @@ var FCC_Global =
 	    value: true
 	});
 	exports.default = createMarkdownPreviewerTests;
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function createMarkdownPreviewerTests() {
 
 	    describe('Markdown Previewer tests', function () {
@@ -19132,54 +19125,53 @@ var FCC_Global =
 	        function triggerChange(str) {
 	            // REACT
 	            editor.value = str;
-	            var event = new Event('input', { bubbles: true });
-	            editor.dispatchEvent(event);
-	            // jQUERY OR JAVASCRIPT
+	            var eventReact = new Event('input', { bubbles: true });
+	            editor.dispatchEvent(eventReact);
 	            if (preview.innerHTML === str) {
 	                return;
 	            } else {
-	                (0, _jquery2.default)('#editor').trigger(_jquery2.default.Event('keyup', { which: 13 })); // must be keyup to live preview
-	                if (preview.innerHTML === str) {
-	                    return;
-	                }
+	                // jQUERY OR JAVASCRIPT
+	                var eventJS = new Event('keyup', { bubbles: true }); // must be keyup to live preview
+	                editor.dispatchEvent(eventJS);
 	            }
 	        }
 
 	        describe('#Tests', function () {
 
-	            it('1. I can see a <textarea> element with corresponding id="editor".', function () {
+	            it('1. I can see a <textarea> element with corresponding id="editor"', function () {
 	                FCC_Global.assert.isNotNull(editor, '#editor is not defined ');
 	                FCC_Global.assert.strictEqual(editor.nodeName, 'TEXTAREA', '#editor should be a <textarea> element ');
 	            });
 
-	            it('2. I can see an element with corresponding id="preview".', function () {
+	            it('2. I can see an element with corresponding id="preview"', function () {
 	                FCC_Global.assert.isNotNull(preview, '#preview is not defined ');
 	            });
 
-	            it('3. When I enter text into the #editor element, the #preview element is updated as I type to ' + 'display the content of the textarea.', function () {
+	            it('3. When I enter text into the #editor element, the #preview element is updated as I type to display the content of the textarea', function () {
 	                triggerChange('a');
-	                FCC_Global.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type ' + 'into #editor (should update on every keyup) ');
+	                FCC_Global.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should update on every keyup) ');
 	            });
 
-	            it('3. When I enter GitHub flavored markdown into the #editor element, the text is rendered as ' + 'HTML to #preview as I type (Hint: You don\'t need to parse Markdown yourself - you can ' + 'import the Marked library for this: https://cdnjs.com/libraries/marked).', function () {
+	            it('4. When I enter GitHub flavored markdown into the #editor element, the text is rendered as HTML to #preview as I type (Hint: You don\'t need to parse Markdown yourself - you can import the Marked library for this: https://cdnjs.com/libraries/marked)', function () {
+	                var error = 'The markdown in #editor is not being interpreted  correctly and/or rendered into #preview ';
 	                triggerChange('');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered ' + 'by marked.js ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
 	                triggerChange('testing');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', 'The markdown in #editor is not ' + 'being interpreted  correctly and/or rendered into #preview ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
 	                triggerChange(editor.value + ' and...');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', 'The markdown in #editor ' + 'is not being interpreted  correctly and/or rendered into #preview ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
 	                triggerChange('# h1 \n## h2');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', 'The ' + 'markdown in #editor is not being interpreted  correctly and/or ' + 'rendered into #preview ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', error);
 	                triggerChange('**bold**');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', 'The markdown ' + 'in #editor is not being interpreted  correctly and/or rendered ' + 'into #preview ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', error);
 	            });
 
-	            it('4. When my markdown previewer first loads, the #editor field should contain valid default ' + 'markdown that provides a brief description of the project and demonstrates the ' + 'previewer\'s capabilities.', function () {
+	            it('5. When my markdown previewer first loads, the #editor field should contain valid default markdown that provides a brief description of the project and demonstrates the previewer\'s capabilities', function () {
 	                FCC_Global.assert.notStrictEqual(markdownOnLoad, undefined);
 	                FCC_Global.assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
 	            });
 
-	            it('5. When my markdown previewer first loads, the default text in the #editor field should ' + 'contain valid markdown that represents at least one of each of the following elements: ' + 'a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list ' + 'item, a blockquote, an image, and bolded text.', function () {
+	            it('6. When my markdown previewer first loads, the default text in the #editor field should contain valid markdown that represents at least one of each of the following elements: a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list item, a blockquote, an image, and bolded text', function () {
 	                triggerChange(markdownOnLoad);
 	                var markdown = editor.value;
 
@@ -19187,20 +19179,19 @@ var FCC_Global =
 	                FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 'write some markdown representing an <h2> '); // h2
 	                FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 'write some markdown representing an <a> '); // link
 	                FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
-	                FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. ' + '<pre><code>...</code></pre> '); // codeblock
+	                FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. <pre><code>...</code></pre> '); // codeblock
 	                FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
 	                FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing an <h1> '); // blockquote
 	                FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <h1> '); // image
 	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text        
 	            });
 
-	            it('6. When my markdown previewer first loads, the default markdown in the #editor field ' + 'should be rendered as HTML in the #preview element.', function () {
+	            it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function () {
 	                triggerChange(markdownOnLoad);
-	                console.log(previewOnLoad);
 	                FCC_Global.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render ' + 'correctly on window load ');
+	                FCC_Global.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
 	                var markdown = editor.value;
-
+	                // this could be significantly shortened into one test, however feedback would not be specific
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1, '#preview does not contain at least one <h1> ');
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1, '#preview does not contain at least one <h2> ');
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview a').length, 1, '#preview does not contain at least one <a> ');
@@ -19220,7 +19211,7 @@ var FCC_Global =
 	                document.querySelectorAll('#preview h1').forEach(function (h1) {
 	                    if (h1.innerText === h1Text) h1Match.push(h1);
 	                });
-	                FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element ' + 'represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
+	                FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
 
 	                // find mathcing H2 element 
 	                var h2Text = /##\s.*/.exec(markdown)[0].slice(3);
@@ -19228,10 +19219,10 @@ var FCC_Global =
 	                document.querySelectorAll('#preview h2').forEach(function (h2) {
 	                    if (h2.innerText === h2Text) h2Match.push(h2);
 	                });
-	                FCC_Global.assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element ' + 'represented by the markdown in the #editor field with the inner text ' + h2Text + ' ');
+	                FCC_Global.assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element represented by the markdown in the #editor field with the inner text ' + h2Text + ' ');
 	            });
 
-	            it('7. OPTIONAL BONUS: When I click a link rendered by my markdown previewer, the link is ' + 'opened up in a new tab (HINT: read the Marked.js docs for this one!).', function () {
+	            it('8. OPTIONAL BONUS: When I click a link rendered by my markdown previewer, the link is opened up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
 	                var links = document.querySelectorAll('#preview a');
 	                var linksWithTarget_Blank = [];
 	                links.forEach(function (a) {
@@ -19241,7 +19232,7 @@ var FCC_Global =
 	                });
 	            });
 
-	            it('8. OPTIONAL BONUS: My markdown previewer interprets carriage returns and renders ' + 'them as line break.', function () {
+	            it('9. OPTIONAL BONUS: My markdown previewer interprets carriage returns and renders them as line break', function () {
 	                // see marked.js options for this and more cool features
 	            });
 	        }); // END #Tests
@@ -19341,7 +19332,7 @@ var FCC_Global =
 	                FCC_Global.assert.isNotNull(document.getElementById("display"));
 	            });
 
-	            it("7. At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state. 0 should be shown in the element with the id of \"display\".", function () {
+	            it("7. At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state. 0 should be shown in the element with the id of \"display\"", function () {
 	                clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0");
 	            });
@@ -19361,7 +19352,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0");
 	            });
 
-	            it("11. When the decimal element is clicked, a . should append to the currently displayed value. Two .s in one number should not be accepted.", function () {
+	            it("11. When the decimal element is clicked, a . should append to the currently displayed value; two .s in one number should not be accepted", function () {
 	                clickButtonsById([_5, _dec, _dec, _0]);
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.0");
 	                clearDisplay();
@@ -19369,7 +19360,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.55");
 	            });
 
-	            it("12. I should be able to perform any operation (+, -, *, /) on numbers containing decimal points.", function () {
+	            it("12. I should be able to perform any operation (+, -, *, /) on numbers containing decimal points", function () {
 	                clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5");
 	                clearDisplay();
@@ -19383,7 +19374,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "4");
 	            });
 
-	            it("13. If 2 or more operators are entered consecutively, the operation performed should be the last operator entered.", function () {
+	            it("13. If 2 or more operators are entered consecutively, the operation performed should be the last operator entered", function () {
 	                clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10");
 	                clearDisplay();
@@ -19391,7 +19382,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10");
 	            });
 
-	            it("14. Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.", function () {
+	            it("14. Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation", function () {
 	                clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "1.5");
 	                clearDisplay();
@@ -19399,7 +19390,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "13");
 	            });
 
-	            it("15. My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places).", function () {
+	            it("15. My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places)", function () {
 	                clickButtonsById([_2, _div, _7, _eq]);
 	                FCC_Global.assert.isOk(/0?\.2857\d*/.test(document.getElementById("display").innerHTML));
 	            });
@@ -20586,35 +20577,35 @@ var FCC_Global =
 
 	    describe('#BarChartTests', function () {
 
-	        it('1. My chart should have a title with a corresponding id="title".', function () {
+	        it('1. My chart should have a title with a corresponding id="title"', function () {
 	            FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
 	        });
 
-	        it('2. My Chart should have an x-axis with a corresponding id="x-axis".', function () {
+	        it('2. My Chart should have an x-axis with a corresponding id="x-axis"', function () {
 	            FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find element with id="x-axis" ');
 
 	            FCC_Global.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
 	        });
 
-	        it('3. My Chart should have a y-axis with a corresponding id="y-axis".', function () {
+	        it('3. My Chart should have a y-axis with a corresponding id="y-axis"', function () {
 	            FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find element with id="y-axis" ');
 
 	            FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element ');
 	        });
 
-	        it('4. Both axes should contain multiple tick labels.', function () {
+	        it('4. Both axes should contain multiple tick labels', function () {
 	            FCC_Global.assert.isAbove((0, _jquery2.default)("#x-axis .tick").length, 1, "There are not enough tick labels on the x-axis ");
 
 	            FCC_Global.assert.isAbove((0, _jquery2.default)("#y-axis .tick").length, 1, "There are not enough tick labels on the y-axis ");
 	        });
 
-	        it('5. My Chart should have a bar for each data point with a corresponding class="bar" displaying the data.', function () {
+	        it('5. My Chart should have a bar for each data point with a corresponding class="bar" displaying the data', function () {
 	            FCC_Global.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any elements with class="bar" ');
 
 	            FCC_Global.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ');
 	        });
 
-	        it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values.', function () {
+	        it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values', function () {
 	            var bars = document.getElementsByClassName('bar');
 	            FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
 	            for (var i = 0; i < bars.length; i++) {
@@ -20624,7 +20615,7 @@ var FCC_Global =
 	            }
 	        });
 
-	        it('7. The "data-date" properties should match the order of the provided data.', function (done) {
+	        it('7. The "data-date" properties should match the order of the provided data', function (done) {
 	            _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
 	                try {
 	                    var bars = document.getElementsByClassName('bar');
@@ -20641,7 +20632,7 @@ var FCC_Global =
 	            });
 	        });
 
-	        it('8. The "data-gdp" properties should match the order of the provided data.', function (done) {
+	        it('8. The "data-gdp" properties should match the order of the provided data', function (done) {
 	            _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
 	                try {
 	                    var bars = document.getElementsByClassName('bar');
@@ -20658,7 +20649,7 @@ var FCC_Global =
 	            });
 	        });
 
-	        it('9. Each bar\'s height should accurately represent the data\'s corresponding GDP.', function () {
+	        it('9. Each bar\'s height should accurately represent the data\'s corresponding GDP', function () {
 	            var bars = document.querySelectorAll('rect.bar');
 
 	            // get the ratio of the first data point to the height of the first bar
@@ -20675,7 +20666,7 @@ var FCC_Global =
 	            }
 	        });
 
-	        it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function () {
+	        it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data', function () {
 	            var firstRequestTimeout = 100;
 	            var secondRequestTimeout = 2000;
 	            this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
@@ -20711,7 +20702,7 @@ var FCC_Global =
 	            });
 	        });
 
-	        it('11. My tooltip should have a "data-date" property that corresponds to the given date of the active bar.', function () {
+	        it('11. My tooltip should have a "data-date" property that corresponds to the given date of the active bar', function () {
 	            var tooltip = document.getElementById('tooltip');
 	            FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
 

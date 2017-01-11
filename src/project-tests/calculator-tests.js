@@ -77,7 +77,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.isNotNull(document.getElementById("display"));
             });
 
-            it("7. At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state. 0 should be shown in the element with the id of \"display\".", function() {
+            it("7. At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state. 0 should be shown in the element with the id of \"display\"", function() {
                 clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0");
             });
@@ -97,7 +97,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0");
             });
 
-            it("11. When the decimal element is clicked, a . should append to the currently displayed value. Two .s in one number should not be accepted.", function() {
+            it("11. When the decimal element is clicked, a . should append to the currently displayed value; two .s in one number should not be accepted", function() {
                 clickButtonsById([_5, _dec, _dec, _0]);
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.0");
                 clearDisplay();
@@ -105,7 +105,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.55");
             });
 
-            it("12. I should be able to perform any operation (+, -, *, /) on numbers containing decimal points.", function() {
+            it("12. I should be able to perform any operation (+, -, *, /) on numbers containing decimal points", function() {
                 clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5");
                 clearDisplay();
@@ -119,7 +119,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "4");
             });
 
-            it("13. If 2 or more operators are entered consecutively, the operation performed should be the last operator entered.", function() {
+            it("13. If 2 or more operators are entered consecutively, the operation performed should be the last operator entered", function() {
                 clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10");
                 clearDisplay();
@@ -127,7 +127,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10");
             });
 
-            it("14. Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation.", function() {
+            it("14. Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation", function() {
                 clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "1.5");
                 clearDisplay();
@@ -135,7 +135,7 @@ export default function createCalculatorTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "13");
             });
 
-            it("15. My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places).", function() {
+            it("15. My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places)", function() {
                 clickButtonsById([_2, _div, _7, _eq]);
                 FCC_Global.assert.isOk(/0?\.2857\d*/.test(document.getElementById("display").innerHTML));
             });

@@ -4,35 +4,35 @@ export default function createBarChartTests() {
 
     describe('#BarChartTests', function() {
 
-        it('1. My chart should have a title with a corresponding id="title".', function() {
+        it('1. My chart should have a title with a corresponding id="title"', function() {
             FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
         })
 
-        it('2. My Chart should have an x-axis with a corresponding id="x-axis".', function() {
+        it('2. My Chart should have an x-axis with a corresponding id="x-axis"', function() {
             FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find element with id="x-axis" ');
 
             FCC_Global.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
         })
 
-        it('3. My Chart should have a y-axis with a corresponding id="y-axis".', function() {
+        it('3. My Chart should have a y-axis with a corresponding id="y-axis"', function() {
             FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find element with id="y-axis" ');
 
             FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element ');
         })
 
-        it('4. Both axes should contain multiple tick labels.', function() {
+        it('4. Both axes should contain multiple tick labels', function() {
             FCC_Global.assert.isAbove($("#x-axis .tick").length, 1, "There are not enough tick labels on the x-axis ");
 
             FCC_Global.assert.isAbove($("#y-axis .tick").length, 1, "There are not enough tick labels on the y-axis ");
         })
 
-        it('5. My Chart should have a bar for each data point with a corresponding class="bar" displaying the data.', function() {
+        it('5. My Chart should have a bar for each data point with a corresponding class="bar" displaying the data', function() {
             FCC_Global.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any elements with class="bar" ');
 
             FCC_Global.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ')
         })
 
-        it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values.', function() {
+        it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values', function() {
             const bars = document.getElementsByClassName('bar');
             FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
             for (var i = 0; i < bars.length; i++) {
@@ -42,7 +42,7 @@ export default function createBarChartTests() {
             }
         })
 
-        it('7. The "data-date" properties should match the order of the provided data.', function(done) {
+        it('7. The "data-date" properties should match the order of the provided data', function(done) {
             $.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function(res) {
                 try {
                     const bars = document.getElementsByClassName('bar');
@@ -59,7 +59,7 @@ export default function createBarChartTests() {
             })
         })
 
-        it('8. The "data-gdp" properties should match the order of the provided data.', function(done) {
+        it('8. The "data-gdp" properties should match the order of the provided data', function(done) {
             $.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function(res) {
                 try {
                     const bars = document.getElementsByClassName('bar');
@@ -76,7 +76,7 @@ export default function createBarChartTests() {
             })
         })
 
-        it('9. Each bar\'s height should accurately represent the data\'s corresponding GDP.', function() {
+        it('9. Each bar\'s height should accurately represent the data\'s corresponding GDP', function() {
             const bars = document.querySelectorAll('rect.bar');
 
             // get the ratio of the first data point to the height of the first bar
@@ -93,7 +93,7 @@ export default function createBarChartTests() {
             }
         })
 
-        it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function() {
+        it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data', function() {
             const firstRequestTimeout = 100;
             const secondRequestTimeout = 2000;
             this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
@@ -129,7 +129,7 @@ export default function createBarChartTests() {
             })
         })
 
-        it('11. My tooltip should have a "data-date" property that corresponds to the given date of the active bar.', function() {
+        it('11. My tooltip should have a "data-date" property that corresponds to the given date of the active bar', function() {
             const tooltip = document.getElementById('tooltip');
             FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
 
