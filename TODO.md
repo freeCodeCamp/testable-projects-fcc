@@ -8,3 +8,4 @@
 - [ ] Calculator suite errors, write them - they don't seem to be present?
 - [ ] Spaces after error messages
 - [ ] User story punctuation - remove periods, looks better without them
+- [ ] Add "click to hide" functionality for top-right corner indicator
