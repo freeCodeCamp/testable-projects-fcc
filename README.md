@@ -16,8 +16,8 @@ testable projects for freecodecamp.com curriculum expansion.
   - will throttle heavy traffic
   - changes will propagate much quicker so replace the gitCDN link with this for testing 
 
-### This repo did not originally live here. There are several important contributors who have not technically contributed to this repo. So credit where credit is due:
-First and foremost is @Weezlo, thanks for getting us started! Also @Christian-Paul, @paycoguy, and @bonham000. 
+### This repo did not originally live here. There are several important contributors who contributed code before this project took its current form. So credit where credit is due:
+First and foremost is @Weezlo, thanks for getting us started! And to @no-stack-dub-sack for seeing it through the rest of the way! Also @Christian-Paul & @paycoguy for coming up with reliable ways to test D3, and @bonham000 for helping to get this all bundled up nicely in one sweet little package. 
 
 ### Credits:
 - credits for individual example projects coming soon...

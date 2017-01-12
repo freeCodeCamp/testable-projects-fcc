@@ -44,7 +44,6 @@ local_test/*
 local_test/js/*
 local_test/css/*
 
-
 # local test code
 localTestCode.txt
 

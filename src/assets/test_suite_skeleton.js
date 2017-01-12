@@ -127,7 +127,7 @@ const test_suite_skeleton = `
         #fcc_foldout_menu {
             position: absolute;
             top: 0;
-            left: -320px;
+            left: 0;
             width: 320px;
             height: 195px;
             border-bottom-right-radius: 5px;
@@ -138,7 +138,7 @@ const test_suite_skeleton = `
             transition: .5s;
         }
         input[type=checkbox]:checked ~ #fcc_foldout_menu {
-            left: 0;
+            left: -320px;
             transition: .5s ease-in-out;
         }
         #fcc_foldout_menu_inner {
@@ -162,6 +162,19 @@ const test_suite_skeleton = `
             z-index: 99998;   
         }
 
+        .transform_top {
+            opacity: 1;
+            transform: rotate(45deg) translate(-2px, -1px);
+        }
+        .transform_middle {
+            opacity: 0;
+            transform: rotate(0deg) scale(0.2, 0.2);
+        }
+        .transform_bottom {
+            opacity: 1;
+            transform: rotate(-45deg) translate(-1px, -1px);
+        }
+
         .fcc_hamburger {
             position: relative;
             width: 25px;
@@ -183,19 +196,7 @@ const test_suite_skeleton = `
             bottom: -6px;
             transform-origin: 20% 80%;
         }
-        .transform_top {
-            opacity: 1;
-            transform: rotate(45deg) translate(-2px, -1px);
-        }
-        .transform_middle {
-            opacity: 0;
-            transform: rotate(0deg) scale(0.2, 0.2);
-        }
-        .transform_bottom {
-            opacity: 1;
-            transform: rotate(-45deg) translate(-1px, -1px);
-        }
-
+        
         #fcc_foldout_menu label {
             top: 38px;
             left: 20px;
@@ -308,9 +309,9 @@ const test_suite_skeleton = `
     </style>
     <div id="fcc_test_suite_indicator_wrapper"></div>
     <div id="fcc_foldout_toggler">
-        <span id="hamburger_top" class="fcc_hamburger"></span>    
-        <span id="hamburger_middle" class="fcc_hamburger"></span>  
-        <span id="hamburger_bottom" class="fcc_hamburger"></span>      
+        <span id="hamburger_top" class="fcc_hamburger transform_top"></span>    
+        <span id="hamburger_middle" class="fcc_hamburger transform_middle"></span>  
+        <span id="hamburger_bottom" class="fcc_hamburger transform_bottom"></span>      
     </div>
     <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox" title="CTRL + SHIFT + O">
     <div id="fcc_foldout_menu">
