@@ -9,10 +9,10 @@ testable projects for freecodecamp.com curriculum expansion.
 - You can see examples of these projects here: http://codepen.io/collection/nMjJjE/
 
 ### Bundle CDNs:
-- FOR PRODUCTION: https://gitcdn.link/repo/no-stack-dub-sack/testable-projects-fcc/master/build/bundle.js
+- FOR PRODUCTION: https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js
   - will not throttle our traffic
   - can take 2hrs or more to propagate changes to all users
-- FOR DEV: https://rawgit.com/no-stack-dub-sack/testable-projects-fcc/master/build/bundle.js
+- FOR DEV: https://rawgit.com/freeCodeCamp/testable-projects-fcc/master/build/bundle.js
   - will throttle heavy traffic
   - changes will propagate much quicker so replace the gitCDN link with this for testing 
 
