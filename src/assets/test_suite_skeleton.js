@@ -156,7 +156,7 @@ const test_suite_skeleton = `
             z-index: 99999;
         }
         #fcc_foldout_toggler {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
             z-index: 99998;   
