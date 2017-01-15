@@ -2,7 +2,7 @@ const test_suite_skeleton = `
     <style>
         @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
 
-        /* TEST/MESSAGE CENTER CSS */ 
+        /* TEST/MESSAGE CENTER CSS */
 
         #fcc_test_message-box {
             font-size: 20px !important;
@@ -17,13 +17,13 @@ const test_suite_skeleton = `
             z-index: 100000;
             overflow: auto;
         }
-    
+
         .fcc_test_message-box-hidden {
             visibility: hidden;
             opacity: 0;
             top: -300px;
         }
-    
+
         .fcc_test_message-box-shown {
             visibility: visible;
             opacity: 1;
@@ -45,15 +45,15 @@ const test_suite_skeleton = `
         .fcc_test_message-box-header,
         .fcc_test_message-box-footer{
             position: relative;
-            height: 60px;
             flex: none;
             box-sizing: border-box !important;
             padding: 10px !important;
         }
         .fcc_test_message-box-header {
             border-bottom: 1px solid rgb(229,229,229);
+            height: 60px;
         }
-    
+
         .fcc_test_message-box-header .title {
             float: left;
             font-size: 30px !important;
@@ -67,8 +67,9 @@ const test_suite_skeleton = `
 
         .fcc_test_message-box-footer {
             border-top: 1px solid rgb(229,229,229);
+            height: 70px;
         }
-    
+
         .fcc_test_message-box-close-btn {
             float: right;
             color: black;
@@ -76,6 +77,7 @@ const test_suite_skeleton = `
             border: 1px solid rgb(229,229,229);
             border-radius: 4px;
             padding: 10px 20px !important;
+            margin-bottom: 10px;
             transition: all .3s;
         }
         .fcc_test_message-box-close-btn:hover {
@@ -100,26 +102,6 @@ const test_suite_skeleton = `
 
         div {
             position: static;
-        }
-
-        .fcc_test_message-box-close-fixed {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            border: 3px solid grey;
-            text-align: center;
-            transition: all .4s;
-        }
-        .fcc_test_message-box-close-fixed:after {
-            color: grey;
-            font-family: Noto Sans, arial, sans-serif !important;
-            font-size: 30px !important;
-            font weight: bold;
-            content: "X";
-            line-height: 30px !important;
         }
 
         /* FOLDOUT MENU CSS */
@@ -159,7 +141,7 @@ const test_suite_skeleton = `
             position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 99998;   
+            z-index: 99998;
         }
 
         .transform_top {
@@ -196,7 +178,7 @@ const test_suite_skeleton = `
             bottom: -6px;
             transform-origin: 20% 80%;
         }
-        
+
         #fcc_foldout_menu label {
             top: 38px;
             left: 20px;
@@ -216,7 +198,7 @@ const test_suite_skeleton = `
             height: 20px;
             width: 110px;
             padding: 10px !important;
-            display: block; 
+            display: block;
             font-size: 15px !important;
             line-height: 15px !important;
             text-align: center;
@@ -233,7 +215,7 @@ const test_suite_skeleton = `
         }
         #fcc_test_message-box-rerun-button {
             top: 88px;
-            transition: all .3s;    
+            transition: all .3s;
         }
         #fcc_test_message-box-rerun-button:hover {
             color: white;
@@ -309,9 +291,9 @@ const test_suite_skeleton = `
     </style>
     <div id="fcc_test_suite_indicator_wrapper"></div>
     <div id="fcc_foldout_toggler">
-        <span id="hamburger_top" class="fcc_hamburger transform_top"></span>    
-        <span id="hamburger_middle" class="fcc_hamburger transform_middle"></span>  
-        <span id="hamburger_bottom" class="fcc_hamburger transform_bottom"></span>      
+        <span id="hamburger_top" class="fcc_hamburger transform_top"></span>
+        <span id="hamburger_middle" class="fcc_hamburger transform_middle"></span>
+        <span id="hamburger_bottom" class="fcc_hamburger transform_bottom"></span>
     </div>
     <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox" title="CTRL + SHIFT + O">
     <div id="fcc_foldout_menu">
@@ -328,7 +310,7 @@ const test_suite_skeleton = `
                 <option value="markdown-previewer">Markdown Previewer</option>
                 <option value="drum-machine">Drum Machine</option>
                 <option value="pomodoro-clock">Pomodoro Clock</option>
-                <option value="javascript-calculator">Javascript Calculator</option>  
+                <option value="javascript-calculator">Javascript Calculator</option>
                 <option value="bar-chart">D3: Bar Chart</option>
                 <option value="scatter-plot">D3: Scatter Plot</option>
                 <option value="heat-map">D3: Heat Map</option>
@@ -341,7 +323,7 @@ const test_suite_skeleton = `
                 Tests
             </button>
             <div id="fcc_legend_wrapper">
-                    <div class="fcc_legend key"></div><span class="fcc_legend">Test(s) Failed</span>  
+                    <div class="fcc_legend key"></div><span class="fcc_legend">Test(s) Failed</span>
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Passed</span>
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Executing</span>
             </div>
@@ -359,7 +341,6 @@ const test_suite_skeleton = `
                 <div class="fcc_test_message-box-close-btn" onclick="FCC_Global.FCCCloseTestModal()">Close</div>
             </div>
         </div>
-        <div class="fcc_test_message-box-close-fixed" onclick="FCC_Global.FCCCloseTestModal()"></div>
     </div>`;
 
 export default test_suite_skeleton;
