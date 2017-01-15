@@ -49,19 +49,20 @@ $(document).ready(function() {
                 testDiv.style.position = "inherit";
                 testDiv.innerHTML = test_suite_skeleton;
                 document.body.appendChild(testDiv);
+                // Once testDiv is loaded:
                 let project_titleCase = localStorage.getItem('project_titleCase');
-                // project_name variable is defined in our example projects so the correct test suite is automatically 
+                // project_name variable is defined in our example projects so the correct test suite is automatically
                 // loaded. This Sets default text for <option> text and project indicator in top right corner.
                 if (typeof project_name === 'undefined' && project_titleCase === null) {
                     document.getElementById('placeholder').innerHTML = '- - -';
                     document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
                 } else if (typeof project_name === 'undefined') {
                     document.getElementById('placeholder').innerHTML = project_titleCase;
-                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = 
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
                     `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
                 } else {
                     document.getElementById('placeholder').innerHTML = project_name.replace(/-/g, ' ');
-                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = 
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
                     `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_name.replace(/-/g, ' ')}</span>`;
                 }
             };
@@ -84,7 +85,7 @@ export function selectProject(project) {
     localStorage.setItem('project_titleCase', project_titleCase);
 }
 
-// Updates the button color and text on the target project, to show how many tests passed and how many failed. 
+// Updates the button color and text on the target project, to show how many tests passed and how many failed.
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
     const button = document.getElementById('fcc_test_button');
     button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
@@ -95,7 +96,7 @@ export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
     }
 }
 
-// Updates the button text on the target project, to show how many tests were executed so far. 
+// Updates the button text on the target project, to show how many tests were executed so far.
 export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
     const button = document.getElementById('fcc_test_button');
     button.classList.add('fcc_test_btn-executing');
@@ -134,9 +135,9 @@ export function FCCclickOutsideToCloseModal(e) {
 // run tests
 export function FCCRerunTests() {
     const button = document.getElementById('fcc_test_button');
-    button.innerHTML = typeof project_name === 'undefined' && 
+    button.innerHTML = typeof project_name === 'undefined' &&
     localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
-    button.title = typeof project_name === 'undefined' && 
+    button.title = typeof project_name === 'undefined' &&
     localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
     button.classList = ["fcc_foldout_buttons"];
     button.classList.add("fcc_test_btn-default");
@@ -158,7 +159,7 @@ onkeydown = onkeyup = function(e) {
     const modal = document.getElementById('fcc_test_message-box');
     e = e || window.event;
     map[e.keyCode] = e.type == 'keydown';
-    if (map[17] && map[16] && map[13]) { // run tests: Ctrl + Shift + Enter 
+    if (map[17] && map[16] && map[13]) { // run tests: Ctrl + Shift + Enter
         if (localStorage.getItem('project_selector') === 'markdown-previewer') {
             alertOnce();
             return;
@@ -246,7 +247,7 @@ export function FCCInitTestRunner() {
             break;
         case 'scatter-plot':
             createScatterPlotTests();
-            break;    
+            break;
         case 'choropleth':
             createChoroplethTests();
             break;
