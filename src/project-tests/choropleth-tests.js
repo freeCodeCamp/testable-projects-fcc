@@ -66,7 +66,7 @@ export default function createChoroplethTests() {
                     uniqueFipsFromChoropleth.push(+fips);
                 }
 
-                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data                      
+                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data
                 for (var j = 0; j < educationData.length; j++) {
                     // test that every value in the sample data is in the Choropleth
                     FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ")
@@ -101,7 +101,7 @@ export default function createChoroplethTests() {
                 for (var i = 0; i < rects.length; i++) {
                     var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
 
-                    // if the current color isn't in the uniqueColors arr, push it 
+                    // if the current color isn't in the uniqueColors arr, push it
                     if (uniqueColors.indexOf(rectColor) === -1) {
                         uniqueColors.push(rectColor);
                     }
@@ -125,7 +125,7 @@ export default function createChoroplethTests() {
 
 			    // promise is used to prevent test from ending prematurely
 			    return new Promise((resolve, reject) => {
-			        // timeout is used to accomodate tooltip transitions
+			        // timeout is used to accommodate tooltip transitions
 			        setTimeout(_ => {
 			            if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 			                reject(new Error('Tooltip should be visible when mouse is on an area'))

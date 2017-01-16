@@ -1,5 +1,5 @@
 import $ from 'jquery';
-// HEAT MAP TESTS: 
+// HEAT MAP TESTS:
 export default function createHeatMapTests() {
 
     describe('#HeatMapTests', function() {
@@ -31,7 +31,7 @@ export default function createHeatMapTests() {
                 for (var i = 0; i < cells.length; i++) {
                     var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
 
-                    // if the current color isn't in the uniqueColors arr, push it 
+                    // if the current color isn't in the uniqueColors arr, push it
                     if (uniqueColors.indexOf(cellColor) === -1) {
                         uniqueColors.push(cellColor);
                     }
@@ -93,7 +93,7 @@ export default function createHeatMapTests() {
                 const cellsCollection = document.querySelectorAll('.cell');
                 FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
-                //convert to array    
+                //convert to array
                 const cells = [].slice.call(cellsCollection);
                 const sortedCells = cells.sort(function(a, b) {
                     return a.getAttribute("data-month") - b.getAttribute("data-month");
@@ -109,7 +109,7 @@ export default function createHeatMapTests() {
                 const cellsCollection = document.querySelectorAll('.cell');
                 FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
-                //convert to array    
+                //convert to array
                 const cells = [].slice.call(cellsCollection);
                 const sortedCells = cells.sort(function(a, b) {
                     return a.getAttribute("data-year") - b.getAttribute("data-year");
@@ -169,7 +169,7 @@ export default function createHeatMapTests() {
 
                 // promise is used to prevent test from ending prematurely
                 return new Promise((resolve, reject) => {
-                    // timeout is used to accomodate tooltip transitions
+                    // timeout is used to accommodate tooltip transitions
                     setTimeout(_ => {
                         if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
                             reject(new Error('Tooltip should be visible when mouse is on a cell'))
