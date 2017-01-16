@@ -59,7 +59,7 @@ export default function createProductLandingPageTests() {
             it('9. The #email input field should have placeholder text to let the user know what the field is for.', function() {
                 FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
                 FCC_Global.assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true,
-                    'The input field does not have placehoder text ');
+                    'The input field does not have placeholder text ');
                 FCC_Global.assert.isAbove(document.getElementById("email").getAttribute('placeholder').length, 0,
                     'The placeholder attribute should have some text ');
             });
@@ -133,8 +133,8 @@ export default function createProductLandingPageTests() {
                         }
                     }
                 }
-                // our test suite uses a display of flex, so we need to count how many times its used 
-                // and confirm that its more than once. If we just detect one instance, its ours. 
+                // our test suite uses a display of flex, so we need to count how many times its used
+                // and confirm that its more than once. If we just detect one instance, its ours.
                 FCC_Global.assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex anywhere in your CSS ')
             });
 

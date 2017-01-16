@@ -27,7 +27,7 @@ export default function createDrumMachineTests() {
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById("drum-machine"));
                     FCC_Global.assert(
-                        document.querySelectorAll(`#drum-machine div, #drum-machine .drum-pad, #drum-machine #display, 
+                        document.querySelectorAll(`#drum-machine div, #drum-machine .drum-pad, #drum-machine #display,
           #drum-machine .clip`).length,
                         'The #drum-machine element must contain other elements '
                     );
@@ -39,7 +39,7 @@ export default function createDrumMachineTests() {
 
             it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' +
                 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' +
-                'corresponds to one of the following keys on the keyboard: Q, W, E, A, S. D, Z, X, C.',
+                'corresponds to one of the following keys on the keyboard: Q, W, E, A, S, D, Z, X, C.',
                 function() {
                     // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
                     let drumPadInnerText = [];

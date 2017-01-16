@@ -6,15 +6,15 @@ export default function createTechnicalDocsPageTests() {
 
     describe("Technical Documentation Page tests", function() {
         describe('#Content', function() {
-            it('1. I can see an <article> element with a corresponding id="main-doc", which contains the ' +
+            it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' +
                 'page\'s main content (technical documentation).',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
-                    FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "ARTICLE",
-                        "The 'main-doc' element should be an <article> ");
+                    FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "MAIN",
+                        "The 'main-doc' element should be a <main> ");
                 });
 
-            it('2. Within the #main-doc <article> element, I can see several <section> elements, each with a class ' +
+            it('2. Within the #main-doc <main> element, I can see several <section> elements, each with a class ' +
                 'of "main-section". There should be a minimum of 5.',
                 function() {
                     let classQty = classArray('main-section').length;
@@ -61,18 +61,18 @@ export default function createTechnicalDocsPageTests() {
                 FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, "There are not at least 10 <p> " +
                     "elements throughout all of the elements with the class of 'main-section' ");
                 // WANTED THE TEST TO BE AS FOLLOWS BUT COULD NOT FIND A WAY TO TEST FOR ELEMENTS WITH CLASS OF MAIN-SECTION
-                // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WIHTOUT ADDITIONAL EXTERNAL DEPENDENCIES):
+                // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WITHOUT ADDITIONAL EXTERNAL DEPENDENCIES):
                 // Each "main-section" should contain at least one <p> element with textual content.
             });
 
             it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function() {
                 FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, "There are not at least 5 <code> " +
-                    "elements throughout all of the elemnts with the class of 'main-section' ");
+                    "elements throughout all of the elements with the class of 'main-section' ");
             });
 
             it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function() {
                 FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, "There are not " +
-                    "at least 5 <li> elements throughout all of the elemnts with the class of 'main-section' ");
+                    "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
             });
 
             it('8. I can see a <nav> element with a corresponding id="navbar".', function() {

@@ -19024,14 +19024,14 @@ var FCC_Global =
 
 	            it('1. I should be able to see an outer container with a corresponding id="drum-machine" that contains ' + 'all other elements', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById("drum-machine"));
-	                FCC_Global.assert(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine #display, \n          #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
+	                FCC_Global.assert(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine #display,\n          #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
 	            });
 
 	            it('2. Within #drum-machine I can see an element with corresponding id="display".', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById("display"));
 	            });
 
-	            it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' + 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' + 'corresponds to one of the following keys on the keyboard: Q, W, E, A, S. D, Z, X, C.', function () {
+	            it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' + 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' + 'corresponds to one of the following keys on the keyboard: Q, W, E, A, S, D, Z, X, C.', function () {
 	                // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
 	                var drumPadInnerText = [];
 	                drumPads.forEach(function (pad) {
@@ -19176,7 +19176,7 @@ var FCC_Global =
 	                triggerChange(markdownOnLoad);
 	                var markdown = editor.value;
 
-	                FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1  
+	                FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1
 	                FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 'write some markdown representing an <h2> '); // h2
 	                FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 'write some markdown representing an <a> '); // link
 	                FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
@@ -19184,7 +19184,7 @@ var FCC_Global =
 	                FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
 	                FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing an <h1> '); // blockquote
 	                FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <h1> '); // image
-	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text        
+	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text
 	            });
 
 	            it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function () {
@@ -19203,7 +19203,7 @@ var FCC_Global =
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1, '#preview does not contain at least one <img> ');
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1, '#preview does not contain at least one <strong> ');
 
-	                // then check a couple of elements to make sure the present elements 
+	                // then check a couple of elements to make sure the present elements
 	                //are actually the ones represented by the markdown:
 
 	                // find matching H1 element
@@ -19214,7 +19214,7 @@ var FCC_Global =
 	                });
 	                FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
 
-	                // find mathcing H2 element 
+	                // find matching H2 element 
 	                var h2Text = /##\s.*/.exec(markdown)[0].slice(3);
 	                var h2Match = [];
 	                document.querySelectorAll('#preview h2').forEach(function (h2) {
@@ -19345,7 +19345,7 @@ var FCC_Global =
 
 	            it("9. In any order, I should be able to add, subtract, multiply and divide a chain of numbers of any length, and when I hit =, the correct result should be shown in the element with the id of \"display\"", function () {
 	                clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
-	                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "Equation should produce 32.5 or 11.5 as an answer, depening on the logic your calculator uses (formula vs. immediate execution)");
+	                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "Equation should produce 32.5 or 11.5 as an answer, depending on the logic your calculator uses (formula vs. immediate execution)");
 	            });
 
 	            it("10. When inputting numbers, my calculator should not allow a number to begin with multiple zeros.", function () {
@@ -19466,7 +19466,7 @@ var FCC_Global =
 	    }
 
 	    // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-	    // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time   
+	    // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
 	    // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
 	    var savedSetTimeout = window.setTimeout;
 	    var savedSetInterval = window.setInterval;
@@ -19535,8 +19535,8 @@ var FCC_Global =
 	            });
 
 	            /*For now just confirm that element exists. Will test contents when timer is running later.
-	            If we force an initial value of 25:00, campers will then have to make the session length 
-	            buttons also update the intial value to reflect the change, which is complicated and not 
+	            If we force an initial value of 25:00, campers will then have to make the session length
+	            buttons also update the initial value to reflect the change, which is complicated and not
 	            necessarily needed. No time needs to be shown here until the timer is actually running.*/
 	            it("8. I can see an element with corresponding id=\"time-left\".", function () {
 	                FCC_Global.assert.isNotNull(document.getElementById("time-left"));
@@ -19612,18 +19612,18 @@ var FCC_Global =
 
 	            it('16. I should not be able to set a session or break length to <= 0.', function () {
 	                clickButtonsById(Array(10).fill(_break_min));
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in elment with ' + 'id of "break-length" is less than 1.');
+	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in element with ' + 'id of "break-length" is less than 1.');
 	                resetTimer();
 	                clickButtonsById(Array(30).fill(_sesh_min));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in elment with ' + 'id of "session-length" is less than 1.');
+	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in element with ' + 'id of "session-length" is less than 1.');
 	            });
 
 	            it('17. I should not be able to set a session or break length to > 60.', function () {
 	                clickButtonsById(Array(60).fill(_break_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in elment with ' + 'id of "break-length" is greater than 60.');
+	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in element with ' + 'id of "break-length" is greater than 60.');
 	                resetTimer();
 	                clickButtonsById(Array(40).fill(_sesh_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in elment with ' + 'id of "session-length" is greater than 60.');
+	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in element with ' + 'id of "session-length" is greater than 60.');
 	            });
 
 	            it('18. When I first click the element with id="start_stop", the timer should begin running from the value currently displayed in id="session-length", even if the value has been incremented or decremented from the original value of 25.', function () {
@@ -19703,7 +19703,7 @@ var FCC_Global =
 	            it('22. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a break has begun.', function () {
 	                this.timeout(5000);
 	                // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-	                // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time   
+	                // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
 	                // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
 	                hackGlobalTimerFunctions();
 	                // we decrement session time to the minimum (1 minute)
@@ -19712,7 +19712,7 @@ var FCC_Global =
 	                clickButtonsById([_start_stop]);
 	                return new Promise(function (resolve, reject) {
 	                    // 2 approaches here, we can either
-	                    // - watch for modifications on the time label and wait till it reaches zero, then we wait some more and then check the "Break" label. 
+	                    // - watch for modifications on the time label and wait till it reaches zero, then we wait some more and then check the "Break" label.
 	                    var timeLeft = document.getElementById("time-left");
 	                    // Save label to test that it has changed below
 	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
@@ -19752,8 +19752,8 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    var timeLeft = document.getElementById("time-left");
 	                    var shouldBeInBreak = false;
-	                    // Since not requiring specific labels, save the 'session' label to a variable, then test 
-	                    // within observer funciton that label has changed to know when in break
+	                    // Since not requiring specific labels, save the 'session' label to a variable, then test
+	                    // within observer function that label has changed to know when in break
 	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
 	                    var observer = observeElement("time-left", function (modType) {
 	                        if (timeLeft.innerHTML === "00:00") {
@@ -20174,7 +20174,7 @@ var FCC_Global =
 
 	            it('9. The #email input field should have placeholder text to let the user know what the field is for.', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
-	                FCC_Global.assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true, 'The input field does not have placehoder text ');
+	                FCC_Global.assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true, 'The input field does not have placeholder text ');
 	                FCC_Global.assert.isAbove(document.getElementById("email").getAttribute('placeholder').length, 0, 'The placeholder attribute should have some text ');
 	            });
 
@@ -20244,8 +20244,8 @@ var FCC_Global =
 	                        }
 	                    }
 	                }
-	                // our test suite uses a display of flex, so we need to count how many times its used 
-	                // and confirm that its more than once. If we just detect one instance, its ours. 
+	                // our test suite uses a display of flex, so we need to count how many times its used
+	                // and confirm that its more than once. If we just detect one instance, its ours.
 	                FCC_Global.assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex anywhere in your CSS ');
 	            });
 	        }); // END #Layout
@@ -20410,12 +20410,12 @@ var FCC_Global =
 
 	    describe("Technical Documentation Page tests", function () {
 	        describe('#Content', function () {
-	            it('1. I can see an <article> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
+	            it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
-	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "ARTICLE", "The 'main-doc' element should be an <article> ");
+	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "MAIN", "The 'main-doc' element should be a <main> ");
 	            });
 
-	            it('2. Within the #main-doc <article> element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
+	            it('2. Within the #main-doc <main> element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
 	                var classQty = classArray('main-section').length;
 	                var typeQty = classArray('main-section').filter(function (el) {
 	                    return el.nodeName === 'SECTION';
@@ -20457,16 +20457,16 @@ var FCC_Global =
 	            it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, "There are not at least 10 <p> " + "elements throughout all of the elements with the class of 'main-section' ");
 	                // WANTED THE TEST TO BE AS FOLLOWS BUT COULD NOT FIND A WAY TO TEST FOR ELEMENTS WITH CLASS OF MAIN-SECTION
-	                // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WIHTOUT ADDITIONAL EXTERNAL DEPENDENCIES):
+	                // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WITHOUT ADDITIONAL EXTERNAL DEPENDENCIES):
 	                // Each "main-section" should contain at least one <p> element with textual content.
 	            });
 
 	            it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, "There are not at least 5 <code> " + "elements throughout all of the elemnts with the class of 'main-section' ");
+	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, "There are not at least 5 <code> " + "elements throughout all of the elements with the class of 'main-section' ");
 	            });
 
 	            it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, "There are not " + "at least 5 <li> elements throughout all of the elemnts with the class of 'main-section' ");
+	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, "There are not " + "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
 	            });
 
 	            it('8. I can see a <nav> element with a corresponding id="navbar".', function () {
@@ -20684,7 +20684,7 @@ var FCC_Global =
 
 	            // promise is used to prevent test from ending prematurely
 	            return new Promise(function (resolve, reject) {
-	                // timeout is used to accomodate tooltip transitions
+	                // timeout is used to accommodate tooltip transitions
 	                setTimeout(function (_) {
 	                    if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                        reject('Tooltip should be visible when mouse is on a bar ');
@@ -20778,7 +20778,7 @@ var FCC_Global =
 	                var MAX_X_VALUE = MAX_YEAR;
 
 	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array    
+	                //convert to array
 	                var dots = [].slice.call(dotsCollection);
 	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
 	                dots.forEach(function (dot) {
@@ -20795,7 +20795,7 @@ var FCC_Global =
 
 	            it('7. The data-xvalue and its corresponding dot should align with the corresponding point/value on the x-axis.', function () {
 	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array    
+	                //convert to array
 	                var dots = [].slice.call(dotsCollection);
 	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
 	                //sort the dots based on xvalue in ascending order
@@ -20811,7 +20811,7 @@ var FCC_Global =
 
 	            it('8. The data-yvalue and its corresponding dot should align with the corresponding point/value on the y-axis.', function () {
 	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array    
+	                //convert to array
 	                var dots = [].slice.call(dotsCollection);
 	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
 	                //sort the dots based on yvalue in ascending order
@@ -20889,7 +20889,7 @@ var FCC_Global =
 
 	                // promise is used to prevent test from ending prematurely
 	                return new Promise(function (resolve, reject) {
-	                    // timeout is used to accomodate tooltip transitions
+	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
 	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                            reject('Tooltip should be visible when mouse is on a dot ');
@@ -21010,7 +21010,7 @@ var FCC_Global =
 	                    uniqueFipsFromChoropleth.push(+fips);
 	                }
 
-	                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data                      
+	                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data
 	                for (var j = 0; j < _education2.default.length; j++) {
 	                    // test that every value in the sample data is in the Choropleth
 	                    FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ");
@@ -21045,7 +21045,7 @@ var FCC_Global =
 	                for (var i = 0; i < rects.length; i++) {
 	                    var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
 
-	                    // if the current color isn't in the uniqueColors arr, push it 
+	                    // if the current color isn't in the uniqueColors arr, push it
 	                    if (uniqueColors.indexOf(rectColor) === -1) {
 	                        uniqueColors.push(rectColor);
 	                    }
@@ -21069,7 +21069,7 @@ var FCC_Global =
 
 	                // promise is used to prevent test from ending prematurely
 	                return new Promise(function (resolve, reject) {
-	                    // timeout is used to accomodate tooltip transitions
+	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
 	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on an area'));
@@ -40105,7 +40105,7 @@ var FCC_Global =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// HEAT MAP TESTS: 
+	// HEAT MAP TESTS:
 	function createHeatMapTests() {
 
 	    describe('#HeatMapTests', function () {
@@ -40137,7 +40137,7 @@ var FCC_Global =
 	                for (var i = 0; i < cells.length; i++) {
 	                    var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
 
-	                    // if the current color isn't in the uniqueColors arr, push it 
+	                    // if the current color isn't in the uniqueColors arr, push it
 	                    if (uniqueColors.indexOf(cellColor) === -1) {
 	                        uniqueColors.push(cellColor);
 	                    }
@@ -40198,7 +40198,7 @@ var FCC_Global =
 	                var cellsCollection = document.querySelectorAll('.cell');
 	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
-	                //convert to array    
+	                //convert to array
 	                var cells = [].slice.call(cellsCollection);
 	                var sortedCells = cells.sort(function (a, b) {
 	                    return a.getAttribute("data-month") - b.getAttribute("data-month");
@@ -40214,7 +40214,7 @@ var FCC_Global =
 	                var cellsCollection = document.querySelectorAll('.cell');
 	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
-	                //convert to array    
+	                //convert to array
 	                var cells = [].slice.call(cellsCollection);
 	                var sortedCells = cells.sort(function (a, b) {
 	                    return a.getAttribute("data-year") - b.getAttribute("data-year");
@@ -40273,7 +40273,7 @@ var FCC_Global =
 
 	                // promise is used to prevent test from ending prematurely
 	                return new Promise(function (resolve, reject) {
-	                    // timeout is used to accomodate tooltip transitions
+	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
 	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on a cell'));
