@@ -19,7 +19,7 @@ export default function createMarkdownPreviewerTests() {
             } else {
                 // jQUERY OR JAVASCRIPT
                 const eventJS = new Event('keyup', { bubbles: true } ); // must be keyup to live preview
-                editor.dispatchEvent(eventJS)
+                editor.dispatchEvent(eventJS) 
             }
         }
 
@@ -62,7 +62,7 @@ export default function createMarkdownPreviewerTests() {
                     triggerChange(markdownOnLoad);
                     const markdown = editor.value;
 
-                    FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1
+                    FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1  
                     FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 'write some markdown representing an <h2> '); // h2
                     FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 'write some markdown representing an <a> '); // link
                     FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
@@ -70,7 +70,7 @@ export default function createMarkdownPreviewerTests() {
                     FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
                     FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing an <h1> '); // blockquote
                     FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <h1> '); // image
-                    FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text
+                    FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text        
                 });
 
             it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function() {
@@ -89,7 +89,7 @@ export default function createMarkdownPreviewerTests() {
                     FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1, '#preview does not contain at least one <img> ');
                     FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1, '#preview does not contain at least one <strong> ');
 
-                    // then check a couple of elements to make sure the present elements
+                    // then check a couple of elements to make sure the present elements 
                     //are actually the ones represented by the markdown:
 
                     // find matching H1 element
@@ -100,7 +100,7 @@ export default function createMarkdownPreviewerTests() {
                     });
                     FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
 
-                    // find matching H2 element 
+                    // find mathcing H2 element 
                     const h2Text = /##\s.*/.exec(markdown)[0].slice(3);
                     const h2Match = [];
                     document.querySelectorAll('#preview h2').forEach(h2 => {

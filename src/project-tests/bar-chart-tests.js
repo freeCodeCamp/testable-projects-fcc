@@ -110,7 +110,7 @@ export default function createBarChartTests() {
 
             // promise is used to prevent test from ending prematurely
             return new Promise((resolve, reject) => {
-                // timeout is used to accommodate tooltip transitions
+                // timeout is used to accomodate tooltip transitions
                 setTimeout(_ => {
                     if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
                         reject('Tooltip should be visible when mouse is on a bar ');

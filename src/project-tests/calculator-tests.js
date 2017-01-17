@@ -89,7 +89,7 @@ export default function createCalculatorTests() {
 
             it("9. In any order, I should be able to add, subtract, multiply and divide a chain of numbers of any length, and when I hit =, the correct result should be shown in the element with the id of \"display\"", function() {
                 clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
-                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "Equation should produce 32.5 or 11.5 as an answer, depending on the logic your calculator uses (formula vs. immediate execution)");
+                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "Equation should produce 32.5 or 11.5 as an answer, depening on the logic your calculator uses (formula vs. immediate execution)");
             });
 
             it("10. When inputting numbers, my calculator should not allow a number to begin with multiple zeros.", function() {
