@@ -51,7 +51,7 @@ export default function createPomodoroClockTests() {
     }
 
     // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-    // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time   
+    // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
     // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
     const savedSetTimeout = window.setTimeout;
     const savedSetInterval = window.setInterval;
@@ -128,8 +128,8 @@ export default function createPomodoroClockTests() {
             });
 
             /*For now just confirm that element exists. Will test contents when timer is running later.
-            If we force an initial value of 25:00, campers will then have to make the session length 
-            buttons also update the intial value to reflect the change, which is complicated and not 
+            If we force an initial value of 25:00, campers will then have to make the session length
+            buttons also update the initial value to reflect the change, which is complicated and not
             necessarily needed. No time needs to be shown here until the timer is actually running.*/
             it("8. I can see an element with corresponding id=\"time-left\".", function() {
                 FCC_Global.assert.isNotNull(document.getElementById("time-left"));
@@ -208,21 +208,21 @@ export default function createPomodoroClockTests() {
 
             it('16. I should not be able to set a session or break length to <= 0.', function() {
                 clickButtonsById(Array(10).fill(_break_min));
-                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in elment with ' +
+                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in element with ' +
                     'id of "break-length" is less than 1.');
                 resetTimer();
                 clickButtonsById(Array(30).fill(_sesh_min));
-                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in elment with ' +
+                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in element with ' +
                     'id of "session-length" is less than 1.');
             });
 
             it('17. I should not be able to set a session or break length to > 60.', function() {
                 clickButtonsById(Array(60).fill(_break_plus));
-                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in elment with ' +
+                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in element with ' +
                     'id of "break-length" is greater than 60.');
                 resetTimer();
                 clickButtonsById(Array(40).fill(_sesh_plus));
-                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in elment with ' +
+                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in element with ' +
                     'id of "session-length" is greater than 60.');
             });
 
@@ -306,7 +306,7 @@ export default function createPomodoroClockTests() {
             it('22. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a break has begun.', function() {
                 this.timeout(5000);
                 // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-                // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time   
+                // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
                 // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
                 hackGlobalTimerFunctions();
                 // we decrement session time to the minimum (1 minute)
@@ -315,7 +315,7 @@ export default function createPomodoroClockTests() {
                 clickButtonsById([_start_stop]);
                 return new Promise((resolve, reject) => {
                     // 2 approaches here, we can either
-                    // - watch for modifications on the time label and wait till it reaches zero, then we wait some more and then check the "Break" label. 
+                    // - watch for modifications on the time label and wait till it reaches zero, then we wait some more and then check the "Break" label.
                     const timeLeft = document.getElementById("time-left");
                     // Save label to test that it has changed below
                     let sessionLabel = document.getElementById("timer-label").innerHTML;
@@ -355,8 +355,8 @@ export default function createPomodoroClockTests() {
                 return new Promise((resolve, reject) => {
                     const timeLeft = document.getElementById("time-left");
                     let shouldBeInBreak = false;
-                    // Since not requiring specific labels, save the 'session' label to a variable, then test 
-                    // within observer funciton that label has changed to know when in break
+                    // Since not requiring specific labels, save the 'session' label to a variable, then test
+                    // within observer function that label has changed to know when in break
                     let sessionLabel = document.getElementById("timer-label").innerHTML;
                     const observer = observeElement("time-left", modType => {
                         if (timeLeft.innerHTML === "00:00") {
