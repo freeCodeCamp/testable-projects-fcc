@@ -129,11 +129,15 @@ var FCC_Global =
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _quoteMachineTests = __webpack_require__(57);
+	var _treeMapTests = __webpack_require__(57);
+
+	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
+
+	var _quoteMachineTests = __webpack_require__(58);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(58);
+	var _heatMapTests = __webpack_require__(59);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
@@ -378,6 +382,9 @@ var FCC_Global =
 	            break;
 	        case 'heat-map':
 	            (0, _heatMapTests2.default)();
+	            break;
+	        case 'tree-map':
+	            (0, _treeMapTests2.default)();
 	            break;
 	    };
 
@@ -18974,7 +18981,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	var test_suite_skeleton = "\n    <style>\n        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n        /* TEST/MESSAGE CENTER CSS */\n\n        #fcc_test_message-box {\n            font-size: 20px !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n            position: fixed;\n            left: 0;\n            bottom: 0;\n            right: 0;\n            text-align: center;\n            background-color: rgba(0, 0, 0, 0.8);\n            transition: all .5s;\n            z-index: 100000;\n            overflow: auto;\n        }\n\n        .fcc_test_message-box-hidden {\n            visibility: hidden;\n            opacity: 0;\n            top: -300px;\n        }\n\n        .fcc_test_message-box-shown {\n            visibility: visible;\n            opacity: 1;\n            top: 0;\n        }\n\n        .fcc_test_message-box-content {\n            position: relative;\n            color: black;\n            background-color: white;\n            top: 10vh;\n            width: 80%;\n            margin: 0 auto !important;\n            text-align: initial;\n            border-radius: 10px;\n            display: flex;\n            flex-direction: column;\n        }\n        .fcc_test_message-box-header,\n        .fcc_test_message-box-footer{\n            position: relative;\n            flex: none;\n            box-sizing: border-box !important;\n            padding: 10px !important;\n        }\n        .fcc_test_message-box-header {\n            border-bottom: 1px solid rgb(229,229,229);\n            height: 60px;\n        }\n\n        .fcc_test_message-box-header .title {\n            float: left;\n            font-size: 30px !important;\n            line-height: 40px !important;\n            margin-left: 10px !important;\n        }\n\n        .fcc_test_message-box-body {\n            flex: 1;\n        }\n\n        .fcc_test_message-box-footer {\n            border-top: 1px solid rgb(229,229,229);\n            height: 70px;\n        }\n\n        .fcc_test_message-box-close-btn {\n            float: right;\n            color: black;\n            background-color: white;\n            border: 1px solid rgb(229,229,229);\n            border-radius: 4px;\n            padding: 10px 20px !important;\n            margin-bottom: 10px;\n            transition: all .3s;\n        }\n        .fcc_test_message-box-close-btn:hover {\n            color: white;\n            background-color: black;\n        }\n\n        #mocha {\n            margin: 10px !important;\n        }\n        #mocha .test pre {\n            background-color: rgb(245, 245, 245);\n        }\n        #mocha-stats {\n            position: absolute;\n        }\n        #mocha ul {\n            max-width: initial;\n            margin: initial !important;\n            text-align: initial;\n        }\n\n        div {\n            position: static;\n        }\n\n        /* FOLDOUT MENU CSS */\n\n        #fcc_foldout_menu {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 320px;\n            height: 195px;\n            border-bottom-right-radius: 5px;\n            background-color: rgba(255, 255, 204, 0.6);\n            z-index: 99997;\n            font-family: Noto Sans, arial, sans-serif !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            transition: .5s;\n        }\n        input[type=checkbox]:checked ~ #fcc_foldout_menu {\n            left: -320px;\n            transition: .5s ease-in-out;\n        }\n        #fcc_foldout_menu_inner {\n            position: relative;\n        }\n        input[type=checkbox] {\n            height: 24px;\n            width: 25px;\n            position: fixed;\n            top: 7px;\n            left: 20px;\n            border: 1px solid black;\n            opacity: 0;\n            cursor: pointer;\n            z-index: 99999;\n        }\n        #fcc_foldout_toggler {\n            position: absolute;\n            top: 20px;\n            left: 20px;\n            z-index: 99998;\n        }\n\n        .transform_top {\n            opacity: 1;\n            transform: rotate(45deg) translate(-2px, -1px);\n        }\n        .transform_middle {\n            opacity: 0;\n            transform: rotate(0deg) scale(0.2, 0.2);\n        }\n        .transform_bottom {\n            opacity: 1;\n            transform: rotate(-45deg) translate(-1px, -1px);\n        }\n\n        .fcc_hamburger {\n            position: relative;\n            width: 25px;\n            height: 3px;\n            display: block;\n            background: black;\n            border-radius: 5px;\n            content: '';\n            transform-origin: 4px 0px;\n            transition: transform 0.4s ease, opacity 0.55s ease;\n        }\n        #hamburger_top {\n            position: absolute;\n            top: -6px;\n            transform-origin: 0% 80%;\n        }\n        #hamburger_bottom {\n            position: absolute;\n            bottom: -6px;\n            transform-origin: 20% 80%;\n        }\n\n        #fcc_foldout_menu label {\n            top: 38px;\n            left: 20px;\n            position: absolute;\n            font-size: 15px !important;\n        }\n        #fcc_foldout_menu select {\n            top: 61px;\n            left: 18px;\n            position: absolute;\n            font-family: Noto Sans, Arial, sans-serif !important;\n        }\n\n        .fcc_foldout_buttons {\n            position: absolute;\n            left: 20px;\n            height: 20px;\n            width: 110px;\n            padding: 10px !important;\n            display: block;\n            font-size: 15px !important;\n            line-height: 15px !important;\n            text-align: center;\n            border: none;\n            outline: none;\n            color: white;\n            background-color: rgba(128, 128, 128, 0.7);\n            border-radius: 4px;\n            box-sizing: content-box !important;\n            z-index: 0;\n            cursor: pointer;\n            box-shadow: 1px 1px 4px black;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n        #fcc_test_message-box-rerun-button {\n            top: 88px;\n            transition: all .3s;\n        }\n        #fcc_test_message-box-rerun-button:hover {\n            color: white;\n            background-color: black;\n        }\n        #fcc_test_button {\n            top: 138px;\n        }\n        .fcc_test_btn-default {\n            background-color: rgba(128, 128, 128, 0.7);\n        }\n        .fcc_test_btn-executing {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_test_btn-error {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .fcc_test_btn-success {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n\n        #fcc_legend_wrapper {\n            position: absolute;\n            top: 95px;\n            left: 160px;\n            height: 400px;\n            width: 125px;\n            vertical-align: top;\n            text-align: left !important;\n            font-size: 15px;\n        }\n        #fcc_legend_wrapper span {\n            height: 15px;\n            margin-top: 6px !important;\n            font-size: 12px  !important;\n        }\n        .key {\n            height: 15px;\n            width: 15px;\n            margin: 5px !important;\n            vertical-align: top;\n        }\n        .key:first-of-type {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .key:nth-of-type(2) {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        .key:nth-of-type(3) {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_legend {\n            position: relative;\n            display: inline-block;\n        }\n\n        #fcc_test_suite_indicator_wrapper {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n        }\n        #fcc_test_suite_indicator {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n            font-size: 12px !important;\n            background-color: rgba(255, 255, 204, 0.6);\n            padding: 3px 5px !important;\n            border-radius: 5px;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n    </style>\n    <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n    <div id=\"fcc_foldout_toggler\">\n        <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n        <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n        <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n    </div>\n    <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n    <div id=\"fcc_foldout_menu\">\n        <div id=\"fcc_foldout_menu_inner\">\n            <label for=\"test-suite-selector\">Select Test Suite: </label>\n            <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n                <option id=\"placeholder\" value=\"\">- - -</option>\n                <option value=\"tribute-page\">Tribute Page</option>\n                <option value=\"portfolio\">Personal Portfolio</option>\n                <option value=\"survey-form\">Survey Form</option>\n                <option value=\"product-landing-page\">Product Landing Page</option>\n                <option value=\"technical-docs-page\">Technical Documentation Page</option>\n                <option value=\"random-quote-machine\">Random Quote Machine</option>\n                <option value=\"markdown-previewer\">Markdown Previewer</option>\n                <option value=\"drum-machine\">Drum Machine</option>\n                <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n                <option value=\"javascript-calculator\">Javascript Calculator</option>\n                <option value=\"bar-chart\">D3: Bar Chart</option>\n                <option value=\"scatter-plot\">D3: Scatter Plot</option>\n                <option value=\"heat-map\">D3: Heat Map</option>\n                <option value=\"choropleth\">D3: Choropleth</option>\n            </select>\n            <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n                Run Tests\n            </button>\n            <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n                Tests\n            </button>\n            <div id=\"fcc_legend_wrapper\">\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n            </div>\n        </div>\n    </div>\n    <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n        <div class=\"fcc_test_message-box-content\">\n            <div class=\"fcc_test_message-box-header\">\n                <div class=\"title\">Unit tests</div>\n            </div>\n            <div class=\"fcc_test_message-box-body\">\n                <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n            </div>\n            <div class=\"fcc_test_message-box-footer\">\n                <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n            </div>\n        </div>\n    </div>";
+	var test_suite_skeleton = "\n    <style>\n        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n        /* TEST/MESSAGE CENTER CSS */\n\n        #fcc_test_message-box {\n            font-size: 20px !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n            position: fixed;\n            left: 0;\n            bottom: 0;\n            right: 0;\n            text-align: center;\n            background-color: rgba(0, 0, 0, 0.8);\n            transition: all .5s;\n            z-index: 100000;\n            overflow: auto;\n        }\n\n        .fcc_test_message-box-hidden {\n            visibility: hidden;\n            opacity: 0;\n            top: -300px;\n        }\n\n        .fcc_test_message-box-shown {\n            visibility: visible;\n            opacity: 1;\n            top: 0;\n        }\n\n        .fcc_test_message-box-content {\n            position: relative;\n            color: black;\n            background-color: white;\n            top: 10vh;\n            width: 80%;\n            margin: 0 auto !important;\n            text-align: initial;\n            border-radius: 10px;\n            display: flex;\n            flex-direction: column;\n        }\n        .fcc_test_message-box-header,\n        .fcc_test_message-box-footer{\n            position: relative;\n            flex: none;\n            box-sizing: border-box !important;\n            padding: 10px !important;\n        }\n        .fcc_test_message-box-header {\n            border-bottom: 1px solid rgb(229,229,229);\n            height: 60px;\n        }\n\n        .fcc_test_message-box-header .title {\n            float: left;\n            font-size: 30px !important;\n            line-height: 40px !important;\n            margin-left: 10px !important;\n        }\n\n        .fcc_test_message-box-body {\n            flex: 1;\n        }\n\n        .fcc_test_message-box-footer {\n            border-top: 1px solid rgb(229,229,229);\n            height: 70px;\n        }\n\n        .fcc_test_message-box-close-btn {\n            float: right;\n            color: black;\n            background-color: white;\n            border: 1px solid rgb(229,229,229);\n            border-radius: 4px;\n            padding: 10px 20px !important;\n            margin-bottom: 10px;\n            transition: all .3s;\n        }\n        .fcc_test_message-box-close-btn:hover {\n            color: white;\n            background-color: black;\n        }\n\n        #mocha {\n            margin: 10px !important;\n        }\n        #mocha .test pre {\n            background-color: rgb(245, 245, 245);\n        }\n        #mocha-stats {\n            position: absolute;\n        }\n        #mocha ul {\n            max-width: initial;\n            margin: initial !important;\n            text-align: initial;\n        }\n\n        div {\n            position: static;\n        }\n\n        /* FOLDOUT MENU CSS */\n\n        #fcc_foldout_menu {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 320px;\n            height: 195px;\n            border-bottom-right-radius: 5px;\n            background-color: rgba(255, 255, 204, 0.6);\n            z-index: 99997;\n            font-family: Noto Sans, arial, sans-serif !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            transition: .5s;\n        }\n        input[type=checkbox]:checked ~ #fcc_foldout_menu {\n            left: -320px;\n            transition: .5s ease-in-out;\n        }\n        #fcc_foldout_menu_inner {\n            position: relative;\n        }\n        input[type=checkbox] {\n            height: 24px;\n            width: 25px;\n            position: fixed;\n            top: 7px;\n            left: 20px;\n            border: 1px solid black;\n            opacity: 0;\n            cursor: pointer;\n            z-index: 99999;\n        }\n        #fcc_foldout_toggler {\n            position: absolute;\n            top: 20px;\n            left: 20px;\n            z-index: 99998;\n        }\n\n        .transform_top {\n            opacity: 1;\n            transform: rotate(45deg) translate(-2px, -1px);\n        }\n        .transform_middle {\n            opacity: 0;\n            transform: rotate(0deg) scale(0.2, 0.2);\n        }\n        .transform_bottom {\n            opacity: 1;\n            transform: rotate(-45deg) translate(-1px, -1px);\n        }\n\n        .fcc_hamburger {\n            position: relative;\n            width: 25px;\n            height: 3px;\n            display: block;\n            background: black;\n            border-radius: 5px;\n            content: '';\n            transform-origin: 4px 0px;\n            transition: transform 0.4s ease, opacity 0.55s ease;\n        }\n        #hamburger_top {\n            position: absolute;\n            top: -6px;\n            transform-origin: 0% 80%;\n        }\n        #hamburger_bottom {\n            position: absolute;\n            bottom: -6px;\n            transform-origin: 20% 80%;\n        }\n\n        #fcc_foldout_menu label {\n            top: 38px;\n            left: 20px;\n            position: absolute;\n            font-size: 15px !important;\n        }\n        #fcc_foldout_menu select {\n            top: 61px;\n            left: 18px;\n            position: absolute;\n            font-family: Noto Sans, Arial, sans-serif !important;\n        }\n\n        .fcc_foldout_buttons {\n            position: absolute;\n            left: 20px;\n            height: 20px;\n            width: 110px;\n            padding: 10px !important;\n            display: block;\n            font-size: 15px !important;\n            line-height: 15px !important;\n            text-align: center;\n            border: none;\n            outline: none;\n            color: white;\n            background-color: rgba(128, 128, 128, 0.7);\n            border-radius: 4px;\n            box-sizing: content-box !important;\n            z-index: 0;\n            cursor: pointer;\n            box-shadow: 1px 1px 4px black;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n        #fcc_test_message-box-rerun-button {\n            top: 88px;\n            transition: all .3s;\n        }\n        #fcc_test_message-box-rerun-button:hover {\n            color: white;\n            background-color: black;\n        }\n        #fcc_test_button {\n            top: 138px;\n        }\n        .fcc_test_btn-default {\n            background-color: rgba(128, 128, 128, 0.7);\n        }\n        .fcc_test_btn-executing {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_test_btn-error {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .fcc_test_btn-success {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n\n        #fcc_legend_wrapper {\n            position: absolute;\n            top: 95px;\n            left: 160px;\n            height: 400px;\n            width: 125px;\n            vertical-align: top;\n            text-align: left !important;\n            font-size: 15px;\n        }\n        #fcc_legend_wrapper span {\n            height: 15px;\n            margin-top: 6px !important;\n            font-size: 12px  !important;\n        }\n        .key {\n            height: 15px;\n            width: 15px;\n            margin: 5px !important;\n            vertical-align: top;\n        }\n        .key:first-of-type {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .key:nth-of-type(2) {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        .key:nth-of-type(3) {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_legend {\n            position: relative;\n            display: inline-block;\n        }\n\n        #fcc_test_suite_indicator_wrapper {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n        }\n        #fcc_test_suite_indicator {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n            font-size: 12px !important;\n            background-color: rgba(255, 255, 204, 0.6);\n            padding: 3px 5px !important;\n            border-radius: 5px;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n    </style>\n    <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n    <div id=\"fcc_foldout_toggler\">\n        <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n        <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n        <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n    </div>\n    <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n    <div id=\"fcc_foldout_menu\">\n        <div id=\"fcc_foldout_menu_inner\">\n            <label for=\"test-suite-selector\">Select Test Suite: </label>\n            <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n                <option id=\"placeholder\" value=\"\">- - -</option>\n                <option value=\"tribute-page\">Tribute Page</option>\n                <option value=\"portfolio\">Personal Portfolio</option>\n                <option value=\"survey-form\">Survey Form</option>\n                <option value=\"product-landing-page\">Product Landing Page</option>\n                <option value=\"technical-docs-page\">Technical Documentation Page</option>\n                <option value=\"random-quote-machine\">Random Quote Machine</option>\n                <option value=\"markdown-previewer\">Markdown Previewer</option>\n                <option value=\"drum-machine\">Drum Machine</option>\n                <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n                <option value=\"javascript-calculator\">Javascript Calculator</option>\n                <option value=\"bar-chart\">D3: Bar Chart</option>\n                <option value=\"scatter-plot\">D3: Scatter Plot</option>\n                <option value=\"heat-map\">D3: Heat Map</option>\n                <option value=\"choropleth\">D3: Choropleth</option>\n                <option value=\"tree-map\">D3: Tree Map</option>\n            </select>\n            <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n                Run Tests\n            </button>\n            <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n                Tests\n            </button>\n            <div id=\"fcc_legend_wrapper\">\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n            </div>\n        </div>\n    </div>\n    <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n        <div class=\"fcc_test_message-box-content\">\n            <div class=\"fcc_test_message-box-header\">\n                <div class=\"title\">Unit tests</div>\n            </div>\n            <div class=\"fcc_test_message-box-body\">\n                <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n            </div>\n            <div class=\"fcc_test_message-box-footer\">\n                <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n            </div>\n        </div>\n    </div>";
 
 	exports.default = test_suite_skeleton;
 
@@ -39970,6 +39977,182 @@ var FCC_Global =
 
 /***/ },
 /* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createTreeMapTests;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function createTreeMapTests() {
+
+	  describe('#TreeMapTests', function () {
+
+	    describe('#Content', function () {
+	      it('1. My tree map should have a title with a corresponding id="title"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
+	      });
+	      it('2. My tree map should have a description with a corresponding id="description"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id="description" ');
+	      });
+	      it('3. My tree map should have <rect> elements with a corresponding class="tile" that represent the data', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.tile').length, 0, 'Could not find elements with class="tile" ');
+	      });
+	      it('4. There should be at least 2 different fill colors used for the tiles', function () {
+	        var tiles = document.querySelectorAll('.tile');
+	        var uniqueColors = [];
+
+	        for (var i = 0; i < tiles.length; i++) {
+	          var tileColor = tiles[i].style.fill || tiles[i].getAttribute('fill');
+
+	          // if the current color isn't in the uniqueColors arr, push it 
+	          if (uniqueColors.indexOf(tileColor) === -1) {
+	            uniqueColors.push(tileColor);
+	          }
+	        }
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 2, 'There should be more than two fill colors used for the tiles');
+	      });
+	      it('5. Each tile should have the properties "data-name", "data-category",  and "data-value" containing their corresponding name, category, and value', function () {
+	        var tiles = document.querySelectorAll('.tile');
+	        FCC_Global.assert.isAbove(tiles.length, 0, "Could not find any elements with a class=\"tile\"");
+
+	        for (var i = 0; i < tiles.length; i++) {
+	          var tile = tiles[i];
+	          FCC_Global.assert.isNotNull(tile.getAttribute("data-name"), "Could not find property 'data-name' in tile");
+	          FCC_Global.assert.isNotNull(tile.getAttribute("data-category"), "Could not find property 'data-category' in tile");
+	          FCC_Global.assert.isNotNull(tile.getAttribute("data-value"), "Could not find property 'data-value' in tile");
+	        }
+	      });
+	      it('6.  The area of each tile should correspond to the data-value amount', function () {
+	        var tilesCollection = document.querySelectorAll('.tile');
+	        FCC_Global.assert.isAbove(tilesCollection.length, 0, "Could not find any elements with a class=\"tile\"");
+
+	        var tiles = [].slice.call(tilesCollection);
+
+	        // group tiles by category
+	        var tilesByCategory = {};
+	        for (var j = 1; j < tiles.length; j++) {
+	          var category = tiles[j].getAttribute('data-category');
+	          if (!tilesByCategory[category]) {
+	            tilesByCategory[category] = [];
+	          }
+	          tilesByCategory[category].push(tiles[j]);
+	        }
+
+	        tilesByCategory = Object.values(tilesByCategory);
+
+	        // sort each category array by value
+	        tilesByCategory.forEach(function (category) {
+	          category.sort(function (tile1, tile2) {
+	            var tile1Value = tile1.getAttribute('data-value');
+	            var tile2Value = tile2.getAttribute('data-value');
+	            return tile1Value - tile2Value;
+	          });
+	        });
+
+	        // outer loop loops through array category arrays
+	        for (var k = 0; k < tilesByCategory.length; k++) {
+	          if (tilesByCategory[k].length > 1) {
+	            // loops through each item in playfrom array
+	            for (var i = 0; i < tilesByCategory[k].length - 1; i++) {
+	              var firstTile = +tilesByCategory[k][i].getAttribute("data-value");
+	              var secondTile = +tilesByCategory[k][i + 1].getAttribute("data-value");
+
+	              FCC_Global.assert.isAtMost(firstTile, secondTile, "data-value property does not match tile area");
+	            }
+	          }
+	        }
+	      });
+	      it('7. My tree map should have a legend with corresponding id="legend"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend" ');
+	      });
+	      it('8. My legend should have legend items with corresponding class="legend-item"', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#legend .legend-item').length, 0, 'Could not find legend items with class="legend-item"');
+	      });
+	      it('9. The legend items should use at least 2 different fill colors', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend" ');
+
+	        var legendItems = document.querySelectorAll('#legend .legend-item');
+	        var uniqueColors = [];
+
+	        for (var i = 0; i < legendItems.length; i++) {
+	          var legendItemColors = legendItems[i].style.fill || legendItems[i].getAttribute('fill');
+
+	          // if the current color isn't in the uniqueColors arr, push it 
+	          if (uniqueColors.indexOf(legendItemColors) === -1) {
+	            uniqueColors.push(legendItemColors);
+	          }
+	        }
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 2, 'There should be at least two fill colors used for the legend ');
+	      });
+	      it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function () {
+
+	        var firstRequestTimeout = 100;
+	        var secondRequestTimeout = 2000;
+	        this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	        FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+
+	        var tooltip = document.getElementById('tooltip');
+
+	        var tiles = document.querySelectorAll('.tile');
+
+	        // place mouse on random bar and check if tooltip is visible
+	        var randomIndex = FCC_Global.getRandomIndex(tiles.length);
+	        var randomTile = tiles[randomIndex];
+	        randomTile.dispatchEvent(new MouseEvent('mouseover'));
+	        randomTile.dispatchEvent(new MouseEvent('mousemove'));
+	        randomTile.dispatchEvent(new MouseEvent('mouseenter'));
+
+	        // promise is used to prevent test from ending prematurely
+	        return new Promise(function (resolve, reject) {
+	          // timeout is used to accomodate tooltip transitions
+	          setTimeout(function (_) {
+	            if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	              reject(new Error('Tooltip should be visible when mouse is on an area'));
+	            }
+
+	            // remove mouse from cell and check if tooltip is hidden again
+	            randomTile.dispatchEvent(new MouseEvent('mouseout'));
+	            setTimeout(function (_) {
+	              if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
+	              } else {
+	                resolve();
+	              }
+	            }, secondRequestTimeout);
+	          }, firstRequestTimeout);
+	        });
+	      });
+	      it('11. My tooltip should have a "data-value" property that corresponds to the given value of the active tile.', function () {
+	        var tooltip = document.getElementById('tooltip');
+	        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-value"), 'Could not find property "data-value" in tooltip ');
+	        var tiles = document.querySelectorAll('.tile');
+	        var randomIndex = FCC_Global.getRandomIndex(tiles.length);
+
+	        var randomTile = tiles[randomIndex];
+
+	        randomTile.dispatchEvent(new MouseEvent('mouseover'));
+	        randomTile.dispatchEvent(new MouseEvent('mousemove'));
+	        randomTile.dispatchEvent(new MouseEvent('mouseenter'));
+	        FCC_Global.assert.equal(tooltip.getAttribute('data-value'), randomTile.getAttribute('data-value'), 'Tooltip\'s \"data-value\" property should be equal to the active tiles\'s \"data-value\" property');
+
+	        //clear out tooltip
+	        randomTile.dispatchEvent(new MouseEvent('mouseout'));
+	      });
+	    });
+	  });
+	}
+
+/***/ },
+/* 58 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40089,7 +40272,7 @@ var FCC_Global =
 	} // END createRandomQuoteMachineTests()
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
