@@ -42,7 +42,7 @@ export default function createScatterPlotTests() {
                 const MAX_X_VALUE = MAX_YEAR;
 
                 const dotsCollection = document.getElementsByClassName('dot');
-                //convert to array    
+                //convert to array
                 const dots = [].slice.call(dotsCollection);
                 FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
                 dots.forEach(dot => {
@@ -59,7 +59,7 @@ export default function createScatterPlotTests() {
 
             it('7. The data-xvalue and its corresponding dot should align with the corresponding point/value on the x-axis.', function() {
                 const dotsCollection = document.getElementsByClassName('dot');
-                //convert to array    
+                //convert to array
                 const dots = [].slice.call(dotsCollection);
                 FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
                 //sort the dots based on xvalue in ascending order
@@ -75,7 +75,7 @@ export default function createScatterPlotTests() {
 
             it('8. The data-yvalue and its corresponding dot should align with the corresponding point/value on the y-axis.', function() {
                 const dotsCollection = document.getElementsByClassName('dot');
-                //convert to array    
+                //convert to array
                 const dots = [].slice.call(dotsCollection);
                 FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
                 //sort the dots based on yvalue in ascending order
@@ -154,7 +154,7 @@ export default function createScatterPlotTests() {
 
                 // promise is used to prevent test from ending prematurely
                 return new Promise((resolve, reject) => {
-                    // timeout is used to accomodate tooltip transitions
+                    // timeout is used to accommodate tooltip transitions
                     setTimeout(_ => {
                         if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
                             reject('Tooltip should be visible when mouse is on a dot ');
