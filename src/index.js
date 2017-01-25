@@ -57,6 +57,10 @@ $(document).ready(function() {
                 if (typeof project_name === 'undefined' && project_titleCase === null) {
                     document.getElementById('placeholder').innerHTML = '- - -';
                     document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+                } else if (typeof project_name !== 'undefined') {
+                  document.getElementById('placeholder').innerHTML = `${localStorage.getItem('example_project')}`;
+                  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
+                  `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;;
                 } else {
                     document.getElementById('placeholder').innerHTML = project_titleCase;
                     document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
