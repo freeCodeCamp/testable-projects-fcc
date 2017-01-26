@@ -119,14 +119,14 @@ const test_suite_skeleton = `
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
             transition: .5s;
         }
-        input[type=checkbox]:checked ~ #fcc_foldout_menu {
+        #toggle:checked ~ #fcc_foldout_menu {
             left: -320px;
             transition: .5s ease-in-out;
         }
         #fcc_foldout_menu_inner {
             position: relative;
         }
-        input[type=checkbox] {
+        #toggle {
             height: 24px;
             width: 25px;
             position: fixed;
