@@ -111,7 +111,7 @@ const test_suite_skeleton = `
             top: 0;
             left: 0;
             width: 320px;
-            height: 195px;
+            height: 210px;
             border-bottom-right-radius: 5px;
             background-color: rgba(255, 255, 204, 0.6);
             z-index: 99997;
@@ -271,6 +271,15 @@ const test_suite_skeleton = `
             position: relative;
             display: inline-block;
         }
+        #fcc_report-bug {
+          position: absolute;
+          top: 185px;
+          left: 20px;
+          width: 110px;
+          padding: 0 10px !important;
+          font-size: 12px !important;
+          text-align: center;
+        }
 
         #fcc_test_suite_indicator_wrapper {
             position: fixed;
@@ -328,6 +337,7 @@ const test_suite_skeleton = `
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Passed</span>
                     <div class="fcc_legend key"></div><span class="fcc_legend">Tests Executing</span>
             </div>
+            <span id="fcc_report-bug"><a href="https://github.com/freeCodeCamp/testable-projects-fcc/issues/new" target="_blank">Report Bug</a></span>
         </div>
     </div>
     <div id="fcc_test_message-box" class="fcc_test_message-box-hidden" onclick="FCC_Global.FCCclickOutsideToCloseModal(event)">
