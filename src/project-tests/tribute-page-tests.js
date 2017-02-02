@@ -84,11 +84,11 @@ export default function createTributePageTests() {
                     imgParent = document.getElementById(getParentElement('image')),
                     imgWidth = getPropValue(img, 'width'),
                     parentWidth = getPropValue(imgParent, 'width');
+                // difference in width between img and parent should be equal to the sum of left margin & right margin
                 const difference = parseFloat(parentWidth) - parseFloat(imgWidth);
-                // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value. 
-                // this test might only work on full page view!
+                // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value.
                 const totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
-                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 5, 'Image is not centered');
+                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 10, 'Image is not centered');
             });
         }); // END #Layout
 

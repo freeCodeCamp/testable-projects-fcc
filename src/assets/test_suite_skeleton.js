@@ -12,7 +12,7 @@ const test_suite_skeleton = `
             bottom: 0;
             right: 0;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.8) !important;
             transition: all .5s;
             z-index: 100000;
             overflow: auto;
@@ -32,13 +32,13 @@ const test_suite_skeleton = `
 
         .fcc_test_message-box-content {
             position: relative;
-            color: black;
-            background-color: white;
+            color: black !important;
+            background-color: white !important;
             top: 10vh;
             width: 80%;
             margin: 0 auto !important;
             text-align: initial;
-            border-radius: 10px;
+            border-radius: 10px !important;
             display: flex;
             flex-direction: column;
         }
@@ -89,7 +89,7 @@ const test_suite_skeleton = `
             margin: 10px !important;
         }
         #mocha .test pre {
-            background-color: rgb(245, 245, 245);
+            background-color: rgb(245, 245, 245) !important;
         }
         #mocha-stats {
             position: absolute;
@@ -98,6 +98,10 @@ const test_suite_skeleton = `
             max-width: initial;
             margin: initial !important;
             text-align: initial;
+        }
+        #mocha * {
+          font-family: Noto Sans, arial, sans-serif !important;
+          border: none !important;
         }
 
         div {
@@ -112,11 +116,12 @@ const test_suite_skeleton = `
             left: 0;
             width: 320px;
             height: 210px;
-            border-bottom-right-radius: 5px;
-            background-color: rgba(255, 255, 204, 0.6);
+            border-radius: 0 !important;
+            border-bottom-right-radius: 5px !important;
+            background-color: rgba(255, 255, 204, 0.6) !important;
             z-index: 99997;
             font-family: Noto Sans, arial, sans-serif !important;
-            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
+            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;
             transition: .5s;
         }
         #toggle:checked ~ #fcc_foldout_menu {
@@ -132,7 +137,6 @@ const test_suite_skeleton = `
             position: fixed;
             top: 7px;
             left: 20px;
-            border: 1px solid black;
             opacity: 0;
             cursor: pointer;
             z-index: 99999;
@@ -162,9 +166,8 @@ const test_suite_skeleton = `
             width: 25px;
             height: 3px;
             display: block;
-            background: black;
-            border-radius: 5px;
-            content: '';
+            background: black !important;
+            border-radius: 5px !important;
             transform-origin: 4px 0px;
             transition: transform 0.4s ease, opacity 0.55s ease;
         }
@@ -184,11 +187,13 @@ const test_suite_skeleton = `
             left: 20px;
             position: absolute;
             font-size: 15px !important;
+            color: black !important;
         }
         #fcc_foldout_menu select {
             top: 61px;
             left: 18px;
             position: absolute;
+            font-size: 12px !important;
             font-family: Noto Sans, Arial, sans-serif !important;
         }
 
@@ -202,8 +207,8 @@ const test_suite_skeleton = `
             font-size: 15px !important;
             line-height: 15px !important;
             text-align: center;
-            border: none;
-            outline: none;
+            border: none !important;
+            outline: none !important;
             color: white;
             background-color: rgba(128, 128, 128, 0.7);
             border-radius: 4px;
@@ -214,7 +219,7 @@ const test_suite_skeleton = `
             font-family: Noto Sans, arial, sans-serif !important;
         }
         #fcc_test_message-box-rerun-button {
-            top: 88px;
+            top: 90px;
             transition: all .3s;
         }
         #fcc_test_message-box-rerun-button:hover {
@@ -222,7 +227,7 @@ const test_suite_skeleton = `
             background-color: black;
         }
         #fcc_test_button {
-            top: 138px;
+            top: 140px;
         }
         .fcc_test_btn-default {
             background-color: rgba(128, 128, 128, 0.7);
@@ -236,27 +241,39 @@ const test_suite_skeleton = `
         .fcc_test_btn-success {
             background-color: rgba(81, 211, 81, 0.9);
         }
+        #fcc_report-bug {
+          position: absolute;
+          top: 186px;
+          left: 20px;
+          width: 110px;
+          padding: 0 10px !important;
+          font-size: 12px !important;
+          text-align: center;
+        }
 
         #fcc_legend_wrapper {
             position: absolute;
             top: 95px;
             left: 160px;
-            height: 400px;
             width: 125px;
             vertical-align: top;
             text-align: left !important;
-            font-size: 15px;
+            font-size: 15px !important;
+            background: none !important;
         }
         #fcc_legend_wrapper span {
             height: 15px;
             margin-top: 6px !important;
             font-size: 12px  !important;
+            color: black !important;
+            background: none !important;
         }
         .key {
             height: 15px;
             width: 15px;
             margin: 5px !important;
             vertical-align: top;
+            border-radius: 0 !important;
         }
         .key:first-of-type {
             background-color: rgba(255, 0, 0, 0.7);
@@ -271,15 +288,6 @@ const test_suite_skeleton = `
             position: relative;
             display: inline-block;
         }
-        #fcc_report-bug {
-          position: absolute;
-          top: 185px;
-          left: 20px;
-          width: 110px;
-          padding: 0 10px !important;
-          font-size: 12px !important;
-          text-align: center;
-        }
 
         #fcc_test_suite_indicator_wrapper {
             position: fixed;
@@ -291,12 +299,14 @@ const test_suite_skeleton = `
             top: 15px;
             right: 20px;
             font-size: 12px !important;
-            background-color: rgba(255, 255, 204, 0.6);
+            background-color: rgba(255, 255, 204, 0.6) !important;
+            color: black !important;
             padding: 3px 5px !important;
-            border-radius: 5px;
-            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
+            border-radius: 5px !important;
+            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;
             font-family: Noto Sans, arial, sans-serif !important;
         }
+
     </style>
     <div id="fcc_test_suite_indicator_wrapper"></div>
     <div id="fcc_foldout_toggler">
