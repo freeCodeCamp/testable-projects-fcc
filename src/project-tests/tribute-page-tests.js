@@ -1,9 +1,6 @@
-export default function createTributePageTests() {
+import $ from "jquery";
 
-    function getParentElement(domNode) {
-        let parent = document.getElementById(domNode).parentElement.id;
-        return parent;
-    }
+export default function createTributePageTests() {
 
     function getPropValue(el, prop) {
         return window.getComputedStyle(el).getPropertyValue(prop);
@@ -36,18 +33,16 @@ export default function createTributePageTests() {
                 'id="image".',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById("image"));
-                    const imageParent = getParentElement('image');
-                    FCC_Global.assert.strictEqual('img-div', imageParent, 'Element is not a child of id="img-div".');
+                    FCC_Global.assert.strictEqual($('#img-div').find('#image').length, 1, 'Element is not a child of id="img-div" ');
                 });
 
             it('5. Within the "img-div" element, I should see an element with a corresponding id="img-caption" ' +
                 'that contains textual content describing the image shown in "img-div".',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById("img-caption"));
-                    const captionParent = getParentElement('img-caption');
-                    FCC_Global.assert.strictEqual('img-div', captionParent, "Element is not a child of id='img-div'");
+                    FCC_Global.assert.strictEqual($('#img-div').find('#img-caption').length, 1, 'Element is not a child of id="img-div" ');
                     const captionContents = document.getElementById('img-caption').innerText;
-                    FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content");
+                    FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content ");
                 });
 
             it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' +
@@ -55,7 +50,7 @@ export default function createTributePageTests() {
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
                     const infoContents = document.getElementById('tribute-info').innerText;
-                    FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content");
+                    FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content ");
                 });
 
             it('7. I should see an <a> element with a corresponding id="tribute-link", which links to an outside site ' +
@@ -63,9 +58,9 @@ export default function createTributePageTests() {
                 function() {
                     const tributeLink = document.getElementById('tribute-link');
                     FCC_Global.assert.isNotNull(tributeLink);
-                    FCC_Global.assert(tributeLink.hasAttribute('href'), '<a> element with id="tribute-link" must contain an href attribute');
-                    FCC_Global.assert(tributeLink.hasAttribute('target'), '<a> element with id="tribute-link" must contain a target attribute');
-                    FCC_Global.assert.strictEqual(tributeLink.getAttribute('target'), '_blank', 'The target attribute should be set to "_blank", in order for the link to open in a new tab.');
+                    FCC_Global.assert(tributeLink.hasAttribute('href'), '<a> element with id="tribute-link" must contain an href attribute ');
+                    FCC_Global.assert(tributeLink.hasAttribute('target'), '<a> element with id="tribute-link" must contain a target attribute ');
+                    FCC_Global.assert.strictEqual(tributeLink.getAttribute('target'), '_blank', 'The target attribute should be set to "_blank", in order for the link to open in a new tab ');
                 });
         }); // END #Content
 
@@ -76,19 +71,19 @@ export default function createTributePageTests() {
                 function() {
                     const img = document.getElementById('image');
                     const maxWidthValue = getPropValue(img, 'max-width');
-                    FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property');
+                    FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property ');
                 });
 
             it('2. The <img> element should be centered within its parent element.', function() {
                 const img = document.getElementById('image'),
-                    imgParent = document.getElementById(getParentElement('image')),
-                    imgWidth = getPropValue(img, 'width'),
-                    parentWidth = getPropValue(imgParent, 'width');
+                    imgParent = document.getElementById('image').parentElement,
+                    imgWidth = img.getBoundingClientRect().width,
+                    parentWidth = imgParent.getBoundingClientRect().width;
                 // difference in width between img and parent should be equal to the sum of left margin & right margin
                 const difference = parseFloat(parentWidth) - parseFloat(imgWidth);
                 // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value.
                 const totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
-                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 10, 'Image is not centered');
+                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 10, 'Image is not centered ');
             });
         }); // END #Layout
 
