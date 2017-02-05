@@ -19189,9 +19189,9 @@ var FCC_Global =
 	                FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
 	                FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. <pre><code>...</code></pre> '); // codeblock
 	                FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
-	                FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing an <h1> '); // blockquote
-	                FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <h1> '); // image
-	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing an <h1> '); // bold text
+	                FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing a <blockquote> '); // blockquote
+	                FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <image> '); // image
+	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing <strong> text '); // bold text
 	            });
 
 	            it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function () {
