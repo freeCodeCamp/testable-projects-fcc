@@ -46,7 +46,7 @@ export default function createTributePageTests() {
                 });
 
             it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' +
-                'describing the subject of the tribute page. HINT: You must give your <a> element an attribute of target and set it to "_blank" in order for your link to open in a new tab.',
+                'describing the subject of the tribute page.',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
                     const infoContents = document.getElementById('tribute-info').innerText;

@@ -2,12 +2,12 @@
 
 ## If you have not contributed to this repo before:
 - If you find a bug in a test suite or in an individual test, please open an issue.
-- If the bug can be confirmed, we will let you know, and if you would like to begin working on fixing the bug, please follow the guidlines below.
+- If the bug can be confirmed, we will let you know, and if you would like to begin working on fixing the bug, please follow the guidelines below.
 
 ### In general:
 - Fork, clone locally, install dependencies.
 - Please make all PRs against a branch you have created specifically to address the issue you are fixing.
-- In order to keep things in scope for this bundle, we have defined a global library object called `FCC_Global`; Chai's `assert` is being exported and can be accesed throgh this object, as can all of our Utility Functions as defined in `index.js`, e.g.:
+- In order to keep things in scope for this bundle, we have defined a global library object called `FCC_Global`; Chai's `assert` is being exported and can be accessed through this object, as can all of our Utility Functions as defined in `index.js`, e.g.:
 
 ```javascript
 `FCC_Global.assert.isAtLeast(awesomeness.length, 10000000, 'your aweseomness is too short');`

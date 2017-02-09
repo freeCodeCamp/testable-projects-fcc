@@ -19944,7 +19944,7 @@ var FCC_Global =
 	                FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content ");
 	            });
 
-	            it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' + 'describing the subject of the tribute page. HINT: You must give your <a> element an attribute of target and set it to "_blank" in order for your link to open in a new tab.', function () {
+	            it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' + 'describing the subject of the tribute page.', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
 	                var infoContents = document.getElementById('tribute-info').innerText;
 	                FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content ");
