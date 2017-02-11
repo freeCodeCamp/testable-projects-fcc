@@ -24,14 +24,18 @@ OR
 - We are using Chai's `assert` library.
 - Wherever possible, try to avoid using jQuery in your tests, if there is a simple and easy JS equivalent that should take precedence.
 - If you do use jQuery as a fallback, you must import `jQuery` into your test suite file before exporting your test function.
+- **BREAKING CHANGES:** 
+    - Please test all of your changes against FCC's [existing example project](http://codepen.io/collection/npZPmR) for whatever project you are working on. If the changes you make cause the example project to fail any tests, this is considered a breaking change, as it could cause other Campers' past solutions to fail. This should, in general, be avoided once freeCodeCamp is no longer in beta, as we do not want to break too many past projects. If you feel that this is a change that is ABSOLUTELY NECESSARY, please discuss this with @no-stack-dub-sack or @QuincyLarson. 
+		- If the new freeCodeCamp curriculum is still in beta and you make a breaking change, but please be sure to include in your PR a forked version of the official project with updated code that passes all new and existing tests.  Advise one of the above people so that the official project can be changed accordingly if your changes are accepted. 
 - Each exported test suite must be imported into `index.js`, and a corresponding variable name and call to the imported function must be added to the `switch` in `index.js`. Additionally, for the test suite to appear as an option in the drop-down menu, a new `<option>` tag must be added to the `<select>` in the HTML found in `test_suite_skeleton.js` (which starts somewhere around line 320). The `value` attribute of the `<option>` must be the same as the variable added to the switch statement. 
 - Please follow naming conventions for naming files and functions.
 
 ### To test your code locally:
-- Import the project you are creating the test suite for into the `local_test` directory:
+- Import the code from the [official FCC example project](http://codepen.io/collection/npZPmR) that you are creating/editing the test suite for into the `local_test` directory:
 	- Create folders for your code, i.e. JS, CSS, etc. (NOTE: even if your project does not have JS, you **MUST** create a folder called **JS** - this is where bundle.js will be created).
 	- Include the JS & CSS (if using SCSS or LESS, compile down to CSS first) in the folders you created in `local_test/`.
 	- Modify index.html to point to your files and include any other external resources you need (e.g. React, jQuery, D3, FontAwesome, etc.).
+	- **NOTE:** Before you push your changes, please be sure to return index.html to its original state.
 - Run `npm start` to start watching your files for changes.
 - Then, in another terminal tab navigate into the `local_test` directory and run `live-server`.
 - Now your changes to the test files will be automatically bundled by webpack and served in the project that is running locally.
