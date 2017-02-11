@@ -118,7 +118,7 @@ const test_suite_skeleton = `
             height: 210px;
             border-radius: 0 !important;
             border-bottom-right-radius: 5px !important;
-            background-color: rgba(255, 255, 204, 0.6) !important;
+            background-color: rgba(255, 255, 204, 0.9) !important;
             z-index: 99997;
             font-family: Noto Sans, arial, sans-serif !important;
             box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;
@@ -299,7 +299,7 @@ const test_suite_skeleton = `
             top: 15px;
             right: 20px;
             font-size: 12px !important;
-            background-color: rgba(255, 255, 204, 0.6) !important;
+            background-color: rgba(255, 255, 204, 0.9) !important;
             color: black !important;
             padding: 3px 5px !important;
             border-radius: 5px !important;
