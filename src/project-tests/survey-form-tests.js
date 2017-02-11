@@ -4,7 +4,7 @@ export default function createSurveyFormTests() {
     /**
     Returns the number of elements that are selectable
     **/
-    function getNumActive(elems) {
+    function getNumOptions(elems) {
         var numActive = 0;
         for (var i = 0; i < elems.length; i++) {
             var el = elems[i];
@@ -90,30 +90,23 @@ export default function createSurveyFormTests() {
                 FCC_Global.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have a value of some text ');
             });
 
-            it('11. I can select an option from a dropdown.', function() {
-                var selects = document.getElementsByTagName('select');
-                // need to check to make sure there is more than one <select>, as our default code contains a <select> as well
-                // if we are detecting only one, it is ours
-                FCC_Global.assert.isAtLeast(selects.length, 2, "There should be at least 1 select field ");
-                for (var i = 0; i < selects.length; i++) {
-                    var select = selects[i];
-                    FCC_Global.assert.isAtLeast(getNumActive(select.options), 1, "Select should contain at least 1 selectable option ");
-                }
+            it('11. I can select an option from a dropdown that has corresponding id="dropdown".', function() {
+                var dropdown = document.getElementById('dropdown');
+                FCC_Global.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
+                FCC_Global.assert.isAtLeast(getNumOptions(dropdown.options), 2, "Select should contain at least 2 selectable options ");
             })
 
             it('12. I can select a field from a series of radio buttons.', function() {
                 var radioButtons = $(":radio");
-                FCC_Global.assert.isAtLeast(radioButtons.length, 1, "There should be at least 1 radio button ");
-                FCC_Global.assert.isAtLeast(getNumActive(radioButtons), 1, "Select should contain at least 1 active radio button ");
+                FCC_Global.assert.isAtLeast(radioButtons.length, 2, "There should be at least 2 radio buttons ");
             });
 
             it('13. I can select several fields from a series of checkboxes.', function() {
                 var checkboxes = $(":checkbox");
-                // need to check to make sure there is more than one checkbox, as our default code contains a checkbox as well
-                // if we are detecting only one, it is ours
-                FCC_Global.assert.isAtLeast(checkboxes.length, 2, "There should be at least 1 checkbox ");
-                FCC_Global.assert.isAtLeast(getNumActive(checkboxes), 1, "There should be at least 1 active checkbox ");
-            });
+                // need to make sure there are more than two checkboxes, as our default code contains a checkbox as well
+                // if we are detecting only two, one of them is ours
+                FCC_Global.assert.isAtLeast(checkboxes.length, 3, "There should be at least 2 checkboxes ");
+            });  
 
             it('14. I am presented with a <textarea> at the end for additional comments.', function() {
                 var textareas = document.getElementsByTagName('textarea');
