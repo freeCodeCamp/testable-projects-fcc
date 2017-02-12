@@ -40217,7 +40217,7 @@ var FCC_Global =
 	            var gapExpectedWidth = (window.innerWidth - centeredElementWidth) / 2;
 	            var delta = gapExpectedWidth - actualSideGap;
 	            console.log(gapExpectedWidth, actualSideGap, delta);
-	            return delta < 3 && delta > -3;
+	            return delta < 8.6 && delta > -3;
 	        }
 
 	        beforeEach(function () {});
@@ -40307,7 +40307,7 @@ var FCC_Global =
 
 	        describe("#Layout", function () {
 
-	            it('1. The #quote-box wrapper element should be horizontally centered.', function () {
+	            it('1. The #quote-box wrapper element should be horizontally centered. Please reset your browser\'s zoom level to 100%.', function () {
 	                FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
 	            });
 	        }); // END #Layout
