@@ -86,7 +86,7 @@ export default function createTributePageTests() {
                 const difference = parseFloat(parentWidth) - parseFloat(imgWidth);
                 // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value.
                 const totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
-                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 10, 'Image is not centered ');
+                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 11, 'Image is not centered ');
             });
         }); // END #Layout
 
