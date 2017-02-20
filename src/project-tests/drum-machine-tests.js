@@ -44,7 +44,7 @@ export default function createDrumMachineTests() {
                     // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
                     let drumPadInnerText = [];
                     drumPads.forEach(pad => {
-                        drumPadInnerText.push(pad.innerText);
+                        drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
                         FCC_Global.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
                     });
                     FCC_Global.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
@@ -65,7 +65,7 @@ export default function createDrumMachineTests() {
                         FCC_Global.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
                         FCC_Global.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
                         FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
-                        FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText, 'Each <audio> element should have an id equal ' +
+                        FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal ' +
                             'to its parent .drum-pad\'s inner-text ');
                     });
                 });
@@ -100,7 +100,7 @@ export default function createDrumMachineTests() {
                 });
 
             it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' +
-                'the inner text of the .display element (each string must be unique).',
+                'the inner text of the #display element (each string must be unique).',
                 function() {
                     this.timeout(900);
                     let displayText = [];
@@ -114,8 +114,8 @@ export default function createDrumMachineTests() {
                             if (displayText.length === 1) {
                                 resolve();
                             } else {
-                                reject("Each time a drum pad is triggered, a unique string should be displayed in the " +
-                                    "element with the id 'display' ");
+                                reject(new Error("Each time a drum pad is triggered, a unique string should be displayed in the " +
+                                    "element with the id 'display' "));
                             }
                         }, 800);
                     });

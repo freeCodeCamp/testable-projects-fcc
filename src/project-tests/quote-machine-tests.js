@@ -49,7 +49,7 @@ export default function createRandomQuoteMachineTests() {
                         setTimeout(_ => {
                             const text = document.getElementById("text");
                             if (text.innerText.length > 0) resolve();
-                            else reject("There is no initial quote displayed ");
+                            else reject(new Error("There is no initial quote displayed "));
                         }, requestTimeout);
                     });
                 });
@@ -60,7 +60,7 @@ export default function createRandomQuoteMachineTests() {
                         setTimeout(_ => {
                             const author = document.getElementById("author");
                             if (author.innerText.length > 0) resolve();
-                            else reject("There is no initial author displayed ");
+                            else reject(new Error("There is no initial author displayed "));
                         }, requestTimeout);
                     });
                 });
