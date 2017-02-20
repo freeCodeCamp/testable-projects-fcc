@@ -19424,6 +19424,7 @@ var FCC_Global =
 	    var _sesh_plus = "session-increment";
 	    var _reset = "reset";
 	    var _start_stop = "start_stop";
+	    var orignalTimerLabel = document.getElementById('timer-label').innerText;
 
 	    function getElements(elementIds) {
 	        return elementIds.map(function (elementId) {
@@ -19464,7 +19465,11 @@ var FCC_Global =
 	        });
 
 	        // configuration of the observer:
-	        var config = { childList: true, characterData: true, subtree: true };
+	        var config = {
+	            childList: true,
+	            characterData: true,
+	            subtree: true
+	        };
 
 	        // pass in the target node, as well as the observer options
 	        observer.observe(target, config);
@@ -19494,8 +19499,17 @@ var FCC_Global =
 
 	    // Test suite
 	    describe("#Pomodoro Clock tests", function () {
+	        before(function () {
+	            clickButtonsById([_start_stop]);
+	        });
+
 	        beforeEach(function () {
 	            resetTimer();
+	            // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
+	            hackGlobalTimerFunctions();
+	        });
+
+	        afterEach(function () {
 	            restoreGlobalTimerFunctions();
 	        });
 
@@ -19541,10 +19555,6 @@ var FCC_Global =
 	                FCC_Global.assert.isAbove(timer_label.innerText.length, 0, "Element does not contain a string");
 	            });
 
-	            /*For now just confirm that element exists. Will test contents when timer is running later.
-	            If we force an initial value of 25:00, campers will then have to make the session length
-	            buttons also update the initial value to reflect the change, which is complicated and not
-	            necessarily needed. No time needs to be shown here until the timer is actually running.*/
 	            it("8. I can see an element with corresponding id=\"time-left\".", function () {
 	                FCC_Global.assert.isNotNull(document.getElementById("time-left"));
 	            });
@@ -19558,30 +19568,42 @@ var FCC_Global =
 	            });
 
 	            it('11. When I click the element with the id of "reset", any running timer should be stopped, the value within id="break-length" should return to 5, the value within id="session-length" should return to 25, and the element with id="time-left" should reset to it\'s default state.', function () {
-	                this.timeout(4000);
+	                this.timeout(5000);
 	                // decrement session and break length
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                clickButtonsById(Array(60).fill(_break_min));
 	                // start the pomodoro
 	                clickButtonsById([_start_stop]);
 	                return new Promise(function (resolve, reject) {
-	                    // wait 1.5 seconds then reset and see if every default value is reset
-	                    setTimeout(function (_) {
-	                        // Reset the pomodoro
-	                        resetTimer();
-	                        var secondsAfterReset = getSeconds(document.getElementById("time-left").innerHTML);
-	                        // wait another 1.5 seconds to be sure value has not changed (pomodoro is stopped)
-	                        setTimeout(function (_) {
-	                            var breakLengthAfterResetIsCorrect = document.getElementById("break-length").innerHTML == 5;
-	                            var sessionLengthAfterResetIsCorrect = document.getElementById("session-length").innerHTML == 25;
-	                            if (!breakLengthAfterResetIsCorrect || !sessionLengthAfterResetIsCorrect) {
-	                                reject("Default values for break length and session length were not properly reset");
-	                                return;
-	                            }
-	                            var secondsAfterAWhile = getSeconds(document.getElementById("time-left").innerHTML);
-	                            if (secondsAfterReset === secondsAfterAWhile) resolve();else reject("Pomodoro has paused but time continued elapsing");
-	                        }, 1500);
-	                    }, 1500);
+	                    var timeLeft = document.getElementById("time-left");
+	                    var observer = observeElement("time-left", function (modType) {
+	                        if (timeLeft.innerHTML === "00:00") {
+	                            // once timer has reached zero wait 1.5 seconds then reset and see if every default value is reset
+	                            setTimeout(function (_) {
+	                                resetTimer();
+	                                var timerLabelAfterReset = document.getElementById('timer-label').innerText;
+	                                var secondsAfterReset = getSeconds(document.getElementById("time-left").innerHTML);
+
+	                                // see if timer label changed back
+	                                if (orignalTimerLabel !== timerLabelAfterReset) {
+	                                    reject(new Error("Default timer label was not properly reset"));
+	                                }
+
+	                                // wait another 1.5 seconds to be sure value has not changed (pomodoro is stopped)
+	                                setTimeout(function (_) {
+	                                    var breakLengthAfterResetIsCorrect = document.getElementById("break-length").innerHTML == 5;
+	                                    var sessionLengthAfterResetIsCorrect = document.getElementById("session-length").innerHTML == 25;
+	                                    if (!breakLengthAfterResetIsCorrect || !sessionLengthAfterResetIsCorrect) {
+	                                        reject(new Error("Default values for break length and session length were not properly reset"));
+	                                        return;
+	                                    }
+	                                    var secondsAfterAWhile = getSeconds(document.getElementById("time-left").innerHTML);
+	                                    if (secondsAfterReset === secondsAfterAWhile) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
+	                                }, 1500);
+	                            }, 1500);
+	                            observer.disconnect();
+	                        }
+	                    });
 	                });
 	            });
 
@@ -19647,7 +19669,7 @@ var FCC_Global =
 	                    // wait 1.5 seconds then see if displayed time has changed (decremented)
 	                    setTimeout(function (_) {
 	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
-	                        if (secondsAfter > secondsBefore) resolve();else reject("Pomodoro has started but time displayed is not changing");
+	                        if (secondsAfter > secondsBefore) resolve();else reject(new Error("Pomodoro has started but time displayed is not changing"));
 	                    }, 1500);
 	                });
 	            });
@@ -19661,7 +19683,7 @@ var FCC_Global =
 	                    setTimeout(function (_) {
 	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
 	                        if (secondsAfter === secondsBefore) {
-	                            reject("Pomodoro has started but time displayed is not changing");
+	                            reject(new Error("Pomodoro has started but time displayed is not changing"));
 	                            return;
 	                        }
 	                        // Pause the pomodoro
@@ -19669,7 +19691,7 @@ var FCC_Global =
 	                        // wait another 1.5 seconds to be sure value has not changed
 	                        setTimeout(function (_) {
 	                            var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
-	                            if (secondsAfter === secondsAfterPause) resolve();else reject("Pomodoro has paused but time continued elapsing");
+	                            if (secondsAfter === secondsAfterPause) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
 	                        }, 1500);
 	                    }, 1500);
 	                });
@@ -19684,7 +19706,7 @@ var FCC_Global =
 	                    setTimeout(function (_) {
 	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
 	                        if (secondsAfter === secondsBefore) {
-	                            reject("Pomodoro has started but time displayed is not changing");
+	                            reject(new Error("Pomodoro has started but time displayed is not changing"));
 	                            return;
 	                        }
 	                        // Pause the pomodoro
@@ -19693,7 +19715,7 @@ var FCC_Global =
 	                        setTimeout(function (_) {
 	                            var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
 	                            if (secondsAfter !== secondsAfterPause) {
-	                                reject("Pomodoro has paused but time continued elapsing");
+	                                reject(new Error("Pomodoro has paused but time continued elapsing"));
 	                                return;
 	                            }
 	                            // Resume the pomodoro
@@ -19701,7 +19723,7 @@ var FCC_Global =
 	                            // wait another 1.5 seconds to be sure time is decrementing again
 	                            setTimeout(function (_) {
 	                                var secondsAfterResume = getSeconds(document.getElementById("time-left").innerHTML);
-	                                if (secondsAfterPause > secondsAfterResume) resolve();else reject("Pomodoro has resumed but displayed time is not changing");
+	                                if (secondsAfterPause > secondsAfterResume) resolve();else reject(new Error("Pomodoro has resumed but displayed time is not changing"));
 	                            }, 1500);
 	                        }, 1500);
 	                    }, 1500);
@@ -19709,49 +19731,36 @@ var FCC_Global =
 	            });
 	            it('22. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a break has begun.', function () {
 	                this.timeout(5000);
-	                // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-	                // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
-	                // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
-	                hackGlobalTimerFunctions();
 	                // we decrement session time to the minimum (1 minute)
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                // start the pomodoro
 	                clickButtonsById([_start_stop]);
 	                return new Promise(function (resolve, reject) {
-	                    // 2 approaches here, we can either
-	                    // - watch for modifications on the time label and wait till it reaches zero, then we wait some more and then check the "Break" label.
 	                    var timeLeft = document.getElementById("time-left");
+	                    var breakLength = document.getElementById("break-length");
 	                    // Save label to test that it has changed below
 	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
 	                    var shouldBeInBreak = false;
 	                    var observer = observeElement("time-left", function (modType) {
 	                        if (timeLeft.innerHTML === "00:00") {
-	                            //console.log("Timer reaches Zero !!!");
 	                            shouldBeInBreak = true;
 	                        } else {
-	                            if (shouldBeInBreak) {
+	                            if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	                                reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	                            } else if (shouldBeInBreak) {
 	                                if (document.getElementById("timer-label").innerHTML !== sessionLabel) {
 	                                    resolve();
 	                                } else {
-	                                    reject("Timer has reached zero but didn't switch to Break time");
+	                                    reject(new Error("Timer has reached zero but didn't switch to Break time"));
 	                                }
 	                                observer.disconnect();
 	                            }
 	                        }
 	                    });
-	                    // - Or we can wait approximately the time it will take to reach zero (60*30ms + security margin) and then check the "Break" label.
-	                    /*savedSetTimeout( _ => {
-	                      if(document.getElementById("current-timer").innerHTML === "Break"){
-	                        resolve();
-	                      } else {
-	                        reject("Timer has reached zero but didn't switch to Break time");
-	                      }
-	                    }, 3000);*/
 	                });
 	            });
 	            it('23. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), a new break countdown should begin, counting down from the value currently displayed in the id="break-length" element.', function () {
 	                this.timeout(5000);
-	                hackGlobalTimerFunctions();
 	                // we decrement session time to the minimum (1 minute)
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                // start the pomodoro
@@ -19763,19 +19772,20 @@ var FCC_Global =
 	                    // within observer function that label has changed to know when in break
 	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
 	                    var observer = observeElement("time-left", function (modType) {
+	                        var currentTimer = document.getElementById("timer-label");
+	                        var breakLength = document.getElementById("break-length");
 	                        if (timeLeft.innerHTML === "00:00") {
-	                            //console.log("Timer reaches Zero !!!");
 	                            shouldBeInBreak = true;
 	                        } else {
-	                            if (shouldBeInBreak) {
-	                                var currentTimer = document.getElementById("timer-label");
-	                                var breakLength = document.getElementById("break-length");
+	                            if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	                                reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	                            } else if (shouldBeInBreak) {
 	                                if (currentTimer.innerHTML !== sessionLabel) {
 	                                    if (+getMinutes(timeLeft.innerHTML) === +breakLength.innerHTML) resolve();else {
-	                                        reject("Timer has switched to Break time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + breakLength.innerHTML);
+	                                        reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + breakLength.innerHTML));
 	                                    }
 	                                } else {
-	                                    reject("Timer has reached zero but didn't switch to Break time");
+	                                    reject(new Error("Timer has reached zero but didn't switch to Break time"));
 	                                }
 	                                observer.disconnect();
 	                            }
@@ -19785,7 +19795,6 @@ var FCC_Global =
 	            });
 	            it('24. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a session has begun.', function () {
 	                this.timeout(5000);
-	                hackGlobalTimerFunctions();
 	                // we decrement session length and break length to the minimum (1 minute)
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                clickButtonsById(Array(60).fill(_break_min));
@@ -19798,7 +19807,6 @@ var FCC_Global =
 	                    var breakLabel = void 0;
 	                    var observer = observeElement("time-left", function (modType) {
 	                        if (timeLeft.innerHTML === "00:00") {
-	                            //console.log("Timer reaches Zero !!!");
 	                            if (!shouldBeInBreak && !shouldBeInSessionAgain) {
 	                                shouldBeInBreak = true;
 	                            } else {
@@ -19812,7 +19820,7 @@ var FCC_Global =
 	                                if (document.getElementById("timer-label").innerHTML !== breakLabel) {
 	                                    resolve();
 	                                } else {
-	                                    reject("Timer has reached zero but didn't switch back to Session time");
+	                                    reject(new Error("Timer has reached zero but didn't switch back to Session time"));
 	                                }
 	                                observer.disconnect();
 	                            }
@@ -19822,8 +19830,7 @@ var FCC_Global =
 	            });
 	            it('25. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), a new session countdown should begin, counting down from the value currently displayed in the id="session-length" element.', function () {
 	                this.timeout(5000);
-	                hackGlobalTimerFunctions();
-	                // we decrement session length and break length to the minimum (1 minute)
+	                // decrement session length and break length to the minimum (1 minute)
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                clickButtonsById(Array(60).fill(_break_min));
 	                // start the pomodoro
@@ -19835,7 +19842,6 @@ var FCC_Global =
 	                    var breakLabel = void 0;
 	                    var observer = observeElement("time-left", function (modType) {
 	                        if (timeLeft.innerHTML === "00:00") {
-	                            //console.log("Timer reaches Zero !!!");
 	                            if (!shouldBeInBreak && !shouldBeInSessionAgain) {
 	                                shouldBeInBreak = true;
 	                            } else {
@@ -19850,10 +19856,10 @@ var FCC_Global =
 	                                var sessionLength = document.getElementById("session-length");
 	                                if (currentTimer.innerHTML !== breakLabel) {
 	                                    if (+getMinutes(timeLeft.innerHTML) === +sessionLength.innerHTML) resolve();else {
-	                                        reject("Timer has switched back to Session time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + sessionLength.innerHTML);
+	                                        reject(new Error("Timer has switched back to Session time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + sessionLength.innerHTML));
 	                                    }
 	                                } else {
-	                                    reject("Timer has reached zero but didn't switch back to Session time");
+	                                    reject(new Error("Timer has reached zero but didn't switch back to Session time"));
 	                                }
 	                                observer.disconnect();
 	                            }
@@ -19863,24 +19869,23 @@ var FCC_Global =
 	            });
 	            it('26. When a countdown reaches zero (NOTE: timer MUST reach 00:00), a sound (must be 200ms or longer) indicating that time is up should play. This should utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
 	                this.timeout(5000);
-	                hackGlobalTimerFunctions();
-	                // we decrement session time to the minimum (1 minute)
+	                // decrement session time to the minimum (1 minute)
 	                clickButtonsById(Array(60).fill(_sesh_min));
 	                // start the pomodoro
 	                clickButtonsById([_start_stop]);
 	                return new Promise(function (resolve, reject) {
 	                    var timeLeft = document.getElementById("time-left");
+	                    var breakLength = document.getElementById("break-length");
 	                    var observer = observeElement("time-left", function (modType) {
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            //console.log("Timer reaches Zero !!!");
-	                            // we wait 200ms and then check if sound is playing
+	                        if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	                            reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	                        } else if (timeLeft.innerHTML === "00:00") {
 	                            // note: sound has to be longer than 200 ms, or the test will fail if the sound stops before the test actually happens
 	                            savedSetTimeout(function (_) {
-	                                // note: we have to have an audio tag with id "beep" on the page
 	                                if (document.getElementById("beep") && !document.getElementById("beep").paused) {
 	                                    resolve();
 	                                } else {
-	                                    reject("Timer has reached zero but, either there is not audio tag with ID 'beep' on the page, or it's not playing while it should.");
+	                                    reject(new Error("Timer has reached zero but, either there is not audio tag with ID 'beep' on the page, or it's not playing while it should."));
 	                                }
 	                            }, 200);
 	                        }
