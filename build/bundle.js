@@ -20463,6 +20463,13 @@ var FCC_Global =
 	        return Array.from(document.getElementsByClassName(className));
 	    };
 
+	    var sharedHeaderTest = function sharedHeaderTest(classQty) {
+	        var firstChildHeaderQty = classArray('main-section').filter(function (el) {
+	            return el.firstElementChild.nodeName === 'HEADER';
+	        });
+	        FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' have a <header> element as a first element child ");
+	    };
+
 	    describe("Technical Documentation Page tests", function () {
 	        describe('#Content', function () {
 	            it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
@@ -20470,7 +20477,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "MAIN", "The 'main-doc' element should be a <main> ");
 	            });
 
-	            it('2. Within the #main-doc <main> element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
+	            it('2. Within the #main-doc ( <main> ) element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
 	                var classQty = classArray('main-section').length;
 	                var typeQty = classArray('main-section').filter(function (el) {
 	                    return el.nodeName === 'SECTION';
@@ -20482,38 +20489,41 @@ var FCC_Global =
 	            });
 
 	            it('3. The first element within each .main-section should be a <header> element which contains text that ' + 'describes the topic of that section.', function () {
-	                var classQty = document.getElementsByClassName('main-section').length;
-	                var firstChildHeaderQty = classArray('main-section').filter(function (el) {
-	                    return el.firstElementChild.nodeName === 'HEADER';
-	                });
+	                var classQty = classArray('main-section').length;
 	                var mustContainText = classArray('main-section').filter(function (el) {
 	                    return el.firstElementChild.innerText.length > 0;
 	                });
 	                FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
-	                FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' " + "have a <header> element as a first element child ");
+	                sharedHeaderTest(classQty);
 	                FCC_Global.assert.strictEqual(mustContainText.length, classQty, 'Not all first-child <header> elements within ' + '"main-section" elements contain text ');
 	            });
 
 	            it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' + 'text of each <header> contained within it. Any spaces should be replaced with underscores (e.g. The ' + '<section> that contains the header "Javascript and Java" should have a corresponding ' + 'id="Javascript_and_Java").', function () {
+
 	                var mainSections = classArray('main-section');
 	                FCC_Global.assert.isAbove(mainSections.length, 0, 'No elements with the class "main-section" are defined ');
+
+	                sharedHeaderTest(mainSections.length);
+
 	                var headerText = mainSections.map(function (el, i) {
+	                    FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ');
 	                    return [][i] = el.firstElementChild.innerText.replace(/\s/g, '_');
 	                });
+
 	                var mainSectionIDs = mainSections.map(function (el, i) {
+	                    FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, "Each 'main-section' should have an id attribute ");
 	                    return [][i] = el.id;
 	                });
+
 	                var remainder = headerText.filter(function (str) {
 	                    return mainSectionIDs.indexOf(str) === -1;
 	                });
-	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t ' + 'forget to replace spaces with underscores!) : ' + remainder + ' ');
+
+	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t forget to replace spaces with underscores!) : ' + remainder + ' ');
 	            });
 
 	            it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
 	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, "There are not at least 10 <p> " + "elements throughout all of the elements with the class of 'main-section' ");
-	                // WANTED THE TEST TO BE AS FOLLOWS BUT COULD NOT FIND A WAY TO TEST FOR ELEMENTS WITH CLASS OF MAIN-SECTION
-	                // CONTAINING <P> ELEMENTS AT AN ARBITRARY DEPTH OF NESTING (WITHOUT ADDITIONAL EXTERNAL DEPENDENCIES):
-	                // Each "main-section" should contain at least one <p> element with textual content.
 	            });
 
 	            it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
