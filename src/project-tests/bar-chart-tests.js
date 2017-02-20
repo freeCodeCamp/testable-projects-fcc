@@ -113,14 +113,14 @@ export default function createBarChartTests() {
                 // timeout is used to accommodate tooltip transitions
                 setTimeout(_ => {
                     if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
-                        reject('Tooltip should be visible when mouse is on a bar ');
+                        reject(new Error('Tooltip should be visible when mouse is on a bar '));
                     }
 
                     // remove mouse from bar and check if tooltip is hidden again
                     randomBar.dispatchEvent(new MouseEvent('mouseout'));
                     setTimeout(_ => {
                         if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
-                            reject('Tooltip should be hidden when mouse is not on a bar ');
+                            reject(new Error('Tooltip should be hidden when mouse is not on a bar '));
                         } else {
                             resolve()
                         }

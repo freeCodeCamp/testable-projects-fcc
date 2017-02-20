@@ -19042,7 +19042,7 @@ var FCC_Global =
 	                // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
 	                var drumPadInnerText = [];
 	                drumPads.forEach(function (pad) {
-	                    drumPadInnerText.push(pad.innerText);
+	                    drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
 	                    FCC_Global.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
 	                });
 	                FCC_Global.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
@@ -19057,7 +19057,7 @@ var FCC_Global =
 	                    FCC_Global.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
 	                    FCC_Global.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
 	                    FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
-	                    FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText, 'Each <audio> element should have an id equal ' + 'to its parent .drum-pad\'s inner-text ');
+	                    FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal ' + 'to its parent .drum-pad\'s inner-text ');
 	                });
 	            });
 
@@ -19084,7 +19084,7 @@ var FCC_Global =
 	                });
 	            });
 
-	            it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' + 'the inner text of the .display element (each string must be unique).', function () {
+	            it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' + 'the inner text of the #display element (each string must be unique).', function () {
 	                this.timeout(900);
 	                var displayText = [];
 	                return new Promise(function (resolve, reject) {
@@ -19099,7 +19099,7 @@ var FCC_Global =
 	                        if (displayText.length === 1) {
 	                            resolve();
 	                        } else {
-	                            reject("Each time a drum pad is triggered, a unique string should be displayed in the " + "element with the id 'display' ");
+	                            reject(new Error("Each time a drum pad is triggered, a unique string should be displayed in the " + "element with the id 'display' "));
 	                        }
 	                    }, 800);
 	                });
@@ -20742,14 +20742,14 @@ var FCC_Global =
 	                // timeout is used to accommodate tooltip transitions
 	                setTimeout(function (_) {
 	                    if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
-	                        reject('Tooltip should be visible when mouse is on a bar ');
+	                        reject(new Error('Tooltip should be visible when mouse is on a bar '));
 	                    }
 
 	                    // remove mouse from bar and check if tooltip is hidden again
 	                    randomBar.dispatchEvent(new MouseEvent('mouseout'));
 	                    setTimeout(function (_) {
 	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
-	                            reject('Tooltip should be hidden when mouse is not on a bar ');
+	                            reject(new Error('Tooltip should be hidden when mouse is not on a bar '));
 	                        } else {
 	                            resolve();
 	                        }
@@ -20947,14 +20947,14 @@ var FCC_Global =
 	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
 	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
-	                            reject('Tooltip should be visible when mouse is on a dot ');
+	                            reject(new Error('Tooltip should be visible when mouse is on a dot '));
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomDot.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
 	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
-	                                reject('Tooltip should be hidden when mouse is not on a dot ');
+	                                reject(new Error('Tooltip should be hidden when mouse is not on a dot '));
 	                            } else {
 	                                resolve();
 	                            }
@@ -40259,7 +40259,7 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    setTimeout(function (_) {
 	                        var text = document.getElementById("text");
-	                        if (text.innerText.length > 0) resolve();else reject("There is no initial quote displayed ");
+	                        if (text.innerText.length > 0) resolve();else reject(new Error("There is no initial quote displayed "));
 	                    }, requestTimeout);
 	                });
 	            });
@@ -40269,7 +40269,7 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    setTimeout(function (_) {
 	                        var author = document.getElementById("author");
-	                        if (author.innerText.length > 0) resolve();else reject("There is no initial author displayed ");
+	                        if (author.innerText.length > 0) resolve();else reject(new Error("There is no initial author displayed "));
 	                    }, requestTimeout);
 	                });
 	            });

@@ -14,8 +14,8 @@
 * Operating System: 
 * Mobile, Desktop, or Tablet: 
 
-#### Your Code
-<!-- Paste and relevant code in here -->
+#### Your Code / Link to Your Pen
+<!-- Paste relevant code in here, or a link to your pen which would be most helpful -->
 ```
  
  
