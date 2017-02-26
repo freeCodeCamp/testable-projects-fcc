@@ -33,6 +33,11 @@ export const assert = chai.assert;
 // When the document is fully loaded,
 // create the "Tests" button and the corresponding modal window, jquery required)
 $(document).ready(function() {
+    // alert users about cross-browser compatibility issues
+    const isChrome = !!window.chrome && !!window.chrome.webstore;
+    if (isChrome === false) {
+        FCC_Global.alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known issues that we are trying to work through to make these suites fully cross-browser compatible, but it is a work in progress. For the best user experience, please use Chrome until these issues are resolved. Thanks and Happy Coding!');
+    }
     // check mocha is loaded and populate test suite
     let mochaCheck = setInterval(() => runCheck(), 50);
 
@@ -291,3 +296,9 @@ export function FCCInitTestRunner() {
     testRunner.on("test end", updateProgress);
     testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 };
+
+// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
+(function () {
+  if ( typeof NodeList.prototype.forEach === "function" ) return false;
+  NodeList.prototype.forEach = Array.prototype.forEach;
+})();
