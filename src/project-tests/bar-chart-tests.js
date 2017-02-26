@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
 
 export default function createBarChartTests() {
 
@@ -104,7 +105,7 @@ export default function createBarChartTests() {
             const bars = $('.bar');
 
             // place mouse on random bar and check if tooltip is visible
-            const randomIndex = FCC_Global.getRandomIndex(bars.length);
+            const randomIndex = getRandomIndex(bars.length);
             var randomBar = bars[randomIndex];
             randomBar.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -112,14 +113,14 @@ export default function createBarChartTests() {
             return new Promise((resolve, reject) => {
                 // timeout is used to accommodate tooltip transitions
                 setTimeout(_ => {
-                    if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+                    if (getToolTipStatus(tooltip) !== 'visible') {
                         reject(new Error('Tooltip should be visible when mouse is on a bar '));
                     }
 
                     // remove mouse from bar and check if tooltip is hidden again
                     randomBar.dispatchEvent(new MouseEvent('mouseout'));
                     setTimeout(_ => {
-                        if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+                        if (getToolTipStatus(tooltip) !== 'hidden') {
                             reject(new Error('Tooltip should be hidden when mouse is not on a bar '));
                         } else {
                             resolve()
@@ -134,7 +135,7 @@ export default function createBarChartTests() {
             FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
 
             const bars = $('.bar');
-            const randomIndex = FCC_Global.getRandomIndex(bars.length);
+            const randomIndex = getRandomIndex(bars.length);
 
             var randomBar = bars[randomIndex];
 

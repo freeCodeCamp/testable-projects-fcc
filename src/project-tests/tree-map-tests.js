@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
 
 export default function createTreeMapTests() {
 
@@ -113,7 +114,7 @@ export default function createTreeMapTests() {
               const tiles = document.querySelectorAll('.tile');
 
               // place mouse on random bar and check if tooltip is visible
-              const randomIndex = FCC_Global.getRandomIndex(tiles.length);
+              const randomIndex = getRandomIndex(tiles.length);
               var randomTile = tiles[randomIndex];
               randomTile.dispatchEvent(new MouseEvent('mouseover'));
               randomTile.dispatchEvent(new MouseEvent('mousemove'));
@@ -123,14 +124,14 @@ export default function createTreeMapTests() {
               return new Promise((resolve, reject) => {
                 // timeout is used to accomodate tooltip transitions
                 setTimeout( _ => {
-                  if(FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+                  if(getToolTipStatus(tooltip) !== 'visible') {
                     reject(new Error('Tooltip should be visible when mouse is on an area'))
                   }
 
                   // remove mouse from cell and check if tooltip is hidden again
                   randomTile.dispatchEvent(new MouseEvent('mouseout'));
                   setTimeout( _ => {
-                    if(FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+                    if(getToolTipStatus(tooltip) !== 'hidden') {
                       reject(new Error('Tooltip should be hidden when mouse is not on an area'))
                     } else {
                       resolve()
@@ -143,7 +144,7 @@ export default function createTreeMapTests() {
                 const tooltip = document.getElementById('tooltip');
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-value"), 'Could not find property "data-value" in tooltip ');
                 const tiles = document.querySelectorAll('.tile');
-                const randomIndex = FCC_Global.getRandomIndex(tiles.length);
+                const randomIndex = getRandomIndex(tiles.length);
 
                 var randomTile = tiles[randomIndex];
 

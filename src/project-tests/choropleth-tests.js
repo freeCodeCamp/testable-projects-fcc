@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import educationData from '../data/choropleth_map/education.json';
+import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
+
 export default function createChoroplethTests() {
 
     describe('#ChoroplethTests', function() {
@@ -119,7 +121,7 @@ export default function createChoroplethTests() {
 			    const counties = document.querySelectorAll('.county');
 
 			    // place mouse on random bar and check if tooltip is visible
-			    const randomIndex = FCC_Global.getRandomIndex(counties.length);
+			    const randomIndex = getRandomIndex(counties.length);
 			    var randomCounty = counties[randomIndex];
 			    randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -127,14 +129,14 @@ export default function createChoroplethTests() {
 			    return new Promise((resolve, reject) => {
 			        // timeout is used to accommodate tooltip transitions
 			        setTimeout(_ => {
-			            if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+			            if (getToolTipStatus(tooltip) !== 'visible') {
 			                reject(new Error('Tooltip should be visible when mouse is on an area'))
 			            }
 
 			            // remove mouse from cell and check if tooltip is hidden again
 			            randomCounty.dispatchEvent(new MouseEvent('mouseout'));
 			            setTimeout(_ => {
-			                if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+			                if (getToolTipStatus(tooltip) !== 'hidden') {
 			                    reject(new Error('Tooltip should be hidden when mouse is not on an area'))
 			                } else {
 			                    resolve()
@@ -150,7 +152,7 @@ export default function createChoroplethTests() {
 
                 const counties = document.querySelectorAll('.county');
 
-                const randomIndex = FCC_Global.getRandomIndex(counties.length);
+                const randomIndex = getRandomIndex(counties.length);
 
                 var randomCounty = counties[randomIndex];
 

@@ -33,11 +33,6 @@ export const assert = chai.assert;
 // When the document is fully loaded,
 // create the "Tests" button and the corresponding modal window, jquery required)
 $(document).ready(function() {
-    // check for chrome
-    const isChrome = !!window.chrome && !!window.chrome.webstore;
-    if (isChrome === false) {
-        alert('Test Suite Compatible with Chrome Only');
-    }
     // check mocha is loaded and populate test suite
     let mochaCheck = setInterval(() => runCheck(), 50);
 
@@ -58,13 +53,11 @@ $(document).ready(function() {
                     document.getElementById('placeholder').innerHTML = '- - -';
                     document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
                 } else if (typeof project_name !== 'undefined') {
-                  document.getElementById('placeholder').innerHTML = `${localStorage.getItem('example_project')}`;
-                  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
-                  `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;;
+                    document.getElementById('placeholder').innerHTML = `${localStorage.getItem('example_project')}`;
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;;
                 } else {
                     document.getElementById('placeholder').innerHTML = project_titleCase;
-                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML =
-                    `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
+                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
                 }
             };
         } catch (err) {
@@ -133,14 +126,27 @@ export function FCCclickOutsideToCloseModal(e) {
     }
 }
 
+// cannot reset classList with an = assignment 
+// due to cross-browser conflicts 
+function clearClassList(elem) {
+  var classListAsArray = new Array(elem.classList.length);
+  
+  for (var i = 0; i < elem.classList.length; i++) {
+    classListAsArray[i] = elem.classList[i];
+  }
+  
+  for (var i = 0; i < classListAsArray.length; i++) {
+    elem.classList.remove(classListAsArray[i])
+  }
+}
+
 // run tests
 export function FCCRerunTests() {
     const button = document.getElementById('fcc_test_button');
-    button.innerHTML = typeof project_name === 'undefined' &&
-    localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
-    button.title = typeof project_name === 'undefined' &&
-    localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
-    button.classList = ["fcc_foldout_buttons"];
+    button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
+    button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
+    clearClassList(button);
+    button.classList.add("fcc_foldout_buttons");
     button.classList.add("fcc_test_btn-default");
     FCCInitTestRunner();
 }
@@ -162,7 +168,7 @@ onkeydown = onkeyup = function(e) {
     map[e.keyCode] = e.type == 'keydown';
     if (map[17] && map[16] && map[13]) { // run tests: Ctrl + Shift + Enter
         if (localStorage.getItem('project_selector') === 'markdown-previewer') {
-            alertOnce();
+            alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
             return;
         } else {
             FCCRerunTests();
@@ -179,13 +185,13 @@ onkeydown = onkeyup = function(e) {
 }
 
 // shortcuts interfere w/ markdown tests, disable and alert
-export function alertOnce() {
-    const alerted = sessionStorage.getItem('alerted') || false;
+export function alertOnce(item, message) {
+    const alerted = sessionStorage.getItem(item) || false;
     if (alerted) {
         return;
     } else {
-        alert('Run-Test hotkey disabled for this project, please use mouse.');
-        sessionStorage.setItem('alerted', true);
+        alert(message);
+        sessionStorage.setItem(item, true);
     }
 }
 
@@ -285,19 +291,3 @@ export function FCCInitTestRunner() {
     testRunner.on("test end", updateProgress);
     testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 };
-
-// GLOBAL D3 TEST FUNCTIONS:
-export function getToolTipStatus(tooltip) {
-    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-    if ($(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
-        return 'hidden'
-    } else {
-        return 'visible'
-    }
-}
-
-export function getRandomIndex(max) {
-    return Math.floor(Math.random() * max);
-}
