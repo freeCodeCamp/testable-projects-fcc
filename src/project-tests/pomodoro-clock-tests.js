@@ -1,9 +1,4 @@
 export default function createPomodoroClockTests() {
-
-    const isChrome = !!window.chrome && !!window.chrome.webstore;
-    if (isChrome === false) {
-        FCC_Global.alertOnce('Pomodoro Alert', 'Some Pomodoro tests may fail in Opera or Safari');
-    }
     
     const _break_min = "break-decrement";
     const _break_plus = "break-increment";
