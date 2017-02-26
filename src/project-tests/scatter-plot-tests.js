@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
 
 export default function createScatterPlotTests() {
 
@@ -148,7 +149,7 @@ export default function createScatterPlotTests() {
                 const dots = $('.dot');
 
                 // place mouse on random bar and check if tooltip is visible
-                const randomIndex = FCC_Global.getRandomIndex(dots.length);
+                const randomIndex = getRandomIndex(dots.length);
                 var randomDot = dots[randomIndex];
                 randomDot.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -156,14 +157,14 @@ export default function createScatterPlotTests() {
                 return new Promise((resolve, reject) => {
                     // timeout is used to accommodate tooltip transitions
                     setTimeout(_ => {
-                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+                        if (getToolTipStatus(tooltip) !== 'visible') {
                             reject(new Error('Tooltip should be visible when mouse is on a dot '));
                         }
 
                         // remove mouse from cell and check if tooltip is hidden again
                         randomDot.dispatchEvent(new MouseEvent('mouseout'));
                         setTimeout(_ => {
-                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+                            if (getToolTipStatus(tooltip) !== 'hidden') {
                                 reject(new Error('Tooltip should be hidden when mouse is not on a dot '));
                             } else {
                                 resolve()
@@ -177,7 +178,7 @@ export default function createScatterPlotTests() {
                 const tooltip = document.getElementById('tooltip');
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property "data-year" in tooltip ');
                 const dots = $('.dot');
-                const randomIndex = FCC_Global.getRandomIndex(dots.length);
+                const randomIndex = getRandomIndex(dots.length);
 
                 var randomDot = dots[randomIndex];
 

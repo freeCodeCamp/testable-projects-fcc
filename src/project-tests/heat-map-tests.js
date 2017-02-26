@@ -1,5 +1,6 @@
 import $ from 'jquery';
-// HEAT MAP TESTS:
+import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
+
 export default function createHeatMapTests() {
 
     describe('#HeatMapTests', function() {
@@ -163,7 +164,7 @@ export default function createHeatMapTests() {
                 const cells = document.querySelectorAll('.cell');
 
                 // place mouse on random bar and check if tooltip is visible
-                const randomIndex = FCC_Global.getRandomIndex(cells.length);
+                const randomIndex = getRandomIndex(cells.length);
                 var randomCell = cells[randomIndex];
                 randomCell.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -171,14 +172,14 @@ export default function createHeatMapTests() {
                 return new Promise((resolve, reject) => {
                     // timeout is used to accommodate tooltip transitions
                     setTimeout(_ => {
-                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+                        if (getToolTipStatus(tooltip) !== 'visible') {
                             reject(new Error('Tooltip should be visible when mouse is on a cell'))
                         }
 
                         // remove mouse from cell and check if tooltip is hidden again
                         randomCell.dispatchEvent(new MouseEvent('mouseout'));
                         setTimeout(_ => {
-                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+                            if (getToolTipStatus(tooltip) !== 'hidden') {
                                 reject(new Error('Tooltip should be hidden when mouse is not on a cell'))
                             } else {
                                 resolve()
@@ -193,7 +194,7 @@ export default function createHeatMapTests() {
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property \"data-year\" in tooltip ');
 
                 const cells = document.querySelectorAll('.cell');
-                const randomIndex = FCC_Global.getRandomIndex(cells.length);
+                const randomIndex = getRandomIndex(cells.length);
 
                 var randomCell = cells[randomIndex];
 

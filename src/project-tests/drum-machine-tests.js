@@ -1,5 +1,10 @@
 // DRUM MACHINE TESTS:
 export default function createDrumMachineTests() {
+  
+    const isChrome = !!window.chrome && !!window.chrome.webstore;
+    if (isChrome === false) {
+        FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in Opera or Safari');
+    }
 
     describe('#Drum Machine tests', function() {
 

@@ -62,8 +62,6 @@ var FCC_Global =
 	exports.alertOnce = alertOnce;
 	exports.hamburger_transform = hamburger_transform;
 	exports.FCCInitTestRunner = FCCInitTestRunner;
-	exports.getToolTipStatus = getToolTipStatus;
-	exports.getRandomIndex = getRandomIndex;
 
 	var _jquery = __webpack_require__(1);
 
@@ -121,23 +119,23 @@ var FCC_Global =
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(54);
+	var _scatterPlotTests = __webpack_require__(55);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(55);
+	var _choroplethTests = __webpack_require__(56);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(57);
+	var _treeMapTests = __webpack_require__(58);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(58);
+	var _quoteMachineTests = __webpack_require__(59);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(59);
+	var _heatMapTests = __webpack_require__(60);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
@@ -158,11 +156,6 @@ var FCC_Global =
 	// When the document is fully loaded,
 	// create the "Tests" button and the corresponding modal window, jquery required)
 	(0, _jquery2.default)(document).ready(function () {
-	    // check for chrome
-	    var isChrome = !!window.chrome && !!window.chrome.webstore;
-	    if (isChrome === false) {
-	        alert('Test Suite Compatible with Chrome Only');
-	    }
 	    // check mocha is loaded and populate test suite
 	    var mochaCheck = setInterval(function () {
 	        return runCheck();
@@ -260,12 +253,27 @@ var FCC_Global =
 	    }
 	}
 
+	// cannot reset classList with an = assignment 
+	// due to cross-browser conflicts 
+	function clearClassList(elem) {
+	    var classListAsArray = new Array(elem.classList.length);
+
+	    for (var i = 0; i < elem.classList.length; i++) {
+	        classListAsArray[i] = elem.classList[i];
+	    }
+
+	    for (var i = 0; i < classListAsArray.length; i++) {
+	        elem.classList.remove(classListAsArray[i]);
+	    }
+	}
+
 	// run tests
 	function FCCRerunTests() {
 	    var button = document.getElementById('fcc_test_button');
 	    button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
 	    button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
-	    button.classList = ["fcc_foldout_buttons"];
+	    clearClassList(button);
+	    button.classList.add("fcc_foldout_buttons");
 	    button.classList.add("fcc_test_btn-default");
 	    FCCInitTestRunner();
 	}
@@ -288,7 +296,7 @@ var FCC_Global =
 	    if (map[17] && map[16] && map[13]) {
 	        // run tests: Ctrl + Shift + Enter
 	        if (localStorage.getItem('project_selector') === 'markdown-previewer') {
-	            alertOnce();
+	            alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
 	            return;
 	        } else {
 	            FCCRerunTests();
@@ -307,13 +315,13 @@ var FCC_Global =
 	};
 
 	// shortcuts interfere w/ markdown tests, disable and alert
-	function alertOnce() {
-	    var alerted = sessionStorage.getItem('alerted') || false;
+	function alertOnce(item, message) {
+	    var alerted = sessionStorage.getItem(item) || false;
 	    if (alerted) {
 	        return;
 	    } else {
-	        alert('Run-Test hotkey disabled for this project, please use mouse.');
-	        sessionStorage.setItem('alerted', true);
+	        alert(message);
+	        sessionStorage.setItem(item, true);
 	    }
 	}
 
@@ -423,22 +431,6 @@ var FCC_Global =
 	    testRunner.on("test end", updateProgress);
 	    testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 	};
-
-	// GLOBAL D3 TEST FUNCTIONS:
-	function getToolTipStatus(tooltip) {
-	    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
-	    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
-	        return 'hidden';
-	    } else {
-	        return 'visible';
-	    }
-	}
-
-	function getRandomIndex(max) {
-	    return Math.floor(Math.random() * max);
-	}
 
 /***/ },
 /* 1 */
@@ -19010,6 +19002,11 @@ var FCC_Global =
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
 
+	    var isChrome = !!window.chrome && !!window.chrome.webstore;
+	    if (isChrome === false) {
+	        FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in Opera or Safari');
+	    }
+
 	    describe('#Drum Machine tests', function () {
 
 	        // vars:
@@ -19410,13 +19407,18 @@ var FCC_Global =
 /* 47 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.default = createPomodoroClockTests;
 	function createPomodoroClockTests() {
+
+	    var isChrome = !!window.chrome && !!window.chrome.webstore;
+	    if (isChrome === false) {
+	        FCC_Global.alertOnce('Pomodoro Alert', 'Some Pomodoro tests may fail in Opera or Safari');
+	    }
 
 	    var _break_min = "break-decrement";
 	    var _break_plus = "break-increment";
@@ -20637,6 +20639,8 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	var _globalD3Tests = __webpack_require__(54);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createBarChartTests() {
@@ -20743,7 +20747,7 @@ var FCC_Global =
 	            var bars = (0, _jquery2.default)('.bar');
 
 	            // place mouse on random bar and check if tooltip is visible
-	            var randomIndex = FCC_Global.getRandomIndex(bars.length);
+	            var randomIndex = (0, _globalD3Tests.getRandomIndex)(bars.length);
 	            var randomBar = bars[randomIndex];
 	            randomBar.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -20751,14 +20755,14 @@ var FCC_Global =
 	            return new Promise(function (resolve, reject) {
 	                // timeout is used to accommodate tooltip transitions
 	                setTimeout(function (_) {
-	                    if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	                    if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'visible') {
 	                        reject(new Error('Tooltip should be visible when mouse is on a bar '));
 	                    }
 
 	                    // remove mouse from bar and check if tooltip is hidden again
 	                    randomBar.dispatchEvent(new MouseEvent('mouseout'));
 	                    setTimeout(function (_) {
-	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                        if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'hidden') {
 	                            reject(new Error('Tooltip should be hidden when mouse is not on a bar '));
 	                        } else {
 	                            resolve();
@@ -20773,7 +20777,7 @@ var FCC_Global =
 	            FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
 
 	            var bars = (0, _jquery2.default)('.bar');
-	            var randomIndex = FCC_Global.getRandomIndex(bars.length);
+	            var randomIndex = (0, _globalD3Tests.getRandomIndex)(bars.length);
 
 	            var randomBar = bars[randomIndex];
 
@@ -20793,11 +20797,46 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.getToolTipStatus = getToolTipStatus;
+	exports.getRandomIndex = getRandomIndex;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getToolTipStatus(tooltip) {
+	    // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
+	    // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
+	    // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+	    if ((0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden') {
+	        return 'hidden';
+	    } else {
+	        return 'visible';
+	    }
+	}
+
+	function getRandomIndex(max) {
+	    return Math.floor(Math.random() * max);
+	}
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.default = createScatterPlotTests;
 
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _globalD3Tests = __webpack_require__(54);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20948,7 +20987,7 @@ var FCC_Global =
 	                var dots = (0, _jquery2.default)('.dot');
 
 	                // place mouse on random bar and check if tooltip is visible
-	                var randomIndex = FCC_Global.getRandomIndex(dots.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(dots.length);
 	                var randomDot = dots[randomIndex];
 	                randomDot.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -20956,14 +20995,14 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
-	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	                        if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on a dot '));
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomDot.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
-	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                            if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'hidden') {
 	                                reject(new Error('Tooltip should be hidden when mouse is not on a dot '));
 	                            } else {
 	                                resolve();
@@ -20977,7 +21016,7 @@ var FCC_Global =
 	                var tooltip = document.getElementById('tooltip');
 	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property "data-year" in tooltip ');
 	                var dots = (0, _jquery2.default)('.dot');
-	                var randomIndex = FCC_Global.getRandomIndex(dots.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(dots.length);
 
 	                var randomDot = dots[randomIndex];
 
@@ -20989,7 +21028,7 @@ var FCC_Global =
 	}
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21003,9 +21042,11 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _education = __webpack_require__(56);
+	var _education = __webpack_require__(57);
 
 	var _education2 = _interopRequireDefault(_education);
+
+	var _globalD3Tests = __webpack_require__(54);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21128,7 +21169,7 @@ var FCC_Global =
 	                var counties = document.querySelectorAll('.county');
 
 	                // place mouse on random bar and check if tooltip is visible
-	                var randomIndex = FCC_Global.getRandomIndex(counties.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(counties.length);
 	                var randomCounty = counties[randomIndex];
 	                randomCounty.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -21136,14 +21177,14 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
-	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	                        if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on an area'));
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomCounty.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
-	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                            if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'hidden') {
 	                                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
 	                            } else {
 	                                resolve();
@@ -21159,7 +21200,7 @@ var FCC_Global =
 
 	                var counties = document.querySelectorAll('.county');
 
-	                var randomIndex = FCC_Global.getRandomIndex(counties.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(counties.length);
 
 	                var randomCounty = counties[randomIndex];
 
@@ -21175,7 +21216,7 @@ var FCC_Global =
 	}
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -40034,7 +40075,7 @@ var FCC_Global =
 	]
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40047,6 +40088,8 @@ var FCC_Global =
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _globalD3Tests = __webpack_require__(54);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40163,7 +40206,7 @@ var FCC_Global =
 	        var tiles = document.querySelectorAll('.tile');
 
 	        // place mouse on random bar and check if tooltip is visible
-	        var randomIndex = FCC_Global.getRandomIndex(tiles.length);
+	        var randomIndex = (0, _globalD3Tests.getRandomIndex)(tiles.length);
 	        var randomTile = tiles[randomIndex];
 	        randomTile.dispatchEvent(new MouseEvent('mouseover'));
 	        randomTile.dispatchEvent(new MouseEvent('mousemove'));
@@ -40173,14 +40216,14 @@ var FCC_Global =
 	        return new Promise(function (resolve, reject) {
 	          // timeout is used to accomodate tooltip transitions
 	          setTimeout(function (_) {
-	            if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	            if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'visible') {
 	              reject(new Error('Tooltip should be visible when mouse is on an area'));
 	            }
 
 	            // remove mouse from cell and check if tooltip is hidden again
 	            randomTile.dispatchEvent(new MouseEvent('mouseout'));
 	            setTimeout(function (_) {
-	              if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	              if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'hidden') {
 	                reject(new Error('Tooltip should be hidden when mouse is not on an area'));
 	              } else {
 	                resolve();
@@ -40193,7 +40236,7 @@ var FCC_Global =
 	        var tooltip = document.getElementById('tooltip');
 	        FCC_Global.assert.isNotNull(tooltip.getAttribute("data-value"), 'Could not find property "data-value" in tooltip ');
 	        var tiles = document.querySelectorAll('.tile');
-	        var randomIndex = FCC_Global.getRandomIndex(tiles.length);
+	        var randomIndex = (0, _globalD3Tests.getRandomIndex)(tiles.length);
 
 	        var randomTile = tiles[randomIndex];
 
@@ -40210,7 +40253,7 @@ var FCC_Global =
 	}
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40330,7 +40373,7 @@ var FCC_Global =
 	} // END createRandomQuoteMachineTests()
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40344,9 +40387,10 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	var _globalD3Tests = __webpack_require__(54);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// HEAT MAP TESTS:
 	function createHeatMapTests() {
 
 	    describe('#HeatMapTests', function () {
@@ -40508,7 +40552,7 @@ var FCC_Global =
 	                var cells = document.querySelectorAll('.cell');
 
 	                // place mouse on random bar and check if tooltip is visible
-	                var randomIndex = FCC_Global.getRandomIndex(cells.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(cells.length);
 	                var randomCell = cells[randomIndex];
 	                randomCell.dispatchEvent(new MouseEvent('mouseover'));
 
@@ -40516,14 +40560,14 @@ var FCC_Global =
 	                return new Promise(function (resolve, reject) {
 	                    // timeout is used to accommodate tooltip transitions
 	                    setTimeout(function (_) {
-	                        if (FCC_Global.getToolTipStatus(tooltip) !== 'visible') {
+	                        if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'visible') {
 	                            reject(new Error('Tooltip should be visible when mouse is on a cell'));
 	                        }
 
 	                        // remove mouse from cell and check if tooltip is hidden again
 	                        randomCell.dispatchEvent(new MouseEvent('mouseout'));
 	                        setTimeout(function (_) {
-	                            if (FCC_Global.getToolTipStatus(tooltip) !== 'hidden') {
+	                            if ((0, _globalD3Tests.getToolTipStatus)(tooltip) !== 'hidden') {
 	                                reject(new Error('Tooltip should be hidden when mouse is not on a cell'));
 	                            } else {
 	                                resolve();
@@ -40538,7 +40582,7 @@ var FCC_Global =
 	                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property \"data-year\" in tooltip ');
 
 	                var cells = document.querySelectorAll('.cell');
-	                var randomIndex = FCC_Global.getRandomIndex(cells.length);
+	                var randomIndex = (0, _globalD3Tests.getRandomIndex)(cells.length);
 
 	                var randomCell = cells[randomIndex];
 
