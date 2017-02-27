@@ -1,10 +1,9 @@
 import $ from 'jquery';
-import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
+import { testToolTip } from '../assets/globalD3Tests';
 
 export default function createTreeMapTests() {
 
     describe('#TreeMapTests', function() {
-
         describe('#Content', function() {
             it('1. My tree map should have a title with a corresponding id="title"', function() {
                 FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
@@ -55,17 +54,16 @@ export default function createTreeMapTests() {
                 }
                 tilesByCategory[category].push(tiles[j]);  
               }
-              
-              tilesByCategory = Object.values(tilesByCategory);
-                            
-              // sort each category array by value
-              tilesByCategory.forEach(category => {
+             
+             //sort tile values in each category
+              for(var i = 0; i < tilesByCategory.length; i++) {
+                var category = tilesByCategory[i];
                 category.sort(function(tile1,tile2){
                   var tile1Value = tile1.getAttribute('data-value');
                   var tile2Value = tile2.getAttribute('data-value');
                   return tile1Value - tile2Value
                 })
-              })
+              }
               
               // outer loop loops through array category arrays
               for(var k = 0; k < tilesByCategory.length; k++) {
@@ -100,61 +98,8 @@ export default function createTreeMapTests() {
                 }
 
                 FCC_Global.assert.isAtLeast(uniqueColors.length, 2, 'There should be at least two fill colors used for the legend ');
-            })
-            it('9. I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function(){
-
-              const firstRequestTimeout = 100;
-              const secondRequestTimeout = 2000;
-              this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-              FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
-
-              const tooltip = document.getElementById('tooltip');
-
-              const tiles = document.querySelectorAll('.tile');
-
-              // place mouse on random bar and check if tooltip is visible
-              const randomIndex = getRandomIndex(tiles.length);
-              var randomTile = tiles[randomIndex];
-              randomTile.dispatchEvent(new MouseEvent('mouseover'));
-              randomTile.dispatchEvent(new MouseEvent('mousemove'));
-              randomTile.dispatchEvent(new MouseEvent('mouseenter'));
-
-              // promise is used to prevent test from ending prematurely
-              return new Promise((resolve, reject) => {
-                // timeout is used to accomodate tooltip transitions
-                setTimeout( _ => {
-                  if(getToolTipStatus(tooltip) !== 'visible') {
-                    reject(new Error('Tooltip should be visible when mouse is on an area'))
-                  }
-
-                  // remove mouse from cell and check if tooltip is hidden again
-                  randomTile.dispatchEvent(new MouseEvent('mouseout'));
-                  setTimeout( _ => {
-                    if(getToolTipStatus(tooltip) !== 'hidden') {
-                      reject(new Error('Tooltip should be hidden when mouse is not on an area'))
-                    } else {
-                      resolve()
-                    }
-                  }, secondRequestTimeout)
-                }, firstRequestTimeout)
-              })
-            })
-            it('10. My tooltip should have a "data-value" property that corresponds to the given value of the active tile.', function() {
-                const tooltip = document.getElementById('tooltip');
-                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-value"), 'Could not find property "data-value" in tooltip ');
-                const tiles = document.querySelectorAll('.tile');
-                const randomIndex = getRandomIndex(tiles.length);
-
-                var randomTile = tiles[randomIndex];
-
-                randomTile.dispatchEvent(new MouseEvent('mouseover'));
-                randomTile.dispatchEvent(new MouseEvent('mousemove'));
-                randomTile.dispatchEvent(new MouseEvent('mouseenter'));
-                FCC_Global.assert.equal(tooltip.getAttribute('data-value'), randomTile.getAttribute('data-value'), 'Tooltip\'s \"data-value\" property should be equal to the active tiles\'s \"data-value\" property');
-                
-                //clear out tooltip
-                randomTile.dispatchEvent(new MouseEvent('mouseout'));
-            })
-        });
+            })  
+        });  
+        testToolTip(document.querySelectorAll('.tile'), 'data-value', 'data-value');    
     });
 }

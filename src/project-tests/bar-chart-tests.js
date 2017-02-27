@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
+import { testToolTip } from '../assets/globalD3Tests';
 
 export default function createBarChartTests() {
 
@@ -94,55 +94,7 @@ export default function createBarChartTests() {
             }
         })
 
-        it('10. I can mouse over a bar and see a tooltip with corresponding id="tooltip" which displays more information about the data', function() {
-            const firstRequestTimeout = 100;
-            const secondRequestTimeout = 2000;
-            this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-
-            FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
-
-            const tooltip = document.getElementById('tooltip');
-            const bars = $('.bar');
-
-            // place mouse on random bar and check if tooltip is visible
-            const randomIndex = getRandomIndex(bars.length);
-            var randomBar = bars[randomIndex];
-            randomBar.dispatchEvent(new MouseEvent('mouseover'));
-
-            // promise is used to prevent test from ending prematurely
-            return new Promise((resolve, reject) => {
-                // timeout is used to accommodate tooltip transitions
-                setTimeout(_ => {
-                    if (getToolTipStatus(tooltip) !== 'visible') {
-                        reject(new Error('Tooltip should be visible when mouse is on a bar '));
-                    }
-
-                    // remove mouse from bar and check if tooltip is hidden again
-                    randomBar.dispatchEvent(new MouseEvent('mouseout'));
-                    setTimeout(_ => {
-                        if (getToolTipStatus(tooltip) !== 'hidden') {
-                            reject(new Error('Tooltip should be hidden when mouse is not on a bar '));
-                        } else {
-                            resolve()
-                        }
-                    }, secondRequestTimeout)
-                }, firstRequestTimeout)
-            })
-        })
-
-        it('11. My tooltip should have a "data-date" property that corresponds to the given date of the active bar', function() {
-            const tooltip = document.getElementById('tooltip');
-            FCC_Global.assert.isNotNull(tooltip.getAttribute("data-date"), 'Could not find property "data-date" in tooltip ');
-
-            const bars = $('.bar');
-            const randomIndex = getRandomIndex(bars.length);
-
-            var randomBar = bars[randomIndex];
-
-            randomBar.dispatchEvent(new MouseEvent('mouseover'));
-
-            FCC_Global.assert.equal(tooltip.getAttribute('data-date'), randomBar.getAttribute('data-date'), 'Tooltip\'s "data-date" property should be equal to the active bar\'s "data-date" property ');
-        })
-
     });
+    
+    testToolTip(document.querySelectorAll('.bar'), "data-date", "data-date")
 }
