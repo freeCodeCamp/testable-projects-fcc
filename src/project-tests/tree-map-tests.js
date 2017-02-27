@@ -83,13 +83,11 @@ export default function createTreeMapTests() {
             it('7. My tree map should have a legend with corresponding id="legend"', function() {
               FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend" ');
             });
-            it('8. My legend should have legend items with corresponding class="legend-item"', function() {
-              FCC_Global.assert.isAbove(document.querySelectorAll('#legend .legend-item').length, 0, 'Could not find legend items with class="legend-item"');
-            });
-            it('9. The legend items should use at least 2 different fill colors', function() {
+            it('8. The legend should have items which use at least 2 different fill colors', function() {
                 FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend" ');
 
-                const legendItems = document.querySelectorAll('#legend .legend-item');
+                // get all children of the legend to gather their color data
+                const legendItems = document.querySelector('#legend').querySelectorAll('*');
                 var uniqueColors = [];
 
                 for (var i = 0; i < legendItems.length; i++) {
@@ -100,9 +98,10 @@ export default function createTreeMapTests() {
                         uniqueColors.push(legendItemColors);
                     }
                 }
+
                 FCC_Global.assert.isAtLeast(uniqueColors.length, 2, 'There should be at least two fill colors used for the legend ');
             })
-            it('10.  I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function(){
+            it('9. I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function(){
 
               const firstRequestTimeout = 100;
               const secondRequestTimeout = 2000;
@@ -140,7 +139,7 @@ export default function createTreeMapTests() {
                 }, firstRequestTimeout)
               })
             })
-            it('11. My tooltip should have a "data-value" property that corresponds to the given value of the active tile.', function() {
+            it('10. My tooltip should have a "data-value" property that corresponds to the given value of the active tile.', function() {
                 const tooltip = document.getElementById('tooltip');
                 FCC_Global.assert.isNotNull(tooltip.getAttribute("data-value"), 'Could not find property "data-value" in tooltip ');
                 const tiles = document.querySelectorAll('.tile');
