@@ -20114,7 +20114,7 @@ var FCC_Global =
 	            });
 
 	            it('2. The height of the welcome section should be equal to the height of the viewport.', function () {
-	                FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, document.documentElement.clientHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
+	                FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
 	            });
 
 	            it('3. The navbar should always be at the top of the viewport.', function () {
