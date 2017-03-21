@@ -10,7 +10,7 @@
 - In order to keep things in scope for this bundle, we have defined a global library object called `FCC_Global`; Chai's `assert` is being exported and can be accessed through this object, as can all of our Utility Functions as defined in `index.js`, e.g.:
 
 ```javascript
-`FCC_Global.assert.isAtLeast(awesomeness.length, 10000000, 'your aweseomness is too short');`
+`FCC_Global.assert.isAtLeast(awesomeness.length, 10000000, 'your awesomeness is too short');`
 ```
 OR
 
