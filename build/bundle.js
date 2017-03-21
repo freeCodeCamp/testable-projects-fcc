@@ -19432,7 +19432,7 @@ var FCC_Global =
 	    var _sesh_plus = "session-increment";
 	    var _reset = "reset";
 	    var _start_stop = "start_stop";
-	    var orignalTimerLabel = document.getElementById('timer-label').innerText;
+	    var orignalTimerLabel = document.getElementById('timer-label') && document.getElementById('timer-label').innerText;
 
 	    function getElements(elementIds) {
 	        return elementIds.map(function (elementId) {
@@ -19448,7 +19448,7 @@ var FCC_Global =
 	    }
 
 	    function resetTimer() {
-	        if (document.getElementById('reset')) clickButtonsById([_reset]);
+	        document.getElementById('reset') && clickButtonsById([_reset]);
 	    }
 
 	    function getMinutes(str) {
@@ -19508,7 +19508,7 @@ var FCC_Global =
 	    // Test suite
 	    describe("#Pomodoro Clock tests", function () {
 	        before(function () {
-	            clickButtonsById([_start_stop]);
+	            document.getElementById('start_stop') && clickButtonsById([_start_stop]);
 	        });
 
 	        beforeEach(function () {
