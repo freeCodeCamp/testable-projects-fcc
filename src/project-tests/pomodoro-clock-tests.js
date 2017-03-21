@@ -6,7 +6,7 @@ export default function createPomodoroClockTests() {
     const _sesh_plus = "session-increment";
     const _reset = "reset";
     const _start_stop = "start_stop";
-    const orignalTimerLabel = document.getElementById('timer-label').innerText;
+    const orignalTimerLabel = document.getElementById('timer-label') && document.getElementById('timer-label').innerText;
 
     function getElements(elementIds) {
         return elementIds.map(elementId => document.getElementById(elementId));
@@ -18,9 +18,8 @@ export default function createPomodoroClockTests() {
     }
 
     function resetTimer() {
-        if (document.getElementById('reset')) 
-            clickButtonsById([_reset]);
-        }
+        document.getElementById('reset') && clickButtonsById([_reset]);
+    }
     
     function getMinutes(str) {
         const matches = /^(\d{1,4})\s?([\.:,\/]\s?\d{2}.*)?$/g.exec(str);
@@ -79,7 +78,7 @@ export default function createPomodoroClockTests() {
     // Test suite
     describe("#Pomodoro Clock tests", function() {
         before(function() {
-            clickButtonsById([_start_stop]);
+            document.getElementById('start_stop') && clickButtonsById([_start_stop]);
         });
 
         beforeEach(function() {
