@@ -20138,6 +20138,9 @@ var FCC_Global =
 	    value: true
 	});
 	exports.default = createProductLandingPageTests;
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	function createProductLandingPageTests() {
 	    describe("#Product Landing Page tests", function () {
 
@@ -20228,13 +20231,29 @@ var FCC_Global =
 	        }); // END #Content
 
 	        describe('#Layout', function () {
-	            it('1. The <header> element with id="header" should always be at the top of the viewport.', function () {
+	            it('1. The navbar should always be at the top of the viewport.', function () {
 	                var header = document.getElementById('header');
+	                var headerChildren = header.children;
+	                // array of all potential elements serving as a navbar
+	                var navbarCandidates = [header].concat(_toConsumableArray(headerChildren));
 
-	                FCC_Global.assert.approximately(header.getBoundingClientRect().top, 0, 15, '#header\'s parent should be body and it should be at the top of the viewport ');
+	                // get the 'top' position value from the element whose value is closest to 0
+	                function getNavbarPosition(candidates) {
+	                    // by default, set to first candidate's top value
+	                    var candidatePosition = Math.abs(candidates[0].getBoundingClientRect().top);
+	                    for (var i = 1; i < candidates.length; i++) {
+	                        // if another candidate has a top value closer to 0, replace the old value
+	                        var currentCandidatePosition = Math.abs(candidates[i].getBoundingClientRect().top);
+	                        if (currentCandidatePosition < candidatePosition) {
+	                            candidatePosition = currentCandidatePosition;
+	                        }
+	                    }
+	                    return candidatePosition;
+	                };
 
+	                FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport ');
 	                window.scroll(0, 500);
-	                FCC_Global.assert.approximately(header.getBoundingClientRect().top, 0, 15, '#header should be at the top of the viewport even after scrolling ');
+	                FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport even after scrolling ');
 	                window.scroll(0, 0);
 	            });
 
