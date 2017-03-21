@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { getToolTipStatus, getRandomIndex } from '../assets/globalD3Tests';
+import { testToolTip } from '../assets/globalD3Tests';
 
 export default function createScatterPlotTests() {
 
@@ -138,54 +138,9 @@ export default function createScatterPlotTests() {
             it('13. I can see a legend that has id="legend".', function() {
                 FCC_Global.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
             });
-
-            it('14. I can mouse over any dot and see a tooltip with corresponding id="tooltip" which displays more information about the data.', function() {
-                const firstRequestTimeout = 100;
-                const secondRequestTimeout = 2000;
-                this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-                FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip" ');
-
-                const tooltip = document.getElementById('tooltip');
-                const dots = $('.dot');
-
-                // place mouse on random bar and check if tooltip is visible
-                const randomIndex = getRandomIndex(dots.length);
-                var randomDot = dots[randomIndex];
-                randomDot.dispatchEvent(new MouseEvent('mouseover'));
-
-                // promise is used to prevent test from ending prematurely
-                return new Promise((resolve, reject) => {
-                    // timeout is used to accommodate tooltip transitions
-                    setTimeout(_ => {
-                        if (getToolTipStatus(tooltip) !== 'visible') {
-                            reject(new Error('Tooltip should be visible when mouse is on a dot '));
-                        }
-
-                        // remove mouse from cell and check if tooltip is hidden again
-                        randomDot.dispatchEvent(new MouseEvent('mouseout'));
-                        setTimeout(_ => {
-                            if (getToolTipStatus(tooltip) !== 'hidden') {
-                                reject(new Error('Tooltip should be hidden when mouse is not on a dot '));
-                            } else {
-                                resolve()
-                            }
-                        }, secondRequestTimeout)
-                    }, firstRequestTimeout)
-                });
-            });
-
-            it('15. My tooltip should have a "data-year" property that corresponds to the given year of the active dot.', function() {
-                const tooltip = document.getElementById('tooltip');
-                FCC_Global.assert.isNotNull(tooltip.getAttribute("data-year"), 'Could not find property "data-year" in tooltip ');
-                const dots = $('.dot');
-                const randomIndex = getRandomIndex(dots.length);
-
-                var randomDot = dots[randomIndex];
-
-                randomDot.dispatchEvent(new MouseEvent('mouseover'));
-                FCC_Global.assert.equal(tooltip.getAttribute('data-year'), randomDot.getAttribute('data-xvalue'), 'Tooltip\'s \"data-year\" property should be equal to the active dot\'s \"data-xvalue\" property');
-            })
         });
+        
+        testToolTip(document.querySelectorAll('.dot'), "data-year", "data-xvalue")
 
     });
 }
