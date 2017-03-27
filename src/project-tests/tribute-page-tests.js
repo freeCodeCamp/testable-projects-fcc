@@ -9,15 +9,15 @@ export default function createTributePageTests() {
     describe("#Tribute Page tests", function() {
 
         describe("#Content", function() {
-            it('1. My tribute page should have a main <div> element with corresponding id="main", which contains ' +
+            it('1. My tribute page should have an element with corresponding id="main", which contains ' +
                 'all other elements.',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById("main"));
-                    FCC_Global.assert(document.querySelectorAll("#main div, #main a, #main h1, #main img").length, 'div with id="main" ' +
+                    FCC_Global.assert(document.querySelectorAll("#main div, #main a, #main h1, #main img").length, 'element with id="main" ' +
                         'must contain other elements');
                 });
 
-            it('2. I should see an <h1> element with corresponding id="title", which contains a string (i.e. text) ' +
+            it('2. I should see an element with corresponding id="title", which contains a string (i.e. text) ' +
                 'that describes the subject of the tribute page (e.g. "Dr. Norman Borlaug").',
                 function() {
                     FCC_Global.assert.isNotNull(document.getElementById("title"));
