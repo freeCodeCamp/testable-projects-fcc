@@ -141,7 +141,7 @@ export default function createPomodoroClockTests() {
                 FCC_Global.assert.isAbove(timer_label.innerText.length, 0, "Element does not contain a string");
             });
 
-            it("8. I can see an element with corresponding id=\"time-left\".", function() {
+            it("8. I can see an element with corresponding id=\"time-left\". NOTE: Paused or running, the value in this field should always be displayed in mm:ss format.", function() {
                 FCC_Global.assert.isNotNull(document.getElementById("time-left"));
             });
 
