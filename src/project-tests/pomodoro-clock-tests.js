@@ -1,5 +1,5 @@
 export default function createPomodoroClockTests() {
-    
+
     const _break_min = "break-decrement";
     const _break_plus = "break-increment";
     const _sesh_min = "session-decrement";
@@ -20,7 +20,7 @@ export default function createPomodoroClockTests() {
     function resetTimer() {
         document.getElementById('reset') && clickButtonsById([_reset]);
     }
-    
+
     function getMinutes(str) {
         const matches = /^(\d{1,4})\s?([\.:,\/]\s?\d{2}.*)?$/g.exec(str);
         return matches[1];
@@ -141,7 +141,7 @@ export default function createPomodoroClockTests() {
                 FCC_Global.assert.isAbove(timer_label.innerText.length, 0, "Element does not contain a string");
             });
 
-            it("8. I can see an element with corresponding id=\"time-left\".", function() {
+            it("8. I can see an element with corresponding id=\"time-left\". NOTE: Paused or running, the value in this field should always be displayedin mm:ss format (i.e. 25:00).", function() {
                 FCC_Global.assert.isNotNull(document.getElementById("time-left"));
             });
 
@@ -206,7 +206,7 @@ export default function createPomodoroClockTests() {
                     clickButtonsById([_break_min]);
                     FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "4");
                 });
-            
+
             it('13. When I click the element with the id of "break-increment", the value within id="break-length" increments by a value of 1, and I can see the updated value.', function() {
                 clickButtonsById(Array(4).fill(_break_plus));
                 FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "9");
@@ -214,7 +214,7 @@ export default function createPomodoroClockTests() {
                 clickButtonsById([_break_plus]);
                 FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "6");
             });
-            
+
             it('14. When I click the element with the id of "session-decrement", the value within id="session-length" decrements by a value of 1, and I can see the updated value.', function() {
                 clickButtonsById(Array(4).fill(_sesh_min));
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "21");
@@ -222,7 +222,7 @@ export default function createPomodoroClockTests() {
                 clickButtonsById([_sesh_min]);
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "24")
             });
-            
+
             it('15. When I click the element with the id of "session-increment", the value within id="session-length" increments by a value of 1, and I can see the updated value.', function() {
                 clickButtonsById(Array(4).fill(_sesh_plus));
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "29");
@@ -230,7 +230,7 @@ export default function createPomodoroClockTests() {
                 clickButtonsById([_sesh_plus]);
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "26")
             });
-            
+
             it('16. I should not be able to set a session or break length to <= 0.', function() {
                 clickButtonsById(Array(10).fill(_break_min));
                 FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in element with ' +
@@ -240,7 +240,7 @@ export default function createPomodoroClockTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in element with ' +
                     'id of "session-length" is less than 1.');
             });
-            
+
             it('17. I should not be able to set a session or break length to > 60.', function() {
                 clickButtonsById(Array(60).fill(_break_plus));
                 FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in element with ' +
@@ -250,12 +250,12 @@ export default function createPomodoroClockTests() {
                 FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in element with ' +
                     'id of "session-length" is greater than 60.');
             });
-            
+
             it('18. When I first click the element with id="start_stop", the timer should begin running from the value currently displayed in id="session-length", even if the value has been incremented or decremented from the original value of 25.', function() {
                 clickButtonsById([_start_stop]);
                 FCC_Global.assert.strictEqual(getMinutes(document.getElementById("time-left").innerHTML), document.getElementById("session-length").innerHTML);
             });
-            
+
             it('19. If the timer is running, the element with the id of "time-left" should display the remaining time in mm:ss format (decrementing by a value of 1 and updating the display every 1000ms).', function() {
                 this.timeout(2500);
                 // start the pomodoro
