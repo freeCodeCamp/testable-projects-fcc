@@ -19361,6 +19361,9 @@ var FCC_Global =
 	            it("9. In any order, I should be able to add, subtract, multiply and divide a chain of numbers of any length, and when I hit =, the correct result should be shown in the element with the id of \"display\"", function () {
 	                clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
 	                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "The expression 3 + 5 * 6 - 2 / 4 should produce 32.5 or 11.5 as an answer, depending on the logic your calculator uses (formula vs. immediate execution) ");
+	                clearDisplay();
+	                clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
+	                FCC_Global.assert(document.getElementById("display").innerHTML === "1", "The expression 5 - 9 + 5 should produce a result of 1");
 	            });
 
 	            it("10. When inputting numbers, my calculator should not allow a number to begin with multiple zeros.", function () {
