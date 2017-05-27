@@ -1,5 +1,7 @@
 # testable-projects-fcc
-testable projects for freecodecamp.com curriculum expansion.
+A CDN loaded test-suite for testing the beta.freecodecamp.com Frontend Libraries Certification waypoint projects.
+![image](https://cloud.githubusercontent.com/assets/18563015/26524733/08557ed8-430b-11e7-9861-2d4e8e2806ae.png)
+![image](https://cloud.githubusercontent.com/assets/18563015/26524736/2380f3d6-430b-11e7-85cb-45f92b73323c.png)
 
 ### What is this, you ask?
 - This repo is a part of the FreeCodeCamp.com curriculum expansion, and represents our front end testable projects, err... project.
