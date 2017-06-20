@@ -43,9 +43,14 @@ local_test/*
 !local_test/index.html
 local_test/js/*
 local_test/css/*
+# folder of projects to test 
+local_test/intesting
 
 # local test code
 localTestCode.txt
 
 # Apple files
 *.DS_Store
+
+# textmate
+code_textmate 
