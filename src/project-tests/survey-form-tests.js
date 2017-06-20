@@ -116,8 +116,16 @@ export default function createSurveyFormTests() {
 
             it('12. I can select an option from a dropdown that has corresponding id="dropdown".', function() {
                 var dropdown = document.getElementById('dropdown');
-                FCC_Global.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
-                FCC_Global.assert.isAtLeast(getNumOptions(dropdown.options), 2, "Select should contain at least 2 selectable options ");
+                var dropdownTag = dropDown.tagName;
+                var inputSibling = null;
+                var inputName = null;
+                if (dropdownTag === 'DATALIST') {
+                    inputSibling = dropdown.previousElementSibling;
+                    inputName = inputSibling.getAttribute('list');
+                    FCC_Global.assert.strictEqual(inputName, 'dropdown', 'When using the datalist tag, the accompanying input tag must contain a name attribute matching the datalist id.');
+                }
+                FCC_Global.assert.isNotNull(dropDown, 'There should be a select field with id="dropdown" ');
+                FCC_Global.assert.isAtLeast(getNumOptions(dropDown.options), 2, "Select should contain at least 2 selectable options ");
                 FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #dropdown").length, 0, 'The select field with id="dropdown" is not inside the form element ');
             })
 
