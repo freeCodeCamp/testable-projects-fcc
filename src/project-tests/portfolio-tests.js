@@ -111,12 +111,21 @@ export default function createPortfolioTests() {
                     'The height of #welcome-section is not equal to the height of the viewport ');
             });
 
-            it('3. The navbar should always be at the top of the viewport.', function() {
+            it('3. The navbar should always be at the top of the viewport.', function(done) {
                 const navbar = document.getElementById('navbar');
-                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15), 'Navbar\'s parent should be body and it should be at the top of the viewport ';
+                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of the viewport ');
                 window.scroll(0, 500);
-                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
-                window.scroll(0, 0);
+
+                // This timeout is to allow page layout to happen after the window.scroll. Without it
+                // the getBoundingClientRect can sometimes report the wrong value while the page is
+                // still laying out, when using CSS position:sticky.
+                // This is apparently a bug with Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=672457
+                setTimeout(function () {
+                  FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
+                  window.scroll(0, 0);
+                  done();
+                }, 1);
+
             });
 
         }); // END #Layout
