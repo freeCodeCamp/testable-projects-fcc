@@ -49,3 +49,6 @@ localTestCode.txt
 
 # Apple files
 *.DS_Store
+
+# sass
+.sass-cache/*
