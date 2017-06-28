@@ -20020,14 +20020,17 @@ var FCC_Global =
 	                var img = document.getElementById('image'),
 	                    imgParent = document.getElementById('image').parentElement,
 	                    imgWidth = img.getBoundingClientRect().width,
-	                    parentPadLeft = parseInt(getPropValue(imgParent, 'padding-left')),
-	                    parentPadRight = parseInt(getPropValue(imgParent, 'padding-right')),
-	                    parentWidth = imgParent.getBoundingClientRect().width - (parentPadRight + parentPadLeft);
-	                console.log(parentPadLeft, parentPadRight, parentWidth, imgParent.getBoundingClientRect().width, imgWidth);
+	                    imgLeft = img.getBoundingClientRect().left,
+	                    imgRight = img.getBoundingClientRect().right,
+	                    parentPadLeft = parseInt(getPropValue(imgParent, 'padding-left'), 10),
+	                    parentPadRight = parseInt(getPropValue(imgParent, 'padding-right'), 10),
+	                    parentWidth = imgParent.getBoundingClientRect().width - (parentPadRight + parentPadLeft),
+	                    parentLeft = imgParent.getBoundingClientRect().left,
+	                    parentRight = imgParent.getBoundingClientRect().right;
 	                // difference in width between img and parent should be equal to the sum of left margin & right margin
 	                var difference = parseFloat(parentWidth) - parseFloat(imgWidth);
-	                // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value.
-	                var totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
+	                // if margin value returns only one entry then compute margin via getBoundingClientRect(), if returns more than one, we need second value.
+	                var totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? imgLeft - parentLeft + (parentRight - imgRight) : parseInt(getPropValue(img, 'margin').split(' ')[1], 10) * 2;
 	                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 11, 'Image is not centered ');
 	            });
 	        }); // END #Layout
