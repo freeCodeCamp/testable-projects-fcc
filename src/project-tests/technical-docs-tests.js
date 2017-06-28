@@ -59,16 +59,16 @@ export default function createTechnicalDocsPageTests() {
                     
                     const headerText = mainSections.map((el, i) => {
                       FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ')
-                      return [][i] = el.firstElementChild.innerText.replace(/\s/g, '_');
+                      //remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
+                      return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
                     });
                     
                     const mainSectionIDs = mainSections.map((el, i) => {
                       FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, "Each 'main-section' should have an id attribute ")
-                      return [][i] = el.id;
+                      return el.id;
                     });
                     
                     const remainder = headerText.filter(str => mainSectionIDs.indexOf(str) === -1);
-                    
                     FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t forget to replace spaces with underscores!) : ' + remainder + ' ');
                 });
 
@@ -119,8 +119,8 @@ export default function createTechnicalDocsPageTests() {
                 'element which contains the text "Hello world").',
                 function() {
                     FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
-                    const headerText = classArray('main-section').map((el, i) => [][i] = el.firstElementChild.innerText);
-                    const linkText = classArray('nav-link').map((el, i) => [][i] = /[^\n\t\f\r\v]+/.exec(el.innerText)[0]);
+                    const headerText = classArray('main-section').map((el, i) => el.firstElementChild.innerText.trim());
+                    const linkText = classArray('nav-link').map((el, i) => /[^\n\t\f\r\v]+/.exec(el.innerText)[0]);
                     // use indexOf instead of matching index for index, in case for some reason they have them out of order
                     const remainder = headerText.filter(str => linkText.indexOf(str) === -1);
                     FCC_Global.assert.strictEqual(remainder.length, 0, 'Check that these headers have corresponding .nav-link elements and ' +
@@ -134,8 +134,8 @@ export default function createTechnicalDocsPageTests() {
                     const navLinkQty = document.getElementsByClassName('nav-link').length;
                     FCC_Global.assert.isAbove(navLinkQty, 0, 'No elements with the class "nav-link" have been defined ');
                     const hasHref = classArray('nav-link').filter(el => el.hasAttribute('href'));
-                    const hrefValues = classArray('nav-link').map((el, i) => [][i] = el.getAttribute('href'));
-                    const mainSectionIDs = classArray('main-section').map((el, i) => [][i] = el.id);
+                    const hrefValues = classArray('nav-link').map((el, i) => el.getAttribute('href'));
+                    const mainSectionIDs = classArray('main-section').map((el, i) => el.id);
                     const missingHrefValues = mainSectionIDs.filter(str => hrefValues.indexOf('#' + str) === -1)
                     FCC_Global.assert.strictEqual(hasHref.length, navLinkQty, 'Every .nav-link does not have an href attribute.');
                     FCC_Global.assert.strictEqual(missingHrefValues.length, 0, 'Every .nav-link should have an href value ' +
