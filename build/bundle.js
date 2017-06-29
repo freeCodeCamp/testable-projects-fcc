@@ -20578,18 +20578,18 @@ var FCC_Global =
 
 	                var headerText = mainSections.map(function (el, i) {
 	                    FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ');
-	                    return [][i] = el.firstElementChild.innerText.replace(/\s/g, '_');
+	                    //remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
+	                    return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
 	                });
 
 	                var mainSectionIDs = mainSections.map(function (el, i) {
 	                    FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, "Each 'main-section' should have an id attribute ");
-	                    return [][i] = el.id;
+	                    return el.id;
 	                });
 
 	                var remainder = headerText.filter(function (str) {
 	                    return mainSectionIDs.indexOf(str) === -1;
 	                });
-
 	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t forget to replace spaces with underscores!) : ' + remainder + ' ');
 	            });
 
@@ -20628,10 +20628,11 @@ var FCC_Global =
 	            it('11. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
 	                FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
 	                var headerText = classArray('main-section').map(function (el, i) {
-	                    return [][i] = el.firstElementChild.innerText;
+	                    return el.firstElementChild.innerText.trim();
 	                });
 	                var linkText = classArray('nav-link').map(function (el, i) {
-	                    return [][i] = /[^\n\t\f\r\v]+/.exec(el.innerText)[0];
+	                    return (/[^\n\t\f\r\v]+/.exec(el.innerText)[0]
+	                    );
 	                });
 	                // use indexOf instead of matching index for index, in case for some reason they have them out of order
 	                var remainder = headerText.filter(function (str) {
@@ -20647,10 +20648,10 @@ var FCC_Global =
 	                    return el.hasAttribute('href');
 	                });
 	                var hrefValues = classArray('nav-link').map(function (el, i) {
-	                    return [][i] = el.getAttribute('href');
+	                    return el.getAttribute('href');
 	                });
 	                var mainSectionIDs = classArray('main-section').map(function (el, i) {
-	                    return [][i] = el.id;
+	                    return el.id;
 	                });
 	                var missingHrefValues = mainSectionIDs.filter(function (str) {
 	                    return hrefValues.indexOf('#' + str) === -1;
