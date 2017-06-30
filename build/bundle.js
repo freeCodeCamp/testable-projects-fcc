@@ -20541,11 +20541,11 @@ var FCC_Global =
 	        FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' have a <header> element as a first element child ");
 	    };
 
-	    describe("Technical Documentation Page tests", function () {
+	    describe('Technical Documentation Page tests', function () {
 	        describe('#Content', function () {
 	            it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
-	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, "MAIN", "The 'main-doc' element should be a <main> ");
+	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, 'MAIN', "The 'main-doc' element should be a <main> ");
 	            });
 
 	            it('2. Within the #main-doc ( <main> ) element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
@@ -20578,7 +20578,7 @@ var FCC_Global =
 
 	                var headerText = mainSections.map(function (el, i) {
 	                    FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ');
-	                    //remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
+	                    // remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
 	                    return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
 	                });
 
@@ -20594,24 +20594,24 @@ var FCC_Global =
 	            });
 
 	            it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, "There are not at least 10 <p> " + "elements throughout all of the elements with the class of 'main-section' ");
+	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, 'There are not at least 10 <p> ' + "elements throughout all of the elements with the class of 'main-section' ");
 	            });
 
 	            it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, "There are not at least 5 <code> " + "elements throughout all of the elements with the class of 'main-section' ");
+	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, 'There are not at least 5 <code> ' + "elements throughout all of the elements with the class of 'main-section' ");
 	            });
 
 	            it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, "There are not " + "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
+	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, 'There are not ' + "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
 	            });
 
 	            it('8. I can see a <nav> element with a corresponding id="navbar".', function () {
 	                FCC_Global.assert.isNotNull(document.getElementById('navbar'), "There is no element with the id of 'navbar'.");
-	                FCC_Global.assert.strictEqual(document.getElementById('navbar').nodeName, "NAV", 'The element with the id of ' + '"navbar" is not a <nav> element ');
+	                FCC_Global.assert.strictEqual(document.getElementById('navbar').nodeName, 'NAV', 'The element with the id of ' + '"navbar" is not a <nav> element ');
 	            });
 
-	            it('9. The first element within the navbar should be a <header> which contains text that describes the topic ' + 'of the technical documentation.', function () {
-	                FCC_Global.assert.strictEqual(document.getElementById('navbar').firstElementChild.nodeName, 'HEADER', 'The first ' + 'element within #navbar should be a <header> ');
+	            it('9. The navbar element should contain one <header> element which contains text that describes the topic ' + 'of the technical documentation.', function () {
+	                FCC_Global.assert.strictEqual(document.getElementById('navbar').getElementsByTagName('header').length, 1, 'The navbar ' + 'element should contain only one <header> element.');
 	            });
 
 	            it('10. Additionally, the navbar should contain link (<a>) elements with the class of "nav-link". There ' + 'should be one for every element with the class "main-section".', function () {
@@ -20625,7 +20625,21 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(typeQty.length, navLinkQty, 'Not all of the elements with the class of "nav-link" are ' + '<a> elements ');
 	            });
 
-	            it('11. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
+	            it('11. The <header> element in the navbar must come before any link (<a>) elements in the navbar.', function () {
+	                var navLinks = document.querySelectorAll('#navbar a.nav-link');
+	                var header = document.querySelectorAll('#navbar header').item(0);
+	                var allAbove = true;
+
+	                navLinks.forEach(function (navLink) {
+	                    if (!(header.compareDocumentPosition(navLink) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+	                        allAbove = false;
+	                    }
+	                });
+
+	                FCC_Global.assert.strictEqual(allAbove, true, 'The <header> element contained by the navbar must be come before ' + 'any link (<a>) elements contained by the navbar');
+	            });
+
+	            it('12. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
 	                FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
 	                var headerText = classArray('main-section').map(function (el, i) {
 	                    return el.firstElementChild.innerText.trim();
@@ -20641,7 +20655,7 @@ var FCC_Global =
 	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Check that these headers have corresponding .nav-link elements and ' + 'be mindful of case! : ' + remainder + ' ');
 	            });
 
-	            it('12. When I click on a navbar element, the page should navigate to the corresponding section of the ' + '"main-doc" element (e.g. If I click on a "nav-link" element that contains the text "Hello world", the page ' + 'navigates to a <section> element that has that id and contains the corresponding <header>.', function () {
+	            it('13. When I click on a navbar element, the page should navigate to the corresponding section of the ' + '"main-doc" element (e.g. If I click on a "nav-link" element that contains the text "Hello world", the page ' + 'navigates to a <section> element that has that id and contains the corresponding <header>.', function () {
 	                var navLinkQty = document.getElementsByClassName('nav-link').length;
 	                FCC_Global.assert.isAbove(navLinkQty, 0, 'No elements with the class "nav-link" have been defined ');
 	                var hasHref = classArray('nav-link').filter(function (el) {
@@ -20666,11 +20680,11 @@ var FCC_Global =
 	                var windowWidth = document.documentElement.clientWidth || window.innerWidth;
 	                FCC_Global.assert.isAbove(windowWidth, 850, 'Please run this test in a larger window (before any media queries) ');
 	                var navbar = document.getElementById('navbar');
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10);
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10);
+	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'Left of bounding rectangle is not correct.');
+	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'Top of bounding rectangle is not correct.');
 	                window.scroll(0, 1000);
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10);
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10);
+	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'After scroll: Left of bounding rectangle is not correct.');
+	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'After scroll: Top of bounding rectangle is not correct.');
 	                window.scroll(0, 0);
 	            });
 
