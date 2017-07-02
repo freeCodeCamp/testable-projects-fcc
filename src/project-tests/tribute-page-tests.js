@@ -77,20 +77,14 @@ export default function createTributePageTests() {
             it('2. The <img> element should be centered within its parent element.', function() {
                 const img = document.getElementById('image'),
                   imgParent = document.getElementById('image').parentElement,
-                  imgWidth = img.getBoundingClientRect().width,
-                  parentPadLeft = parseInt(getPropValue(imgParent, 'padding-left')),
-                  parentPadRight = parseInt(getPropValue(imgParent, 'padding-right')),
-                  parentWidth = imgParent.getBoundingClientRect().width - (parentPadRight + parentPadLeft);
-                  console.log(parentPadLeft, parentPadRight, parentWidth, imgParent.getBoundingClientRect().width, imgWidth)
-                // difference in width between img and parent should be equal to the sum of left margin & right margin
-                const difference = parseFloat(parentWidth) - parseFloat(imgWidth);
-                // if margin value returns only one entry then all margins are 0, if returns more than one, we need second value.
-                const totalMargin = getPropValue(img, 'margin').split(' ').length === 1 ? 0 : parseInt(getPropValue(img, 'margin').split(' ')[1]) * 2;
-                FCC_Global.assert.approximately(Math.floor(difference), totalMargin, 11, 'Image is not centered ');
+                  imgLeft = img.getBoundingClientRect().left,
+                  imgRight = img.getBoundingClientRect().right,
+                  parentLeft = imgParent.getBoundingClientRect().left,
+                  parentRight = imgParent.getBoundingClientRect().right;
+                FCC_Global.assert.approximately(imgLeft - parentLeft, parentRight - imgRight, 11, 'Image is not centered')
             });
         }); // END #Layout
 
     }); // END #TributePageTests
 } // END createTributePageTests()
-
 
