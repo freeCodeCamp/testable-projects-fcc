@@ -190,6 +190,10 @@ const test_suite_skeleton = `
             color: black !important;
         }
         #fcc_foldout_menu select {
+            display: block;
+            padding: 0;
+            height: auto;
+            width: auto;	
             top: 61px;
             left: 18px;
             position: absolute;
