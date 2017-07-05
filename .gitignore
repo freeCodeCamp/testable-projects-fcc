@@ -30,6 +30,13 @@ build/Release
 node_modules
 jspm_packages
 
+# Some config files.
+config/live-server-https.js
+config/server.crt
+config/server.csr
+config/server.key
+test/setup.js
+
 # Optional npm cache directory
 .npm
 

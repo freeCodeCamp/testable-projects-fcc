@@ -1,0 +1,19 @@
+/* global path */
+
+/**
+ * Used by live-server to serve https. We use live-server for the
+ * automated tests to serve up the local version of bundle.js.
+ *
+ * You will have to create a server.crt and server.key file in this directory
+ * which should be straightforward on most OSes. Change the password below to
+ * whatever you used when creating the certificate.
+ *
+ */
+var fs = require('fs');
+var path = require('path');
+
+module.exports = {
+	cert: fs.readFileSync(path.join(__dirname, '/server.crt')),
+	key: fs.readFileSync(path.join(__dirname, '/server.key')),
+	passphrase: '12345678'
+};
