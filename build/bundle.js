@@ -48,7 +48,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.assert = undefined;
 	exports.selectProject = selectProject;
@@ -145,302 +145,302 @@ var FCC_Global =
 
 	// load mocha
 	(function () {
-	    // write mocha CSS to page head
-	    document.write('<style>' + _mocha_CSS2.default + '</style>');
-	    // add a script tag to load mocha JS from a CDN
-	    var mocha_cdn = document.createElement('script');
-	    mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
-	    document.head.appendChild(mocha_cdn);
+	  // write mocha CSS to page head
+	  document.write('<style>' + _mocha_CSS2.default + '</style>');
+	  // add a script tag to load mocha JS from a CDN
+	  var mocha_cdn = document.createElement('script');
+	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
+	  document.head.appendChild(mocha_cdn);
 	})();
 
 	// When the document is fully loaded,
 	// create the "Tests" button and the corresponding modal window, jquery required)
 	(0, _jquery2.default)(document).ready(function () {
-	    // alert users about cross-browser compatibility issues
-	    var isChrome = !!window.chrome && !!window.chrome.webstore;
-	    if (isChrome === false) {
-	        FCC_Global.alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known issues that we are trying to work through to make these suites fully cross-browser compatible, but it is a work in progress. For the best user experience, please use Chrome until these issues are resolved. Thanks and Happy Coding!');
-	    }
-	    // check mocha is loaded and populate test suite
-	    var mochaCheck = setInterval(function () {
-	        return runCheck();
-	    }, 50);
+	  // alert users about cross-browser compatibility issues
+	  var isChrome = !!window.chrome && !!window.chrome.webstore;
+	  if (isChrome === false) {
+	    FCC_Global.alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known issues that we are trying to work through to make these suites fully cross-browser compatible, but it is a work in progress. For the best user experience, please use Chrome until these issues are resolved. Thanks and Happy Coding!');
+	  }
+	  // check mocha is loaded and populate test suite
+	  var mochaCheck = setInterval(function () {
+	    return runCheck();
+	  }, 50);
 
-	    function runCheck() {
-	        try {
-	            if (mocha) {
-	                clearInterval(mochaCheck);
-	                mocha.setup("bdd");
-	                var testDiv = document.createElement("div");
-	                testDiv.style.position = "inherit";
-	                testDiv.innerHTML = _test_suite_skeleton2.default;
-	                document.body.appendChild(testDiv);
-	                // Once testDiv is loaded:
-	                var project_titleCase = localStorage.getItem('project_titleCase');
-	                // project_name variable is defined in our example projects so the correct test suite is automatically
-	                // loaded. This Sets default text for <option> text and project indicator in top right corner.
-	                if (typeof project_name === 'undefined' && project_titleCase === null) {
-	                    document.getElementById('placeholder').innerHTML = '- - -';
-	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
-	                } else if (typeof project_name !== 'undefined') {
-	                    document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
-	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + localStorage.getItem('example_project') + '</span>';;
-	                } else {
-	                    document.getElementById('placeholder').innerHTML = project_titleCase;
-	                    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
-	                }
-	            };
-	        } catch (err) {
-	            console.warn('mocha not loaded yet');
-	        };
+	  function runCheck() {
+	    try {
+	      if (mocha) {
+	        clearInterval(mochaCheck);
+	        mocha.setup("bdd");
+	        var testDiv = document.createElement("div");
+	        testDiv.style.position = "inherit";
+	        testDiv.innerHTML = _test_suite_skeleton2.default;
+	        document.body.appendChild(testDiv);
+	        // Once testDiv is loaded:
+	        var project_titleCase = localStorage.getItem('project_titleCase');
+	        // project_name variable is defined in our example projects so the correct test suite is automatically
+	        // loaded. This Sets default text for <option> text and project indicator in top right corner.
+	        if (typeof project_name === 'undefined' && project_titleCase === null) {
+	          document.getElementById('placeholder').innerHTML = '- - -';
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+	        } else if (typeof project_name !== 'undefined') {
+	          document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + localStorage.getItem('example_project') + '</span>';;
+	        } else {
+	          document.getElementById('placeholder').innerHTML = project_titleCase;
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
+	        }
+	      };
+	    } catch (err) {
+	      console.warn('mocha not loaded yet');
 	    };
-	    runCheck();
+	  };
+	  runCheck();
 	});
 
 	// UTILITY FUNCTIONS:
 
 	// select project dropdown
 	function selectProject(project) {
-	    // store project_selector for initTestRunner function
-	    localStorage.setItem('project_selector', project);
-	    // create & store pretty-print project name for display in indicator div
-	    var project_titleCase = project.replace(/-/g, ' ').split(' ').map(function (word) {
-	        return word.charAt(0).toUpperCase() + word.substr(1);
-	    }).join(' ');
-	    document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
-	    localStorage.setItem('project_titleCase', project_titleCase);
+	  // store project_selector for initTestRunner function
+	  localStorage.setItem('project_selector', project);
+	  // create & store pretty-print project name for display in indicator div
+	  var project_titleCase = project.replace(/-/g, ' ').split(' ').map(function (word) {
+	    return word.charAt(0).toUpperCase() + word.substr(1);
+	  }).join(' ');
+	  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
+	  localStorage.setItem('project_titleCase', project_titleCase);
 	}
 
 	// Updates the button color and text on the target project, to show how many tests passed and how many failed.
 	function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-	    var button = document.getElementById('fcc_test_button');
-	    button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
-	    if (nbFailed) {
-	        button.classList.add("fcc_test_btn-error");
-	    } else {
-	        button.classList.add("fcc_test_btn-success");
-	    }
+	  var button = document.getElementById('fcc_test_button');
+	  button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
+	  if (nbFailed) {
+	    button.classList.add("fcc_test_btn-error");
+	  } else {
+	    button.classList.add("fcc_test_btn-success");
+	  }
 	}
 
 	// Updates the button text on the target project, to show how many tests were executed so far.
 	function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-	    var button = document.getElementById('fcc_test_button');
-	    button.classList.add('fcc_test_btn-executing');
-	    button.innerHTML = 'Testing ' + nbTestsExecuted + '/' + nbTests;
+	  var button = document.getElementById('fcc_test_button');
+	  button.classList.add('fcc_test_btn-executing');
+	  button.innerHTML = 'Testing ' + nbTestsExecuted + '/' + nbTests;
 	}
 
 	// open main modal
 	function FCCOpenTestModal() {
-	    var modal = document.getElementById('fcc_test_message-box');
-	    modal.classList.remove("fcc_test_message-box-hidden");
-	    modal.classList.add("fcc_test_message-box-shown");
+	  var modal = document.getElementById('fcc_test_message-box');
+	  modal.classList.remove("fcc_test_message-box-hidden");
+	  modal.classList.add("fcc_test_message-box-shown");
 	}
 
 	// close main modal
 	function FCCCloseTestModal() {
-	    var modal = document.getElementById('fcc_test_message-box');
-	    modal.classList.remove("fcc_test_message-box-shown");
-	    modal.classList.add("fcc_test_message-box-hidden");
+	  var modal = document.getElementById('fcc_test_message-box');
+	  modal.classList.remove("fcc_test_message-box-shown");
+	  modal.classList.add("fcc_test_message-box-hidden");
 	}
 
 	// close modal on ESC press
 	(0, _jquery2.default)(document).keyup(function (e) {
-	    e = e || window.event;
-	    if (e.keyCode == 27) {
-	        FCCCloseTestModal();
-	    }
+	  e = e || window.event;
+	  if (e.keyCode == 27) {
+	    FCCCloseTestModal();
+	  }
 	});
 
 	// close modal on click outside el
 	function FCCclickOutsideToCloseModal(e) {
-	    if (e.target.id === 'fcc_test_message-box') {
-	        FCCCloseTestModal();
-	    }
+	  if (e.target.id === 'fcc_test_message-box') {
+	    FCCCloseTestModal();
+	  }
 	}
 
-	// cannot reset classList with an = assignment 
-	// due to cross-browser conflicts 
+	// cannot reset classList with an = assignment
+	// due to cross-browser conflicts
 	function clearClassList(elem) {
-	    var classListAsArray = new Array(elem.classList.length);
+	  var classListAsArray = new Array(elem.classList.length);
 
-	    for (var i = 0; i < elem.classList.length; i++) {
-	        classListAsArray[i] = elem.classList[i];
-	    }
+	  for (var i = 0; i < elem.classList.length; i++) {
+	    classListAsArray[i] = elem.classList[i];
+	  }
 
-	    for (var i = 0; i < classListAsArray.length; i++) {
-	        elem.classList.remove(classListAsArray[i]);
-	    }
+	  for (var i = 0; i < classListAsArray.length; i++) {
+	    elem.classList.remove(classListAsArray[i]);
+	  }
 	}
 
 	// run tests
 	function FCCRerunTests() {
-	    var button = document.getElementById('fcc_test_button');
-	    button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
-	    button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
-	    clearClassList(button);
-	    button.classList.add("fcc_foldout_buttons");
-	    button.classList.add("fcc_test_btn-default");
-	    FCCInitTestRunner();
+	  var button = document.getElementById('fcc_test_button');
+	  button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
+	  button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
+	  clearClassList(button);
+	  button.classList.add("fcc_foldout_buttons");
+	  button.classList.add("fcc_test_btn-default");
+	  FCCInitTestRunner();
 	}
 
 	// reset tests
 	function FCCResetTests(suite) {
-	    suite.tests.forEach(function (t) {
-	        delete t.state;
-	        t.timedOut = false;
-	    });
-	    suite.suites.forEach(FCCResetTests);
+	  suite.tests.forEach(function (t) {
+	    delete t.state;
+	    t.timedOut = false;
+	  });
+	  suite.suites.forEach(FCCResetTests);
 	}
 
 	// shortcut keys
 	var map = [];
 	onkeydown = onkeyup = function onkeyup(e) {
-	    var modal = document.getElementById('fcc_test_message-box');
-	    e = e || window.event;
-	    map[e.keyCode] = e.type == 'keydown';
-	    if (map[17] && map[16] && map[13]) {
-	        // run tests: Ctrl + Shift + Enter
-	        if (localStorage.getItem('project_selector') === 'markdown-previewer') {
-	            alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
-	            return;
-	        } else {
-	            FCCRerunTests();
-	        }
-	    } else if (map[17] && map[16] && map[84]) {
-	        // open/close modal: Ctrl + Shift + T
-	        if (modal.classList.contains("fcc_test_message-box-hidden")) {
-	            FCCOpenTestModal();
-	        } else {
-	            FCCCloseTestModal();
-	        }
-	    } else if (map[17] && map[16] && map[79]) {
-	        // open/close foldout menu: Ctrl + Shift + O
-	        document.getElementById('toggle').click();
+	  var modal = document.getElementById('fcc_test_message-box');
+	  e = e || window.event;
+	  map[e.keyCode] = e.type == 'keydown';
+	  if (map[17] && map[16] && map[13]) {
+	    // run tests: Ctrl + Shift + Enter
+	    if (localStorage.getItem('project_selector') === 'markdown-previewer') {
+	      alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
+	      return;
+	    } else {
+	      FCCRerunTests();
 	    }
+	  } else if (map[17] && map[16] && map[84]) {
+	    // open/close modal: Ctrl + Shift + T
+	    if (modal.classList.contains("fcc_test_message-box-hidden")) {
+	      FCCOpenTestModal();
+	    } else {
+	      FCCCloseTestModal();
+	    }
+	  } else if (map[17] && map[16] && map[79]) {
+	    // open/close foldout menu: Ctrl + Shift + O
+	    document.getElementById('toggle').click();
+	  }
 	};
 
 	// shortcuts interfere w/ markdown tests, disable and alert
 	function alertOnce(item, message) {
-	    var alerted = sessionStorage.getItem(item) || false;
-	    if (alerted) {
-	        return;
-	    } else {
-	        alert(message);
-	        sessionStorage.setItem(item, true);
-	    }
+	  var alerted = sessionStorage.getItem(item) || false;
+	  if (alerted) {
+	    return;
+	  } else {
+	    alert(message);
+	    sessionStorage.setItem(item, true);
+	  }
 	}
 
 	// hamburger menu transformation
 	function hamburger_transform() {
-	    if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
-	        document.getElementById('hamburger_top').classList.remove('transform_top');
-	        document.getElementById('hamburger_middle').classList.remove('transform_middle');
-	        document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
-	    } else {
-	        document.getElementById('hamburger_top').classList.add('transform_top');
-	        document.getElementById('hamburger_middle').classList.add('transform_middle');
-	        document.getElementById('hamburger_bottom').classList.add('transform_bottom');
-	    }
+	  if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
+	    document.getElementById('hamburger_top').classList.remove('transform_top');
+	    document.getElementById('hamburger_middle').classList.remove('transform_middle');
+	    document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
+	  } else {
+	    document.getElementById('hamburger_top').classList.add('transform_top');
+	    document.getElementById('hamburger_middle').classList.add('transform_middle');
+	    document.getElementById('hamburger_bottom').classList.add('transform_bottom');
+	  }
 	}
 
 	// init tests
 	function FCCInitTestRunner() {
-	    var testRunner = null;
-	    // empty the mocha tag in case of rerun
-	    document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
-	    // empty the test suite in the mocha object
-	    mocha.suite.suites = [];
-	    // check for hard-coded project selector (for our example projects)
-	    var hardCoded_project_name = typeof project_name === 'undefined' ? null : project_name;
-	    // create tests
-	    switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
-	        case "random-quote-machine":
-	            (0, _quoteMachineTests2.default)();
-	            break;
-	        case "javascript-calculator":
-	            (0, _calculatorTests2.default)();
-	            break;
-	        case "pomodoro-clock":
-	            (0, _pomodoroClockTests2.default)();
-	            break;
-	        case "tribute-page":
-	            (0, _tributePageTests2.default)();
-	            break;
-	        case "drum-machine":
-	            (0, _drumMachineTests2.default)();
-	            break;
-	        case "portfolio":
-	            (0, _portfolioTests2.default)();
-	            break;
-	        case 'product-landing-page':
-	            (0, _productLandingPageTests2.default)();
-	            break;
-	        case 'survey-form':
-	            (0, _surveyFormTests2.default)();
-	            break;
-	        case 'markdown-previewer':
-	            (0, _markdownPreviewerTests2.default)();
-	            break;
-	        case 'technical-docs-page':
-	            (0, _technicalDocsTests2.default)();
-	            break;
-	        case 'bar-chart':
-	            (0, _barChartTests2.default)();
-	            break;
-	        case 'scatter-plot':
-	            (0, _scatterPlotTests2.default)();
-	            break;
-	        case 'choropleth':
-	            (0, _choroplethTests2.default)();
-	            break;
-	        case 'heat-map':
-	            (0, _heatMapTests2.default)();
-	            break;
-	        case 'tree-map':
-	            (0, _treeMapTests2.default)();
-	            break;
-	    };
+	  var testRunner = null;
+	  // empty the mocha tag in case of rerun
+	  document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
+	  // empty the test suite in the mocha object
+	  mocha.suite.suites = [];
+	  // check for hard-coded project selector (for our example projects)
+	  var hardCoded_project_name = typeof project_name === 'undefined' ? null : project_name;
+	  // create tests
+	  switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
+	    case "random-quote-machine":
+	      (0, _quoteMachineTests2.default)();
+	      break;
+	    case "javascript-calculator":
+	      (0, _calculatorTests2.default)();
+	      break;
+	    case "pomodoro-clock":
+	      (0, _pomodoroClockTests2.default)();
+	      break;
+	    case "tribute-page":
+	      (0, _tributePageTests2.default)();
+	      break;
+	    case "drum-machine":
+	      (0, _drumMachineTests2.default)();
+	      break;
+	    case "portfolio":
+	      (0, _portfolioTests2.default)();
+	      break;
+	    case 'product-landing-page':
+	      (0, _productLandingPageTests2.default)();
+	      break;
+	    case 'survey-form':
+	      (0, _surveyFormTests2.default)();
+	      break;
+	    case 'markdown-previewer':
+	      (0, _markdownPreviewerTests2.default)();
+	      break;
+	    case 'technical-docs-page':
+	      (0, _technicalDocsTests2.default)();
+	      break;
+	    case 'bar-chart':
+	      (0, _barChartTests2.default)();
+	      break;
+	    case 'scatter-plot':
+	      (0, _scatterPlotTests2.default)();
+	      break;
+	    case 'choropleth':
+	      (0, _choroplethTests2.default)();
+	      break;
+	    case 'heat-map':
+	      (0, _heatMapTests2.default)();
+	      break;
+	    case 'tree-map':
+	      (0, _treeMapTests2.default)();
+	      break;
+	  };
 
-	    // save the number of tests in the selected suite
-	    var nbTests = 0;
-	    mocha.suite.eachTest(function (_) {
-	        return nbTests++;
-	    });
-	    var nbTestsExecuted = 0;
-	    var nbPassed = 0;
-	    var nbFailed = 0;
-	    var hasPassed = function hasPassed(_) {
-	        return nbPassed++;
-	    };
-	    var hasFailed = function hasFailed(_) {
-	        return nbFailed++;
-	    };
-	    var updateProgress = function updateProgress(_) {
-	        return FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
-	    };
-	    var updateEnd = function updateEnd(_) {
-	        return FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
-	    };
-	    if (testRunner) {
-	        FCCResetTests(mocha.suite);
-	        testRunner.abort();
-	        testRunner.removeListener("pass", hasPassed);
-	        testRunner.removeListener("fail", hasFailed);
-	        testRunner.removeListener("test end", updateProgress);
-	        testRunner.removeListener("end", updateEnd);
-	    };
-	    // Run the test suite
-	    testRunner = mocha.run();
-	    testRunner.on("pass", hasPassed);
-	    testRunner.on("fail", hasFailed);
-	    testRunner.on("test end", updateProgress);
-	    testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+	  // save the number of tests in the selected suite
+	  var nbTests = 0;
+	  mocha.suite.eachTest(function (_) {
+	    return nbTests++;
+	  });
+	  var nbTestsExecuted = 0;
+	  var nbPassed = 0;
+	  var nbFailed = 0;
+	  var hasPassed = function hasPassed(_) {
+	    return nbPassed++;
+	  };
+	  var hasFailed = function hasFailed(_) {
+	    return nbFailed++;
+	  };
+	  var updateProgress = function updateProgress(_) {
+	    return FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
+	  };
+	  var updateEnd = function updateEnd(_) {
+	    return FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
+	  };
+	  if (testRunner) {
+	    FCCResetTests(mocha.suite);
+	    testRunner.abort();
+	    testRunner.removeListener("pass", hasPassed);
+	    testRunner.removeListener("fail", hasFailed);
+	    testRunner.removeListener("test end", updateProgress);
+	    testRunner.removeListener("end", updateEnd);
+	  };
+	  // Run the test suite
+	  testRunner = mocha.run();
+	  testRunner.on("pass", hasPassed);
+	  testRunner.on("fail", hasFailed);
+	  testRunner.on("test end", updateProgress);
+	  testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
 	};
 
 	// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
 	(function () {
-	    if (typeof NodeList.prototype.forEach === "function") return false;
-	    NodeList.prototype.forEach = Array.prototype.forEach;
+	  if (typeof NodeList.prototype.forEach === "function") return false;
+	  NodeList.prototype.forEach = Array.prototype.forEach;
 	})();
 
 /***/ }),
@@ -19015,9 +19015,9 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	var test_suite_skeleton = "\n    <style>\n        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n        /* TEST/MESSAGE CENTER CSS */\n\n        #fcc_test_message-box {\n            font-size: 20px !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n            position: fixed;\n            left: 0;\n            bottom: 0;\n            right: 0;\n            text-align: center;\n            background-color: rgba(0, 0, 0, 0.8) !important;\n            transition: all .5s;\n            z-index: 100000;\n            overflow: auto;\n        }\n\n        .fcc_test_message-box-hidden {\n            visibility: hidden;\n            opacity: 0;\n            top: -300px;\n        }\n\n        .fcc_test_message-box-shown {\n            visibility: visible;\n            opacity: 1;\n            top: 0;\n        }\n\n        .fcc_test_message-box-content {\n            position: relative;\n            color: black !important;\n            background-color: white !important;\n            top: 10vh;\n            width: 80%;\n            margin: 0 auto !important;\n            text-align: initial;\n            border-radius: 10px !important;\n            display: flex;\n            flex-direction: column;\n        }\n        .fcc_test_message-box-header,\n        .fcc_test_message-box-footer{\n            position: relative;\n            flex: none;\n            box-sizing: border-box !important;\n            padding: 10px !important;\n        }\n        .fcc_test_message-box-header {\n            border-bottom: 1px solid rgb(229,229,229);\n            height: 60px;\n        }\n\n        .fcc_test_message-box-header .title {\n            float: left;\n            font-size: 30px !important;\n            line-height: 40px !important;\n            margin-left: 10px !important;\n        }\n\n        .fcc_test_message-box-body {\n            flex: 1;\n        }\n\n        .fcc_test_message-box-footer {\n            border-top: 1px solid rgb(229,229,229);\n            height: 70px;\n        }\n\n        .fcc_test_message-box-close-btn {\n            float: right;\n            color: black;\n            background-color: white;\n            border: 1px solid rgb(229,229,229);\n            border-radius: 4px;\n            padding: 10px 20px !important;\n            margin-bottom: 10px;\n            transition: all .3s;\n        }\n        .fcc_test_message-box-close-btn:hover {\n            color: white;\n            background-color: black;\n        }\n\n        #mocha {\n            margin: 10px !important;\n        }\n        #mocha .test pre {\n            background-color: rgb(245, 245, 245) !important;\n        }\n        #mocha-stats {\n            position: absolute;\n        }\n        #mocha ul {\n            max-width: initial;\n            margin: initial !important;\n            text-align: initial;\n        }\n        #mocha * {\n          font-family: Noto Sans, arial, sans-serif !important;\n          border: none !important;\n        }\n\n        div {\n            position: static;\n        }\n\n        /* FOLDOUT MENU CSS */\n\n        #fcc_foldout_menu {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 320px;\n            height: 210px;\n            border-radius: 0 !important;\n            border-bottom-right-radius: 5px !important;\n            background-color: rgba(255, 255, 204, 0.9) !important;\n            z-index: 99997;\n            font-family: Noto Sans, arial, sans-serif !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n            transition: .5s;\n        }\n        #toggle:checked ~ #fcc_foldout_menu {\n            left: -320px;\n            transition: .5s ease-in-out;\n        }\n        #fcc_foldout_menu_inner {\n            position: relative;\n        }\n        #toggle {\n            height: 24px;\n            width: 25px;\n            position: fixed;\n            top: 7px;\n            left: 20px;\n            opacity: 0;\n            cursor: pointer;\n            z-index: 99999;\n        }\n        #fcc_foldout_toggler {\n            position: absolute;\n            top: 20px;\n            left: 20px;\n            z-index: 99998;\n        }\n\n        .transform_top {\n            opacity: 1;\n            transform: rotate(45deg) translate(-2px, -1px);\n        }\n        .transform_middle {\n            opacity: 0;\n            transform: rotate(0deg) scale(0.2, 0.2);\n        }\n        .transform_bottom {\n            opacity: 1;\n            transform: rotate(-45deg) translate(-1px, -1px);\n        }\n\n        .fcc_hamburger {\n            position: relative;\n            width: 25px;\n            height: 3px;\n            display: block;\n            background: black !important;\n            border-radius: 5px !important;\n            transform-origin: 4px 0px;\n            transition: transform 0.4s ease, opacity 0.55s ease;\n        }\n        #hamburger_top {\n            position: absolute;\n            top: -6px;\n            transform-origin: 0% 80%;\n        }\n        #hamburger_bottom {\n            position: absolute;\n            bottom: -6px;\n            transform-origin: 20% 80%;\n        }\n\n        #fcc_foldout_menu label {\n            top: 38px;\n            left: 20px;\n            position: absolute;\n            font-size: 15px !important;\n            color: black !important;\n        }\n        #fcc_foldout_menu select {\n            display: block;\n            padding: 0;\n            height: auto;\n            width: auto;\t\n            top: 61px;\n            left: 18px;\n            position: absolute;\n            font-size: 12px !important;\n            font-family: Noto Sans, Arial, sans-serif !important;\n        }\n\n        .fcc_foldout_buttons {\n            position: absolute;\n            left: 20px;\n            height: 20px;\n            width: 110px;\n            padding: 10px !important;\n            display: block;\n            font-size: 15px !important;\n            line-height: 15px !important;\n            text-align: center;\n            border: none !important;\n            outline: none !important;\n            color: white;\n            background-color: rgba(128, 128, 128, 0.7);\n            border-radius: 4px;\n            box-sizing: content-box !important;\n            z-index: 0;\n            cursor: pointer;\n            box-shadow: 1px 1px 4px black;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n        #fcc_test_message-box-rerun-button {\n            top: 90px;\n            transition: all .3s;\n        }\n        #fcc_test_message-box-rerun-button:hover {\n            color: white;\n            background-color: black;\n        }\n        #fcc_test_button {\n            top: 140px;\n        }\n        .fcc_test_btn-default {\n            background-color: rgba(128, 128, 128, 0.7);\n        }\n        .fcc_test_btn-executing {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_test_btn-error {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .fcc_test_btn-success {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        #fcc_report-bug {\n          position: absolute;\n          top: 186px;\n          left: 20px;\n          width: 110px;\n          padding: 0 10px !important;\n          font-size: 12px !important;\n          text-align: center;\n        }\n\n        #fcc_legend_wrapper {\n            position: absolute;\n            top: 95px;\n            left: 160px;\n            width: 125px;\n            vertical-align: top;\n            text-align: left !important;\n            font-size: 15px !important;\n            background: none !important;\n        }\n        #fcc_legend_wrapper span {\n            height: 15px;\n            margin-top: 6px !important;\n            font-size: 12px  !important;\n            color: black !important;\n            background: none !important;\n        }\n        .key {\n            height: 15px;\n            width: 15px;\n            margin: 5px !important;\n            vertical-align: top;\n            border-radius: 0 !important;\n        }\n        .key:first-of-type {\n            background-color: rgba(255, 0, 0, 0.7);\n        }\n        .key:nth-of-type(2) {\n            background-color: rgba(81, 211, 81, 0.9);\n        }\n        .key:nth-of-type(3) {\n            background-color: rgba(255, 153, 0, 0.9);\n        }\n        .fcc_legend {\n            position: relative;\n            display: inline-block;\n        }\n\n        #fcc_test_suite_indicator_wrapper {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n        }\n        #fcc_test_suite_indicator {\n            position: fixed;\n            top: 15px;\n            right: 20px;\n            font-size: 12px !important;\n            background-color: rgba(255, 255, 204, 0.9) !important;\n            color: black !important;\n            padding: 3px 5px !important;\n            border-radius: 5px !important;\n            box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n            font-family: Noto Sans, arial, sans-serif !important;\n        }\n\n    </style>\n    <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n    <div id=\"fcc_foldout_toggler\">\n        <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n        <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n        <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n    </div>\n    <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n    <div id=\"fcc_foldout_menu\">\n        <div id=\"fcc_foldout_menu_inner\">\n            <label for=\"test-suite-selector\">Select Test Suite: </label>\n            <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n                <option id=\"placeholder\" value=\"\">- - -</option>\n                <option value=\"tribute-page\">Tribute Page</option>\n                <option value=\"portfolio\">Personal Portfolio</option>\n                <option value=\"survey-form\">Survey Form</option>\n                <option value=\"product-landing-page\">Product Landing Page</option>\n                <option value=\"technical-docs-page\">Technical Documentation Page</option>\n                <option value=\"random-quote-machine\">Random Quote Machine</option>\n                <option value=\"markdown-previewer\">Markdown Previewer</option>\n                <option value=\"drum-machine\">Drum Machine</option>\n                <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n                <option value=\"javascript-calculator\">Javascript Calculator</option>\n                <option value=\"bar-chart\">D3: Bar Chart</option>\n                <option value=\"scatter-plot\">D3: Scatter Plot</option>\n                <option value=\"heat-map\">D3: Heat Map</option>\n                <option value=\"choropleth\">D3: Choropleth</option>\n                <option value=\"tree-map\">D3: Tree Map</option>\n            </select>\n            <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n                Run Tests\n            </button>\n            <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n                Tests\n            </button>\n            <div id=\"fcc_legend_wrapper\">\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n                    <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n            </div>\n            <span id=\"fcc_report-bug\"><a href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\" target=\"_blank\">Report Bug</a></span>\n        </div>\n    </div>\n    <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n        <div class=\"fcc_test_message-box-content\">\n            <div class=\"fcc_test_message-box-header\">\n                <div class=\"title\">Unit tests</div>\n            </div>\n            <div class=\"fcc_test_message-box-body\">\n                <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n            </div>\n            <div class=\"fcc_test_message-box-footer\">\n                <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n            </div>\n        </div>\n    </div>";
+	var test_suite_skeleton = "\n  <style>\n    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n    /* TEST/MESSAGE CENTER CSS */\n\n    #fcc_test_message-box {\n      font-size: 20px !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8) !important;\n      transition: all .5s;\n      z-index: 100000;\n      overflow: auto;\n    }\n\n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n\n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black !important;\n      background-color: white !important;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto !important;\n      text-align: initial;\n      border-radius: 10px !important;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      flex: none;\n      box-sizing: border-box !important;\n      padding: 10px !important;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n      height: 60px;\n    }\n\n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px !important;\n      line-height: 40px !important;\n      margin-left: 10px !important;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n      height: 70px;\n    }\n\n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px !important;\n      margin-bottom: 10px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px !important;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245) !important;\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial !important;\n      text-align: initial;\n    }\n    #mocha * {\n      font-family: Noto Sans, arial, sans-serif !important;\n      border: none !important;\n    }\n\n    div {\n      position: static;\n    }\n\n    /* FOLDOUT MENU CSS */\n\n    #fcc_foldout_menu {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 320px;\n      height: 210px;\n      border-radius: 0 !important;\n      border-bottom-right-radius: 5px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      z-index: 99997;\n      font-family: Noto Sans, arial, sans-serif !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      transition: .5s;\n    }\n    #toggle:checked ~ #fcc_foldout_menu {\n      left: -320px;\n      transition: .5s ease-in-out;\n    }\n    #fcc_foldout_menu_inner {\n      position: relative;\n    }\n    #toggle {\n      height: 24px;\n      width: 25px;\n      position: fixed;\n      top: 7px;\n      left: 20px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 99999;\n    }\n    #fcc_foldout_toggler {\n      position: absolute;\n      top: 20px;\n      left: 20px;\n      z-index: 99998;\n    }\n\n    .transform_top {\n      opacity: 1;\n      transform: rotate(45deg) translate(-2px, -1px);\n    }\n    .transform_middle {\n      opacity: 0;\n      transform: rotate(0deg) scale(0.2, 0.2);\n    }\n    .transform_bottom {\n      opacity: 1;\n      transform: rotate(-45deg) translate(-1px, -1px);\n    }\n\n    .fcc_hamburger {\n      position: relative;\n      width: 25px;\n      height: 3px;\n      display: block;\n      background: black !important;\n      border-radius: 5px !important;\n      transform-origin: 4px 0px;\n      transition: transform 0.4s ease, opacity 0.55s ease;\n    }\n    #hamburger_top {\n      position: absolute;\n      top: -6px;\n      transform-origin: 0% 80%;\n    }\n    #hamburger_bottom {\n      position: absolute;\n      bottom: -6px;\n      transform-origin: 20% 80%;\n    }\n\n    #fcc_foldout_menu label {\n      top: 38px;\n      left: 20px;\n      position: absolute;\n      font-size: 15px !important;\n      color: black !important;\n    }\n    #fcc_foldout_menu select {\n      display: block;\n      padding: 0;\n      height: auto;\n      width: auto;\n      top: 61px;\n      left: 18px;\n      position: absolute;\n      font-size: 12px !important;\n      font-family: Noto Sans, Arial, sans-serif !important;\n    }\n\n    .fcc_foldout_buttons {\n      position: absolute;\n      left: 20px;\n      height: 20px;\n      width: 110px;\n      padding: 10px !important;\n      display: block;\n      font-size: 15px !important;\n      line-height: 15px !important;\n      text-align: center;\n      border: none !important;\n      outline: none !important;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      box-sizing: content-box !important;\n      z-index: 0;\n      cursor: pointer;\n      box-shadow: 1px 1px 4px black;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n    #fcc_test_message-box-rerun-button {\n      top: 90px;\n      transition: all .3s;\n    }\n    #fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      top: 140px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-executing {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    #fcc_report-bug {\n      position: absolute;\n      top: 186px;\n      left: 20px;\n      width: 110px;\n      padding: 0 10px !important;\n      font-size: 12px !important;\n      text-align: center;\n    }\n\n    #fcc_legend_wrapper {\n      position: absolute;\n      top: 95px;\n      left: 160px;\n      width: 125px;\n      vertical-align: top;\n      text-align: left !important;\n      font-size: 15px !important;\n      background: none !important;\n    }\n    #fcc_legend_wrapper span {\n      height: 15px;\n      margin-top: 6px !important;\n      font-size: 12px  !important;\n      color: black !important;\n      background: none !important;\n    }\n    .key {\n      height: 15px;\n      width: 15px;\n      margin: 5px !important;\n      vertical-align: top;\n      border-radius: 0 !important;\n    }\n    .key:first-of-type {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .key:nth-of-type(2) {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    .key:nth-of-type(3) {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_legend {\n      position: relative;\n      display: inline-block;\n    }\n\n    #fcc_test_suite_indicator_wrapper {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n    }\n    #fcc_test_suite_indicator {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n      font-size: 12px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      color: black !important;\n      padding: 3px 5px !important;\n      border-radius: 5px !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n  </style>\n\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page</option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\" target=\"_blank\">Report Bug</a></span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
 
 	exports.default = test_suite_skeleton;
 
@@ -19040,113 +19040,113 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createDrumMachineTests;
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
 
-	    var isChrome = !!window.chrome && !!window.chrome.webstore;
-	    if (isChrome === false) {
-	        FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in browsers other than Chrome');
+	  var isChrome = !!window.chrome && !!window.chrome.webstore;
+	  if (isChrome === false) {
+	    FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in browsers other than Chrome');
+	  }
+
+	  describe('#Drum Machine tests', function () {
+
+	    // vars:
+	    var drumPads = document.querySelectorAll('.drum-pad');
+	    var audioElements = document.querySelectorAll('.drum-pad .clip');
+
+	    // functions:
+	    function __triggerKeyboardEvent(el, keyCode) {
+	      var eventObj = document.createEventObject ? document.createEventObject() : document.createEvent("Events");
+	      if (eventObj.initEvent) {
+	        eventObj.initEvent("keydown", true, true);
+	      }
+	      eventObj.keyCode = keyCode;
+	      eventObj.which = keyCode;
+	      el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent("onkeydown", eventObj);
 	    }
 
-	    describe('#Drum Machine tests', function () {
+	    describe('#Tests', function () {
 
-	        // vars:
-	        var drumPads = document.querySelectorAll('.drum-pad');
-	        var audioElements = document.querySelectorAll('.drum-pad .clip');
+	      it('1. I should be able to see an outer container with a corresponding id="drum-machine" that contains ' + 'all other elements', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("drum-machine"));
+	        FCC_Global.assert(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine #display,\n          #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
+	      });
 
-	        // functions:
-	        function __triggerKeyboardEvent(el, keyCode) {
-	            var eventObj = document.createEventObject ? document.createEventObject() : document.createEvent("Events");
-	            if (eventObj.initEvent) {
-	                eventObj.initEvent("keydown", true, true);
+	      it('2. Within #drum-machine I can see an element with corresponding id="display".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("display"));
+	      });
+
+	      it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' + 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' + 'corresponds to one of the following keys on the keyboard: Q, W, E, A, S, D, Z, X, C. The drum pads MUST be in this order.', function () {
+	        // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
+	        var drumPadInnerText = [];
+	        drumPads.forEach(function (pad) {
+	          drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
+	          FCC_Global.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
+	        });
+	        FCC_Global.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
+	        FCC_Global.assert.includeMembers(drumPadInnerText, // superset
+	        ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"], // subset
+	        'Each .drum-pad\'s inner text should be one of the following letters ' + '(all letters must be represented): "Q", "W", "E", "A", "S", "D", "Z", "X", "C" ');
+	      });
+
+	      it('4. Within each .drum-pad, there should be an HTML5 <audio> element which has a src attribute pointing to ' + 'an audio clip, a class name of "clip", and an id corresponding to the inner text of its parent .drum-pad ' + '(e.g. id="Q", id="W", id="E" etc.).', function () {
+	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Each .drum-pad should have a child element with the class of "clip" ');
+	        audioElements.forEach(function (el) {
+	          FCC_Global.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
+	          FCC_Global.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
+	          FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
+	          FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal ' + 'to its parent .drum-pad\'s inner-text ');
+	        });
+	      });
+
+	      it('5. When I click on a .drum-pad element, the audio clip contained in its child <audio> element ' + 'should be triggered.', function () {
+	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
+	        audioElements.forEach(function (el) {
+	          document.getElementById(el.parentElement.id).click();
+	          FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'The <audio> element with id="' + el.id + '" does not play when the ' + el.id + ' .drum-pad is clicked ');
+	        });
+	      });
+
+	      it('6. When I press the trigger key associated with each .drum-pad, the audio clip contained in ' + 'its child <audio> element should be triggered (e.g. pressing the Q key should trigger the drum ' + 'pad which contains the string "Q", pressing the W key should trigger the drum pad which contains ' + 'the string "W", etc.).', function () {
+	        this.timeout(900);
+	        var keyCodes = [81, 87, 69, 65, 83, 68, 90, 88, 67];
+	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
+	        return new Promise(function (resolve, reject) {
+	          setTimeout(function () {
+	            audioElements.forEach(function (el, i) {
+	              __triggerKeyboardEvent(document.getElementById(el.parentElement.id), keyCodes[i]);
+	              FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'No audio plays when the ' + el.id + ' key is pressed ');
+	            });
+	            resolve();
+	          }, 800);
+	        });
+	      });
+
+	      it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' + 'the inner text of the #display element (each string must be unique).', function () {
+	        this.timeout(900);
+	        var displayText = [];
+	        return new Promise(function (resolve, reject) {
+	          setTimeout(function (_) {
+	            drumPads.forEach(function (pad, i) {
+	              document.getElementById(pad.id).click();
+	              displayText.push(document.getElementById('display').innerText);
+	            });
+	            displayText = displayText.filter(function (str, i) {
+	              return displayText[0] === displayText[i];
+	            });
+	            if (displayText.length === 1) {
+	              resolve();
+	            } else {
+	              reject(new Error("Each time a drum pad is triggered, a unique string should be displayed in the " + "element with the id 'display' "));
 	            }
-	            eventObj.keyCode = keyCode;
-	            eventObj.which = keyCode;
-	            el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent("onkeydown", eventObj);
-	        }
-
-	        describe('#Tests', function () {
-
-	            it('1. I should be able to see an outer container with a corresponding id="drum-machine" that contains ' + 'all other elements', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("drum-machine"));
-	                FCC_Global.assert(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine #display,\n          #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
-	            });
-
-	            it('2. Within #drum-machine I can see an element with corresponding id="display".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("display"));
-	            });
-
-	            it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' + 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' + 'corresponds to one of the following keys on the keyboard: Q, W, E, A, S, D, Z, X, C. The drum pads MUST be in this order.', function () {
-	                // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
-	                var drumPadInnerText = [];
-	                drumPads.forEach(function (pad) {
-	                    drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
-	                    FCC_Global.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
-	                });
-	                FCC_Global.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
-	                FCC_Global.assert.includeMembers(drumPadInnerText, // superset
-	                ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"], // subset
-	                'Each .drum-pad\'s inner text should be one of the following letters ' + '(all letters must be represented): "Q", "W", "E", "A", "S", "D", "Z", "X", "C" ');
-	            });
-
-	            it('4. Within each .drum-pad, there should be an HTML5 <audio> element which has a src attribute pointing to ' + 'an audio clip, a class name of "clip", and an id corresponding to the inner text of its parent .drum-pad ' + '(e.g. id="Q", id="W", id="E" etc.).', function () {
-	                FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Each .drum-pad should have a child element with the class of "clip" ');
-	                audioElements.forEach(function (el) {
-	                    FCC_Global.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
-	                    FCC_Global.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
-	                    FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
-	                    FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal ' + 'to its parent .drum-pad\'s inner-text ');
-	                });
-	            });
-
-	            it('5. When I click on a .drum-pad element, the audio clip contained in its child <audio> element ' + 'should be triggered.', function () {
-	                FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
-	                audioElements.forEach(function (el) {
-	                    document.getElementById(el.parentElement.id).click();
-	                    FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'The <audio> element with id="' + el.id + '" does not play when the ' + el.id + ' .drum-pad is clicked ');
-	                });
-	            });
-
-	            it('6. When I press the trigger key associated with each .drum-pad, the audio clip contained in ' + 'its child <audio> element should be triggered (e.g. pressing the Q key should trigger the drum ' + 'pad which contains the string "Q", pressing the W key should trigger the drum pad which contains ' + 'the string "W", etc.).', function () {
-	                this.timeout(900);
-	                var keyCodes = [81, 87, 69, 65, 83, 68, 90, 88, 67];
-	                FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
-	                return new Promise(function (resolve, reject) {
-	                    setTimeout(function () {
-	                        audioElements.forEach(function (el, i) {
-	                            __triggerKeyboardEvent(document.getElementById(el.parentElement.id), keyCodes[i]);
-	                            FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'No audio plays when the ' + el.id + ' key is pressed ');
-	                        });
-	                        resolve();
-	                    }, 800);
-	                });
-	            });
-
-	            it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' + 'the inner text of the #display element (each string must be unique).', function () {
-	                this.timeout(900);
-	                var displayText = [];
-	                return new Promise(function (resolve, reject) {
-	                    setTimeout(function (_) {
-	                        drumPads.forEach(function (pad, i) {
-	                            document.getElementById(pad.id).click();
-	                            displayText.push(document.getElementById('display').innerText);
-	                        });
-	                        displayText = displayText.filter(function (str, i) {
-	                            return displayText[0] === displayText[i];
-	                        });
-	                        if (displayText.length === 1) {
-	                            resolve();
-	                        } else {
-	                            reject(new Error("Each time a drum pad is triggered, a unique string should be displayed in the " + "element with the id 'display' "));
-	                        }
-	                    }, 800);
-	                });
-	            });
-	        }); // END #Tests
-	    }); // END #DrumMachineTests
+	          }, 800);
+	        });
+	      });
+	    }); // END #Tests
+	  }); // END #DrumMachineTests
 	} // END createDrumMachineTests()
 
 /***/ }),
@@ -19156,298 +19156,298 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createMarkdownPreviewerTests;
 	function createMarkdownPreviewerTests() {
 
-	    describe('Markdown Previewer tests', function () {
+	  describe('Markdown Previewer tests', function () {
 
-	        var editor = document.getElementById('editor');
-	        var preview = document.getElementById('preview');
-	        var converter = document.getElementById('convert-markdown');
-	        var markdownOnLoad = void 0,
-	            previewOnLoad = void 0;
-	        if (editor) markdownOnLoad = editor.value;
-	        if (preview) previewOnLoad = preview.innerHTML;
+	    var editor = document.getElementById('editor');
+	    var preview = document.getElementById('preview');
+	    var converter = document.getElementById('convert-markdown');
+	    var markdownOnLoad = void 0,
+	        previewOnLoad = void 0;
+	    if (editor) markdownOnLoad = editor.value;
+	    if (preview) previewOnLoad = preview.innerHTML;
 
-	        function triggerChange(str) {
-	            // REACT
-	            editor.value = str;
-	            var eventReact = new Event('input', { bubbles: true });
-	            editor.dispatchEvent(eventReact);
-	            if (preview.innerHTML === str) {
-	                return;
-	            } else {
-	                // jQUERY OR JAVASCRIPT
-	                var eventJS = new Event('keyup', { bubbles: true }); // must be keyup to live preview
-	                editor.dispatchEvent(eventJS);
-	            }
-	        }
+	    function triggerChange(str) {
+	      // REACT
+	      editor.value = str;
+	      var eventReact = new Event('input', { bubbles: true });
+	      editor.dispatchEvent(eventReact);
+	      if (preview.innerHTML === str) {
+	        return;
+	      } else {
+	        // jQUERY OR JAVASCRIPT
+	        var eventJS = new Event('keyup', { bubbles: true }); // must be keyup to live preview
+	        editor.dispatchEvent(eventJS);
+	      }
+	    }
 
-	        describe('#Tests', function () {
+	    describe('#Tests', function () {
 
-	            it('1. I can see a <textarea> element with corresponding id="editor"', function () {
-	                FCC_Global.assert.isNotNull(editor, '#editor is not defined ');
-	                FCC_Global.assert.strictEqual(editor.nodeName, 'TEXTAREA', '#editor should be a <textarea> element ');
-	            });
+	      it('1. I can see a <textarea> element with corresponding id="editor"', function () {
+	        FCC_Global.assert.isNotNull(editor, '#editor is not defined ');
+	        FCC_Global.assert.strictEqual(editor.nodeName, 'TEXTAREA', '#editor should be a <textarea> element ');
+	      });
 
-	            it('2. I can see an element with corresponding id="preview"', function () {
-	                FCC_Global.assert.isNotNull(preview, '#preview is not defined ');
-	            });
+	      it('2. I can see an element with corresponding id="preview"', function () {
+	        FCC_Global.assert.isNotNull(preview, '#preview is not defined ');
+	      });
 
-	            it('3. When I enter text into the #editor element, the #preview element is updated as I type to display the content of the textarea', function () {
-	                triggerChange('a');
-	                FCC_Global.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should update on every keyup) ');
-	            });
+	      it('3. When I enter text into the #editor element, the #preview element is updated as I type to display the content of the textarea', function () {
+	        triggerChange('a');
+	        FCC_Global.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should update on every keyup) ');
+	      });
 
-	            it('4. When I enter GitHub flavored markdown into the #editor element, the text is rendered as HTML to #preview as I type (Hint: You don\'t need to parse Markdown yourself - you can import the Marked library for this: https://cdnjs.com/libraries/marked)', function () {
-	                var error = 'The markdown in #editor is not being interpreted  correctly and/or rendered into #preview ';
-	                triggerChange('');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
-	                triggerChange('testing');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
-	                triggerChange(editor.value + ' and...');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
-	                triggerChange('# h1 \n## h2');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', error);
-	                triggerChange('**bold**');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', error);
-	            });
+	      it('4. When I enter GitHub flavored markdown into the #editor element, the text is rendered as HTML to #preview as I type (Hint: You don\'t need to parse Markdown yourself - you can import the Marked library for this: https://cdnjs.com/libraries/marked)', function () {
+	        var error = 'The markdown in #editor is not being interpreted  correctly and/or rendered into #preview ';
+	        triggerChange('');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
+	        triggerChange('testing');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
+	        triggerChange(editor.value + ' and...');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
+	        triggerChange('# h1 \n## h2');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', error);
+	        triggerChange('**bold**');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', error);
+	      });
 
-	            it('5. When my markdown previewer first loads, the #editor field should contain valid default markdown that provides a brief description of the project and demonstrates the previewer\'s capabilities', function () {
-	                FCC_Global.assert.notStrictEqual(markdownOnLoad, undefined);
-	                FCC_Global.assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
-	            });
+	      it('5. When my markdown previewer first loads, the #editor field should contain valid default markdown that provides a brief description of the project and demonstrates the previewer\'s capabilities', function () {
+	        FCC_Global.assert.notStrictEqual(markdownOnLoad, undefined);
+	        FCC_Global.assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
+	      });
 
-	            it('6. When my markdown previewer first loads, the default text in the #editor field should contain valid markdown that represents at least one of each of the following elements: a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list item, a blockquote, an image, and bolded text', function () {
-	                triggerChange(markdownOnLoad);
-	                var markdown = editor.value;
+	      it('6. When my markdown previewer first loads, the default text in the #editor field should contain valid markdown that represents at least one of each of the following elements: a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list item, a blockquote, an image, and bolded text', function () {
+	        triggerChange(markdownOnLoad);
+	        var markdown = editor.value;
 
-	                FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1
-	                FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 'write some markdown representing an <h2> '); // h2
-	                FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 'write some markdown representing an <a> '); // link
-	                FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
-	                FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. <pre><code>...</code></pre> '); // codeblock
-	                FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
-	                FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing a <blockquote> '); // blockquote
-	                FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <image> '); // image
-	                FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing <strong> text '); // bold text
-	            });
+	        FCC_Global.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> '); // h1
+	        FCC_Global.assert.notStrictEqual(markdown.search(/##\s.+/), -1, 'write some markdown representing an <h2> '); // h2
+	        FCC_Global.assert.notStrictEqual(markdown.search(/\[.+\]\(.+\..+\)/), -1, 'write some markdown representing an <a> '); // link
+	        FCC_Global.assert.notStrictEqual(markdown.search(/`.+`/), -1, 'write some markdown representing inline <code> '); // inline code
+	        FCC_Global.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. <pre><code>...</code></pre> '); // codeblock
+	        FCC_Global.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item '); // ol or ul list item
+	        FCC_Global.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing a <blockquote> '); // blockquote
+	        FCC_Global.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <image> '); // image
+	        FCC_Global.assert.notStrictEqual(markdown.search(/(\*\*|__).+\1/), -1, 'write some markdown representing <strong> text '); // bold text
+	      });
 
-	            it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function () {
-	                triggerChange(markdownOnLoad);
-	                FCC_Global.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
-	                FCC_Global.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
-	                var markdown = editor.value;
-	                // this could be significantly shortened into one test, however feedback would not be specific
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1, '#preview does not contain at least one <h1> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1, '#preview does not contain at least one <h2> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview a').length, 1, '#preview does not contain at least one <a> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview code').length, 1, '#preview does not contain at least one <code> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview pre').length, 1, '#preview does not contain at least one <pre> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview li').length, 1, '#preview does not contain at least one <li> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview blockquote').length, 1, '#preview does not contain at least one <blockquote> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1, '#preview does not contain at least one <img> ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1, '#preview does not contain at least one <strong> ');
+	      it('7. When my markdown previewer first loads, the default markdown in the #editor field should be rendered as HTML in the #preview element', function () {
+	        triggerChange(markdownOnLoad);
+	        FCC_Global.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
+	        FCC_Global.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
+	        var markdown = editor.value;
+	        // this could be significantly shortened into one test, however feedback would not be specific
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1, '#preview does not contain at least one <h1> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1, '#preview does not contain at least one <h2> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview a').length, 1, '#preview does not contain at least one <a> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview code').length, 1, '#preview does not contain at least one <code> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview pre').length, 1, '#preview does not contain at least one <pre> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview li').length, 1, '#preview does not contain at least one <li> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview blockquote').length, 1, '#preview does not contain at least one <blockquote> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1, '#preview does not contain at least one <img> ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1, '#preview does not contain at least one <strong> ');
 
-	                // then check a couple of elements to make sure the present elements
-	                //are actually the ones represented by the markdown:
+	        // then check a couple of elements to make sure the present elements
+	        //are actually the ones represented by the markdown:
 
-	                // find matching H1 element
-	                var h1Text = /#\s.*/.exec(markdown)[0].slice(2);
-	                var h1Match = [];
-	                document.querySelectorAll('#preview h1').forEach(function (h1) {
-	                    if (h1.innerText === h1Text) h1Match.push(h1);
-	                });
-	                FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
+	        // find matching H1 element
+	        var h1Text = /#\s.*/.exec(markdown)[0].slice(2);
+	        var h1Match = [];
+	        document.querySelectorAll('#preview h1').forEach(function (h1) {
+	          if (h1.innerText === h1Text) h1Match.push(h1);
+	        });
+	        FCC_Global.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the markdown in the #editor field with the inner text ' + h1Text + ' ');
 
-	                // find matching H2 element 
-	                var h2Text = /##\s.*/.exec(markdown)[0].slice(3);
-	                var h2Match = [];
-	                document.querySelectorAll('#preview h2').forEach(function (h2) {
-	                    if (h2.innerText === h2Text) h2Match.push(h2);
-	                });
-	                FCC_Global.assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element represented by the markdown in the #editor field with the inner text ' + h2Text + ' ');
-	            });
+	        // find matching H2 element
+	        var h2Text = /##\s.*/.exec(markdown)[0].slice(3);
+	        var h2Match = [];
+	        document.querySelectorAll('#preview h2').forEach(function (h2) {
+	          if (h2.innerText === h2Text) h2Match.push(h2);
+	        });
+	        FCC_Global.assert.isAtLeast(h2Match.length, 1, '#preview does not contain the H2 element represented by the markdown in the #editor field with the inner text ' + h2Text + ' ');
+	      });
 
-	            it('8. OPTIONAL BONUS: When I click a link rendered by my markdown previewer, the link is opened up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
-	                var links = document.querySelectorAll('#preview a');
-	                var linksWithTarget_Blank = [];
-	                links.forEach(function (a) {
-	                    if (a.hasAttribute('target')) {
-	                        FCC_Global.assert.strictEqual(a.target, '_blank');
-	                    }
-	                });
-	            });
+	      it('8. OPTIONAL BONUS: When I click a link rendered by my markdown previewer, the link is opened up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
+	        var links = document.querySelectorAll('#preview a');
+	        var linksWithTarget_Blank = [];
+	        links.forEach(function (a) {
+	          if (a.hasAttribute('target')) {
+	            FCC_Global.assert.strictEqual(a.target, '_blank');
+	          }
+	        });
+	      });
 
-	            it('9. OPTIONAL BONUS: My markdown previewer interprets carriage returns and renders them as line break', function () {
-	                // see marked.js options for this and more cool features
-	            });
-	        }); // END #Tests
-	    }); // END Mardown Previewer tests
+	      it('9. OPTIONAL BONUS: My markdown previewer interprets carriage returns and renders them as line break', function () {
+	        // see marked.js options for this and more cool features
+	      });
+	    }); // END #Tests
+	  }); // END Mardown Previewer tests
 	} // END createMarkdownPreviewerTests()
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createCalculatorTests;
 	function createCalculatorTests() {
 
-	    var _1 = "one";
-	    var _2 = "two";
-	    var _3 = "three";
-	    var _4 = "four";
-	    var _5 = "five";
-	    var _6 = "six";
-	    var _7 = "seven";
-	    var _8 = "eight";
-	    var _9 = "nine";
-	    var _0 = "zero";
-	    var _x = "multiply";
-	    var _plus = "add";
-	    var _min = "subtract";
-	    var _div = "divide";
-	    var _AC = "clear";
-	    var _eq = "equals";
-	    var _dec = "decimal";
+	  var _1 = 'one';
+	  var _2 = 'two';
+	  var _3 = 'three';
+	  var _4 = 'four';
+	  var _5 = 'five';
+	  var _6 = 'six';
+	  var _7 = 'seven';
+	  var _8 = 'eight';
+	  var _9 = 'nine';
+	  var _0 = 'zero';
+	  var _x = 'multiply';
+	  var _plus = 'add';
+	  var _min = 'subtract';
+	  var _div = 'divide';
+	  var _AC = 'clear';
+	  var _eq = 'equals';
+	  var _dec = 'decimal';
 
-	    function getElements(elementIds) {
-	        return elementIds.map(function (elementId) {
-	            return document.getElementById(elementId);
-	        });
-	    }
+	  function getElements(elementIds) {
+	    return elementIds.map(function (elementId) {
+	      return document.getElementById(elementId);
+	    });
+	  }
 
-	    function clickButtonsById(buttonIds) {
-	        var keys = getElements(buttonIds);
-	        keys.forEach(function (key) {
-	            return key.click();
-	        });
-	    }
+	  function clickButtonsById(buttonIds) {
+	    var keys = getElements(buttonIds);
+	    keys.forEach(function (key) {
+	      return key.click();
+	    });
+	  }
 
-	    function clearDisplay() {
-	        if (document.getElementById('clear')) clickButtonsById([_AC]);
-	    }
+	  function clearDisplay() {
+	    if (document.getElementById('clear')) clickButtonsById([_AC]);
+	  }
 
-	    describe("Calculator tests", function () {
-	        beforeEach(function () {
-	            clearDisplay();
-	        });
+	  describe('Calculator tests', function () {
+	    beforeEach(function () {
+	      clearDisplay();
+	    });
 
-	        after(function () {
-	            clearDisplay();
-	        });
+	    after(function () {
+	      clearDisplay();
+	    });
 
-	        describe("#Tests", function () {
-	            it("1. My calculator should contain a clickable element containing an = with a corresponding id=\"equals\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById(_eq));
-	            });
+	    describe('#Tests', function () {
+	      it('1. My calculator should contain a clickable element containing an =\n      with a corresponding id="equals"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById(_eq));
+	      });
 
-	            it("2. My calculator should contain 10 clickable elements containing one number each from 0-9, with the following corresponding IDs: id=\"zero\", id=\"one\", id=\"two\", id=\"three\", id=\"four\", id=\"five\", id=\"six\", id=\"seven\", id=\"eight\", and id=\"nine\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById(_0), 'id="zero" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_1), 'id="one" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_2), 'id="two" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_3), 'id="three" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_4), 'id="four" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_5), 'id="five" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_6), 'id="six" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_7), 'id="seven" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_8), 'id="eight" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_9), 'id="nine" is not yet defined ');
-	            });
+	      it('2. My calculator should contain 10 clickable elements containing one\n      number each from 0-9, with the following corresponding IDs: id="zero",\n      id="one", id="two", id="three", id="four", id="five", id="six",\n      id="seven", id="eight", and id="nine"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById(_0), 'id="zero" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_1), 'id="one" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_2), 'id="two" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_3), 'id="three" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_4), 'id="four" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_5), 'id="five" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_6), 'id="six" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_7), 'id="seven" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_8), 'id="eight" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_9), 'id="nine" is not yet defined ');
+	      });
 
-	            it("3. My calculator should contain 4 clickable elements each containing one of the 4 primary mathematical operators with the following corresponding IDs: id=\"add\", id=\"subtract\", id=\"multiply\", id=\"divide\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById(_plus), 'id="add" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_min), 'id="subtract" is not yet defined ');
-	                FCC_Global.assert.isNotNull(document.getElementById(_x)), 'id="multiply" is not yet defined ';
-	                FCC_Global.assert.isNotNull(document.getElementById(_div), 'id="divide" is not yet defined ');
-	            });
+	      it('3. My calculator should contain 4 clickable elements each containing\n      one of the 4 primary mathematical operators with the following\n      corresponding IDs: id="add", id="subtract", id="multiply",\n      id="divide"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById(_plus), 'id="add" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_min), 'id="subtract" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_x), 'id="multiply" is not yet defined ');
+	        FCC_Global.assert.isNotNull(document.getElementById(_div), 'id="divide" is not yet defined ');
+	      });
 
-	            it("4. My calculator should contain a clickable element containing a . with a corresponding id=\"decimal\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById(_dec), 'id="decimal" is not yet defined ');
-	            });
+	      it('4. My calculator should contain a clickable element containing a .\n      with a corresponding id="decimal"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById(_dec), 'id="decimal" is not yet defined ');
+	      });
 
-	            it("5. My calculator should contain a clickable element with an id=\"clear\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById(_AC)), 'id="clear" is not yet defined ';
-	            });
+	      it('5. My calculator should contain a clickable element with an\n      id="clear"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById(_AC), 'id="clear" is not yet defined ');
+	      });
 
-	            it("6. My calculator should contain an element to display values with a corresponding id=\"display\"", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("display"), 'id="display" is not yet defined ');
-	            });
+	      it('6. My calculator should contain an element to display values with a\n      corresponding id="display"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('display'), 'id="display" is not yet defined ');
+	      });
 
-	            it("7. At any time, pressing the clear button clears the input and output values, and returns the calculator to its initialized state; 0 should be shown in the element with the id of \"display\"", function () {
-	                clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0", 'Element with with id="display" should show 0 ');
-	            });
+	      it('7. At any time, pressing the clear button clears the input and output\n      values, and returns the calculator to its initialized state; 0 should be\n      shown in the element with the id of "display"', function () {
+	        clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '0', 'Element with with id="display" should show 0 ');
+	      });
 
-	            it("8. As I input numbers, I should be able to see my input in the element with the id of \"display\"", function () {
-	                clickButtonsById([_1, _2, _3]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "123", 'Numbers do not display correctly within id="display" ');
-	            });
+	      it('8. As I input numbers, I should be able to see my input in the\n      element with the id of "display"', function () {
+	        clickButtonsById([_1, _2, _3]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '123', 'Numbers do not display correctly within id="display" ');
+	      });
 
-	            it("9. In any order, I should be able to add, subtract, multiply and divide a chain of numbers of any length, and when I hit =, the correct result should be shown in the element with the id of \"display\"", function () {
-	                clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
-	                FCC_Global.assert(document.getElementById("display").innerHTML === "32.5" || document.getElementById("display").innerHTML === "11.5", "The expression 3 + 5 * 6 - 2 / 4 should produce 32.5 or 11.5 as an answer, depending on the logic your calculator uses (formula vs. immediate execution) ");
-	                clearDisplay();
-	                clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
-	                FCC_Global.assert(document.getElementById("display").innerHTML === "1", "The expression 5 - 9 + 5 should produce a result of 1");
-	            });
+	      it('9. In any order, I should be able to add, subtract, multiply and\n      divide a chain of numbers of any length, and when I hit =, the correct\n      result should be shown in the element with the id of "display"', function () {
+	        clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
+	        FCC_Global.assert(document.getElementById('display').innerHTML === '32.5' || document.getElementById('display').innerHTML === '11.5', 'The expression 3 + 5 * 6 - 2 / 4 should produce 32.5 or 11.5 as an\n          answer, depending on the logic your calculator uses\n          (formula vs. immediate execution) ');
+	        clearDisplay();
+	        clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
+	        FCC_Global.assert(document.getElementById('display').innerHTML === '1', 'The expression 5 - 9 + 5 should produce a result of 1 ');
+	      });
 
-	            it("10. When inputting numbers, my calculator should not allow a number to begin with multiple zeros.", function () {
-	                clickButtonsById([_0, _0, _0]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "0", 'An input of 0 0 0 should display 0 ');
-	            });
+	      it('10. When inputting numbers, my calculator should not allow a number\n      to begin with multiple zeros.', function () {
+	        clickButtonsById([_0, _0, _0]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '0', 'An input of 0 0 0 should display 0 ');
+	      });
 
-	            it("11. When the decimal element is clicked, a . should append to the currently displayed value; two .s in one number should not be accepted", function () {
-	                clickButtonsById([_5, _dec, _dec, _0]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.0", 'An input of 5 . . 0 should display 5.0 ');
-	                clearDisplay();
-	                clickButtonsById([_5, _dec, _5, _dec, _5]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5.55", 'An input of 5 . 5 . 5 should display 5.55 ');
-	            });
+	      it('11. When the decimal element is clicked, a . should append to the\n      currently displayed value; two .s in one number should not be accepted', function () {
+	        clickButtonsById([_5, _dec, _dec, _0]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '5.0', 'An input of 5 . . 0 should display 5.0 ');
+	        clearDisplay();
+	        clickButtonsById([_5, _dec, _5, _dec, _5]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '5.55', 'An input of 5 . 5 . 5 should display 5.55 ');
+	      });
 
-	            it("12. I should be able to perform any operation (+, -, *, /) on numbers containing decimal points", function () {
-	                clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "5", 'The expression 10.5 - 5.5 should produce an output of 5 ');
-	                clearDisplay();
-	                clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "27.5", 'The expression 5 * 5.5 should produce an output of 27.5 ');
-	                clearDisplay();
-	                clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "16", 'The expression 10.5 + 5.5 should produce an output of 16 ');
-	                clearDisplay();
-	                clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "4", 'The expression 10 / 2.5 should produce an output of 4 ');
-	            });
+	      it('12. I should be able to perform any operation (+, -, *, /) on numbers\n      containing decimal points', function () {
+	        clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '5', 'The expression 10.5 - 5.5 should produce an output of 5 ');
+	        clearDisplay();
+	        clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '27.5', 'The expression 5 * 5.5 should produce an output of 27.5 ');
+	        clearDisplay();
+	        clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '16', 'The expression 10.5 + 5.5 should produce an output of 16 ');
+	        clearDisplay();
+	        clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '4', 'The expression 10 / 2.5 should produce an output of 4 ');
+	      });
 
-	            it("13. If 2 or more operators are entered consecutively, the operation performed should be the last operator entered", function () {
-	                clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10", 'The sequence 5 * - + 5 = should produce an output of 10 ');
-	                clearDisplay();
-	                clickButtonsById([_5, _plus, _plus, _5, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "10", 'The sequence 5 + + 5 = should produce an output of 10 ');
-	            });
+	      it('13. If 2 or more operators are entered consecutively, the operation\n      performed should be the last operator entered', function () {
+	        clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '10', 'The sequence 5 * - + 5 = should produce an output of 10 ');
+	        clearDisplay();
+	        clickButtonsById([_5, _plus, _plus, _5, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '10', 'The sequence 5 + + 5 = should produce an output of 10 ');
+	      });
 
-	            it("14. Pressing an operator immediately following = should start a new calculation that operates on the result of the previous evaluation", function () {
-	                clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "1.5", 'The sequence 5 - 2 = / 2 = should produce an output of 1.5 ');
-	                clearDisplay();
-	                clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
-	                FCC_Global.assert.strictEqual(document.getElementById("display").innerHTML, "13", 'The sequence 5 + 3 = + 3 = should produce an output of 13 ');
-	            });
+	      it('14. Pressing an operator immediately following = should start a new\n      calculation that operates on the result of the previous evaluation', function () {
+	        clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '1.5', 'The sequence 5 - 2 = / 2 = should produce an output of 1.5 ');
+	        clearDisplay();
+	        clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
+	        FCC_Global.assert.strictEqual(document.getElementById('display').innerHTML, '13', 'The sequence 5 + 3 = + 3 = should produce an output of 13 ');
+	      });
 
-	            it("15. My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places)", function () {
-	                clickButtonsById([_2, _div, _7, _eq]);
-	                FCC_Global.assert.isOk(/0?\.2857\d*/.test(document.getElementById("display").innerHTML), 'The expression 2 / 7 should produce an output number with at least 4 decimal places of precision ');
-	            });
-	        }); // END #Tests
-	    }); // END Calculator Tests
+	      it('15. My calculator should have several decimal places of precision when\n      it comes to rounding (note that there is no exact standard, but you should\n      be able to handle calculations like 2 / 7 with reasonable precision to at\n      least 4 decimal places)', function () {
+	        clickButtonsById([_2, _div, _7, _eq]);
+	        FCC_Global.assert.isOk(/0?\.2857\d*/.test(document.getElementById('display').innerHTML), 'The expression 2 / 7 should produce an output number with at least 4\n          decimal places of precision ');
+	      });
+	    }); // END #Tests
+	  }); // END Calculator Tests
 	} // END createCalculatorTests()
 
 /***/ }),
@@ -19457,487 +19457,494 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createPomodoroClockTests;
 	function createPomodoroClockTests() {
 
-	    var _break_min = "break-decrement";
-	    var _break_plus = "break-increment";
-	    var _sesh_min = "session-decrement";
-	    var _sesh_plus = "session-increment";
-	    var _reset = "reset";
-	    var _start_stop = "start_stop";
-	    var orignalTimerLabel = document.getElementById('timer-label') && document.getElementById('timer-label').innerText;
+	  var _break_min = "break-decrement";
+	  var _break_plus = "break-increment";
+	  var _sesh_min = "session-decrement";
+	  var _sesh_plus = "session-increment";
+	  var _reset = "reset";
+	  var _start_stop = "start_stop";
+	  var orignalTimerLabel = document.getElementById('timer-label') && document.getElementById('timer-label').innerText;
 
-	    function getElements(elementIds) {
-	        return elementIds.map(function (elementId) {
-	            return document.getElementById(elementId);
-	        });
-	    }
+	  function getElements(elementIds) {
+	    return elementIds.map(function (elementId) {
+	      return document.getElementById(elementId);
+	    });
+	  }
 
-	    function clickButtonsById(buttonIds) {
-	        var keys = getElements(buttonIds);
-	        keys.forEach(function (key) {
-	            return key.click();
-	        });
-	    }
+	  function clickButtonsById(buttonIds) {
+	    var keys = getElements(buttonIds);
+	    keys.forEach(function (key) {
+	      return key.click();
+	    });
+	  }
 
-	    function resetTimer() {
-	        document.getElementById('reset') && clickButtonsById([_reset]);
-	    }
+	  function resetTimer() {
+	    document.getElementById('reset') && clickButtonsById([_reset]);
+	  }
 
-	    function getMinutes(str) {
-	        var matches = /^(\d{1,4})\s?([\.:,\/]\s?\d{2}.*)?$/g.exec(str);
-	        return matches[1];
-	    }
+	  function getMinutes(str) {
+	    var matches = /^(\d{1,4})\s?([\.:,\/]\s?\d{2}.*)?$/g.exec(str);
+	    return matches[1];
+	  }
 
-	    function getSeconds(str) {
-	        var matches = /^\d{1,4}\s?:\s?(\d{2})/g.exec(str);
-	        return matches[1];
-	    }
+	  function getSeconds(str) {
+	    var matches = /^\d{1,4}\s?:\s?(\d{2})/g.exec(str);
+	    return matches[1];
+	  }
 
-	    function observeElement(elementId, callback) {
-	        // select the target node
-	        var target = document.getElementById(elementId);
+	  function observeElement(elementId, callback) {
+	    // select the target node
+	    var target = document.getElementById(elementId);
 
-	        // create an observer instance
-	        var observer = new MutationObserver(function (mutations) {
-	            mutations.forEach(function (mutation) {
-	                callback(mutation.type);
-	            });
-	        });
+	    // create an observer instance
+	    var observer = new MutationObserver(function (mutations) {
+	      mutations.forEach(function (mutation) {
+	        callback(mutation.type);
+	      });
+	    });
 
-	        // configuration of the observer:
-	        var config = {
-	            childList: true,
-	            characterData: true,
-	            subtree: true
-	        };
+	    // configuration of the observer:
+	    var config = {
+	      childList: true,
+	      characterData: true,
+	      subtree: true
+	    };
 
-	        // pass in the target node, as well as the observer options
-	        observer.observe(target, config);
+	    // pass in the target node, as well as the observer options
+	    observer.observe(target, config);
 
-	        return observer;
-	    }
+	    return observer;
+	  }
 
-	    // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-	    // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
-	    // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
-	    var savedSetTimeout = window.setTimeout;
-	    var savedSetInterval = window.setInterval;
+	  // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
+	  // Note: we should consider putting these hacks in the beforeEach function so every timed test can be done in less time
+	  // The problem is that we still don't know if it's acceptable to use this hack, because it implies forcing the campers to use setTimeout and setInterval functions to measure time in their pomodoro.
+	  var savedSetTimeout = window.setTimeout;
+	  var savedSetInterval = window.setInterval;
 
-	    function hackGlobalTimerFunctions() {
-	        window.setTimeout = function (fun, delay) {
-	            return savedSetTimeout(fun, 30);
-	        };
-	        window.setInterval = function (fun, delay) {
-	            return savedSetInterval(fun, 30);
-	        };
-	    }
+	  function hackGlobalTimerFunctions() {
+	    window.setTimeout = function (fun, delay) {
+	      return savedSetTimeout(fun, 30);
+	    };
+	    window.setInterval = function (fun, delay) {
+	      return savedSetInterval(fun, 30);
+	    };
+	  }
 
-	    function restoreGlobalTimerFunctions() {
-	        window.setTimeout = savedSetTimeout;
-	        window.setInterval = savedSetInterval;
-	    }
+	  function restoreGlobalTimerFunctions() {
+	    window.setTimeout = savedSetTimeout;
+	    window.setInterval = savedSetInterval;
+	  }
 
-	    // Test suite
-	    describe("#Pomodoro Clock tests", function () {
-	        before(function () {
-	            document.getElementById('start_stop') && clickButtonsById([_start_stop]);
-	        });
+	  // Test suite
+	  describe("#Pomodoro Clock tests", function () {
+	    before(function () {
+	      document.getElementById('start_stop') && clickButtonsById([_start_stop]);
+	    });
 
-	        beforeEach(function () {
-	            resetTimer();
-	            // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
-	            hackGlobalTimerFunctions();
-	        });
+	    beforeEach(function () {
+	      resetTimer();
+	      // We "Hack" the global setTimeout and setInterval functions so time elapses faster (delay is forced to 30ms)
+	      hackGlobalTimerFunctions();
+	    });
 
-	        afterEach(function () {
-	            restoreGlobalTimerFunctions();
-	        });
+	    afterEach(function () {
+	      restoreGlobalTimerFunctions();
+	    });
 
-	        after(function () {
-	            resetTimer();
-	            restoreGlobalTimerFunctions();
-	        });
+	    after(function () {
+	      resetTimer();
+	      restoreGlobalTimerFunctions();
+	    });
 
-	        describe("#Tests", function () {
+	    describe("#Tests", function () {
 
-	            it('1. I can see an element with id="break-label" that contains a string (e.g. “Break Length).', function () {
-	                var break_title = document.getElementById("break-label");
-	                FCC_Global.assert.isAbove(break_title.innerText.length, 0, "Element does not contain a string");
-	            });
+	      it('1. I can see an element with id="break-label" that contains a string (e.g. “Break Length).', function () {
+	        var break_title = document.getElementById("break-label");
+	        FCC_Global.assert.isAbove(break_title.innerText.length, 0, "Element does not contain a string");
+	      });
 
-	            it('2. I can see an element with id="session-label" that contains a string (e.g. "Session Length”).', function () {
-	                var session_title = document.getElementById("session-label");
-	                FCC_Global.assert.isAbove(session_title.innerText.length, 0, "Element does not contain a string");
-	            });
+	      it('2. I can see an element with id="session-label" that contains a string (e.g. "Session Length”).', function () {
+	        var session_title = document.getElementById("session-label");
+	        FCC_Global.assert.isAbove(session_title.innerText.length, 0, "Element does not contain a string");
+	      });
 
-	            it("3. I can see two clickable elements with corresponding IDs: " + "id=\"break-decrement\" and id=\"session-decrement\".", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("break-decrement"));
-	                FCC_Global.assert.isNotNull(document.getElementById("session-decrement"));
-	            });
+	      it("3. I can see two clickable elements with corresponding IDs: " + "id=\"break-decrement\" and id=\"session-decrement\".", function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("break-decrement"));
+	        FCC_Global.assert.isNotNull(document.getElementById("session-decrement"));
+	      });
 
-	            it("4. I can see two clickable elements with corresponding IDs: " + "id=\"break-increment\" and id=\"session-increment\".", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("break-increment"));
-	                FCC_Global.assert.isNotNull(document.getElementById("session-increment"));
-	            });
+	      it("4. I can see two clickable elements with corresponding IDs: " + "id=\"break-increment\" and id=\"session-increment\".", function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("break-increment"));
+	        FCC_Global.assert.isNotNull(document.getElementById("session-increment"));
+	      });
 
-	            it("5. I can see an element, with corresponding id=\"break-length\", which by default (on load) " + "displays a value of 5.", function () {
-	                var break_length = document.getElementById("break-length");
-	                FCC_Global.assert.strictEqual(break_length.innerHTML, "5", "A value of 5 is not displayed by default");
-	            });
+	      it("5. I can see an element, with corresponding id=\"break-length\", which by default (on load) " + "displays a value of 5.", function () {
+	        var break_length = document.getElementById("break-length");
+	        FCC_Global.assert.strictEqual(break_length.innerHTML, "5", "A value of 5 is not displayed by default");
+	      });
 
-	            it("6. I can see an element, with corresponding id=\"session-length\", which by default" + "displays a value of 25.", function () {
-	                var session_length = document.getElementById("session-length");
-	                FCC_Global.assert.strictEqual(session_length.innerHTML, "25", "A value of 25 is not displayed by default");
-	            });
+	      it("6. I can see an element, with corresponding id=\"session-length\", which by default" + "displays a value of 25.", function () {
+	        var session_length = document.getElementById("session-length");
+	        FCC_Global.assert.strictEqual(session_length.innerHTML, "25", "A value of 25 is not displayed by default");
+	      });
 
-	            it("7. I can see an element, with corresponding id=\"timer-label\", that contains a string indicating a session is initialized (e.g. \"Session\").", function () {
-	                var timer_label = document.getElementById("timer-label");
-	                FCC_Global.assert.isAbove(timer_label.innerText.length, 0, "Element does not contain a string");
-	            });
+	      it("7. I can see an element, with corresponding id=\"timer-label\", that contains a string indicating a session is initialized (e.g. \"Session\").", function () {
+	        var timer_label = document.getElementById("timer-label");
+	        FCC_Global.assert.isAbove(timer_label.innerText.length, 0, "Element does not contain a string");
+	      });
 
-	            it("8. I can see an element with corresponding id=\"time-left\". NOTE: Paused or running, the value in this field should always be displayedin mm:ss format (i.e. 25:00).", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("time-left"));
-	            });
+	      it("8. I can see an element with corresponding id=\"time-left\". NOTE: Paused or running, the value in this field should always be displayedin mm:ss format (i.e. 25:00).", function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("time-left"));
+	      });
 
-	            it("9. I can see a clickable element with corresponding id=\"start_stop\".", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("start_stop"));
-	            });
+	      it("9. I can see a clickable element with corresponding id=\"start_stop\".", function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("start_stop"));
+	      });
 
-	            it("10. I can see a clickable element with corresponding id=\"reset\".", function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("reset"));
-	            });
+	      it("10. I can see a clickable element with corresponding id=\"reset\".", function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("reset"));
+	      });
 
-	            it('11. When I click the element with the id of "reset", any running timer should be stopped, the value within id="break-length" should return to 5, the value within id="session-length" should return to 25, and the element with id="time-left" should reset to it\'s default state.', function () {
-	                this.timeout(5000);
-	                // decrement session and break length
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                clickButtonsById(Array(60).fill(_break_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var observer = observeElement("time-left", function (modType) {
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            // once timer has reached zero wait 1.5 seconds then reset and see if every default value is reset
-	                            setTimeout(function (_) {
-	                                resetTimer();
-	                                var timerLabelAfterReset = document.getElementById('timer-label').innerText;
-	                                var secondsAfterReset = getSeconds(document.getElementById("time-left").innerHTML);
-
-	                                // see if timer label changed back
-	                                if (orignalTimerLabel !== timerLabelAfterReset) {
-	                                    reject(new Error("Default timer label was not properly reset"));
-	                                }
-
-	                                // wait another 1.5 seconds to be sure value has not changed (pomodoro is stopped)
-	                                setTimeout(function (_) {
-	                                    var breakLengthAfterResetIsCorrect = document.getElementById("break-length").innerHTML == 5;
-	                                    var sessionLengthAfterResetIsCorrect = document.getElementById("session-length").innerHTML == 25;
-	                                    if (!breakLengthAfterResetIsCorrect || !sessionLengthAfterResetIsCorrect) {
-	                                        reject(new Error("Default values for break length and session length were not properly reset"));
-	                                        return;
-	                                    }
-	                                    var secondsAfterAWhile = getSeconds(document.getElementById("time-left").innerHTML);
-	                                    if (secondsAfterReset === secondsAfterAWhile) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
-	                                }, 1500);
-	                            }, 1500);
-	                            observer.disconnect();
-	                        }
-	                    });
-	                });
-	            });
-
-	            it('12. When I click the element with the id of "break-decrement", the value within ' + 'id="break-length" decrements by a value of 1, and I can see the updated value.', function () {
-	                clickButtonsById([_break_min, _break_min, _break_min, _break_min]);
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1");
+	      it('11. When I click the element with the id of "reset", any running timer should be stopped, the value within id="break-length" should return to 5, the value within id="session-length" should return to 25, and the element with id="time-left" should reset to it\'s default state.', function () {
+	        this.timeout(5000);
+	        // decrement session and break length
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        clickButtonsById(Array(60).fill(_break_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var observer = observeElement("time-left", function (modType) {
+	            if (timeLeft.innerHTML === "00:00") {
+	              // once timer has reached zero wait 1.5 seconds then reset and see if every default value is reset
+	              setTimeout(function (_) {
 	                resetTimer();
-	                clickButtonsById([_break_min]);
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "4");
-	            });
+	                var timerLabelAfterReset = document.getElementById('timer-label').innerText;
+	                var secondsAfterReset = getSeconds(document.getElementById("time-left").innerHTML);
 
-	            it('13. When I click the element with the id of "break-increment", the value within id="break-length" increments by a value of 1, and I can see the updated value.', function () {
-	                clickButtonsById(Array(4).fill(_break_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "9");
-	                resetTimer();
-	                clickButtonsById([_break_plus]);
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "6");
-	            });
+	                // see if timer label changed back
+	                if (orignalTimerLabel !== timerLabelAfterReset) {
+	                  reject(new Error("Default timer label was not properly reset"));
+	                }
 
-	            it('14. When I click the element with the id of "session-decrement", the value within id="session-length" decrements by a value of 1, and I can see the updated value.', function () {
-	                clickButtonsById(Array(4).fill(_sesh_min));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "21");
-	                resetTimer();
-	                clickButtonsById([_sesh_min]);
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "24");
-	            });
+	                // wait another 1.5 seconds to be sure value has not changed (pomodoro is stopped)
+	                setTimeout(function (_) {
+	                  var breakLengthAfterResetIsCorrect = document.getElementById("break-length").innerHTML == 5;
+	                  var sessionLengthAfterResetIsCorrect = document.getElementById("session-length").innerHTML == 25;
+	                  if (!breakLengthAfterResetIsCorrect || !sessionLengthAfterResetIsCorrect) {
+	                    reject(new Error("Default values for break length and session length were not properly reset"));
+	                    return;
+	                  }
+	                  var secondsAfterAWhile = getSeconds(document.getElementById("time-left").innerHTML);
+	                  if (secondsAfterReset === secondsAfterAWhile) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
+	                }, 1500);
+	              }, 1500);
+	              observer.disconnect();
+	            }
+	          });
+	        });
+	      });
 
-	            it('15. When I click the element with the id of "session-increment", the value within id="session-length" increments by a value of 1, and I can see the updated value.', function () {
-	                clickButtonsById(Array(4).fill(_sesh_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "29");
-	                resetTimer();
-	                clickButtonsById([_sesh_plus]);
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "26");
-	            });
+	      it('12. When I click the element with the id of "break-decrement", the value within ' + 'id="break-length" decrements by a value of 1, and I can see the updated value.', function () {
+	        clickButtonsById([_break_min, _break_min, _break_min, _break_min]);
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1");
+	        resetTimer();
+	        clickButtonsById([_break_min]);
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "4");
+	      });
 
-	            it('16. I should not be able to set a session or break length to <= 0.', function () {
-	                clickButtonsById(Array(10).fill(_break_min));
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in element with ' + 'id of "break-length" is less than 1.');
-	                resetTimer();
-	                clickButtonsById(Array(30).fill(_sesh_min));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in element with ' + 'id of "session-length" is less than 1.');
-	            });
+	      it('13. When I click the element with the id of "break-increment", the value within id="break-length" increments by a value of 1, and I can see the updated value.', function () {
+	        clickButtonsById(Array(4).fill(_break_plus));
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "9");
+	        resetTimer();
+	        clickButtonsById([_break_plus]);
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "6");
+	      });
 
-	            it('17. I should not be able to set a session or break length to > 60.', function () {
-	                clickButtonsById(Array(60).fill(_break_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in element with ' + 'id of "break-length" is greater than 60.');
-	                resetTimer();
-	                clickButtonsById(Array(40).fill(_sesh_plus));
-	                FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in element with ' + 'id of "session-length" is greater than 60.');
-	            });
+	      it('14. When I click the element with the id of "session-decrement", the value within id="session-length" decrements by a value of 1, and I can see the updated value.', function () {
+	        clickButtonsById(Array(4).fill(_sesh_min));
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "21");
+	        resetTimer();
+	        clickButtonsById([_sesh_min]);
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "24");
+	      });
 
-	            it('18. When I first click the element with id="start_stop", the timer should begin running from the value currently displayed in id="session-length", even if the value has been incremented or decremented from the original value of 25.', function () {
-	                clickButtonsById([_start_stop]);
-	                FCC_Global.assert.strictEqual(getMinutes(document.getElementById("time-left").innerHTML), document.getElementById("session-length").innerHTML);
-	            });
+	      it('15. When I click the element with the id of "session-increment", the value within id="session-length" increments by a value of 1, and I can see the updated value.', function () {
+	        clickButtonsById(Array(4).fill(_sesh_plus));
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "29");
+	        resetTimer();
+	        clickButtonsById([_sesh_plus]);
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "26");
+	      });
 
-	            it('19. If the timer is running, the element with the id of "time-left" should display the remaining time in mm:ss format (decrementing by a value of 1 and updating the display every 1000ms).', function () {
-	                this.timeout(2500);
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
-	                return new Promise(function (resolve, reject) {
-	                    // wait 1.5 seconds then see if displayed time has changed (decremented)
-	                    setTimeout(function (_) {
-	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
-	                        if (secondsAfter > secondsBefore) resolve();else reject(new Error("Pomodoro has started but time displayed is not changing"));
-	                    }, 1500);
-	                });
-	            });
-	            it('20. If the timer is running and I click the element with id="start_stop", the countdown should pause.', function () {
-	                this.timeout(4000);
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
-	                return new Promise(function (resolve, reject) {
-	                    // wait 1.5 seconds then see if displayed time has changed
-	                    setTimeout(function (_) {
-	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
-	                        if (secondsAfter === secondsBefore) {
-	                            reject(new Error("Pomodoro has started but time displayed is not changing"));
-	                            return;
-	                        }
-	                        // Pause the pomodoro
-	                        clickButtonsById([_start_stop]);
-	                        // wait another 1.5 seconds to be sure value has not changed
-	                        setTimeout(function (_) {
-	                            var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
-	                            if (secondsAfter === secondsAfterPause) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
-	                        }, 1500);
-	                    }, 1500);
-	                });
-	            });
-	            it('21. If the timer is paused and I click the element with id="start_stop", the countdown should resume running from the point at which it was paused.', function () {
-	                this.timeout(5000);
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
-	                return new Promise(function (resolve, reject) {
-	                    // wait 1.5 seconds then see if displayed time has changed
-	                    setTimeout(function (_) {
-	                        var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
-	                        if (secondsAfter === secondsBefore) {
-	                            reject(new Error("Pomodoro has started but time displayed is not changing"));
-	                            return;
-	                        }
-	                        // Pause the pomodoro
-	                        clickButtonsById([_start_stop]);
-	                        // wait another 1.5 seconds to be sure value has not changed
-	                        setTimeout(function (_) {
-	                            var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
-	                            if (secondsAfter !== secondsAfterPause) {
-	                                reject(new Error("Pomodoro has paused but time continued elapsing"));
-	                                return;
-	                            }
-	                            // Resume the pomodoro
-	                            clickButtonsById([_start_stop]);
-	                            // wait another 1.5 seconds to be sure time is decrementing again
-	                            setTimeout(function (_) {
-	                                var secondsAfterResume = getSeconds(document.getElementById("time-left").innerHTML);
-	                                if (secondsAfterPause > secondsAfterResume) resolve();else reject(new Error("Pomodoro has resumed but displayed time is not changing"));
-	                            }, 1500);
-	                        }, 1500);
-	                    }, 1500);
-	                });
-	            });
-	            it('22. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a break has begun.', function () {
-	                this.timeout(5000);
-	                // we decrement session time to the minimum (1 minute)
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var breakLength = document.getElementById("break-length");
-	                    // Save label to test that it has changed below
-	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
-	                    var shouldBeInBreak = false;
-	                    var observer = observeElement("time-left", function (modType) {
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            shouldBeInBreak = true;
-	                        } else {
-	                            if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
-	                                reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
-	                            } else if (shouldBeInBreak) {
-	                                if (document.getElementById("timer-label").innerHTML !== sessionLabel) {
-	                                    resolve();
-	                                } else {
-	                                    reject(new Error("Timer has reached zero but didn't switch to Break time"));
-	                                }
-	                                observer.disconnect();
-	                            }
-	                        }
-	                    });
-	                });
-	            });
-	            it('23. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), a new break countdown should begin, counting down from the value currently displayed in the id="break-length" element.', function () {
-	                this.timeout(5000);
-	                // we decrement session time to the minimum (1 minute)
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var shouldBeInBreak = false;
-	                    // Since not requiring specific labels, save the 'session' label to a variable, then test
-	                    // within observer function that label has changed to know when in break
-	                    var sessionLabel = document.getElementById("timer-label").innerHTML;
-	                    var observer = observeElement("time-left", function (modType) {
-	                        var currentTimer = document.getElementById("timer-label");
-	                        var breakLength = document.getElementById("break-length");
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            shouldBeInBreak = true;
-	                        } else {
-	                            if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
-	                                reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
-	                            } else if (shouldBeInBreak) {
-	                                if (currentTimer.innerHTML !== sessionLabel) {
-	                                    if (+getMinutes(timeLeft.innerHTML) === +breakLength.innerHTML) resolve();else {
-	                                        reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + breakLength.innerHTML));
-	                                    }
-	                                } else {
-	                                    reject(new Error("Timer has reached zero but didn't switch to Break time"));
-	                                }
-	                                observer.disconnect();
-	                            }
-	                        }
-	                    });
-	                });
-	            });
-	            it('24. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a session has begun.', function () {
-	                this.timeout(5000);
-	                // we decrement session length and break length to the minimum (1 minute)
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                clickButtonsById(Array(60).fill(_break_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var shouldBeInBreak = false;
-	                    var shouldBeInSessionAgain = false;
-	                    var breakLabel = void 0;
-	                    var observer = observeElement("time-left", function (modType) {
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            if (!shouldBeInBreak && !shouldBeInSessionAgain) {
-	                                shouldBeInBreak = true;
-	                            } else {
-	                                shouldBeInSessionAgain = true;
-	                                shouldBeInBreak = false;
-	                                // when in break, save 'break' label to var, then test below that label has changed
-	                                breakLabel = document.getElementById("timer-label").innerHTML;
-	                            }
-	                        } else {
-	                            if (shouldBeInSessionAgain) {
-	                                if (document.getElementById("timer-label").innerHTML !== breakLabel) {
-	                                    resolve();
-	                                } else {
-	                                    reject(new Error("Timer has reached zero but didn't switch back to Session time"));
-	                                }
-	                                observer.disconnect();
-	                            }
-	                        }
-	                    });
-	                });
-	            });
-	            it('25. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), a new session countdown should begin, counting down from the value currently displayed in the id="session-length" element.', function () {
-	                this.timeout(5000);
-	                // decrement session length and break length to the minimum (1 minute)
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                clickButtonsById(Array(60).fill(_break_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var shouldBeInBreak = false;
-	                    var shouldBeInSessionAgain = false;
-	                    var breakLabel = void 0;
-	                    var observer = observeElement("time-left", function (modType) {
-	                        if (timeLeft.innerHTML === "00:00") {
-	                            if (!shouldBeInBreak && !shouldBeInSessionAgain) {
-	                                shouldBeInBreak = true;
-	                            } else {
-	                                shouldBeInSessionAgain = true;
-	                                shouldBeInBreak = false;
-	                                // when in break, save 'break' label to var, then test below that label has changed
-	                                breakLabel = document.getElementById("timer-label").innerHTML;
-	                            }
-	                        } else {
-	                            if (shouldBeInSessionAgain) {
-	                                var currentTimer = document.getElementById("timer-label");
-	                                var sessionLength = document.getElementById("session-length");
-	                                if (currentTimer.innerHTML !== breakLabel) {
-	                                    if (+getMinutes(timeLeft.innerHTML) === +sessionLength.innerHTML) resolve();else {
-	                                        reject(new Error("Timer has switched back to Session time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + sessionLength.innerHTML));
-	                                    }
-	                                } else {
-	                                    reject(new Error("Timer has reached zero but didn't switch back to Session time"));
-	                                }
-	                                observer.disconnect();
-	                            }
-	                        }
-	                    });
-	                });
-	            });
-	            it('26. When a countdown reaches zero (NOTE: timer MUST reach 00:00), a sound (must be 200ms or longer) indicating that time is up should play. This should utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
-	                this.timeout(5000);
-	                // decrement session time to the minimum (1 minute)
-	                clickButtonsById(Array(60).fill(_sesh_min));
-	                // start the pomodoro
-	                clickButtonsById([_start_stop]);
-	                return new Promise(function (resolve, reject) {
-	                    var timeLeft = document.getElementById("time-left");
-	                    var breakLength = document.getElementById("break-length");
-	                    var observer = observeElement("time-left", function (modType) {
-	                        if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
-	                            reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
-	                        } else if (timeLeft.innerHTML === "00:00") {
-	                            // note: sound has to be longer than 200 ms, or the test will fail if the sound stops before the test actually happens
-	                            savedSetTimeout(function (_) {
-	                                if (document.getElementById("beep") && !document.getElementById("beep").paused) {
-	                                    resolve();
-	                                } else {
-	                                    reject(new Error("Timer has reached zero but, either there is not audio tag with ID 'beep' on the page, or it's not playing while it should."));
-	                                }
-	                            }, 200);
-	                        }
-	                    });
-	                });
-	            });
-	        }); // END #Tests
-	    }); // END #PomodoroClockTests
+	      it('16. I should not be able to set a session or break length to <= 0.', function () {
+	        clickButtonsById(Array(10).fill(_break_min));
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "1", 'Value in element with ' + 'id of "break-length" is less than 1.');
+	        resetTimer();
+	        clickButtonsById(Array(30).fill(_sesh_min));
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "1", 'Value in element with ' + 'id of "session-length" is less than 1.');
+	      });
+
+	      it('17. I should not be able to set a session or break length to > 60.', function () {
+	        clickButtonsById(Array(60).fill(_break_plus));
+	        FCC_Global.assert.strictEqual(document.getElementById("break-length").innerHTML, "60", 'Value in element with ' + 'id of "break-length" is greater than 60.');
+	        resetTimer();
+	        clickButtonsById(Array(40).fill(_sesh_plus));
+	        FCC_Global.assert.strictEqual(document.getElementById("session-length").innerHTML, "60", 'Value in element with ' + 'id of "session-length" is greater than 60.');
+	      });
+
+	      it('18. When I first click the element with id="start_stop", the timer should begin running from the value currently displayed in id="session-length", even if the value has been incremented or decremented from the original value of 25.', function () {
+	        clickButtonsById([_start_stop]);
+	        FCC_Global.assert.strictEqual(getMinutes(document.getElementById("time-left").innerHTML), document.getElementById("session-length").innerHTML);
+	      });
+
+	      it('19. If the timer is running, the element with the id of "time-left" should display the remaining time in mm:ss format (decrementing by a value of 1 and updating the display every 1000ms).', function () {
+	        this.timeout(2500);
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
+	        return new Promise(function (resolve, reject) {
+	          // wait 1.5 seconds then see if displayed time has changed (decremented)
+	          setTimeout(function (_) {
+	            var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
+	            if (secondsAfter > secondsBefore) resolve();else reject(new Error("Pomodoro has started but time displayed is not changing"));
+	          }, 1500);
+	        });
+	      });
+
+	      it('20. If the timer is running and I click the element with id="start_stop", the countdown should pause.', function () {
+	        this.timeout(4000);
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
+	        return new Promise(function (resolve, reject) {
+	          // wait 1.5 seconds then see if displayed time has changed
+	          setTimeout(function (_) {
+	            var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
+	            if (secondsAfter === secondsBefore) {
+	              reject(new Error("Pomodoro has started but time displayed is not changing"));
+	              return;
+	            }
+	            // Pause the pomodoro
+	            clickButtonsById([_start_stop]);
+	            // wait another 1.5 seconds to be sure value has not changed
+	            setTimeout(function (_) {
+	              var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
+	              if (secondsAfter === secondsAfterPause) resolve();else reject(new Error("Pomodoro has paused but time continued elapsing"));
+	            }, 1500);
+	          }, 1500);
+	        });
+	      });
+
+	      it('21. If the timer is paused and I click the element with id="start_stop", the countdown should resume running from the point at which it was paused.', function () {
+	        this.timeout(5000);
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        var secondsBefore = getSeconds(document.getElementById("time-left").innerHTML);
+	        return new Promise(function (resolve, reject) {
+	          // wait 1.5 seconds then see if displayed time has changed
+	          setTimeout(function (_) {
+	            var secondsAfter = getSeconds(document.getElementById("time-left").innerHTML);
+	            if (secondsAfter === secondsBefore) {
+	              reject(new Error("Pomodoro has started but time displayed is not changing"));
+	              return;
+	            }
+	            // Pause the pomodoro
+	            clickButtonsById([_start_stop]);
+	            // wait another 1.5 seconds to be sure value has not changed
+	            setTimeout(function (_) {
+	              var secondsAfterPause = getSeconds(document.getElementById("time-left").innerHTML);
+	              if (secondsAfter !== secondsAfterPause) {
+	                reject(new Error("Pomodoro has paused but time continued elapsing"));
+	                return;
+	              }
+	              // Resume the pomodoro
+	              clickButtonsById([_start_stop]);
+	              // wait another 1.5 seconds to be sure time is decrementing again
+	              setTimeout(function (_) {
+	                var secondsAfterResume = getSeconds(document.getElementById("time-left").innerHTML);
+	                if (secondsAfterPause > secondsAfterResume) resolve();else reject(new Error("Pomodoro has resumed but displayed time is not changing"));
+	              }, 1500);
+	            }, 1500);
+	          }, 1500);
+	        });
+	      });
+
+	      it('22. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a break has begun.', function () {
+	        this.timeout(5000);
+	        // we decrement session time to the minimum (1 minute)
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var breakLength = document.getElementById("break-length");
+	          // Save label to test that it has changed below
+	          var sessionLabel = document.getElementById("timer-label").innerHTML;
+	          var shouldBeInBreak = false;
+	          var observer = observeElement("time-left", function (modType) {
+	            if (timeLeft.innerHTML === "00:00") {
+	              shouldBeInBreak = true;
+	            } else {
+	              if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	                reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	              } else if (shouldBeInBreak) {
+	                if (document.getElementById("timer-label").innerHTML !== sessionLabel) {
+	                  resolve();
+	                } else {
+	                  reject(new Error("Timer has reached zero but didn't switch to Break time"));
+	                }
+	                observer.disconnect();
+	              }
+	            }
+	          });
+	        });
+	      });
+
+	      it('23. When a session countdown reaches zero (NOTE: timer MUST reach 00:00), a new break countdown should begin, counting down from the value currently displayed in the id="break-length" element.', function () {
+	        this.timeout(5000);
+	        // we decrement session time to the minimum (1 minute)
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var shouldBeInBreak = false;
+	          // Since not requiring specific labels, save the 'session' label to a variable, then test
+	          // within observer function that label has changed to know when in break
+	          var sessionLabel = document.getElementById("timer-label").innerHTML;
+	          var observer = observeElement("time-left", function (modType) {
+	            var currentTimer = document.getElementById("timer-label");
+	            var breakLength = document.getElementById("break-length");
+	            if (timeLeft.innerHTML === "00:00") {
+	              shouldBeInBreak = true;
+	            } else {
+	              if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	                reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	              } else if (shouldBeInBreak) {
+	                if (currentTimer.innerHTML !== sessionLabel) {
+	                  if (+getMinutes(timeLeft.innerHTML) === +breakLength.innerHTML) resolve();else {
+	                    reject(new Error("Timer has switched to Break time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + breakLength.innerHTML));
+	                  }
+	                } else {
+	                  reject(new Error("Timer has reached zero but didn't switch to Break time"));
+	                }
+	                observer.disconnect();
+	              }
+	            }
+	          });
+	        });
+	      });
+
+	      it('24. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of "timer-label" should display a string indicating a session has begun.', function () {
+	        this.timeout(5000);
+	        // we decrement session length and break length to the minimum (1 minute)
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        clickButtonsById(Array(60).fill(_break_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var shouldBeInBreak = false;
+	          var shouldBeInSessionAgain = false;
+	          var breakLabel = void 0;
+	          var observer = observeElement("time-left", function (modType) {
+	            if (timeLeft.innerHTML === "00:00") {
+	              if (!shouldBeInBreak && !shouldBeInSessionAgain) {
+	                shouldBeInBreak = true;
+	              } else {
+	                shouldBeInSessionAgain = true;
+	                shouldBeInBreak = false;
+	                // when in break, save 'break' label to var, then test below that label has changed
+	                breakLabel = document.getElementById("timer-label").innerHTML;
+	              }
+	            } else {
+	              if (shouldBeInSessionAgain) {
+	                if (document.getElementById("timer-label").innerHTML !== breakLabel) {
+	                  resolve();
+	                } else {
+	                  reject(new Error("Timer has reached zero but didn't switch back to Session time"));
+	                }
+	                observer.disconnect();
+	              }
+	            }
+	          });
+	        });
+	      });
+
+	      it('25. When a break countdown reaches zero (NOTE: timer MUST reach 00:00), a new session countdown should begin, counting down from the value currently displayed in the id="session-length" element.', function () {
+	        this.timeout(5000);
+	        // decrement session length and break length to the minimum (1 minute)
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        clickButtonsById(Array(60).fill(_break_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var shouldBeInBreak = false;
+	          var shouldBeInSessionAgain = false;
+	          var breakLabel = void 0;
+	          var observer = observeElement("time-left", function (modType) {
+	            if (timeLeft.innerHTML === "00:00") {
+	              if (!shouldBeInBreak && !shouldBeInSessionAgain) {
+	                shouldBeInBreak = true;
+	              } else {
+	                shouldBeInSessionAgain = true;
+	                shouldBeInBreak = false;
+	                // when in break, save 'break' label to var, then test below that label has changed
+	                breakLabel = document.getElementById("timer-label").innerHTML;
+	              }
+	            } else {
+	              if (shouldBeInSessionAgain) {
+	                var currentTimer = document.getElementById("timer-label");
+	                var sessionLength = document.getElementById("session-length");
+	                if (currentTimer.innerHTML !== breakLabel) {
+	                  if (+getMinutes(timeLeft.innerHTML) === +sessionLength.innerHTML) resolve();else {
+	                    reject(new Error("Timer has switched back to Session time, but it didn't start with the correct value: " + getMinutes(timeLeft.innerHTML) + " instead of " + sessionLength.innerHTML));
+	                  }
+	                } else {
+	                  reject(new Error("Timer has reached zero but didn't switch back to Session time"));
+	                }
+	                observer.disconnect();
+	              }
+	            }
+	          });
+	        });
+	      });
+
+	      it('26. When a countdown reaches zero (NOTE: timer MUST reach 00:00), a sound (must be 200ms or longer) indicating that time is up should play. This should utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
+	        this.timeout(5000);
+	        // decrement session time to the minimum (1 minute)
+	        clickButtonsById(Array(60).fill(_sesh_min));
+	        // start the pomodoro
+	        clickButtonsById([_start_stop]);
+	        return new Promise(function (resolve, reject) {
+	          var timeLeft = document.getElementById("time-left");
+	          var breakLength = document.getElementById("break-length");
+	          var observer = observeElement("time-left", function (modType) {
+	            if (parseInt(timeLeft.innerHTML.slice(0, 2)) > 5) {
+	              reject(new Error("Test timed out because Break time didn't start with the correct value: " + (parseInt(getMinutes(timeLeft.innerHTML)) + 1) + " instead of " + breakLength.innerHTML));
+	            } else if (timeLeft.innerHTML === "00:00") {
+	              // note: sound has to be longer than 200 ms, or the test will fail if the sound stops before the test actually happens
+	              savedSetTimeout(function (_) {
+	                if (document.getElementById("beep") && !document.getElementById("beep").paused) {
+	                  resolve();
+	                } else {
+	                  reject(new Error("Timer has reached zero but, either there is not audio tag with ID 'beep' on the page, or it's not playing while it should."));
+	                }
+	              }, 200);
+	            }
+	          });
+	        });
+	      });
+	    }); // END #Tests
+	  }); // END #PomodoroClockTests
 	} // END createPomodoroClockTests()
 
 /***/ }),
@@ -19947,7 +19954,7 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createTributePageTests;
 
@@ -19959,74 +19966,74 @@ var FCC_Global =
 
 	function createTributePageTests() {
 
-	    function getPropValue(el, prop) {
-	        return window.getComputedStyle(el).getPropertyValue(prop);
-	    }
+	  function getPropValue(el, prop) {
+	    return window.getComputedStyle(el).getPropertyValue(prop);
+	  }
 
-	    describe("#Tribute Page tests", function () {
+	  describe("#Tribute Page tests", function () {
 
-	        describe("#Content", function () {
-	            it('1. My tribute page should have an element with corresponding id="main", which contains ' + 'all other elements.', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("main"));
-	                FCC_Global.assert(document.querySelectorAll("#main div, #main a, #main h1, #main img").length, 'element with id="main" ' + 'must contain other elements');
-	            });
+	    describe("#Content", function () {
+	      it('1. My tribute page should have an element with corresponding id="main", which contains ' + 'all other elements.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("main"));
+	        FCC_Global.assert(document.querySelectorAll("#main div, #main a, #main h1, #main img").length, 'element with id="main" ' + 'must contain other elements');
+	      });
 
-	            it('2. I should see an element with corresponding id="title", which contains a string (i.e. text) ' + 'that describes the subject of the tribute page (e.g. "Dr. Norman Borlaug").', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("title"));
-	                var titleText = document.getElementById("title").innerText;
-	                FCC_Global.assert.isAbove(titleText.length, 0, "Element does not contain any text");
-	            });
+	      it('2. I should see an element with corresponding id="title", which contains a string (i.e. text) ' + 'that describes the subject of the tribute page (e.g. "Dr. Norman Borlaug").', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("title"));
+	        var titleText = document.getElementById("title").innerText;
+	        FCC_Global.assert.isAbove(titleText.length, 0, "Element does not contain any text");
+	      });
 
-	            it('3. I should see a <div> element with corresponding id="img-div".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("img-div"));
-	            });
+	      it('3. I should see a <div> element with corresponding id="img-div".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("img-div"));
+	      });
 
-	            it('4. Within the "img-div" element, I should see an <img> element with a corresponding ' + 'id="image".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("image"));
-	                FCC_Global.assert.strictEqual((0, _jquery2.default)('#img-div').find('#image').length, 1, 'Element is not a child of id="img-div" ');
-	            });
+	      it('4. Within the "img-div" element, I should see an <img> element with a corresponding ' + 'id="image".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("image"));
+	        FCC_Global.assert.strictEqual((0, _jquery2.default)('#img-div').find('#image').length, 1, 'Element is not a child of id="img-div" ');
+	      });
 
-	            it('5. Within the "img-div" element, I should see an element with a corresponding id="img-caption" ' + 'that contains textual content describing the image shown in "img-div".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("img-caption"));
-	                FCC_Global.assert.strictEqual((0, _jquery2.default)('#img-div').find('#img-caption').length, 1, 'Element is not a child of id="img-div" ');
-	                var captionContents = document.getElementById('img-caption').innerText;
-	                FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content ");
-	            });
+	      it('5. Within the "img-div" element, I should see an element with a corresponding id="img-caption" ' + 'that contains textual content describing the image shown in "img-div".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("img-caption"));
+	        FCC_Global.assert.strictEqual((0, _jquery2.default)('#img-div').find('#img-caption').length, 1, 'Element is not a child of id="img-div" ');
+	        var captionContents = document.getElementById('img-caption').innerText;
+	        FCC_Global.assert.isAbove(captionContents.length, 0, "Element does not have any content ");
+	      });
 
-	            it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' + 'describing the subject of the tribute page.', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
-	                var infoContents = document.getElementById('tribute-info').innerText;
-	                FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content ");
-	            });
+	      it('6. I should see an element with a corresponding id="tribute-info", which contains textual content ' + 'describing the subject of the tribute page.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('tribute-info'));
+	        var infoContents = document.getElementById('tribute-info').innerText;
+	        FCC_Global.assert.isAbove(infoContents.length, 0, "Element does not have any content ");
+	      });
 
-	            it('7. I should see an <a> element with a corresponding id="tribute-link", which links to an outside site ' + 'that contains additional information about the subject of the tribute page. HINT: You must give your element an attribute of target and set it to "_blank" in order for your link to open in a new tab (i.e. target="_blank").', function () {
-	                var tributeLink = document.getElementById('tribute-link');
-	                FCC_Global.assert.isNotNull(tributeLink);
-	                FCC_Global.assert(tributeLink.hasAttribute('href'), '<a> element with id="tribute-link" must contain an href attribute ');
-	                FCC_Global.assert(tributeLink.hasAttribute('target'), '<a> element with id="tribute-link" must contain a target attribute ');
-	                FCC_Global.assert.strictEqual(tributeLink.getAttribute('target'), '_blank', 'The target attribute should be set to "_blank", in order for the link to open in a new tab ');
-	            });
-	        }); // END #Content
+	      it('7. I should see an <a> element with a corresponding id="tribute-link", which links to an outside site ' + 'that contains additional information about the subject of the tribute page. HINT: You must give your element an attribute of target and set it to "_blank" in order for your link to open in a new tab (i.e. target="_blank").', function () {
+	        var tributeLink = document.getElementById('tribute-link');
+	        FCC_Global.assert.isNotNull(tributeLink);
+	        FCC_Global.assert(tributeLink.hasAttribute('href'), '<a> element with id="tribute-link" must contain an href attribute ');
+	        FCC_Global.assert(tributeLink.hasAttribute('target'), '<a> element with id="tribute-link" must contain a target attribute ');
+	        FCC_Global.assert.strictEqual(tributeLink.getAttribute('target'), '_blank', 'The target attribute should be set to "_blank", in order for the link to open in a new tab ');
+	      });
+	    }); // END #Content
 
-	        describe('#Layout', function () {
+	    describe('#Layout', function () {
 
-	            it('1. The <img> element should responsively resize, relative to the width of its parent element, without ' + 'exceeding its original size.', function () {
-	                var img = document.getElementById('image');
-	                var maxWidthValue = getPropValue(img, 'max-width');
-	                FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property ');
-	            });
+	      it('1. The <img> element should responsively resize, relative to the width of its parent element, without ' + 'exceeding its original size.', function () {
+	        var img = document.getElementById('image');
+	        var maxWidthValue = getPropValue(img, 'max-width');
+	        FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property ');
+	      });
 
-	            it('2. The <img> element should be centered within its parent element.', function () {
-	                var img = document.getElementById('image'),
-	                    imgParent = document.getElementById('image').parentElement,
-	                    imgLeft = img.getBoundingClientRect().left,
-	                    imgRight = img.getBoundingClientRect().right,
-	                    parentLeft = imgParent.getBoundingClientRect().left,
-	                    parentRight = imgParent.getBoundingClientRect().right;
-	                FCC_Global.assert.approximately(imgLeft - parentLeft, parentRight - imgRight, 11, 'Image is not centered');
-	            });
-	        }); // END #Layout
-	    }); // END #TributePageTests
+	      it('2. The <img> element should be centered within its parent element.', function () {
+	        var img = document.getElementById('image'),
+	            imgParent = document.getElementById('image').parentElement,
+	            imgLeft = img.getBoundingClientRect().left,
+	            imgRight = img.getBoundingClientRect().right,
+	            parentLeft = imgParent.getBoundingClientRect().left,
+	            parentRight = imgParent.getBoundingClientRect().right;
+	        FCC_Global.assert.approximately(imgLeft - parentLeft, parentRight - imgRight, 11, 'Image is not centered');
+	      });
+	    }); // END #Layout
+	  }); // END #TributePageTests
 	} // END createTributePageTests()
 
 /***/ }),
@@ -20036,135 +20043,135 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createPortfolioTests;
 	function createPortfolioTests() {
 
-	    describe('#Portfolio tests', function () {
+	  describe('#Portfolio tests', function () {
 
-	        describe('#Content', function () {
-	            it('1. My portfolio should have a Welcome section with an id of \"welcome-section\".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('welcome-section'));
-	            });
+	    describe('#Content', function () {
+	      it('1. My portfolio should have a Welcome section with an id of \"welcome-section\".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('welcome-section'));
+	      });
 
-	            it('2. The welcome section should have an h1 element that contains text.', function () {
-	                var welcome = document.getElementById('welcome-section');
+	      it('2. The welcome section should have an h1 element that contains text.', function () {
+	        var welcome = document.getElementById('welcome-section');
 
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
 
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper name ');
-	            });
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper name ');
+	      });
 
-	            it('3. My portfolio should have a projects section with an id of \"projects\".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('projects'));
-	            });
+	      it('3. My portfolio should have a projects section with an id of \"projects\".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('projects'));
+	      });
 
-	            it('4. The projects section should contain at least one element with a class of \"project-tile\" to hold a project.', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
-	            });
+	      it('4. The projects section should contain at least one element with a class of \"project-tile\" to hold a project.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
+	      });
 
-	            it('5. The projects section should contain at least one link to a project.', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#projects a').length, 0);
-	            });
+	      it('5. The projects section should contain at least one link to a project.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects a').length, 0);
+	      });
 
-	            it('6. My portfolio should have a navbar with an id of \"navbar\".', function () {
-	                var navbar = document.getElementById('navbar');
+	      it('6. My portfolio should have a navbar with an id of \"navbar\".', function () {
+	        var navbar = document.getElementById('navbar');
 
-	                FCC_Global.assert.isNotNull(navbar);
-	            });
+	        FCC_Global.assert.isNotNull(navbar);
+	      });
 
-	            it('7. The navbar should contain at least one link that I can click on to navigate to different sections of the page.', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
+	      it('7. The navbar should contain at least one link that I can click on to navigate to different sections of the page.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
 
-	                var links = document.querySelectorAll('#navbar a');
+	        var links = document.querySelectorAll('#navbar a');
 
-	                for (var i = 0; i < links.length; i++) {
-	                    links[i].click();
+	        for (var i = 0; i < links.length; i++) {
+	          links[i].click();
 
-	                    if (window.scrollY) {
-	                        // if the window's y position is not 0, clicking a link made it move
-	                        FCC_Global.assert.ok(true);
-	                        window.scroll(0, 0);
-	                        return;
-	                    }
-	                }
+	          if (window.scrollY) {
+	            // if the window's y position is not 0, clicking a link made it move
+	            FCC_Global.assert.ok(true);
+	            window.scroll(0, 0);
+	            return;
+	          }
+	        }
 
-	                // move window to bottom
-	                window.scroll(0, document.body.scrollHeight);
-	                var bottomPositionY = window.scrollY;
+	        // move window to bottom
+	        window.scroll(0, document.body.scrollHeight);
+	        var bottomPositionY = window.scrollY;
 
-	                for (var i = 0; i < links.length; i++) {
-	                    links[i].click();
+	        for (var i = 0; i < links.length; i++) {
+	          links[i].click();
 
-	                    var distanceFromBottom = bottomPositionY - window.scrollY;
+	          var distanceFromBottom = bottomPositionY - window.scrollY;
 
-	                    if (distanceFromBottom) {
-	                        // if distance from bottom is not 0, clicking a link made it move
-	                        FCC_Global.assert.ok(true);
-	                        window.scroll(0, 0);
-	                        return;
-	                    }
-	                }
+	          if (distanceFromBottom) {
+	            // if distance from bottom is not 0, clicking a link made it move
+	            FCC_Global.assert.ok(true);
+	            window.scroll(0, 0);
+	            return;
+	          }
+	        }
 
-	                // none of the links changed the scroll position
-	                window.scroll(0, 0);
-	                FCC_Global.assert.isOk(false, 'At least one navbar link should move the page position when clicked ');
-	            });
+	        // none of the links changed the scroll position
+	        window.scroll(0, 0);
+	        FCC_Global.assert.isOk(false, 'At least one navbar link should move the page position when clicked ');
+	      });
 
-	            it('8. My portfolio should have a link with an id of \"profile-link\", which opens my GitHub or FCC profile in a new tab.', function () {
-	                var profileLink = document.getElementById('profile-link');
+	      it('8. My portfolio should have a link with an id of \"profile-link\", which opens my GitHub or FCC profile in a new tab.', function () {
+	        var profileLink = document.getElementById('profile-link');
 
-	                FCC_Global.assert.isNotNull(profileLink);
+	        FCC_Global.assert.isNotNull(profileLink);
 
-	                FCC_Global.assert.equal(profileLink.nodeName, 'A');
+	        FCC_Global.assert.equal(profileLink.nodeName, 'A');
 
-	                FCC_Global.assert.strictEqual(profileLink.hasAttribute('target'), true, '#profile-link should have a target attribute ');
+	        FCC_Global.assert.strictEqual(profileLink.hasAttribute('target'), true, '#profile-link should have a target attribute ');
 
-	                FCC_Global.assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
-	            });
-	        }); // END #Content
+	        FCC_Global.assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
+	      });
+	    }); // END #Content
 
-	        describe('#Layout', function () {
+	    describe('#Layout', function () {
 
-	            it('1. My portfolio should have at least one media query.', function () {
-	                var queryRules = [];
-	                // loop through all associated stylesheets and look for media query
-	                for (var i = 0; i < document.styleSheets.length; i++) {
-	                    if (document.styleSheets[i].cssRules !== null) {
-	                        for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	                            if (document.styleSheets[i].cssRules[j].type === 4) {
-	                                // push query rules to empty array
-	                                queryRules.push(document.styleSheets[i].cssRules[j]);
-	                            }
-	                        }
-	                    }
-	                }
-	                // there is one media query in Mocha.css, so must detect more than 1 query
-	                FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
-	            });
+	      it('1. My portfolio should have at least one media query.', function () {
+	        var queryRules = [];
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                // push query rules to empty array
+	                queryRules.push(document.styleSheets[i].cssRules[j]);
+	              }
+	            }
+	          }
+	        }
+	        // there is one media query in Mocha.css, so must detect more than 1 query
+	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+	      });
 
-	            it('2. The height of the welcome section should be equal to the height of the viewport.', function () {
-	                FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
-	            });
+	      it('2. The height of the welcome section should be equal to the height of the viewport.', function () {
+	        FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
+	      });
 
-	            it('3. The navbar should always be at the top of the viewport.', function (done) {
-	                var navbar = document.getElementById('navbar');
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of the viewport ');
-	                window.scroll(0, 500);
+	      it('3. The navbar should always be at the top of the viewport.', function (done) {
+	        var navbar = document.getElementById('navbar');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of the viewport ');
+	        window.scroll(0, 500);
 
-	                // This timeout is to allow page layout to happen after the window.scroll. Without it
-	                // the getBoundingClientRect can sometimes report the wrong value while the page is
-	                // still laying out, when using CSS position:sticky.
-	                // This is apparently a bug with Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=672457
-	                setTimeout(function () {
-	                    FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
-	                    window.scroll(0, 0);
-	                    done();
-	                }, 1);
-	            });
-	        }); // END #Layout
-	    }); // END #PortfolioTests
+	        // This timeout is to allow page layout to happen after the window.scroll. Without it
+	        // the getBoundingClientRect can sometimes report the wrong value while the page is
+	        // still laying out, when using CSS position:sticky.
+	        // This is apparently a bug with Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=672457
+	        setTimeout(function () {
+	          FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
+	          window.scroll(0, 0);
+	          done();
+	        }, 1);
+	      });
+	    }); // END #Layout
+	  }); // END #PortfolioTests
 	} // END createPortfolioTests()
 
 /***/ }),
@@ -20174,163 +20181,163 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createProductLandingPageTests;
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function createProductLandingPageTests() {
-	    describe("#Product Landing Page tests", function () {
+	  describe("#Product Landing Page tests", function () {
 
-	        describe("#Content", function () {
+	    describe("#Content", function () {
 
-	            it('1. My product landing page should have a <header> element with corresponding id="header".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("header"), '#header is not defined ');
-	            });
+	      it('1. My product landing page should have a <header> element with corresponding id="header".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("header"), '#header is not defined ');
+	      });
 
-	            it('2. I can see an image within the #header element with a corresponding id="header-img".', function () {
-	                var img = document.getElementById("header-img");
-	                FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
-	                FCC_Global.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header ');
-	                FCC_Global.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
-	                FCC_Global.assert.include(img.src, 'http', "The src attribute\'s value should be a url (http...) ");
-	            });
+	      it('2. I can see an image within the #header element with a corresponding id="header-img".', function () {
+	        var img = document.getElementById("header-img");
+	        FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
+	        FCC_Global.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header ');
+	        FCC_Global.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
+	        FCC_Global.assert.include(img.src, 'http', "The src attribute\'s value should be a url (http...) ");
+	      });
 
-	            it('3. Within the <header> element I can see a <nav> element with corresponding id="nav-bar".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("nav-bar"), '#nav-bar is not defined ');
-	                FCC_Global.assert.strictEqual(document.getElementById("nav-bar").nodeName, 'NAV', 'The #nav-bar element is not a <nav> element ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#header #nav-bar').length, 1, '#nav-bar is not a child of #header ');
-	            });
+	      it('3. Within the <header> element I can see a <nav> element with corresponding id="nav-bar".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("nav-bar"), '#nav-bar is not defined ');
+	        FCC_Global.assert.strictEqual(document.getElementById("nav-bar").nodeName, 'NAV', 'The #nav-bar element is not a <nav> element ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #nav-bar').length, 1, '#nav-bar is not a child of #header ');
+	      });
 
-	            it('4. I can see at least three clickable elements inside the nav element, each with the class "nav-link".', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" within the #nav-bar element ');
-	            });
+	      it('4. I can see at least three clickable elements inside the nav element, each with the class "nav-link".', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" within the #nav-bar element ');
+	      });
 
-	            it('5. When I click a .nav-link button in the nav element, I am taken to the corresponding section of the landing page.', function () {
-	                var navLinks = document.querySelectorAll('#nav-bar .nav-link');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ');
-	                navLinks.forEach(function (link) {
-	                    FCC_Global.assert.isNotNull(link);
-	                    FCC_Global.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
-	                    var linkDestination = link.getAttribute('href').slice(1);
-	                    FCC_Global.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element ');
-	                });
-	            });
+	      it('5. When I click a .nav-link button in the nav element, I am taken to the corresponding section of the landing page.', function () {
+	        var navLinks = document.querySelectorAll('#nav-bar .nav-link');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ');
+	        navLinks.forEach(function (link) {
+	          FCC_Global.assert.isNotNull(link);
+	          FCC_Global.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
+	          var linkDestination = link.getAttribute('href').slice(1);
+	          FCC_Global.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element ');
+	        });
+	      });
 
-	            it('6. I can watch an embedded product video with id="video".', function () {
-	                var video = document.getElementById("video");
-	                FCC_Global.assert.isNotNull(video, '#video is not defined ');
-	                FCC_Global.assert(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
-	                FCC_Global.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
-	            });
+	      it('6. I can watch an embedded product video with id="video".', function () {
+	        var video = document.getElementById("video");
+	        FCC_Global.assert.isNotNull(video, '#video is not defined ');
+	        FCC_Global.assert(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
+	        FCC_Global.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
+	      });
 
-	            it('7. My landing page has a <form> element with a corresponding id="form".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('form'), '#form is not defined ');
-	                FCC_Global.assert.strictEqual(document.getElementById('form').nodeName, 'FORM', '#form should be a <form> element ');
-	            });
+	      it('7. My landing page has a <form> element with a corresponding id="form".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('form'), '#form is not defined ');
+	        FCC_Global.assert.strictEqual(document.getElementById('form').nodeName, 'FORM', '#form should be a <form> element ');
+	      });
 
-	            it('8. Within the form, there is an <input> field with id="email" where I can enter an email address.', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#form #email').length, 1, '#email should be a child of the #form element ');
-	                FCC_Global.assert.strictEqual(document.getElementById("email").nodeName, 'INPUT', '#email should be an <input> element ');
-	            });
+	      it('8. Within the form, there is an <input> field with id="email" where I can enter an email address.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#form #email').length, 1, '#email should be a child of the #form element ');
+	        FCC_Global.assert.strictEqual(document.getElementById("email").nodeName, 'INPUT', '#email should be an <input> element ');
+	      });
 
-	            it('9. The #email input field should have placeholder text to let the user know what the field is for.', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
-	                FCC_Global.assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true, 'The input field does not have placeholder text ');
-	                FCC_Global.assert.isAbove(document.getElementById("email").getAttribute('placeholder').length, 0, 'The placeholder attribute should have some text ');
-	            });
+	      it('9. The #email input field should have placeholder text to let the user know what the field is for.', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        FCC_Global.assert.strictEqual(document.getElementById("email").hasAttribute('placeholder'), true, 'The input field does not have placeholder text ');
+	        FCC_Global.assert.isAbove(document.getElementById("email").getAttribute('placeholder').length, 0, 'The placeholder attribute should have some text ');
+	      });
 
-	            it('10. The #email input field uses HTML5 validation to confirm that the entered text is an email address.', function () {
-	                var emailField = document.getElementById("email");
-	                FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
-	                FCC_Global.assert.strictEqual(emailField.type, "email", "Email field should use HTML5 validation ");
-	            });
+	      it('10. The #email input field uses HTML5 validation to confirm that the entered text is an email address.', function () {
+	        var emailField = document.getElementById("email");
+	        FCC_Global.assert.isNotNull(document.getElementById("email"), '#email is not defined ');
+	        FCC_Global.assert.strictEqual(emailField.type, "email", "Email field should use HTML5 validation ");
+	      });
 
-	            it('11. Within the form, there is a submit <input> with corresponding id="submit".', function () {
-	                var submitButton = document.getElementById("submit");
-	                FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
-	                FCC_Global.assert.strictEqual(submitButton.nodeName, 'INPUT', '#email should be an <input> element ');
-	                FCC_Global.assert.strictEqual(submitButton.type, 'submit', 'The input type is incorrect ');
-	            });
+	      it('11. Within the form, there is a submit <input> with corresponding id="submit".', function () {
+	        var submitButton = document.getElementById("submit");
+	        FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
+	        FCC_Global.assert.strictEqual(submitButton.nodeName, 'INPUT', '#email should be an <input> element ');
+	        FCC_Global.assert.strictEqual(submitButton.type, 'submit', 'The input type is incorrect ');
+	      });
 
-	            it('12. When I click the #submit button, the email is submitted to a static page (use this mock URL: https://www.freecodecamp.com/email-submit) that confirms the email address was entered (and that it posted successfully).', function () {
-	                var emailField = document.getElementById("email");
-	                var form = document.getElementById('form');
-	                var submitButton = document.getElementById('submit');
-	                FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
-	                FCC_Global.assert.strictEqual(form.hasAttribute('action'), true, 'The #form should have an action attribute ');
-	                FCC_Global.assert.include(form.action, 'http', "The action attribute\'s value should be a url (http...) ");
-	                FCC_Global.assert.strictEqual(emailField.hasAttribute('name'), true, 'The #email input should have a name attribute ');
-	                FCC_Global.assert.strictEqual(emailField.name, "email", 'The name attribute should have a value of "email" ');
-	            });
-	        }); // END #Content
+	      it('12. When I click the #submit button, the email is submitted to a static page (use this mock URL: https://www.freecodecamp.com/email-submit) that confirms the email address was entered (and that it posted successfully).', function () {
+	        var emailField = document.getElementById("email");
+	        var form = document.getElementById('form');
+	        var submitButton = document.getElementById('submit');
+	        FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
+	        FCC_Global.assert.strictEqual(form.hasAttribute('action'), true, 'The #form should have an action attribute ');
+	        FCC_Global.assert.include(form.action, 'http', "The action attribute\'s value should be a url (http...) ");
+	        FCC_Global.assert.strictEqual(emailField.hasAttribute('name'), true, 'The #email input should have a name attribute ');
+	        FCC_Global.assert.strictEqual(emailField.name, "email", 'The name attribute should have a value of "email" ');
+	      });
+	    }); // END #Content
 
-	        describe('#Layout', function () {
-	            it('1. The navbar should always be at the top of the viewport.', function () {
-	                var header = document.getElementById('header');
-	                var headerChildren = header.children;
-	                // array of all potential elements serving as a navbar
-	                var navbarCandidates = [header].concat(_toConsumableArray(headerChildren));
+	    describe('#Layout', function () {
+	      it('1. The navbar should always be at the top of the viewport.', function () {
+	        var header = document.getElementById('header');
+	        var headerChildren = header.children;
+	        // array of all potential elements serving as a navbar
+	        var navbarCandidates = [header].concat(_toConsumableArray(headerChildren));
 
-	                // get the 'top' position value from the element whose value is closest to 0
-	                function getNavbarPosition(candidates) {
-	                    // by default, set to first candidate's top value
-	                    var candidatePosition = Math.abs(candidates[0].getBoundingClientRect().top);
-	                    for (var i = 1; i < candidates.length; i++) {
-	                        // if another candidate has a top value closer to 0, replace the old value
-	                        var currentCandidatePosition = Math.abs(candidates[i].getBoundingClientRect().top);
-	                        if (currentCandidatePosition < candidatePosition) {
-	                            candidatePosition = currentCandidatePosition;
-	                        }
-	                    }
-	                    return candidatePosition;
-	                };
+	        // get the 'top' position value from the element whose value is closest to 0
+	        function getNavbarPosition(candidates) {
+	          // by default, set to first candidate's top value
+	          var candidatePosition = Math.abs(candidates[0].getBoundingClientRect().top);
+	          for (var i = 1; i < candidates.length; i++) {
+	            // if another candidate has a top value closer to 0, replace the old value
+	            var currentCandidatePosition = Math.abs(candidates[i].getBoundingClientRect().top);
+	            if (currentCandidatePosition < candidatePosition) {
+	              candidatePosition = currentCandidatePosition;
+	            }
+	          }
+	          return candidatePosition;
+	        };
 
-	                FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport ');
-	                window.scroll(0, 500);
-	                FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport even after scrolling ');
-	                window.scroll(0, 0);
-	            });
+	        FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport ');
+	        window.scroll(0, 500);
+	        FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport even after scrolling ');
+	        window.scroll(0, 0);
+	      });
 
-	            it('2. My product landing page should have at least one media query.', function () {
-	                var queryRules = [];
-	                // loop through all associated stylesheets and look for media query
-	                for (var i = 0; i < document.styleSheets.length; i++) {
-	                    if (document.styleSheets[i].cssRules !== null) {
-	                        for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	                            if (document.styleSheets[i].cssRules[j].type === 4) {
-	                                // push query rules to empty array
-	                                queryRules.push(document.styleSheets[i].cssRules[j]);
-	                            }
-	                        }
-	                    }
-	                }
-	                // there is one media query in Mocha.css, so must detect more than 1 query
-	                FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
-	            });
+	      it('2. My product landing page should have at least one media query.', function () {
+	        var queryRules = [];
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                // push query rules to empty array
+	                queryRules.push(document.styleSheets[i].cssRules[j]);
+	              }
+	            }
+	          }
+	        }
+	        // there is one media query in Mocha.css, so must detect more than 1 query
+	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+	      });
 
-	            it('3. My product landing page should utilize CSS flexbox at least once.', function () {
-	                // loop through all associated stylesheets and look for display of flex
-	                var flexCount = [];
-	                for (var i = 0; i < document.styleSheets.length; i++) {
-	                    if (document.styleSheets[i].cssRules !== null) {
-	                        for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	                            if (document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'flex' || document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'inline-flex') {
-	                                flexCount.push(1);
-	                            }
-	                        }
-	                    }
-	                }
-	                // our test suite uses a display of flex, so we need to count how many times its used
-	                // and confirm that its more than once. If we just detect one instance, its ours.
-	                FCC_Global.assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex anywhere in your CSS ');
-	            });
-	        }); // END #Layout
-	    }); // END #ProductLadingPageTests
+	      it('3. My product landing page should utilize CSS flexbox at least once.', function () {
+	        // loop through all associated stylesheets and look for display of flex
+	        var flexCount = [];
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'flex' || document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'inline-flex') {
+	                flexCount.push(1);
+	              }
+	            }
+	          }
+	        }
+	        // our test suite uses a display of flex, so we need to count how many times its used
+	        // and confirm that its more than once. If we just detect one instance, its ours.
+	        FCC_Global.assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex anywhere in your CSS ');
+	      });
+	    }); // END #Layout
+	  }); // END #ProductLadingPageTests
 	} // END createProductLandingPageTests()
 
 /***/ }),
@@ -20340,185 +20347,185 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createSurveyFormTests;
 	function createSurveyFormTests() {
-	    /**
+	  /**
 	    Returns the number of elements that are selectable
 	    **/
-	    function getNumOptions(elems) {
-	        var numActive = 0;
-	        for (var i = 0; i < elems.length; i++) {
-	            var el = elems[i];
-	            if (!el.disabled) {
-	                numActive++;
-	            }
-	        }
-	        return numActive;
+	  function getNumOptions(elems) {
+	    var numActive = 0;
+	    for (var i = 0; i < elems.length; i++) {
+	      var el = elems[i];
+	      if (!el.disabled) {
+	        numActive++;
+	      }
 	    }
+	    return numActive;
+	  }
 
-	    /**
+	  /**
 	    Returns the number of elements that have a value-attribute
 	    **/
-	    function getNumValues(elems) {
-	        var numValues = 0;
-	        for (var i = 0; i < elems.length; i++) {
-	            var el = elems[i];
-	            if (el.hasAttribute("value")) {
-	                numValues++;
-	            }
-	        }
-	        return numValues;
+	  function getNumValues(elems) {
+	    var numValues = 0;
+	    for (var i = 0; i < elems.length; i++) {
+	      var el = elems[i];
+	      if (el.hasAttribute("value")) {
+	        numValues++;
+	      }
 	    }
+	    return numValues;
+	  }
 
-	    describe("Survey Form tests", function () {
-	        describe("#Content", function () {
+	  describe("Survey Form tests", function () {
+	    describe("#Content", function () {
 
-	            it('1. I can see a title with id="title" in H1 sized text.', function () {
-	                var title = document.getElementById('title');
-	                FCC_Global.assert.isNotNull(title, 'There should be an element with id="title" ');
-	                FCC_Global.assert.strictEqual(title.tagName, "H1", "#title should be in H1 sized text ");
-	                FCC_Global.assert.isAbove(title.innerText.length, 0, '#title should contain some text ');
-	            });
+	      it('1. I can see a title with id="title" in H1 sized text.', function () {
+	        var title = document.getElementById('title');
+	        FCC_Global.assert.isNotNull(title, 'There should be an element with id="title" ');
+	        FCC_Global.assert.strictEqual(title.tagName, "H1", "#title should be in H1 sized text ");
+	        FCC_Global.assert.isAbove(title.innerText.length, 0, '#title should contain some text ');
+	      });
 
-	            it('2. I can see a short explanation with id="description" in P sized text.', function () {
-	                var description = document.getElementById('description');
-	                FCC_Global.assert.isNotNull(description, 'There should be an element with id="description" ');
-	                FCC_Global.assert.strictEqual(description.tagName, "P", "#description should be in P sized text ");
-	                FCC_Global.assert.isAbove(description.innerText.length, 0, '#description should contain some text ');
-	            });
+	      it('2. I can see a short explanation with id="description" in P sized text.', function () {
+	        var description = document.getElementById('description');
+	        FCC_Global.assert.isNotNull(description, 'There should be an element with id="description" ');
+	        FCC_Global.assert.strictEqual(description.tagName, "P", "#description should be in P sized text ");
+	        FCC_Global.assert.isAbove(description.innerText.length, 0, '#description should contain some text ');
+	      });
 
-	            it('3. I am presented with a <form> with id="survey-form". The <form> must contain all other form elements.', function () {
-	                var form = document.getElementById("survey-form");
-	                FCC_Global.assert.isNotNull(form, 'There should be an element with id="survey-form" ');
-	                FCC_Global.assert.strictEqual(form.tagName, "FORM", "#survey-form should be a <form>-element ");
-	            });
+	      it('3. I am presented with a <form> with id="survey-form". The <form> must contain all other form elements.', function () {
+	        var form = document.getElementById("survey-form");
+	        FCC_Global.assert.isNotNull(form, 'There should be an element with id="survey-form" ');
+	        FCC_Global.assert.strictEqual(form.tagName, "FORM", "#survey-form should be a <form>-element ");
+	      });
 
-	            it('4. I am required to enter my name in a field with id="name".', function () {
-	                var name = document.getElementById("name");
-	                FCC_Global.assert.isNotNull(name, 'There should be an input text field with id="name" ');
-	                FCC_Global.assert.strictEqual(name.type, "text", 'input field with id="name" should be a text field ');
-	                FCC_Global.assert.isOk(name.required, "Name input field should be required ");
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #name").length, 0, 'The field with id="name" is not inside the form element ');
-	            });
+	      it('4. I am required to enter my name in a field with id="name".', function () {
+	        var name = document.getElementById("name");
+	        FCC_Global.assert.isNotNull(name, 'There should be an input text field with id="name" ');
+	        FCC_Global.assert.strictEqual(name.type, "text", 'input field with id="name" should be a text field ');
+	        FCC_Global.assert.isOk(name.required, "Name input field should be required ");
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #name").length, 0, 'The field with id="name" is not inside the form element ');
+	      });
 
-	            it('5. I am required to enter an email in a field with id="email".', function () {
-	                var email = document.getElementById("email");
-	                FCC_Global.assert.isNotNull(email, 'There should be an input text field with id="email" ');
-	                FCC_Global.assert.isOk(email.required, "Email input field should be required ");
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #email").length, 0, 'The field with id="email" is not inside the form element ');
-	            });
+	      it('5. I am required to enter an email in a field with id="email".', function () {
+	        var email = document.getElementById("email");
+	        FCC_Global.assert.isNotNull(email, 'There should be an input text field with id="email" ');
+	        FCC_Global.assert.isOk(email.required, "Email input field should be required ");
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #email").length, 0, 'The field with id="email" is not inside the form element ');
+	      });
 
-	            it('6. If I enter an email that is not formatted correctly, I will see an HTML5 validation error.', function () {
-	                var email = document.getElementById("email");
-	                FCC_Global.assert.strictEqual(email.type, "email", "Email field should be HTML5 validated ");
-	            });
+	      it('6. If I enter an email that is not formatted correctly, I will see an HTML5 validation error.', function () {
+	        var email = document.getElementById("email");
+	        FCC_Global.assert.strictEqual(email.type, "email", "Email field should be HTML5 validated ");
+	      });
 
-	            it('7. I can enter a number in a field with id="number".', function () {
-	                var number = document.getElementById("number");
-	                FCC_Global.assert.isNotNull(number, 'There should be an input text field with id="number" ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #number").length, 0, 'The field with id="number" is not inside the form element ');
-	            });
+	      it('7. I can enter a number in a field with id="number".', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.isNotNull(number, 'There should be an input text field with id="number" ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #number").length, 0, 'The field with id="number" is not inside the form element ');
+	      });
 
-	            it('8. If I enter non-numbers in a number field, I will see an HTML5 validation error.', function () {
-	                var number = document.getElementById("number");
-	                FCC_Global.assert.strictEqual(number.type, "number", "Number field should be HTML5 validated ");
-	            });
+	      it('8. If I enter non-numbers in a number field, I will see an HTML5 validation error.', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.strictEqual(number.type, "number", "Number field should be HTML5 validated ");
+	      });
 
-	            it('9. If I enter numbers outside the range of the number field, I will see an HTML5 validation error.', function () {
-	                var number = document.getElementById("number");
-	                FCC_Global.assert.isNotNaN(parseInt(number.min), "Minimum number should be defined ");
-	                FCC_Global.assert.isNotNaN(parseInt(number.max), "Maximum number should be defined ");
-	            });
+	      it('9. If I enter numbers outside the range of the number field, I will see an HTML5 validation error.', function () {
+	        var number = document.getElementById("number");
+	        FCC_Global.assert.isNotNaN(parseInt(number.min), "Minimum number should be defined ");
+	        FCC_Global.assert.isNotNaN(parseInt(number.max), "Maximum number should be defined ");
+	      });
 
-	            it('10. For the name, email, and number input fields, I can see corresponding labels that describe the purpose of each field with the following ids: id="name-label", id="email-label", and id="number-label".', function () {
-	                var nameLabel = document.getElementById('name-label');
-	                var emailLabel = document.getElementById('email-label');
-	                var numberLabel = document.getElementById('number-label');
-	                FCC_Global.assert.isNotNull(nameLabel, "#name-label is not defined ");
-	                FCC_Global.assert.strictEqual(nameLabel.nodeName, 'LABEL', '#name-label should be a <label> element ');
-	                FCC_Global.assert.isAbove(nameLabel.innerText.length, 0, '#name-label should contain some text ');
-	                FCC_Global.assert.isNotNull(emailLabel, "#email-label is not defined ");
-	                FCC_Global.assert.strictEqual(emailLabel.nodeName, 'LABEL', '#email-label should be a <label> element ');
-	                FCC_Global.assert.isAbove(emailLabel.innerText.length, 0, '#email-label should contain some text ');
-	                FCC_Global.assert.isNotNull(numberLabel, "#number-label is not defined ");
-	                FCC_Global.assert.strictEqual(numberLabel.nodeName, 'LABEL', '#number-label should be a <label> element ');
-	                FCC_Global.assert.isAbove(numberLabel.innerText.length, 0, '#number-label should contain some text ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #name-label").length, 0, 'The label with id="name-label" is not inside the form element ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #email-label").length, 0, 'The label with id="email-label" is not inside the form element ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #number-label").length, 0, 'The label with id="number-label" is not inside the form element ');
-	            });
+	      it('10. For the name, email, and number input fields, I can see corresponding labels that describe the purpose of each field with the following ids: id="name-label", id="email-label", and id="number-label".', function () {
+	        var nameLabel = document.getElementById('name-label');
+	        var emailLabel = document.getElementById('email-label');
+	        var numberLabel = document.getElementById('number-label');
+	        FCC_Global.assert.isNotNull(nameLabel, "#name-label is not defined ");
+	        FCC_Global.assert.strictEqual(nameLabel.nodeName, 'LABEL', '#name-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(nameLabel.innerText.length, 0, '#name-label should contain some text ');
+	        FCC_Global.assert.isNotNull(emailLabel, "#email-label is not defined ");
+	        FCC_Global.assert.strictEqual(emailLabel.nodeName, 'LABEL', '#email-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(emailLabel.innerText.length, 0, '#email-label should contain some text ');
+	        FCC_Global.assert.isNotNull(numberLabel, "#number-label is not defined ");
+	        FCC_Global.assert.strictEqual(numberLabel.nodeName, 'LABEL', '#number-label should be a <label> element ');
+	        FCC_Global.assert.isAbove(numberLabel.innerText.length, 0, '#number-label should contain some text ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #name-label").length, 0, 'The label with id="name-label" is not inside the form element ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #email-label").length, 0, 'The label with id="email-label" is not inside the form element ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #number-label").length, 0, 'The label with id="number-label" is not inside the form element ');
+	      });
 
-	            it('11. For the name, email, and number input fields, I can see placeholder text that gives me a description or instructions for each field.', function () {
-	                FCC_Global.assert.strictEqual(document.getElementById('name').hasAttribute('placeholder'), true, 'The name input field should have a placeholder attribute ');
-	                FCC_Global.assert.isAbove(document.getElementById('name').placeholder.length, 0, 'The name input field\'s placeholder attribute should have a value of some text ');
-	                FCC_Global.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The email input field should have a placeholder attribute ');
-	                FCC_Global.assert.isAbove(document.getElementById('email').placeholder.length, 0, 'The email input field\'s placeholder attribute should have a value of some text ');
-	                FCC_Global.assert.strictEqual(document.getElementById('number').hasAttribute('placeholder'), true, 'The number input field should have a placeholder attribute ');
-	                FCC_Global.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have a value of some text ');
-	            });
+	      it('11. For the name, email, and number input fields, I can see placeholder text that gives me a description or instructions for each field.', function () {
+	        FCC_Global.assert.strictEqual(document.getElementById('name').hasAttribute('placeholder'), true, 'The name input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('name').placeholder.length, 0, 'The name input field\'s placeholder attribute should have a value of some text ');
+	        FCC_Global.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The email input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('email').placeholder.length, 0, 'The email input field\'s placeholder attribute should have a value of some text ');
+	        FCC_Global.assert.strictEqual(document.getElementById('number').hasAttribute('placeholder'), true, 'The number input field should have a placeholder attribute ');
+	        FCC_Global.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have a value of some text ');
+	      });
 
-	            it('12. I can select an option from a dropdown that has corresponding id="dropdown".', function () {
-	                var dropdown = document.getElementById('dropdown');
-	                var dropdownTag = dropdown.tagName;
-	                var inputSibling = null;
-	                var inputName = null;
-	                if (dropdownTag === 'DATALIST') {
-	                    inputSibling = dropdown.previousElementSibling;
-	                    inputName = inputSibling.getAttribute('list');
-	                    FCC_Global.assert.strictEqual(inputName, 'dropdown', 'When using the datalist tag, the accompanying input tag must contain a name attribute matching the datalist id.');
-	                }
-	                FCC_Global.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
-	                FCC_Global.assert.isAtLeast(getNumOptions(dropdown.options), 2, "Select should contain at least 2 selectable options ");
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #dropdown").length, 0, 'The select field with id="dropdown" is not inside the form element ');
-	            });
+	      it('12. I can select an option from a dropdown that has corresponding id="dropdown".', function () {
+	        var dropdown = document.getElementById('dropdown');
+	        var dropdownTag = dropdown.tagName;
+	        var inputSibling = null;
+	        var inputName = null;
+	        if (dropdownTag === 'DATALIST') {
+	          inputSibling = dropdown.previousElementSibling;
+	          inputName = inputSibling.getAttribute('list');
+	          FCC_Global.assert.strictEqual(inputName, 'dropdown', 'When using the datalist tag, the accompanying input tag must contain a name attribute matching the datalist id.');
+	        }
+	        FCC_Global.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
+	        FCC_Global.assert.isAtLeast(getNumOptions(dropdown.options), 2, "Select should contain at least 2 selectable options ");
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #dropdown").length, 0, 'The select field with id="dropdown" is not inside the form element ');
+	      });
 
-	            it('13. I can select a field from one or more groups of radio buttons. Each group should be grouped using the name attribute.', function () {
-	                var radioButtons = document.querySelectorAll('input[type="radio"]');
-	                FCC_Global.assert.isAtLeast(radioButtons.length, 2, 'There should be at least 2 radio buttons ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="radio"]').length, 2, 'There should be at least 2 radio buttons inside the #survey-form ');
-	                FCC_Global.assert.strictEqual(radioButtons.length, getNumValues(radioButtons), "All your radio-buttons must have a value attribute ");
+	      it('13. I can select a field from one or more groups of radio buttons. Each group should be grouped using the name attribute.', function () {
+	        var radioButtons = document.querySelectorAll('input[type="radio"]');
+	        FCC_Global.assert.isAtLeast(radioButtons.length, 2, 'There should be at least 2 radio buttons ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="radio"]').length, 2, 'There should be at least 2 radio buttons inside the #survey-form ');
+	        FCC_Global.assert.strictEqual(radioButtons.length, getNumValues(radioButtons), "All your radio-buttons must have a value attribute ");
 
-	                var groups = {};
-	                for (var i = 0; i < radioButtons.length; i++) {
-	                    var groupName = radioButtons[i].name;
-	                    FCC_Global.assert.isAbove(groupName.length, 0, "All your radio-buttons need a name attribute ");
-	                    var objRef = groups[groupName];
-	                    groups[groupName] = objRef ? objRef + 1 : 1;
-	                }
-	                for (var group in groups) {
-	                    FCC_Global.assert.isAtLeast(groups[group], 2, "Every radio-button group should have at least 2 radio buttons ");
-	                }
-	            });
+	        var groups = {};
+	        for (var i = 0; i < radioButtons.length; i++) {
+	          var groupName = radioButtons[i].name;
+	          FCC_Global.assert.isAbove(groupName.length, 0, "All your radio-buttons need a name attribute ");
+	          var objRef = groups[groupName];
+	          groups[groupName] = objRef ? objRef + 1 : 1;
+	        }
+	        for (var group in groups) {
+	          FCC_Global.assert.isAtLeast(groups[group], 2, "Every radio-button group should have at least 2 radio buttons ");
+	        }
+	      });
 
-	            it('14. I can select several fields from a series of checkboxes.', function () {
-	                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-	                // need to make sure there are more than two checkboxes, as our default code contains a checkbox as well
-	                // if we are detecting only two, one of them is ours; 
-	                // our checkbox does not have a value-attribute so we must use "-1" in the third test
-	                FCC_Global.assert.isAtLeast(checkboxes.length, 3, "There should be at least 2 checkboxes ");
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="checkbox"]').length, 2, 'The checkboxes are not inside the form element ');
-	                FCC_Global.assert.strictEqual(checkboxes.length - 1, getNumValues(checkboxes), "All your checkboxes must have a value attribute ");
-	            });
+	      it('14. I can select several fields from a series of checkboxes.', function () {
+	        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	        // need to make sure there are more than two checkboxes, as our default code contains a checkbox as well
+	        // if we are detecting only two, one of them is ours;
+	        // our checkbox does not have a value-attribute so we must use "-1" in the third test
+	        FCC_Global.assert.isAtLeast(checkboxes.length, 3, "There should be at least 2 checkboxes ");
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="checkbox"]').length, 2, 'The checkboxes are not inside the form element ');
+	        FCC_Global.assert.strictEqual(checkboxes.length - 1, getNumValues(checkboxes), "All your checkboxes must have a value attribute ");
+	      });
 
-	            it('15. I am presented with a <textarea> at the end for additional comments.', function () {
-	                var textareas = document.getElementsByTagName('textarea');
-	                FCC_Global.assert.isAtLeast(textareas.length, 1, "There should be at least 1 <textarea> ");
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form textarea").length, 0, 'The textarea is not inside the form element ');
-	            });
+	      it('15. I am presented with a <textarea> at the end for additional comments.', function () {
+	        var textareas = document.getElementsByTagName('textarea');
+	        FCC_Global.assert.isAtLeast(textareas.length, 1, "There should be at least 1 <textarea> ");
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form textarea").length, 0, 'The textarea is not inside the form element ');
+	      });
 
-	            it('16. I am presented with a button with id="submit" to submit all my inputs.', function () {
-	                var button = document.getElementById("submit");
-	                FCC_Global.assert.isNotNull(button, 'There should be a button with id="submit" ');
-	                if (button.nodeName === "INPUT") {
-	                    FCC_Global.assert.strictEqual(button.hasAttribute("type"), true, 'If you are using an <input> element for your button you need to define a type attribute ');
-	                }
-	                FCC_Global.assert.strictEqual(button.type, "submit", 'Your button\'s type attribute should have a value of "submit" ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #submit").length, 0, 'The button with id="submit" is not inside the form element ');
-	            });
-	        }); // END #Content
-	    }); // END Survery Form tests
+	      it('16. I am presented with a button with id="submit" to submit all my inputs.', function () {
+	        var button = document.getElementById("submit");
+	        FCC_Global.assert.isNotNull(button, 'There should be a button with id="submit" ');
+	        if (button.nodeName === "INPUT") {
+	          FCC_Global.assert.strictEqual(button.hasAttribute("type"), true, 'If you are using an <input> element for your button you need to define a type attribute ');
+	        }
+	        FCC_Global.assert.strictEqual(button.type, "submit", 'Your button\'s type attribute should have a value of "submit" ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll("#survey-form #submit").length, 0, 'The button with id="submit" is not inside the form element ');
+	      });
+	    }); // END #Content
+	  }); // END Survery Form tests
 	} // END createSurveyFormTests()
 
 /***/ }),
@@ -20528,187 +20535,187 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createTechnicalDocsPageTests;
 	function createTechnicalDocsPageTests() {
 
-	    var classArray = function classArray(className) {
-	        return Array.from(document.getElementsByClassName(className));
-	    };
+	  var classArray = function classArray(className) {
+	    return Array.from(document.getElementsByClassName(className));
+	  };
 
-	    var sharedHeaderTest = function sharedHeaderTest(classQty) {
-	        var firstChildHeaderQty = classArray('main-section').filter(function (el) {
-	            return el.firstElementChild.nodeName === 'HEADER';
+	  var sharedHeaderTest = function sharedHeaderTest(classQty) {
+	    var firstChildHeaderQty = classArray('main-section').filter(function (el) {
+	      return el.firstElementChild.nodeName === 'HEADER';
+	    });
+	    FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' have a <header> element as a first element child ");
+	  };
+
+	  describe('Technical Documentation Page tests', function () {
+	    describe('#Content', function () {
+	      it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
+	        FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, 'MAIN', "The 'main-doc' element should be a <main> ");
+	      });
+
+	      it('2. Within the #main-doc ( <main> ) element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
+	        var classQty = classArray('main-section').length;
+	        var typeQty = classArray('main-section').filter(function (el) {
+	          return el.nodeName === 'SECTION';
 	        });
-	        FCC_Global.assert.strictEqual(firstChildHeaderQty.length, classQty, "Not all elements with the class 'main-section' have a <header> element as a first element child ");
-	    };
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#main-doc .main-section').length, 0, 'There are no .main-section ' + 'elements within #main-doc ');
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#main-doc .main-section').length, 5, 'There are not at least ' + '5 elements with the class of "main-section" ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('.main-section').length, document.querySelectorAll('#main-doc .main-section').length, 'All of the page\'s .main-section elements should be ' + 'within #main-doc ');
+	        FCC_Global.assert.strictEqual(typeQty.length, classQty, 'Not all of the elements with the class of "main-section" are ' + '<section> elements ');
+	      });
 
-	    describe('Technical Documentation Page tests', function () {
-	        describe('#Content', function () {
-	            it('1. I can see a <main> element with a corresponding id="main-doc", which contains the ' + 'page\'s main content (technical documentation).', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('main-doc'), "There is no element with an id of 'main-doc' ");
-	                FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, 'MAIN', "The 'main-doc' element should be a <main> ");
-	            });
+	      it('3. The first element within each .main-section should be a <header> element which contains text that ' + 'describes the topic of that section.', function () {
+	        var classQty = classArray('main-section').length;
+	        var mustContainText = classArray('main-section').filter(function (el) {
+	          return el.firstElementChild.innerText.length > 0;
+	        });
+	        FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
+	        sharedHeaderTest(classQty);
+	        FCC_Global.assert.strictEqual(mustContainText.length, classQty, 'Not all first-child <header> elements within ' + '"main-section" elements contain text ');
+	      });
 
-	            it('2. Within the #main-doc ( <main> ) element, I can see several <section> elements, each with a class ' + 'of "main-section". There should be a minimum of 5.', function () {
-	                var classQty = classArray('main-section').length;
-	                var typeQty = classArray('main-section').filter(function (el) {
-	                    return el.nodeName === 'SECTION';
-	                });
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#main-doc .main-section').length, 0, 'There are no .main-section ' + 'elements within #main-doc ');
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('#main-doc .main-section').length, 5, 'There are not at least ' + '5 elements with the class of "main-section" ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('.main-section').length, document.querySelectorAll('#main-doc .main-section').length, 'All of the page\'s .main-section elements should be ' + 'within #main-doc ');
-	                FCC_Global.assert.strictEqual(typeQty.length, classQty, 'Not all of the elements with the class of "main-section" are ' + '<section> elements ');
-	            });
+	      it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' + 'text of each <header> contained within it. Any spaces should be replaced with underscores (e.g. The ' + '<section> that contains the header "Javascript and Java" should have a corresponding ' + 'id="Javascript_and_Java").', function () {
 
-	            it('3. The first element within each .main-section should be a <header> element which contains text that ' + 'describes the topic of that section.', function () {
-	                var classQty = classArray('main-section').length;
-	                var mustContainText = classArray('main-section').filter(function (el) {
-	                    return el.firstElementChild.innerText.length > 0;
-	                });
-	                FCC_Global.assert.isAbove(classQty, 0, 'No elements with the class "main-section" are defined ');
-	                sharedHeaderTest(classQty);
-	                FCC_Global.assert.strictEqual(mustContainText.length, classQty, 'Not all first-child <header> elements within ' + '"main-section" elements contain text ');
-	            });
+	        var mainSections = classArray('main-section');
+	        FCC_Global.assert.isAbove(mainSections.length, 0, 'No elements with the class "main-section" are defined ');
 
-	            it('4. Each <section> element with the class of "main-section" should also have an id that corresponds with the ' + 'text of each <header> contained within it. Any spaces should be replaced with underscores (e.g. The ' + '<section> that contains the header "Javascript and Java" should have a corresponding ' + 'id="Javascript_and_Java").', function () {
+	        sharedHeaderTest(mainSections.length);
 
-	                var mainSections = classArray('main-section');
-	                FCC_Global.assert.isAbove(mainSections.length, 0, 'No elements with the class "main-section" are defined ');
+	        var headerText = mainSections.map(function (el, i) {
+	          FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ');
+	          // remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
+	          return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
+	        });
 
-	                sharedHeaderTest(mainSections.length);
+	        var mainSectionIDs = mainSections.map(function (el, i) {
+	          FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, "Each 'main-section' should have an id attribute ");
+	          return el.id;
+	        });
 
-	                var headerText = mainSections.map(function (el, i) {
-	                    FCC_Global.assert.isAbove(el.firstElementChild.innerText.length, 0, 'All headers must contain text ');
-	                    // remove leading / trailing spaces  in headerText and then replace all other spaces with underscores.
-	                    return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
-	                });
+	        var remainder = headerText.filter(function (str) {
+	          return mainSectionIDs.indexOf(str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t forget to replace spaces with underscores!) : ' + remainder + ' ');
+	      });
 
-	                var mainSectionIDs = mainSections.map(function (el, i) {
-	                    FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, "Each 'main-section' should have an id attribute ");
-	                    return el.id;
-	                });
+	      it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, 'There are not at least 10 <p> ' + "elements throughout all of the elements with the class of 'main-section' ");
+	      });
 
-	                var remainder = headerText.filter(function (str) {
-	                    return mainSectionIDs.indexOf(str) === -1;
-	                });
-	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Some "main-section" elements are missing the following ids (don\'t forget to replace spaces with underscores!) : ' + remainder + ' ');
-	            });
+	      it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, 'There are not at least 5 <code> ' + "elements throughout all of the elements with the class of 'main-section' ");
+	      });
 
-	            it('5. The .main-section elements should contain at least 10 <p> elements total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section p').length, 10, 'There are not at least 10 <p> ' + "elements throughout all of the elements with the class of 'main-section' ");
-	            });
+	      it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function () {
+	        FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, 'There are not ' + "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
+	      });
 
-	            it('6. The .main-section elements should contain at least 5 <code> elements total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section code').length, 5, 'There are not at least 5 <code> ' + "elements throughout all of the elements with the class of 'main-section' ");
-	            });
+	      it('8. I can see a <nav> element with a corresponding id="navbar".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('navbar'), "There is no element with the id of 'navbar'.");
+	        FCC_Global.assert.strictEqual(document.getElementById('navbar').nodeName, 'NAV', 'The element with the id of ' + '"navbar" is not a <nav> element ');
+	      });
 
-	            it('7. The .main-section elements should contain at least 5 <li> items total (not each).', function () {
-	                FCC_Global.assert.isAtLeast(document.querySelectorAll('.main-section li').length, 5, 'There are not ' + "at least 5 <li> elements throughout all of the elements with the class of 'main-section' ");
-	            });
+	      it('9. The navbar element should contain one <header> element which contains text that describes the topic ' + 'of the technical documentation.', function () {
+	        FCC_Global.assert.strictEqual(document.getElementById('navbar').getElementsByTagName('header').length, 1, 'The navbar ' + 'element should contain only one <header> element.');
+	      });
 
-	            it('8. I can see a <nav> element with a corresponding id="navbar".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('navbar'), "There is no element with the id of 'navbar'.");
-	                FCC_Global.assert.strictEqual(document.getElementById('navbar').nodeName, 'NAV', 'The element with the id of ' + '"navbar" is not a <nav> element ');
-	            });
+	      it('10. Additionally, the navbar should contain link (<a>) elements with the class of "nav-link". There ' + 'should be one for every element with the class "main-section".', function () {
+	        var mainSectionQty = document.querySelectorAll('#main-doc .main-section').length;
+	        var navLinkQty = document.querySelectorAll('#navbar .nav-link').length;
+	        var typeQty = classArray('nav-link').filter(function (el) {
+	          return el.nodeName === 'A';
+	        });
+	        FCC_Global.assert.isAbove(navLinkQty, 0, 'The element with the id of "navbar" does not contain any elements with the ' + 'class of "nav-link" ');
+	        FCC_Global.assert.strictEqual(navLinkQty, mainSectionQty, 'There should be one .nav-link for every element ' + 'with the class of "main-section", and every .nav-link should be within #navbar ');
+	        FCC_Global.assert.strictEqual(typeQty.length, navLinkQty, 'Not all of the elements with the class of "nav-link" are ' + '<a> elements ');
+	      });
 
-	            it('9. The navbar element should contain one <header> element which contains text that describes the topic ' + 'of the technical documentation.', function () {
-	                FCC_Global.assert.strictEqual(document.getElementById('navbar').getElementsByTagName('header').length, 1, 'The navbar ' + 'element should contain only one <header> element.');
-	            });
+	      it('11. The <header> element in the navbar must come before any link (<a>) elements in the navbar.', function () {
+	        var navLinks = document.querySelectorAll('#navbar a.nav-link');
+	        var header = document.querySelectorAll('#navbar header').item(0);
+	        var allAbove = true;
 
-	            it('10. Additionally, the navbar should contain link (<a>) elements with the class of "nav-link". There ' + 'should be one for every element with the class "main-section".', function () {
-	                var mainSectionQty = document.querySelectorAll('#main-doc .main-section').length;
-	                var navLinkQty = document.querySelectorAll('#navbar .nav-link').length;
-	                var typeQty = classArray('nav-link').filter(function (el) {
-	                    return el.nodeName === 'A';
-	                });
-	                FCC_Global.assert.isAbove(navLinkQty, 0, 'The element with the id of "navbar" does not contain any elements with the ' + 'class of "nav-link" ');
-	                FCC_Global.assert.strictEqual(navLinkQty, mainSectionQty, 'There should be one .nav-link for every element ' + 'with the class of "main-section", and every .nav-link should be within #navbar ');
-	                FCC_Global.assert.strictEqual(typeQty.length, navLinkQty, 'Not all of the elements with the class of "nav-link" are ' + '<a> elements ');
-	            });
+	        navLinks.forEach(function (navLink) {
+	          if (!(header.compareDocumentPosition(navLink) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+	            allAbove = false;
+	          }
+	        });
 
-	            it('11. The <header> element in the navbar must come before any link (<a>) elements in the navbar.', function () {
-	                var navLinks = document.querySelectorAll('#navbar a.nav-link');
-	                var header = document.querySelectorAll('#navbar header').item(0);
-	                var allAbove = true;
+	        FCC_Global.assert.strictEqual(allAbove, true, 'The <header> element contained by the navbar must be come before ' + 'any link (<a>) elements contained by the navbar');
+	      });
 
-	                navLinks.forEach(function (navLink) {
-	                    if (!(header.compareDocumentPosition(navLink) & Node.DOCUMENT_POSITION_FOLLOWING)) {
-	                        allAbove = false;
-	                    }
-	                });
+	      it('12. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
+	        FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
+	        var headerText = classArray('main-section').map(function (el, i) {
+	          return el.firstElementChild.innerText.trim();
+	        });
+	        var linkText = classArray('nav-link').map(function (el, i) {
+	          return (/[^\n\t\f\r\v]+/.exec(el.innerText)[0]
+	          );
+	        });
+	        // use indexOf instead of matching index for index, in case for some reason they have them out of order
+	        var remainder = headerText.filter(function (str) {
+	          return linkText.indexOf(str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(remainder.length, 0, 'Check that these headers have corresponding .nav-link elements and ' + 'be mindful of case! : ' + remainder + ' ');
+	      });
 
-	                FCC_Global.assert.strictEqual(allAbove, true, 'The <header> element contained by the navbar must be come before ' + 'any link (<a>) elements contained by the navbar');
-	            });
+	      it('13. When I click on a navbar element, the page should navigate to the corresponding section of the ' + '"main-doc" element (e.g. If I click on a "nav-link" element that contains the text "Hello world", the page ' + 'navigates to a <section> element that has that id and contains the corresponding <header>.', function () {
+	        var navLinkQty = document.getElementsByClassName('nav-link').length;
+	        FCC_Global.assert.isAbove(navLinkQty, 0, 'No elements with the class "nav-link" have been defined ');
+	        var hasHref = classArray('nav-link').filter(function (el) {
+	          return el.hasAttribute('href');
+	        });
+	        var hrefValues = classArray('nav-link').map(function (el, i) {
+	          return el.getAttribute('href');
+	        });
+	        var mainSectionIDs = classArray('main-section').map(function (el, i) {
+	          return el.id;
+	        });
+	        var missingHrefValues = mainSectionIDs.filter(function (str) {
+	          return hrefValues.indexOf('#' + str) === -1;
+	        });
+	        FCC_Global.assert.strictEqual(hasHref.length, navLinkQty, 'Every .nav-link does not have an href attribute.');
+	        FCC_Global.assert.strictEqual(missingHrefValues.length, 0, 'Every .nav-link should have an href value ' + 'that links it to its corresponding .main-section (e.g. href="#Introduction"). Check that these ' + '.main-section ids have corresponding href values : ' + missingHrefValues + ' ');
+	      });
+	    }); // END #Content
 
-	            it('12. Each element with the class of "nav-link" should contain text that corresponds to the <header> text ' + 'within each <section> (e.g. if you have a "Hello world" section/header, your navbar should have an ' + 'element which contains the text "Hello world").', function () {
-	                FCC_Global.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
-	                var headerText = classArray('main-section').map(function (el, i) {
-	                    return el.firstElementChild.innerText.trim();
-	                });
-	                var linkText = classArray('nav-link').map(function (el, i) {
-	                    return (/[^\n\t\f\r\v]+/.exec(el.innerText)[0]
-	                    );
-	                });
-	                // use indexOf instead of matching index for index, in case for some reason they have them out of order
-	                var remainder = headerText.filter(function (str) {
-	                    return linkText.indexOf(str) === -1;
-	                });
-	                FCC_Global.assert.strictEqual(remainder.length, 0, 'Check that these headers have corresponding .nav-link elements and ' + 'be mindful of case! : ' + remainder + ' ');
-	            });
+	    describe('#Layout', function () {
+	      it('1. On regular sized devices (laptops, desktops), the element with id="navbar" should be shown on the left side of the screen and should always be visible to the user.', function () {
+	        var windowWidth = document.documentElement.clientWidth || window.innerWidth;
+	        FCC_Global.assert.isAbove(windowWidth, 850, 'Please run this test in a larger window (before any media queries) ');
+	        var navbar = document.getElementById('navbar');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'Left of bounding rectangle is not correct.');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'Top of bounding rectangle is not correct.');
+	        window.scroll(0, 1000);
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'After scroll: Left of bounding rectangle is not correct.');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'After scroll: Top of bounding rectangle is not correct.');
+	        window.scroll(0, 0);
+	      });
 
-	            it('13. When I click on a navbar element, the page should navigate to the corresponding section of the ' + '"main-doc" element (e.g. If I click on a "nav-link" element that contains the text "Hello world", the page ' + 'navigates to a <section> element that has that id and contains the corresponding <header>.', function () {
-	                var navLinkQty = document.getElementsByClassName('nav-link').length;
-	                FCC_Global.assert.isAbove(navLinkQty, 0, 'No elements with the class "nav-link" have been defined ');
-	                var hasHref = classArray('nav-link').filter(function (el) {
-	                    return el.hasAttribute('href');
-	                });
-	                var hrefValues = classArray('nav-link').map(function (el, i) {
-	                    return el.getAttribute('href');
-	                });
-	                var mainSectionIDs = classArray('main-section').map(function (el, i) {
-	                    return el.id;
-	                });
-	                var missingHrefValues = mainSectionIDs.filter(function (str) {
-	                    return hrefValues.indexOf('#' + str) === -1;
-	                });
-	                FCC_Global.assert.strictEqual(hasHref.length, navLinkQty, 'Every .nav-link does not have an href attribute.');
-	                FCC_Global.assert.strictEqual(missingHrefValues.length, 0, 'Every .nav-link should have an href value ' + 'that links it to its corresponding .main-section (e.g. href="#Introduction"). Check that these ' + '.main-section ids have corresponding href values : ' + missingHrefValues + ' ');
-	            });
-	        }); // END #Content
-
-	        describe('#Layout', function () {
-	            it('1. On regular sized devices (laptops, desktops), the element with id="navbar" should be shown on the left side of the screen and should always be visible to the user.', function () {
-	                var windowWidth = document.documentElement.clientWidth || window.innerWidth;
-	                FCC_Global.assert.isAbove(windowWidth, 850, 'Please run this test in a larger window (before any media queries) ');
-	                var navbar = document.getElementById('navbar');
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'Left of bounding rectangle is not correct.');
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'Top of bounding rectangle is not correct.');
-	                window.scroll(0, 1000);
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'After scroll: Left of bounding rectangle is not correct.');
-	                FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'After scroll: Top of bounding rectangle is not correct.');
-	                window.scroll(0, 0);
-	            });
-
-	            it('2. My Technical Documentation page should use at least one media query.', function () {
-	                var queryRules = [];
-	                // loop through all associated stylesheets and look for media query
-	                for (var i = 0; i < document.styleSheets.length; i++) {
-	                    if (document.styleSheets[i].cssRules !== null) {
-	                        for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	                            if (document.styleSheets[i].cssRules[j].type === 4) {
-	                                // push query rules to empty array
-	                                queryRules.push(document.styleSheets[i].cssRules[j]);
-	                            }
-	                        }
-	                    }
-	                }
-	                // there is one media query in Mocha.css, so must detect more than 1 query
-	                FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
-	            });
-	        }); // END #Layout
-	    }); // end Technical Docs Page Tests
+	      it('2. My Technical Documentation page should use at least one media query.', function () {
+	        var queryRules = [];
+	        // loop through all associated stylesheets and look for media query
+	        for (var i = 0; i < document.styleSheets.length; i++) {
+	          if (document.styleSheets[i].cssRules !== null) {
+	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
+	              if (document.styleSheets[i].cssRules[j].type === 4) {
+	                // push query rules to empty array
+	                queryRules.push(document.styleSheets[i].cssRules[j]);
+	              }
+	            }
+	          }
+	        }
+	        // there is one media query in Mocha.css, so must detect more than 1 query
+	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+	      });
+	    }); // END #Layout
+	  }); // end Technical Docs Page Tests
 	} // end createTechnicalDocsPageTests()
 
 /***/ }),
@@ -20718,7 +20725,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createBarChartTests;
 
@@ -20732,99 +20739,95 @@ var FCC_Global =
 
 	function createBarChartTests() {
 
-	    describe('#BarChartTests', function () {
+	  describe('#BarChartTests', function () {
 
-	        it('1. My chart should have a title with a corresponding id="title"', function () {
-	            FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
-	        });
-
-	        it('2. My Chart should have an x-axis with a corresponding id="x-axis"', function () {
-	            FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find element with id="x-axis" ');
-
-	            FCC_Global.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
-	        });
-
-	        it('3. My Chart should have a y-axis with a corresponding id="y-axis"', function () {
-	            FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find element with id="y-axis" ');
-
-	            FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element ');
-	        });
-
-	        it('4. Both axes should contain multiple tick labels', function () {
-	            FCC_Global.assert.isAbove((0, _jquery2.default)("#x-axis .tick").length, 1, "There are not enough tick labels on the x-axis ");
-
-	            FCC_Global.assert.isAbove((0, _jquery2.default)("#y-axis .tick").length, 1, "There are not enough tick labels on the y-axis ");
-	        });
-
-	        it('5. My Chart should have a bar for each data point with a corresponding class="bar" displaying the data', function () {
-	            FCC_Global.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any elements with class="bar" ');
-
-	            FCC_Global.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ');
-	        });
-
-	        it('6. Each bar should have the properties "data-date" and "data-gdp" containing date and GDP values', function () {
-	            var bars = document.getElementsByClassName('bar');
-	            FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	            for (var i = 0; i < bars.length; i++) {
-	                var bar = bars[i];
-	                FCC_Global.assert.isNotNull(bar.getAttribute("data-date"), 'Could not find property "data-date" in bar ');
-	                FCC_Global.assert.isNotNull(bar.getAttribute("data-gdp"), 'Could not find property "data-gdp" in bar ');
-	            }
-	        });
-
-	        it('7. The "data-date" properties should match the order of the provided data', function (done) {
-	            _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
-	                try {
-	                    var bars = document.getElementsByClassName('bar');
-	                    FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	                    for (var i = 0; i < bars.length; i++) {
-	                        var currentBarDate = bars[i].getAttribute("data-date");
-
-	                        FCC_Global.assert.equal(currentBarDate, res.data[i][0], 'Bars should have date data in the same order as the provided data ');
-	                    }
-	                    done();
-	                } catch (e) {
-	                    done(e);
-	                }
-	            });
-	        });
-
-	        it('8. The "data-gdp" properties should match the order of the provided data', function (done) {
-	            _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
-	                try {
-	                    var bars = document.getElementsByClassName('bar');
-	                    FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	                    for (var i = 0; i < bars.length; i++) {
-	                        var currentBarGdp = bars[i].getAttribute("data-gdp");
-
-	                        FCC_Global.assert.equal(currentBarGdp, res.data[i][1], "Bars should have gdp data in the same order as the provided data ");
-	                    }
-	                    done();
-	                } catch (e) {
-	                    done(e);
-	                }
-	            });
-	        });
-
-	        it('9. Each bar\'s height should accurately represent the data\'s corresponding GDP', function () {
-	            var bars = document.querySelectorAll('rect.bar');
-
-	            // get the ratio of the first data point to the height of the first bar
-	            var firstRatio = bars[0].getAttribute('data-gdp') / bars[0].getAttribute('height');
-
-	            // iterate through each bar and make sure that its height is consistent with its corresponding data point using the first ratio
-	            // this test completely validates the bars, but isn\'t very useful to the user, so data-date and data-gdp tests were added for clarity
-	            for (var i = 0; i < bars.length; i++) {
-	                var dataValue = bars[i].getAttribute('data-gdp');
-	                var barHeight = bars[i].getAttribute('height');
-	                var ratio = dataValue / barHeight;
-
-	                FCC_Global.assert.equal(firstRatio.toFixed(3), ratio.toFixed(3), 'The heights of the bars should correspond to the data values ');
-	            }
-	        });
+	    it('1. My chart should have a title with a corresponding id="title"', function () {
+	      FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
 	    });
 
-	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.bar'), "data-date", "data-date");
+	    it('2. My Chart should have an x-axis with a corresponding id="x-axis"', function () {
+	      FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find element with id="x-axis" ');
+	      FCC_Global.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
+	    });
+
+	    it('3. My Chart should have a y-axis with a corresponding id="y-axis"', function () {
+	      FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find element with id="y-axis" ');
+
+	      FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element ');
+	    });
+
+	    it('4. Both axes should contain multiple tick labels', function () {
+	      FCC_Global.assert.isAbove((0, _jquery2.default)("#x-axis .tick").length, 1, "There are not enough tick labels on the x-axis ");
+	      FCC_Global.assert.isAbove((0, _jquery2.default)("#y-axis .tick").length, 1, "There are not enough tick labels on the y-axis ");
+	    });
+
+	    it('5. My Chart should have a bar for each data point with a corresponding\n    class="bar" displaying the data', function () {
+	      FCC_Global.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any elements with class="bar" ');
+	      FCC_Global.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ');
+	    });
+
+	    it('6. Each bar should have the properties "data-date" and "data-gdp"\n    containing date and GDP values', function () {
+	      var bars = document.getElementsByClassName('bar');
+	      FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
+	      for (var i = 0; i < bars.length; i++) {
+	        var bar = bars[i];
+	        FCC_Global.assert.isNotNull(bar.getAttribute("data-date"), 'Could not find property "data-date" in bar ');
+	        FCC_Global.assert.isNotNull(bar.getAttribute("data-gdp"), 'Could not find property "data-gdp" in bar ');
+	      }
+	    });
+
+	    it('7. The "data-date" properties should match the order of the provided\n    data', function (done) {
+	      // shortened URL for raw githubusercontent GDP data
+	      _jquery2.default.getJSON('https://goo.gl/niytBH', function (res) {
+	        try {
+	          var bars = document.getElementsByClassName('bar');
+	          FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
+	          for (var i = 0; i < bars.length; i++) {
+	            var currentBarDate = bars[i].getAttribute("data-date");
+	            FCC_Global.assert.equal(currentBarDate, res.data[i][0], 'Bars should have date data in the same order as the provided data ');
+	          }
+	          done();
+	        } catch (e) {
+	          done(e);
+	        }
+	      });
+	    });
+
+	    it('8. The "data-gdp" properties should match the order of the provided data', function (done) {
+	      // shortened URL for raw githubusercontent GDP data
+	      _jquery2.default.getJSON('https://goo.gl/niytBH', function (res) {
+	        try {
+	          var bars = document.getElementsByClassName('bar');
+	          FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
+	          for (var i = 0; i < bars.length; i++) {
+	            var currentBarGdp = bars[i].getAttribute("data-gdp");
+	            FCC_Global.assert.equal(currentBarGdp, res.data[i][1], 'Bars should have gdp data in the same order as the provided data ');
+	          }
+	          done();
+	        } catch (e) {
+	          done(e);
+	        }
+	      });
+	    });
+
+	    it('9. Each bar\'s height should accurately represent the data\'s\n    corresponding GDP', function () {
+	      var bars = document.querySelectorAll('rect.bar');
+	      // get the ratio of the first data point to the height of the first bar
+	      var firstRatio = bars[0].getAttribute('data-gdp') / bars[0].getAttribute('height');
+	      /* iterate through each bar and make sure that its height is consistent
+	      with its corresponding data point using the first ratio */
+	      /* this test completely validates the bars, but isn\'t very useful to the
+	      user, so data-date and data-gdp tests were added for clarity */
+	      for (var i = 0; i < bars.length; i++) {
+	        var dataValue = bars[i].getAttribute('data-gdp');
+	        var barHeight = bars[i].getAttribute('height');
+	        var ratio = dataValue / barHeight;
+	        FCC_Global.assert.equal(firstRatio.toFixed(3), ratio.toFixed(3), 'The heights of the bars should correspond to the data values ');
+	      }
+	    });
+	  });
+
+	  (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.bar'), "data-date", "data-date");
 	}
 
 /***/ }),
@@ -20939,7 +20942,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createScatterPlotTests;
 
@@ -20953,144 +20956,144 @@ var FCC_Global =
 
 	function createScatterPlotTests() {
 
-	    describe('#ScatterPlotTests', function () {
-	        var MIN_YEAR = 1990;
-	        var MAX_YEAR = 2020;
-	        var MIN_MINUTES = 36;
-	        var MAX_MINUTES = 40;
+	  describe('#ScatterPlotTests', function () {
+	    var MIN_YEAR = 1990;
+	    var MAX_YEAR = 2020;
+	    var MIN_MINUTES = 36;
+	    var MAX_MINUTES = 40;
 
-	        describe('#Content', function () {
-	            it('1. I can see a title element that has a corresponding id="title".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
-	            });
+	    describe('#Content', function () {
+	      it('1. I can see a title element that has a corresponding id="title".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
+	      });
 
-	            it('2. I can see an x-axis that has a corresponding id="x-axis".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'There should be an element with id="x-axis" ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll('#x-axis g').length, 0, 'x-axis should be a <g> SVG element ');
-	            });
+	      it('2. I can see an x-axis that has a corresponding id="x-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'There should be an element with id="x-axis" ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#x-axis g').length, 0, 'x-axis should be a <g> SVG element ');
+	      });
 
-	            it('3. I can see a y-axis that has a corresponding id="y-axis".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'There should be an element with id="y-axis" ');
-	                FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element');
-	            });
+	      it('3. I can see a y-axis that has a corresponding id="y-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'There should be an element with id="y-axis" ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element');
+	      });
 
-	            it('4. I can see dots, that each have a class of "dot", which represent the data being plotted.', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('.dot').length, 0, 'Could not find any circles with class="dot" ');
-	            });
+	      it('4. I can see dots, that each have a class of "dot", which represent the data being plotted.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.dot').length, 0, 'Could not find any circles with class="dot" ');
+	      });
 
-	            it('5. Each dot should have the properties "data-xvalue" and "data-yvalue" containing their corresponding x and y values.', function () {
-	                var dots = document.getElementsByClassName('dot');
-	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	                for (var i = 0; i < dots.length; i++) {
-	                    var dot = dots[i];
-	                    FCC_Global.assert.isNotNull(dot.getAttribute("data-xvalue"), 'Could not find property "data-xvalue" in dot ');
-	                    FCC_Global.assert.isNotNull(dot.getAttribute("data-yvalue"), 'Could not find property "data-yvalue" in dot ');
-	                }
-	            });
+	      it('5. Each dot should have the properties "data-xvalue" and "data-yvalue" containing their corresponding x and y values.', function () {
+	        var dots = document.getElementsByClassName('dot');
+	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        for (var i = 0; i < dots.length; i++) {
+	          var dot = dots[i];
+	          FCC_Global.assert.isNotNull(dot.getAttribute("data-xvalue"), 'Could not find property "data-xvalue" in dot ');
+	          FCC_Global.assert.isNotNull(dot.getAttribute("data-yvalue"), 'Could not find property "data-yvalue" in dot ');
+	        }
+	      });
 
-	            it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function () {
-	                var MIN_X_VALUE = MIN_YEAR;
-	                var MAX_X_VALUE = MAX_YEAR;
+	      it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function () {
+	        var MIN_X_VALUE = MIN_YEAR;
+	        var MAX_X_VALUE = MAX_YEAR;
 
-	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array
-	                var dots = [].slice.call(dotsCollection);
-	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	                dots.forEach(function (dot) {
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        //convert to array
+	        var dots = [].slice.call(dotsCollection);
+	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        dots.forEach(function (dot) {
 
-	                    FCC_Global.assert.isAtLeast(dot.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data ");
-	                    FCC_Global.assert.isAtMost(dot.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(dot.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data ");
+	          FCC_Global.assert.isAtMost(dot.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data ");
 
-	                    //compare just the minutes for a good approximation
-	                    var yDate = new Date(dot.getAttribute("data-yvalue"));
-	                    FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, "The minutes data-yvalue of a dot is below the range of the actual minutes data ");
-	                    FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, "The minutes data-yvalue of a dot is above the range of the actual minutes data ");
-	                });
-	            });
+	          //compare just the minutes for a good approximation
+	          var yDate = new Date(dot.getAttribute("data-yvalue"));
+	          FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, "The minutes data-yvalue of a dot is below the range of the actual minutes data ");
+	          FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, "The minutes data-yvalue of a dot is above the range of the actual minutes data ");
+	        });
+	      });
 
-	            it('7. The data-xvalue and its corresponding dot should align with the corresponding point/value on the x-axis.', function () {
-	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array
-	                var dots = [].slice.call(dotsCollection);
-	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	                //sort the dots based on xvalue in ascending order
-	                var sortedDots = dots.sort(function (a, b) {
-	                    return a.getAttribute("data-xvalue") - b.getAttribute("data-xvalue");
-	                });
-
-	                //check to see if the x locations of the new sorted array are in ascending order
-	                for (var i = 0; i < sortedDots.length - 1; ++i) {
-	                    FCC_Global.assert.isAtMost(+sortedDots[i].cx.baseVal.value, +sortedDots[i + 1].cx.baseVal.value, "x values don't line up with x locations ");
-	                }
-	            });
-
-	            it('8. The data-yvalue and its corresponding dot should align with the corresponding point/value on the y-axis.', function () {
-	                var dotsCollection = document.getElementsByClassName('dot');
-	                //convert to array
-	                var dots = [].slice.call(dotsCollection);
-	                FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	                //sort the dots based on yvalue in ascending order
-	                var sortedDots = dots.sort(function (a, b) {
-	                    return new Date(a.getAttribute("data-yvalue")) - new Date(b.getAttribute("data-yvalue"));
-	                });
-
-	                //check to see if the y locations of the new sorted array are in ascending order
-	                for (var i = 0; i < sortedDots.length - 1; ++i) {
-	                    FCC_Global.assert.isAtMost(+sortedDots[i].cy.baseVal.value, +sortedDots[i + 1].cy.baseVal.value, "y values don't line up with y locations ");
-	                }
-	            });
-
-	            it('9. I can see multiple tick labels on the y-axis with "%M:%S" time  format.', function () {
-	                var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
-	                FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
-	                yAxisTickLabels.forEach(function (label) {
-	                    //match "%M:%S" d3 time format
-	                    FCC_Global.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
-	                });
-	            });
-
-	            it('10. I can see multiple tick labels on the x-axis that show the year.', function () {
-	                var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
-	                FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
-	                xAxisTickLabels.forEach(function (label) {
-	                    //match check if this is a year
-	                    FCC_Global.assert.match(label.textContent, /[1-2][0-9][0-9][0-9]/, 'X-axis tick labels do not show the year ');
-	                });
-	            });
-
-	            it('11. I can see that the range of the x-axis labels are within the range of the actual x-axis data.', function () {
-	                var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
-	                var MIN_YEAR = 1994;
-	                var MAX_YEAR = 2016;
-	                FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
-	                xAxisTickLabels.forEach(function (label) {
-	                    FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, "x axis labels are below the range of the actual data ");
-	                    FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, "x axis labels are above the range of the actual data ");
-	                });
-	            });
-
-	            it('12. I can see that the range of the y-axis labels are within the range of the actual y-axis data.', function () {
-	                var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
-	                var MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
-	                var MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
-	                FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
-	                yAxisTickLabels.forEach(function (label) {
-	                    var timeArr = label.textContent.split(":");
-	                    var mins = timeArr[0];
-	                    var secs = timeArr[1];
-	                    var date = new Date(0, 0, 0, 0, mins, secs, 0);
-	                    FCC_Global.assert.isAtLeast(date, MIN_TIME, "y axis labels are below the range of the actual data ");
-	                    FCC_Global.assert.isAtMost(date, MAX_TIME, "y axis labels are above the range of the actual data ");
-	                });
-	            });
-
-	            it('13. I can see a legend that has id="legend".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
-	            });
+	      it('7. The data-xvalue and its corresponding dot should align with the corresponding point/value on the x-axis.', function () {
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        //convert to array
+	        var dots = [].slice.call(dotsCollection);
+	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        //sort the dots based on xvalue in ascending order
+	        var sortedDots = dots.sort(function (a, b) {
+	          return a.getAttribute("data-xvalue") - b.getAttribute("data-xvalue");
 	        });
 
-	        (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), "data-year", "data-xvalue");
+	        //check to see if the x locations of the new sorted array are in ascending order
+	        for (var i = 0; i < sortedDots.length - 1; ++i) {
+	          FCC_Global.assert.isAtMost(+sortedDots[i].cx.baseVal.value, +sortedDots[i + 1].cx.baseVal.value, "x values don't line up with x locations ");
+	        }
+	      });
+
+	      it('8. The data-yvalue and its corresponding dot should align with the corresponding point/value on the y-axis.', function () {
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        //convert to array
+	        var dots = [].slice.call(dotsCollection);
+	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        //sort the dots based on yvalue in ascending order
+	        var sortedDots = dots.sort(function (a, b) {
+	          return new Date(a.getAttribute("data-yvalue")) - new Date(b.getAttribute("data-yvalue"));
+	        });
+
+	        //check to see if the y locations of the new sorted array are in ascending order
+	        for (var i = 0; i < sortedDots.length - 1; ++i) {
+	          FCC_Global.assert.isAtMost(+sortedDots[i].cy.baseVal.value, +sortedDots[i + 1].cy.baseVal.value, "y values don't line up with y locations ");
+	        }
+	      });
+
+	      it('9. I can see multiple tick labels on the y-axis with "%M:%S" time  format.', function () {
+	        var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
+	        yAxisTickLabels.forEach(function (label) {
+	          //match "%M:%S" d3 time format
+	          FCC_Global.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
+	        });
+	      });
+
+	      it('10. I can see multiple tick labels on the x-axis that show the year.', function () {
+	        var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
+	        xAxisTickLabels.forEach(function (label) {
+	          //match check if this is a year
+	          FCC_Global.assert.match(label.textContent, /[1-2][0-9][0-9][0-9]/, 'X-axis tick labels do not show the year ');
+	        });
+	      });
+
+	      it('11. I can see that the range of the x-axis labels are within the range of the actual x-axis data.', function () {
+	        var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
+	        var MIN_YEAR = 1994;
+	        var MAX_YEAR = 2016;
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
+	        xAxisTickLabels.forEach(function (label) {
+	          FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, "x axis labels are below the range of the actual data ");
+	          FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, "x axis labels are above the range of the actual data ");
+	        });
+	      });
+
+	      it('12. I can see that the range of the y-axis labels are within the range of the actual y-axis data.', function () {
+	        var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
+	        var MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
+	        var MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
+	        yAxisTickLabels.forEach(function (label) {
+	          var timeArr = label.textContent.split(":");
+	          var mins = timeArr[0];
+	          var secs = timeArr[1];
+	          var date = new Date(0, 0, 0, 0, mins, secs, 0);
+	          FCC_Global.assert.isAtLeast(date, MIN_TIME, "y axis labels are below the range of the actual data ");
+	          FCC_Global.assert.isAtMost(date, MAX_TIME, "y axis labels are above the range of the actual data ");
+	        });
+	      });
+
+	      it('13. I can see a legend that has id="legend".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
+	      });
 	    });
+
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), "data-year", "data-xvalue");
+	  });
 	}
 
 /***/ }),
@@ -21100,7 +21103,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createChoroplethTests;
 
@@ -21118,116 +21121,116 @@ var FCC_Global =
 
 	function createChoroplethTests() {
 
-	    describe('#ChoroplethTests', function () {
+	  describe('#ChoroplethTests', function () {
 
-	        describe('#Content', function () {
+	    describe('#Content', function () {
 
-	            it('1. My Choropleth should have a title with a corresponding id=\"title\"', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
-	            });
+	      it('1. My Choropleth should have a title with a corresponding id=\"title\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
+	      });
 
-	            it('2. My Choropleth should have a description with a corresponding id=\"description\"', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\" ');
-	            });
+	      it('2. My Choropleth should have a description with a corresponding id=\"description\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\" ');
+	      });
 
-	            it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\" ");
-	            });
+	      it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\" ");
+	      });
 
-	            it('4. There should be at least 4 different fill colors used for the counties', function () {
-	                var counties = document.querySelectorAll('.county');
-	                var uniqueColors = [];
+	      it('4. There should be at least 4 different fill colors used for the counties', function () {
+	        var counties = document.querySelectorAll('.county');
+	        var uniqueColors = [];
 
-	                for (var i = 0; i < counties.length; i++) {
-	                    var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
+	        for (var i = 0; i < counties.length; i++) {
+	          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
 
-	                    // if the current color isn't in the uniqueColors arr, push it
-	                    if (uniqueColors.indexOf(countyColor) === -1) {
-	                        uniqueColors.push(countyColor);
-	                    }
-	                }
+	          // if the current color isn't in the uniqueColors arr, push it
+	          if (uniqueColors.indexOf(countyColor) === -1) {
+	            uniqueColors.push(countyColor);
+	          }
+	        }
 
-	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
-	            });
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
+	      });
 
-	            it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
-	                var counties = document.querySelectorAll('.county');
-	                FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\" ");
+	      it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
+	        var counties = document.querySelectorAll('.county');
+	        FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\" ");
 
-	                for (var i = 0; i < counties.length; i++) {
-	                    var county = counties[i];
-	                    FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county ");
-	                    FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county ");
-	                }
-	            });
+	        for (var i = 0; i < counties.length; i++) {
+	          var county = counties[i];
+	          FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county ");
+	          FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county ");
+	        }
+	      });
 
-	            it('6. My Choropleth should have a county for each provided data point', function () {
-	                var counties = document.querySelectorAll('.county');
+	      it('6. My Choropleth should have a county for each provided data point', function () {
+	        var counties = document.querySelectorAll('.county');
 
-	                FCC_Global.assert.equal(counties.length, _education2.default.length);
-	            });
+	        FCC_Global.assert.equal(counties.length, _education2.default.length);
+	      });
 
-	            it('7. The counties should have data-fips and data-education values that match the sample data', function () {
-	                var counties = document.querySelectorAll('.county');
-	                var educationDataFips = _education2.default.map(function (item) {
-	                    return item.fips;
-	                });
-	                var uniqueFipsFromChoropleth = [];
-	                // check for any duplicate fips values
-	                for (var i = 0; i < counties.length; i++) {
-	                    var fips = counties[i].getAttribute('data-fips');
-
-	                    FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values ");
-	                    uniqueFipsFromChoropleth.push(+fips);
-	                }
-
-	                // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data
-	                for (var j = 0; j < _education2.default.length; j++) {
-	                    // test that every value in the sample data is in the Choropleth
-	                    FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ");
-
-	                    // test that every value in the Choropleth is in the sample data
-	                    FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data ");
-	                }
-
-	                // index educationData by fips 
-	                var educationDataByFips = _education2.default.reduce(function (data, item) {
-	                    data[item.fips] = item;
-	                    return data;
-	                }, {});
-
-	                // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
-	                for (var k = 0; k < counties.length; k++) {
-	                    var countyFips = +counties[k].getAttribute('data-fips');
-	                    var countyEducation = counties[k].getAttribute('data-education');
-	                    var sampleEducation = educationDataByFips[countyFips].bachelorsOrHigher;
-
-	                    FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match ");
-	                }
-	            });
-
-	            it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\" ');
-	            });
-
-	            it('9. There should be at least 4 different fill colors used for the legend', function () {
-	                var rects = document.querySelectorAll('#legend rect');
-	                var uniqueColors = [];
-
-	                for (var i = 0; i < rects.length; i++) {
-	                    var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
-
-	                    // if the current color isn't in the uniqueColors arr, push it
-	                    if (uniqueColors.indexOf(rectColor) === -1) {
-	                        uniqueColors.push(rectColor);
-	                    }
-	                }
-	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
-	            });
+	      it('7. The counties should have data-fips and data-education values that match the sample data', function () {
+	        var counties = document.querySelectorAll('.county');
+	        var educationDataFips = _education2.default.map(function (item) {
+	          return item.fips;
 	        });
+	        var uniqueFipsFromChoropleth = [];
+	        // check for any duplicate fips values
+	        for (var i = 0; i < counties.length; i++) {
+	          var fips = counties[i].getAttribute('data-fips');
 
-	        (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.county'), "data-education", "data-education");
+	          FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values ");
+	          uniqueFipsFromChoropleth.push(+fips);
+	        }
+
+	        // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data
+	        for (var j = 0; j < _education2.default.length; j++) {
+	          // test that every value in the sample data is in the Choropleth
+	          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ");
+
+	          // test that every value in the Choropleth is in the sample data
+	          FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data ");
+	        }
+
+	        // index educationData by fips
+	        var educationDataByFips = _education2.default.reduce(function (data, item) {
+	          data[item.fips] = item;
+	          return data;
+	        }, {});
+
+	        // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
+	        for (var k = 0; k < counties.length; k++) {
+	          var countyFips = +counties[k].getAttribute('data-fips');
+	          var countyEducation = counties[k].getAttribute('data-education');
+	          var sampleEducation = educationDataByFips[countyFips].bachelorsOrHigher;
+
+	          FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match ");
+	        }
+	      });
+
+	      it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\" ');
+	      });
+
+	      it('9. There should be at least 4 different fill colors used for the legend', function () {
+	        var rects = document.querySelectorAll('#legend rect');
+	        var uniqueColors = [];
+
+	        for (var i = 0; i < rects.length; i++) {
+	          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
+
+	          // if the current color isn't in the uniqueColors arr, push it
+	          if (uniqueColors.indexOf(rectColor) === -1) {
+	            uniqueColors.push(rectColor);
+	          }
+	        }
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
+	      });
 	    });
+
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.county'), "data-education", "data-education");
+	  });
 	}
 
 /***/ }),
@@ -40128,7 +40131,7 @@ var FCC_Global =
 	        for (var i = 0; i < tiles.length; i++) {
 	          var tileColor = tiles[i].style.fill || tiles[i].getAttribute('fill');
 
-	          // if the current color isn't in the uniqueColors arr, push it 
+	          // if the current color isn't in the uniqueColors arr, push it
 	          if (uniqueColors.indexOf(tileColor) === -1) {
 	            uniqueColors.push(tileColor);
 	          }
@@ -40198,7 +40201,7 @@ var FCC_Global =
 	        for (var i = 0; i < legendItems.length; i++) {
 	          var legendItemColors = legendItems[i].style.fill || legendItems[i].getAttribute('fill');
 
-	          // if the current color isn't in the uniqueColors arr, push it 
+	          // if the current color isn't in the uniqueColors arr, push it
 	          if (uniqueColors.indexOf(legendItemColors) === -1) {
 	            uniqueColors.push(legendItemColors);
 	          }
@@ -40218,117 +40221,117 @@ var FCC_Global =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createRandomQuoteMachineTests;
 	function createRandomQuoteMachineTests() {
-	    describe("Random Quote Machine tests", function () {
+	  describe("Random Quote Machine tests", function () {
 
-	        var requestTimeout = 3000;
+	    var requestTimeout = 3000;
 
-	        function testHorizontallyCentered(elName) {
-	            var centeredElement = document.getElementById(elName);
-	            console.log(centeredElement);
-	            var actualSideGap = centeredElement.offsetLeft;
-	            var centeredElementWidth = centeredElement.clientWidth;
-	            var gapExpectedWidth = (window.innerWidth - centeredElementWidth) / 2;
-	            var delta = gapExpectedWidth - actualSideGap;
-	            console.log(gapExpectedWidth, actualSideGap, delta);
-	            return delta < 8.6 && delta > -3;
-	        }
+	    function testHorizontallyCentered(elName) {
+	      var centeredElement = document.getElementById(elName);
+	      console.log(centeredElement);
+	      var actualSideGap = centeredElement.offsetLeft;
+	      var centeredElementWidth = centeredElement.clientWidth;
+	      var gapExpectedWidth = (window.innerWidth - centeredElementWidth) / 2;
+	      var delta = gapExpectedWidth - actualSideGap;
+	      console.log(gapExpectedWidth, actualSideGap, delta);
+	      return delta < 8.6 && delta > -3;
+	    }
 
-	        beforeEach(function () {});
+	    beforeEach(function () {});
 
-	        after(function () {});
+	    after(function () {});
 
-	        describe("#Content", function () {
-	            it('1. I can see a wrapper element with a corresponding id="quote-box".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("quote-box"));
-	            });
+	    describe("#Content", function () {
+	      it('1. I can see a wrapper element with a corresponding id="quote-box".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("quote-box"));
+	      });
 
-	            it('2. Within #quote-box, I can see an element with corresponding id="text".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("text"), '#text is not defined ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #text').length, 1, '#text is not a child of #quote-box ');
-	            });
+	      it('2. Within #quote-box, I can see an element with corresponding id="text".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("text"), '#text is not defined ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #text').length, 1, '#text is not a child of #quote-box ');
+	      });
 
-	            it('3. Within #quote-box, I can see an element with corresponding id="author".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("author"), '#author is not defined ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #author').length, 1, '#author is not a child of #quote-box ');
-	            });
+	      it('3. Within #quote-box, I can see an element with corresponding id="author".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("author"), '#author is not defined ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #author').length, 1, '#author is not a child of #quote-box ');
+	      });
 
-	            it('4. Within #quote-box, I can see a clickable element with corresponding id="new-quote".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("new-quote"), '#new-quote is not defined ');
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
-	            });
+	      it('4. Within #quote-box, I can see a clickable element with corresponding id="new-quote".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("new-quote"), '#new-quote is not defined ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
+	      });
 
-	            it('5. Within #quote-box, I can see a clickable "tweet" element with corresponding id="tweet-quote".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById("tweet-quote"));
-	                FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote button is not a child of #quote-box ');
-	            });
+	      it('5. Within #quote-box, I can see a clickable "tweet" element with corresponding id="tweet-quote".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById("tweet-quote"));
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote button is not a child of #quote-box ');
+	      });
 
-	            it('6. On first load, my quote machine displays a random quote in the element with id="text".', function () {
-	                this.timeout(requestTimeout + 1000);
-	                return new Promise(function (resolve, reject) {
-	                    setTimeout(function (_) {
-	                        var text = document.getElementById("text");
-	                        if (text.innerText.length > 0) resolve();else reject(new Error("There is no initial quote displayed "));
-	                    }, requestTimeout);
-	                });
-	            });
+	      it('6. On first load, my quote machine displays a random quote in the element with id="text".', function () {
+	        this.timeout(requestTimeout + 1000);
+	        return new Promise(function (resolve, reject) {
+	          setTimeout(function (_) {
+	            var text = document.getElementById("text");
+	            if (text.innerText.length > 0) resolve();else reject(new Error("There is no initial quote displayed "));
+	          }, requestTimeout);
+	        });
+	      });
 
-	            it('7. On first load, my quote machine displays the random quote\'s author in the element with id="author".', function () {
-	                this.timeout(requestTimeout + 1000);
-	                return new Promise(function (resolve, reject) {
-	                    setTimeout(function (_) {
-	                        var author = document.getElementById("author");
-	                        if (author.innerText.length > 0) resolve();else reject(new Error("There is no initial author displayed "));
-	                    }, requestTimeout);
-	                });
-	            });
+	      it('7. On first load, my quote machine displays the random quote\'s author in the element with id="author".', function () {
+	        this.timeout(requestTimeout + 1000);
+	        return new Promise(function (resolve, reject) {
+	          setTimeout(function (_) {
+	            var author = document.getElementById("author");
+	            if (author.innerText.length > 0) resolve();else reject(new Error("There is no initial author displayed "));
+	          }, requestTimeout);
+	        });
+	      });
 
-	            it("8. When the #new-quote button is clicked, my quote machine should fetch a new quote and display it in the #text element.", function (done) {
-	                this.timeout(requestTimeout + 1000);
-	                var prevText = document.getElementById("text").innerText;
-	                document.getElementById("new-quote").click();
-	                setTimeout(function (_) {
-	                    var newText = document.getElementById("text").innerText;
-	                    if (newText === prevText) {
-	                        done("The text hasn't changed after button click ");
-	                    } else {
-	                        done();
-	                    }
-	                }, requestTimeout);
-	            });
+	      it("8. When the #new-quote button is clicked, my quote machine should fetch a new quote and display it in the #text element.", function (done) {
+	        this.timeout(requestTimeout + 1000);
+	        var prevText = document.getElementById("text").innerText;
+	        document.getElementById("new-quote").click();
+	        setTimeout(function (_) {
+	          var newText = document.getElementById("text").innerText;
+	          if (newText === prevText) {
+	            done("The text hasn't changed after button click ");
+	          } else {
+	            done();
+	          }
+	        }, requestTimeout);
+	      });
 
-	            it("9. My quote machine should fetch the new quote\'s author when the #new-quote button is clicked and display it in the #author element.", function (done) {
-	                this.timeout(requestTimeout + 1000);
-	                var prevAuth = document.getElementById("author").innerText;
-	                document.getElementById("new-quote").click();
-	                setTimeout(function (_) {
-	                    var newAuth = document.getElementById("author").innerText;
-	                    if (newAuth === prevAuth) {
-	                        done("The text hasn't changed after button click ");
-	                    } else {
-	                        done();
-	                    }
-	                }, requestTimeout);
-	            });
+	      it("9. My quote machine should fetch the new quote\'s author when the #new-quote button is clicked and display it in the #author element.", function (done) {
+	        this.timeout(requestTimeout + 1000);
+	        var prevAuth = document.getElementById("author").innerText;
+	        document.getElementById("new-quote").click();
+	        setTimeout(function (_) {
+	          var newAuth = document.getElementById("author").innerText;
+	          if (newAuth === prevAuth) {
+	            done("The text hasn't changed after button click ");
+	          } else {
+	            done();
+	          }
+	        }, requestTimeout);
+	      });
 
-	            it('10. I can tweet the current quote by clicking on the #tweet-quote element. This element should use the "twitter.com/intent/tweet" path to tweet the current quote.', function () {
-	                this.timeout(requestTimeout + 1000);
-	                FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote element must have an href attribute ');
-	                var href = document.getElementById("tweet-quote").href;
-	                FCC_Global.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter intent ');
-	            });
-	        }); // END #Content
+	      it('10. I can tweet the current quote by clicking on the #tweet-quote element. This element should use the "twitter.com/intent/tweet" path to tweet the current quote.', function () {
+	        this.timeout(requestTimeout + 1000);
+	        FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote element must have an href attribute ');
+	        var href = document.getElementById("tweet-quote").href;
+	        FCC_Global.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter intent ');
+	      });
+	    }); // END #Content
 
-	        describe("#Layout", function () {
+	    describe("#Layout", function () {
 
-	            it('1. The #quote-box wrapper element should be horizontally centered. Please reset your browser\'s zoom level to 100%.', function () {
-	                FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
-	            });
-	        }); // END #Layout
-	    }); // END Random Quote Machine tests
+	      it('1. The #quote-box wrapper element should be horizontally centered. Please reset your browser\'s zoom level to 100%.', function () {
+	        FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
+	      });
+	    }); // END #Layout
+	  }); // END Random Quote Machine tests
 	} // END createRandomQuoteMachineTests()
 
 /***/ }),
@@ -40338,7 +40341,7 @@ var FCC_Global =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.default = createHeatMapTests;
 
@@ -40352,155 +40355,155 @@ var FCC_Global =
 
 	function createHeatMapTests() {
 
-	    describe('#HeatMapTests', function () {
-	        describe('#Content', function () {
-	            it('1. My heat map should have a title with a corresponding id="title".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('title'), "Could not find an element with id=\"title\" ");
-	            });
+	  describe('#HeatMapTests', function () {
+	    describe('#Content', function () {
+	      it('1. My heat map should have a title with a corresponding id="title".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), "Could not find an element with id=\"title\" ");
+	      });
 
-	            it('2. My heat map should have a description with a corresponding id="description".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('description'), "Could not find an element with id=\"description\" ");
-	            });
+	      it('2. My heat map should have a description with a corresponding id="description".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), "Could not find an element with id=\"description\" ");
+	      });
 
-	            it('3. My heat map should have an x-axis with a corresponding id="x-axis".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('x-axis'), "Could not find an element with id=\"x-axis\" ");
-	            });
+	      it('3. My heat map should have an x-axis with a corresponding id="x-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), "Could not find an element with id=\"x-axis\" ");
+	      });
 
-	            it('4. My heat map should have a y-axis with a corresponding id="y-axis".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('y-axis'), "Could not find an element with id=\"y-axis\" ");
-	            });
+	      it('4. My heat map should have a y-axis with a corresponding id="y-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('y-axis'), "Could not find an element with id=\"y-axis\" ");
+	      });
 
-	            it('5. My heat map should have cells with a corresponding class="cell" that represent the data.', function () {
-	                FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, "Could not find any elements with a class=\"cell\" ");
-	            });
+	      it('5. My heat map should have cells with a corresponding class="cell" that represent the data.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, "Could not find any elements with a class=\"cell\" ");
+	      });
 
-	            it('6. There should be at least 4 different fill colors used for the cells.', function () {
-	                var cells = document.querySelectorAll('.cell');
-	                var uniqueColors = [];
+	      it('6. There should be at least 4 different fill colors used for the cells.', function () {
+	        var cells = document.querySelectorAll('.cell');
+	        var uniqueColors = [];
 
-	                for (var i = 0; i < cells.length; i++) {
-	                    var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
+	        for (var i = 0; i < cells.length; i++) {
+	          var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
 
-	                    // if the current color isn't in the uniqueColors arr, push it
-	                    if (uniqueColors.indexOf(cellColor) === -1) {
-	                        uniqueColors.push(cellColor);
-	                    }
-	                }
-	                FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
-	            });
+	          // if the current color isn't in the uniqueColors arr, push it
+	          if (uniqueColors.indexOf(cellColor) === -1) {
+	            uniqueColors.push(cellColor);
+	          }
+	        }
+	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
+	      });
 
-	            it('7. Each cell will have the properties "data-month", "data-year", "data-temp" containing their corresponding month, year, and temperature values.', function () {
-	                var cells = document.querySelectorAll('.cell');
+	      it('7. Each cell will have the properties "data-month", "data-year", "data-temp" containing their corresponding month, year, and temperature values.', function () {
+	        var cells = document.querySelectorAll('.cell');
 
-	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
-	                for (var i = 0; i < cells.length; i++) {
-	                    var cell = cells[i];
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
-	                }
-	            });
+	        for (var i = 0; i < cells.length; i++) {
+	          var cell = cells[i];
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	        }
+	      });
 
-	            it('8. The \"data-month\", \"data-year\" of each cell should be within the range of the data.', function () {
+	      it('8. The \"data-month\", \"data-year\" of each cell should be within the range of the data.', function () {
 
-	                // NOTE:  This test contains the same exact tests from 6 and 7.  Is there a way to only run test 8 if test 6 and 7 pass?  Should we be putting this code in a utility function?
-	                var cells = document.querySelectorAll('.cell');
-	                FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        // NOTE:  This test contains the same exact tests from 6 and 7.  Is there a way to only run test 8 if test 6 and 7 pass?  Should we be putting this code in a utility function?
+	        var cells = document.querySelectorAll('.cell');
+	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
-	                for (var i = 0; i < cells.length; i++) {
-	                    var cell = cells[i];
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
-	                    FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
-	                }
+	        for (var i = 0; i < cells.length; i++) {
+	          var cell = cells[i];
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	        }
 
-	                var cellMonths = [];
-	                var cellYears = [];
+	        var cellMonths = [];
+	        var cellYears = [];
 
-	                for (var i = 0; i < cells.length; i++) {
-	                    var cell = cells[i];
+	        for (var i = 0; i < cells.length; i++) {
+	          var cell = cells[i];
 
-	                    cellMonths.push(cell.getAttribute("data-month"));
-	                    cellYears.push(cell.getAttribute("data-year"));
-	                }
+	          cellMonths.push(cell.getAttribute("data-month"));
+	          cellYears.push(cell.getAttribute("data-year"));
+	        }
 
-	                function valuesAreBetween(min, max, data) {
-	                    for (var i = 0; i < data.length; i++) {
-	                        var item = data[i];
-	                        if (item < min || item > max) {
-	                            return false;
-	                        }
-	                    }
-	                    return true;
-	                }
-	                FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
-	                FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
-	            });
+	        function valuesAreBetween(min, max, data) {
+	          for (var i = 0; i < data.length; i++) {
+	            var item = data[i];
+	            if (item < min || item > max) {
+	              return false;
+	            }
+	          }
+	          return true;
+	        }
+	        FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
+	        FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
+	      });
 
-	            it('9. My heat map should have cells that align with the corresponding month on the y-axis.', function () {
-	                var cellsCollection = document.querySelectorAll('.cell');
-	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+	      it('9. My heat map should have cells that align with the corresponding month on the y-axis.', function () {
+	        var cellsCollection = document.querySelectorAll('.cell');
+	        FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
 
-	                //convert to array
-	                var cells = [].slice.call(cellsCollection);
-	                var sortedCells = cells.sort(function (a, b) {
-	                    return a.getAttribute("data-month") - b.getAttribute("data-month");
-	                });
-
-	                //check to see if the y locations of the new sorted array are in ascending order
-	                for (var i = 0; i < sortedCells.length - 1; ++i) {
-	                    FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("y"), +sortedCells[i + 1].getAttribute("y"), "month values don't line up with y locations ");
-	                }
-	            });
-
-	            it('10. My heat map should have cells that align with the corresponding year on the x-axis.', function () {
-	                var cellsCollection = document.querySelectorAll('.cell');
-	                FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
-
-	                //convert to array
-	                var cells = [].slice.call(cellsCollection);
-	                var sortedCells = cells.sort(function (a, b) {
-	                    return a.getAttribute("data-year") - b.getAttribute("data-year");
-	                });
-
-	                //check to see if the x locations of the new sorted array are in ascending order
-	                for (var i = 0; i < sortedCells.length - 1; ++i) {
-	                    FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("x"), +sortedCells[i + 1].getAttribute("x"), "year values don't line up with x locations");
-	                }
-	            });
-
-	            it('11. My heat map should have multiple tick labels on the y-axis with the full month name.', function () {
-	                var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
-
-	                FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis");
-
-	                var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
-	                for (var i = 0; i < yAxisTickLabels.length; i++) {
-	                    FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), "Y axis labels should contain month names ");
-	                }
-	            });
-
-	            it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015.', function () {
-	                var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
-
-	                FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis");
-
-	                for (var i = 0; i < xAxisTickLabels.length; i++) {
-
-	                    FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, "X axis labels should contain a year that's at least 1754 ");
-
-	                    FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, "X axis labels should contain a year that's at most 2015 ");
-	                }
-	            });
-
-	            it('13. My heat map should have a legend with corresponding id="legend".', function () {
-	                FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
-	            });
+	        //convert to array
+	        var cells = [].slice.call(cellsCollection);
+	        var sortedCells = cells.sort(function (a, b) {
+	          return a.getAttribute("data-month") - b.getAttribute("data-month");
 	        });
-	        (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), "data-year", "data-year");
+
+	        //check to see if the y locations of the new sorted array are in ascending order
+	        for (var i = 0; i < sortedCells.length - 1; ++i) {
+	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("y"), +sortedCells[i + 1].getAttribute("y"), "month values don't line up with y locations ");
+	        }
+	      });
+
+	      it('10. My heat map should have cells that align with the corresponding year on the x-axis.', function () {
+	        var cellsCollection = document.querySelectorAll('.cell');
+	        FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+
+	        //convert to array
+	        var cells = [].slice.call(cellsCollection);
+	        var sortedCells = cells.sort(function (a, b) {
+	          return a.getAttribute("data-year") - b.getAttribute("data-year");
+	        });
+
+	        //check to see if the x locations of the new sorted array are in ascending order
+	        for (var i = 0; i < sortedCells.length - 1; ++i) {
+	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("x"), +sortedCells[i + 1].getAttribute("x"), "year values don't line up with x locations");
+	        }
+	      });
+
+	      it('11. My heat map should have multiple tick labels on the y-axis with the full month name.', function () {
+	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis");
+
+	        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+	        for (var i = 0; i < yAxisTickLabels.length; i++) {
+	          FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), "Y axis labels should contain month names ");
+	        }
+	      });
+
+	      it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015.', function () {
+	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
+
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis");
+
+	        for (var i = 0; i < xAxisTickLabels.length; i++) {
+
+	          FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, "X axis labels should contain a year that's at least 1754 ");
+
+	          FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, "X axis labels should contain a year that's at most 2015 ");
+	        }
+	      });
+
+	      it('13. My heat map should have a legend with corresponding id="legend".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
+	      });
 	    });
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), "data-year", "data-year");
+	  });
 	}
 
 /***/ })
