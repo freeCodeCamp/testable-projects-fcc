@@ -1,12 +1,5 @@
 import $ from 'jquery';
 import {testToolTip} from '../assets/globalD3Tests';
-import {
-  getXAxisInfo,
-  getYAxisInfo,
-  getXMisalignmentCount,
-  getYMisalignmentCount,
-  isAxisAlignedWithDataPoints
-} from '../assets/alignmentD3Tests';
 
 export default function createScatterPlotTests() {
 
@@ -65,46 +58,36 @@ export default function createScatterPlotTests() {
         })
       })
 
-      it(`7. The data-xvalue and its corresponding dot should align
-      with the corresponding point/value on the x-axis.`, function() {
+      it('7. The data-xvalue and its corresponding dot should align with the corresponding point/value on the x-axis.', function() {
         const dotsCollection = document.getElementsByClassName('dot');
-        FCC_Global.assert.isAbove(
-          dotsCollection.length,
-          0,
-          'there are no elements with the class of "dot" '
-        );
+        //convert to array
+        const dots = [].slice.call(dotsCollection);
+        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+        //sort the dots based on xvalue in ascending order
+        const sortedDots = dots.sort(function(a, b) {
+          return a.getAttribute("data-xvalue") - b.getAttribute("data-xvalue")
+        });
 
-        var xAxisInfo = getXAxisInfo(document.querySelector('#x-axis'));
-
-        FCC_Global.assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            xAxisInfo,
-            dotsCollection,
-            getXMisalignmentCount
-          ),
-          'x values don\'t line up with x locations '
-        );
+        //check to see if the x locations of the new sorted array are in ascending order
+        for (var i = 0; i < sortedDots.length - 1; ++i) {
+          FCC_Global.assert.isAtMost(+ sortedDots[i].cx.baseVal.value, + sortedDots[i + 1].cx.baseVal.value, "x values don't line up with x locations ");
+        }
       });
 
-      it(`8. The data-yvalue and its corresponding dot should align
-      with the corresponding point/value on the y-axis.`, function() {
+      it('8. The data-yvalue and its corresponding dot should align with the corresponding point/value on the y-axis.', function() {
         const dotsCollection = document.getElementsByClassName('dot');
-        FCC_Global.assert.isAbove(
-          dotsCollection.length,
-          0,
-          'there are no elements with the class of "dot" '
-        );
+        //convert to array
+        const dots = [].slice.call(dotsCollection);
+        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+        //sort the dots based on yvalue in ascending order
+        const sortedDots = dots.sort(function(a, b) {
+          return new Date(a.getAttribute("data-yvalue")) - new Date(b.getAttribute("data-yvalue"));
+        });
 
-        var yAxisInfo = getYAxisInfo(document.querySelector('#y-axis'));
-
-        FCC_Global.assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            yAxisInfo,
-            dotsCollection,
-            getYMisalignmentCount
-          ),
-          'y values don\'t line up with y locations '
-        );
+        //check to see if the y locations of the new sorted array are in ascending order
+        for (var i = 0; i < sortedDots.length - 1; ++i) {
+          FCC_Global.assert.isAtMost(+ sortedDots[i].cy.baseVal.value, + sortedDots[i + 1].cy.baseVal.value, "y values don't line up with y locations ");
+        }
       });
 
       it('9. I can see multiple tick labels on the y-axis with "%M:%S" time  format.', function() {
@@ -115,7 +98,6 @@ export default function createScatterPlotTests() {
           FCC_Global.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
         });
       });
-
 
       it('10. I can see multiple tick labels on the x-axis that show the year.', function() {
         const xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
