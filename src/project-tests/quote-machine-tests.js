@@ -38,9 +38,10 @@ export default function createRandomQuoteMachineTests() {
         FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
       });
 
-      it('5. Within #quote-box, I can see a clickable "tweet" element with corresponding id="tweet-quote".', function() {
+      it('5. Within #quote-box, I can see a clickable <a> element with corresponding id="tweet-quote".', function() {
         FCC_Global.assert.isNotNull(document.getElementById("tweet-quote"));
-        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote button is not a child of #quote-box ');
+        FCC_Global.assert.strictEqual(document.getElementById("tweet-quote").nodeName , "A", '#tweet-quote element is not an <a> element' )
+        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote element is not a child of #quote-box ');
       });
 
       it('6. On first load, my quote machine displays a random quote in the element with id="text".', function() {
@@ -99,9 +100,9 @@ export default function createRandomQuoteMachineTests() {
         }, requestTimeout);
       });
 
-      it('10. I can tweet the current quote by clicking on the #tweet-quote element. This element should use the "twitter.com/intent/tweet" path to tweet the current quote.', function() {
+      it('10. I can tweet the current quote by clicking on the #tweet-quote <a> element. This <a> element should include the "twitter.com/intent/tweet" path in it\'s href attribute to tweet the current quote.', function() {
         this.timeout(requestTimeout + 1000);
-        FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote element must have an href attribute ')
+        FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote <a> element must have an href attribute ')
         const href = document.getElementById("tweet-quote").href;
         FCC_Global.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter intent ');
       });
