@@ -20777,8 +20777,7 @@ var FCC_Global =
 	    });
 
 	    it('7. The "data-date" properties should match the order of the provided\n    data', function (done) {
-	      // shortened URL for raw githubusercontent GDP data
-	      _jquery2.default.getJSON('https://goo.gl/niytBH', function (res) {
+	      _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
 	        try {
 	          var bars = document.getElementsByClassName('bar');
 	          FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
@@ -20794,8 +20793,7 @@ var FCC_Global =
 	    });
 
 	    it('8. The "data-gdp" properties should match the order of the provided data', function (done) {
-	      // shortened URL for raw githubusercontent GDP data
-	      _jquery2.default.getJSON('https://goo.gl/niytBH', function (res) {
+	      _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json', function (res) {
 	        try {
 	          var bars = document.getElementsByClassName('bar');
 	          FCC_Global.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
