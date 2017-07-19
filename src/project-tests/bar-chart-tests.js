@@ -91,8 +91,7 @@ export default function createBarChartTests() {
 
     it(`7. The "data-date" properties should match the order of the provided
     data`, function(done) {
-      // shortened URL for raw githubusercontent GDP data
-      $.getJSON(`https://goo.gl/niytBH`, function(res) {
+      $.getJSON(`https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json`, function(res) {
         try {
           const bars = document.getElementsByClassName('bar');
           FCC_Global.assert.isAtLeast(
@@ -117,8 +116,7 @@ export default function createBarChartTests() {
 
     it('8. The "data-gdp" properties should match the order of the provided data',
     function(done) {
-      // shortened URL for raw githubusercontent GDP data
-      $.getJSON(`https://goo.gl/niytBH`, function(res) {
+      $.getJSON(`https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json`, function(res) {
         try {
           const bars = document.getElementsByClassName('bar');
           FCC_Global.assert.isAtLeast(
