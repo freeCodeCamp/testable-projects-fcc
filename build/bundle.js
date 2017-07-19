@@ -40562,13 +40562,10 @@ var FCC_Global =
 
 	    function testHorizontallyCentered(elName) {
 	      var centeredElement = document.getElementById(elName);
-	      console.log(centeredElement);
-	      var actualSideGap = centeredElement.offsetLeft;
-	      var centeredElementWidth = centeredElement.clientWidth;
-	      var gapExpectedWidth = (window.innerWidth - centeredElementWidth) / 2;
-	      var delta = gapExpectedWidth - actualSideGap;
-	      console.log(gapExpectedWidth, actualSideGap, delta);
-	      return delta < 8.6 && delta > -3;
+	      var centeredElementBounds = centeredElement.getBoundingClientRect();
+	      var leftGap = centeredElementBounds.left;
+	      var rightGap = window.innerWidth - centeredElementBounds.right;
+	      return Math.abs(leftGap - rightGap) < 20; // allow for scrollbar width
 	    }
 
 	    beforeEach(function () {});
@@ -40659,7 +40656,7 @@ var FCC_Global =
 
 	    describe("#Layout", function () {
 
-	      it('1. The #quote-box wrapper element should be horizontally centered. Please reset your browser\'s zoom level to 100%.', function () {
+	      it('1. The #quote-box wrapper element should be horizontally centered.  Please run tests with browser\'s zoom level at 100% and page maximized.', function () {
 	        FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
 	      });
 	    }); // END #Layout

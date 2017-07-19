@@ -5,13 +5,10 @@ export default function createRandomQuoteMachineTests() {
 
     function testHorizontallyCentered(elName) {
       const centeredElement = document.getElementById(elName);
-      console.log(centeredElement);
-      const actualSideGap = centeredElement.offsetLeft;
-      const centeredElementWidth = centeredElement.clientWidth;
-      const gapExpectedWidth = (window.innerWidth - centeredElementWidth) / 2;
-      const delta = gapExpectedWidth - actualSideGap;
-      console.log(gapExpectedWidth, actualSideGap, delta);
-      return delta < 8.6 && delta > -3;
+      const centeredElementBounds = centeredElement.getBoundingClientRect();
+      const leftGap = centeredElementBounds.left;
+      const rightGap = window.innerWidth - centeredElementBounds.right;
+      return Math.abs(leftGap - rightGap) < 20  // allow for scrollbar width
     }
 
     beforeEach(function() {});
@@ -110,7 +107,7 @@ export default function createRandomQuoteMachineTests() {
 
     describe("#Layout", function() {
 
-      it('1. The #quote-box wrapper element should be horizontally centered. Please reset your browser\'s zoom level to 100%.', function() {
+      it('1. The #quote-box wrapper element should be horizontally centered.  Please run tests with browser\'s zoom level at 100% and page maximized.', function() {
         FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
       });
 
