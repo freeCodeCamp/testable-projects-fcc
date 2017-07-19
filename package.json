@@ -15,7 +15,10 @@
     "live-server": "^1.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint-js": "eslint --ext=.js,.jsx src/ test/",
+    "lint": "npm run lint-js",
+    "pretest": "npm run lint",
+    "test": "echo \"No tests yet!\"",
     "start": "webpack --watch --config webpack.config.dev.js",
     "build": "webpack"
   },
