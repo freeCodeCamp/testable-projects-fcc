@@ -1,3 +1,5 @@
+/*globals FCC_Global */
+
 export default function createPomodoroClockTests() {
 
   const _break_min = "break-decrement";
@@ -485,7 +487,10 @@ export default function createPomodoroClockTests() {
         });
       });
 
-      it('26. When a countdown reaches zero (NOTE: timer MUST reach 00:00), a sound (must be 200ms or longer) indicating that time is up should play. This should utilize an HTML5 <audio> tag and have a corresponding id="beep".', function() {
+      it(`26. When a countdown reaches zero (NOTE: timer MUST reach 00:00),
+      a sound indicating that time is up should play. This should utilize an
+      HTML5 <audio> tag and have a corresponding id="beep".`,
+      function() {
         this.timeout(5000);
         // decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(_sesh_min));
@@ -509,6 +514,37 @@ export default function createPomodoroClockTests() {
             }
           });
         });
+      });
+
+      it(`27. The audio element with id="beep" must be 1 second or longer.`,
+      function() {
+        FCC_Global.assert.isAbove(
+          document.getElementById('beep').duration,
+          1,
+          `Audio element with id="beep" is not at least 1 second long.`
+        );
+      });
+
+      it(`28. The audio element with id of "beep" must stop playing and be
+      rewound to the beginning when the element with the id of "reset" is
+      clicked.`,
+      function() {
+        var audioElem = document.getElementById('beep');
+
+        audioElem.play();
+        resetTimer();
+
+        FCC_Global.assert.isTrue(
+          audioElem.paused,
+          `Audio element was not stopped when reset was clicked.`
+        );
+
+        FCC_Global.assert.equal(
+          0,
+          audioElem.currentTime,
+          `Audio element was not rewound when reset was clicked. HINT: use the
+          currentTime property of the audio element to rewind.`
+        );
       });
 
     }); // END #Tests
