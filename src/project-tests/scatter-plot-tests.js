@@ -4,6 +4,10 @@ import {
   getYAxisInfo,
   getXMisalignmentCount,
   getYMisalignmentCount,
+  getFeatureValueInteger,
+  getFeatureValueMinutes,
+  getTickValueInteger,
+  getTickValueMinutes,
   isAxisAlignedWithDataPoints
 } from '../assets/alignmentD3Tests';
 
@@ -135,13 +139,35 @@ export default function createScatterPlotTests() {
           'there are no elements with the class of "dot" '
         );
 
-        var xAxisInfo = getXAxisInfo(document.querySelector('#x-axis'));
-
+        const dataAttr = 'data-xvalue';
+        const coordAttr = 'cx';
+        // construct an object with information about axis and data-type
+        var xAxisInfo = getXAxisInfo(
+          document.querySelector('#x-axis'),
+          dataAttr,
+          coordAttr
+        );
         FCC_Global.assert.isTrue(
+          /**
+           * Check that dots align with axis ticks
+           * @function
+           * @param {Object} xAxisInfo - from alignmentD3Tests.getAxisInfo
+           * @param {HTMLCollection} dotsCollection - const
+           * @param {Function} getXMisalignmentCount - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount
+           * @param {Function} getFeatureValueInteger - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+           * @param {Function} getTickValueInteger - Pass specified function for
+           * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+
+           * @returns {Boolean} True if no misalignments are counted
+           */
           isAxisAlignedWithDataPoints(
             xAxisInfo,
             dotsCollection,
-            getXMisalignmentCount
+            getXMisalignmentCount,
+            getFeatureValueInteger,
+            getTickValueInteger
           ),
           'x values don\'t line up with x locations '
         );
@@ -157,13 +183,36 @@ export default function createScatterPlotTests() {
           'there are no elements with the class of "dot" '
         );
 
-        var yAxisInfo = getYAxisInfo(document.querySelector('#y-axis'));
+        const dataAttr = 'data-yvalue';
+        const coordAttr = 'cy';
+        // construct an object with information about axis and data-type
+        var yAxisInfo = getYAxisInfo(
+          document.querySelector('#y-axis'),
+          dataAttr,
+          coordAttr
+        );
 
         FCC_Global.assert.isTrue(
+          /**
+           * Check that dots align with axis ticks
+           * @function
+           * @param {Object} yAxisInfo - from alignmentD3Tests.getAxisInfo
+           * @param {HTMLCollection} dotsCollection - const
+           * @param {Function} getYMisalignmentCount - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount
+           * @param {Function} getFeatureValueMinutes - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+           * @param {Function} getTickValueMinutes - Pass specified function for
+           * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+
+           * @returns {Boolean} True if no misalignments are counted
+           */
           isAxisAlignedWithDataPoints(
             yAxisInfo,
             dotsCollection,
-            getYMisalignmentCount
+            getYMisalignmentCount,
+            getFeatureValueMinutes,
+            getTickValueMinutes
           ),
           'y values don\'t line up with y locations '
         );
