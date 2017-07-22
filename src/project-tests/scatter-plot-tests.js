@@ -135,7 +135,16 @@ export default function createScatterPlotTests() {
           'there are no elements with the class of "dot" '
         );
 
-        var xAxisInfo = getXAxisInfo(document.querySelector('#x-axis'));
+        const dataType = 'Integer';
+        const dataAttr = 'data-xvalue';
+        const coordAttr = 'cx';
+        // construct an object with information about axis and data-type
+        var xAxisInfo = getXAxisInfo(
+          document.querySelector('#x-axis'),
+          dataAttr,
+          dataType,
+          coordAttr
+        );
 
         FCC_Global.assert.isTrue(
           isAxisAlignedWithDataPoints(
@@ -156,8 +165,16 @@ export default function createScatterPlotTests() {
           0,
           'there are no elements with the class of "dot" '
         );
-
-        var yAxisInfo = getYAxisInfo(document.querySelector('#y-axis'));
+        const dataType = 'Minutes';
+        const dataAttr = 'data-yvalue';
+        const coordAttr = 'cy';
+        // construct an object with information about axis and data-type
+        var yAxisInfo = getYAxisInfo(
+          document.querySelector('#y-axis'),
+          dataAttr,
+          dataType,
+          coordAttr
+        );
 
         FCC_Global.assert.isTrue(
           isAxisAlignedWithDataPoints(
