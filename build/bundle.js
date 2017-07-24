@@ -20961,15 +20961,9 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
 	var _globalD3Tests = __webpack_require__(54);
 
 	var _alignmentD3Tests = __webpack_require__(56);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createScatterPlotTests() {
 
@@ -20994,37 +20988,37 @@ var FCC_Global =
 	        FCC_Global.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element');
 	      });
 
-	      it('4. I can see dots, that each have a class of "dot", which represent the data being plotted.', function () {
+	      it('4. I can see dots, that each have a class of "dot", which represent\n      the data being plotted.', function () {
 	        FCC_Global.assert.isAbove(document.querySelectorAll('.dot').length, 0, 'Could not find any circles with class="dot" ');
 	      });
 
-	      it('5. Each dot should have the properties "data-xvalue" and "data-yvalue" containing their corresponding x and y values.', function () {
+	      it('5. Each dot should have the properties "data-xvalue" and\n      "data-yvalue" containing their corresponding x and y values.', function () {
 	        var dots = document.getElementsByClassName('dot');
 	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
 	        for (var i = 0; i < dots.length; i++) {
 	          var dot = dots[i];
-	          FCC_Global.assert.isNotNull(dot.getAttribute("data-xvalue"), 'Could not find property "data-xvalue" in dot ');
-	          FCC_Global.assert.isNotNull(dot.getAttribute("data-yvalue"), 'Could not find property "data-yvalue" in dot ');
+	          FCC_Global.assert.isNotNull(dot.getAttribute('data-xvalue'), 'Could not find property "data-xvalue" in dot ');
+	          FCC_Global.assert.isNotNull(dot.getAttribute('data-yvalue'), 'Could not find property "data-yvalue" in dot ');
 	        }
 	      });
 
-	      it('6. The data-xvalue and data-yvalue of each dot should be within the range of the actual data.', function () {
+	      it('6. The data-xvalue and data-yvalue of each dot should be within the\n      range of the actual data.', function () {
 	        var MIN_X_VALUE = MIN_YEAR;
 	        var MAX_X_VALUE = MAX_YEAR;
 
 	        var dotsCollection = document.getElementsByClassName('dot');
-	        //convert to array
+	        // convert to array
 	        var dots = [].slice.call(dotsCollection);
 	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
 	        dots.forEach(function (dot) {
 
-	          FCC_Global.assert.isAtLeast(dot.getAttribute("data-xvalue"), MIN_X_VALUE, "The data-xvalue of a dot is below the range of the actual data ");
-	          FCC_Global.assert.isAtMost(dot.getAttribute("data-xvalue"), MAX_X_VALUE, "The data-xvalue of a dot is above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(dot.getAttribute('data-xvalue'), MIN_X_VALUE, 'The data-xvalue of a dot is below the range of the actual data ');
+	          FCC_Global.assert.isAtMost(dot.getAttribute('data-xvalue'), MAX_X_VALUE, 'The data-xvalue of a dot is above the range of the actual data ');
 
-	          //compare just the minutes for a good approximation
-	          var yDate = new Date(dot.getAttribute("data-yvalue"));
-	          FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, "The minutes data-yvalue of a dot is below the range of the actual minutes data ");
-	          FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, "The minutes data-yvalue of a dot is above the range of the actual minutes data ");
+	          // compare just the minutes for a good approximation
+	          var yDate = new Date(dot.getAttribute('data-yvalue'));
+	          FCC_Global.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, 'The minutes data-yvalue of a dot is below the range of the actual\n            minutes data ');
+	          FCC_Global.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, 'The minutes data-yvalue of a dot is above the range of the actual\n            minutes data ');
 	        });
 	      });
 
@@ -21046,47 +21040,47 @@ var FCC_Global =
 	        FCC_Global.assert.isTrue((0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, dotsCollection, _alignmentD3Tests.getYMisalignmentCount), 'y values don\'t line up with y locations ');
 	      });
 
-	      it('9. I can see multiple tick labels on the y-axis with "%M:%S" time  format.', function () {
-	        var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
-	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
+	      it('9. I can see multiple tick labels on the y-axis with "%M:%S" time\n      format.', function () {
+	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
 	        yAxisTickLabels.forEach(function (label) {
-	          //match "%M:%S" d3 time format
+	          // match "%M:%S" d3 time format
 	          FCC_Global.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
 	        });
 	      });
 
 	      it('10. I can see multiple tick labels on the x-axis that show the year.', function () {
-	        var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
-	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
+	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
 	        xAxisTickLabels.forEach(function (label) {
-	          //match check if this is a year
+	          // match check if this is a year
 	          FCC_Global.assert.match(label.textContent, /[1-2][0-9][0-9][0-9]/, 'X-axis tick labels do not show the year ');
 	        });
 	      });
 
-	      it('11. I can see that the range of the x-axis labels are within the range of the actual x-axis data.', function () {
-	        var xAxisTickLabels = document.querySelectorAll("#x-axis .tick");
+	      it('11. I can see that the range of the x-axis labels are within the\n      range of the actual x-axis data.', function () {
+	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 	        var MIN_YEAR = 1994;
 	        var MAX_YEAR = 2016;
-	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis ");
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
 	        xAxisTickLabels.forEach(function (label) {
-	          FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, "x axis labels are below the range of the actual data ");
-	          FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, "x axis labels are above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, 'x axis labels are below the range of the actual data ');
+	          FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, 'x axis labels are above the range of the actual data ');
 	        });
 	      });
 
-	      it('12. I can see that the range of the y-axis labels are within the range of the actual y-axis data.', function () {
-	        var yAxisTickLabels = document.querySelectorAll("#y-axis .tick");
+	      it('12. I can see that the range of the y-axis labels are within the\n      range of the actual y-axis data.', function () {
+	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
 	        var MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
 	        var MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
-	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis ");
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
 	        yAxisTickLabels.forEach(function (label) {
-	          var timeArr = label.textContent.split(":");
+	          var timeArr = label.textContent.split(':');
 	          var mins = timeArr[0];
 	          var secs = timeArr[1];
 	          var date = new Date(0, 0, 0, 0, mins, secs, 0);
-	          FCC_Global.assert.isAtLeast(date, MIN_TIME, "y axis labels are below the range of the actual data ");
-	          FCC_Global.assert.isAtMost(date, MAX_TIME, "y axis labels are above the range of the actual data ");
+	          FCC_Global.assert.isAtLeast(date, MIN_TIME, 'y axis labels are below the range of the actual data ');
+	          FCC_Global.assert.isAtMost(date, MAX_TIME, 'y axis labels are above the range of the actual data ');
 	        });
 	      });
 
@@ -21095,7 +21089,7 @@ var FCC_Global =
 	      });
 	    });
 
-	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), "data-year", "data-xvalue");
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), 'data-year', 'data-xvalue');
 	  });
 	}
 
@@ -40691,39 +40685,33 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
 	var _globalD3Tests = __webpack_require__(54);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createHeatMapTests() {
 
 	  describe('#HeatMapTests', function () {
 	    describe('#Content', function () {
 	      it('1. My heat map should have a title with a corresponding id="title".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('title'), "Could not find an element with id=\"title\" ");
+	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
 	      });
 
-	      it('2. My heat map should have a description with a corresponding id="description".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('description'), "Could not find an element with id=\"description\" ");
+	      it('2. My heat map should have a description with a corresponding\n      id="description".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find an element with id=\"description\" ');
 	      });
 
-	      it('3. My heat map should have an x-axis with a corresponding id="x-axis".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), "Could not find an element with id=\"x-axis\" ");
+	      it('3. My heat map should have an x-axis with a corresponding\n      id="x-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find an element with id=\"x-axis\" ');
 	      });
 
-	      it('4. My heat map should have a y-axis with a corresponding id="y-axis".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('y-axis'), "Could not find an element with id=\"y-axis\" ");
+	      it('4. My heat map should have a y-axis with a corresponding\n      id="y-axis".', function () {
+	        FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find an element with id=\"y-axis\" ');
 	      });
 
-	      it('5. My heat map should have cells with a corresponding class="cell" that represent the data.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, "Could not find any elements with a class=\"cell\" ");
+	      it('5. My heat map should have cells with a corresponding class="cell"\n      that represent the data.', function () {
+	        FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, 'Could not find any elements with a class=\"cell\" ');
 	      });
 
-	      it('6. There should be at least 4 different fill colors used for the cells.', function () {
+	      it('6. There should be at least 4 different fill colors used for the\n      cells.', function () {
 	        var cells = document.querySelectorAll('.cell');
 	        var uniqueColors = [];
 
@@ -40738,40 +40726,42 @@ var FCC_Global =
 	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
 	      });
 
-	      it('7. Each cell will have the properties "data-month", "data-year", "data-temp" containing their corresponding month, year, and temperature values.', function () {
+	      it('7. Each cell will have the properties "data-month", "data-year",\n      "data-temp" containing their corresponding month, year, and temperature\n      values.', function () {
 	        var cells = document.querySelectorAll('.cell');
 
 	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
 	        for (var i = 0; i < cells.length; i++) {
 	          var cell = cells[i];
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
 	        }
 	      });
 
-	      it('8. The \"data-month\", \"data-year\" of each cell should be within the range of the data.', function () {
+	      it('8. The "data-month", "data-year" of each cell should be within\n      the range of the data.', function () {
 
-	        // NOTE:  This test contains the same exact tests from 6 and 7.  Is there a way to only run test 8 if test 6 and 7 pass?  Should we be putting this code in a utility function?
+	        // NOTE:  This test contains the same exact tests from 6 and 7.
+	        // Is there a way to only run test 8 if test 6 and 7 pass?
+	        // Should we be putting this code in a utility function?
 	        var cells = document.querySelectorAll('.cell');
 	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
 	        for (var i = 0; i < cells.length; i++) {
 	          var cell = cells[i];
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-month"), 'Could not find property "data-month" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-year"), 'Could not find property "data-year" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute("data-temp"), 'Could not find property "data-temp" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
+	          FCC_Global.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
 	        }
 
 	        var cellMonths = [];
 	        var cellYears = [];
 
-	        for (var i = 0; i < cells.length; i++) {
-	          var cell = cells[i];
+	        for (i = 0; i < cells.length; i++) {
+	          cell = cells[i];
 
-	          cellMonths.push(cell.getAttribute("data-month"));
-	          cellYears.push(cell.getAttribute("data-year"));
+	          cellMonths.push(cell.getAttribute('data-month'));
+	          cellYears.push(cell.getAttribute('data-year'));
 	        }
 
 	        function valuesAreBetween(min, max, data) {
@@ -40787,60 +40777,62 @@ var FCC_Global =
 	        FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
 	      });
 
-	      it('9. My heat map should have cells that align with the corresponding month on the y-axis.', function () {
+	      it('9. My heat map should have cells that align with the corresponding\n      month on the y-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('.cell');
-	        FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
 
-	        //convert to array
+	        // convert to array
 	        var cells = [].slice.call(cellsCollection);
 	        var sortedCells = cells.sort(function (a, b) {
-	          return a.getAttribute("data-month") - b.getAttribute("data-month");
+	          return a.getAttribute('data-month') - b.getAttribute('data-month');
 	        });
 
-	        //check to see if the y locations of the new sorted array are in ascending order
+	        // check to see if the y locations of the new sorted array are in
+	        // ascending order
 	        for (var i = 0; i < sortedCells.length - 1; ++i) {
-	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("y"), +sortedCells[i + 1].getAttribute("y"), "month values don't line up with y locations ");
+	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute('y'), +sortedCells[i + 1].getAttribute('y'), 'month values don\'t line up with y locations ');
 	        }
 	      });
 
-	      it('10. My heat map should have cells that align with the corresponding year on the x-axis.', function () {
+	      it('10. My heat map should have cells that align with the corresponding\n      year on the x-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('.cell');
-	        FCC_Global.assert.isAbove(cellsCollection.length, 0, "Could not find any elements with a class=\"cell\" ");
+	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
 
-	        //convert to array
+	        // convert to array
 	        var cells = [].slice.call(cellsCollection);
 	        var sortedCells = cells.sort(function (a, b) {
-	          return a.getAttribute("data-year") - b.getAttribute("data-year");
+	          return a.getAttribute('data-year') - b.getAttribute('data-year');
 	        });
 
-	        //check to see if the x locations of the new sorted array are in ascending order
+	        // check to see if the x locations of the new sorted array are in
+	        // ascending order
 	        for (var i = 0; i < sortedCells.length - 1; ++i) {
-	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute("x"), +sortedCells[i + 1].getAttribute("x"), "year values don't line up with x locations");
+	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute('x'), +sortedCells[i + 1].getAttribute('x'), 'year values don\'t line up with x locations');
 	        }
 	      });
 
-	      it('11. My heat map should have multiple tick labels on the y-axis with the full month name.', function () {
+	      it('11. My heat map should have multiple tick labels on the y-axis with\n      the full month name.', function () {
 	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
 
-	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, "Could not find tick labels on the y axis");
+	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis');
 
 	        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 	        for (var i = 0; i < yAxisTickLabels.length; i++) {
-	          FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), "Y axis labels should contain month names ");
+	          FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), 'Y axis labels should contain month names ');
 	        }
 	      });
 
-	      it('12. My heat map should have multiple tick labels on the x-axis with the years between 1754 and 2015.', function () {
+	      it('12. My heat map should have multiple tick labels on the x-axis with\n      the years between 1754 and 2015.', function () {
 	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
-	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, "Could not find tick labels on the x axis");
+	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis');
 
 	        for (var i = 0; i < xAxisTickLabels.length; i++) {
 
-	          FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, "X axis labels should contain a year that's at least 1754 ");
+	          FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, 'X axis labels should contain a year that\'s at least 1754 ');
 
-	          FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, "X axis labels should contain a year that's at most 2015 ");
+	          FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, 'X axis labels should contain a year that\'s at most 2015 ');
 	        }
 	      });
 
@@ -40848,7 +40840,7 @@ var FCC_Global =
 	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
 	      });
 	    });
-	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), "data-year", "data-year");
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), 'data-year', 'data-year');
 	  });
 	}
 
