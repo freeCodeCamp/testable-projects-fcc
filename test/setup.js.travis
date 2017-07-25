@@ -1,0 +1,16 @@
+/**
+ * Mocha setup for Travis CI.
+ *
+ * This file will be copied to setup.js by Travis.
+ *
+ */
+
+// Location of chrome binary.
+global.chromeBinaryPath = '/usr/bin/google-chrome-stable';
+
+// Where to save screenshots.
+global.screenshotDir = 'test/screenshots';
+
+// Browser will be resized using these values.
+global.browserMaxWidth = 1920;
+global.browserMaxHeight = 1080;

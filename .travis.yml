@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - '6'
+dist: trusty
+addons:
+  chrome: stable
+before_install:
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1920x1080x16"
+  # give xvfb some time to start
+  - sleep 3
+before_script:
+  # Same as what we specified for Xvfb.
+  - "export DISPLAY=:99.0"
+  - cp test/setup.js.travis test/setup.js
+cache:
+  directories:
+    - node_modules
+sudo: false

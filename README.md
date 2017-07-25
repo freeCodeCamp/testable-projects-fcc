@@ -18,6 +18,50 @@ A CDN loaded test-suite for testing the beta.freecodecamp.com Frontend Libraries
   - will throttle heavy traffic
   - changes will propagate much quicker so replace the gitCDN link with this for testing
 
+### Testing this project
+Warning that this gets a little meta. This project provides a feature that will
+test *camper project code*.
+
+As such, this project should be seen as more of a feature, than as automated
+testing. The feature mostly includes automated testing for the students to
+run, but it does have a UI, and the tests do not run against our code.
+
+So how do we make sure this feature, used by millions of campers, actually works
+in production? The confusing answer is that we need to test this feature, which
+means testing the Camper tests.
+
+We do this by running the Camper project tests (everything in the `src`
+directory) over the
+[example CodePen projects](http://codepen.io/collection/npZPmR). Since the
+example CodePen projects are supposed to be working examples, if the
+tests do not pass for the example CodePen projects, we need to either fix the tests,
+or fix the example project that fails.
+
+In most projects you wouldn't test the tests, but in this case, the CodePen
+Camper Project Tests are a production feature potentially used by millions of
+campers, so it is important we don't break that feature.
+
+This is important to understand so I'll repeat it in different words: the tests
+in the `src` directory of this project are not typical tests used to check our
+own code before deploying. Quite the opposite, they are a production feature
+that is used by students in a live setting to check *their own code*.
+As such, it is very important that we don't break those tests.
+
+In order to keep things from being confusing, we refer to everything in the
+`src` directory as the "CodePen Project Tests" or the "Camper Project Tests" or
+"Testable Projects Tests". Those tests *are the feature* we are shipping.
+
+Opposite of the above, all of the code that lives in the `test` directory *is*
+the typical tests used to check our own code before deploying. We simply call
+this code the "automated testing". It *tests the feature* we are shipping.
+
+The automated testing can (and should) be performed locally by you before
+creating a PR. The tests also run automatically on Travis CI every time you
+create a PR. A PR that has not passed the Travis CI tests should not be merged.
+
+For all the details about automatically testing this project, please see the
+[CONTRIBUTING guide](CONTRIBUTING.md).
+
 ### This repo did not originally live here. There are several important contributors who contributed code before this project took its current form. So credit where credit is due:
 First and foremost is @Weezlo, thanks for getting us started! And to @no-stack-dub-sack for seeing it through the rest of the way! Also @Christian-Paul & @paycoguy for coming up with reliable ways to test D3, and @bonham000 for helping to get this all bundled up nicely in one sweet little package.
 
