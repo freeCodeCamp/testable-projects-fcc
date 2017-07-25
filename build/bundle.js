@@ -21026,18 +21026,51 @@ var FCC_Global =
 	        var dotsCollection = document.getElementsByClassName('dot');
 	        FCC_Global.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
 
-	        var xAxisInfo = (0, _alignmentD3Tests.getXAxisInfo)(document.querySelector('#x-axis'));
-
-	        FCC_Global.assert.isTrue((0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(xAxisInfo, dotsCollection, _alignmentD3Tests.getXMisalignmentCount), 'x values don\'t line up with x locations ');
+	        var dataAttr = 'data-xvalue';
+	        var coordAttr = 'cx';
+	        // construct an object with information about axis and data-type
+	        var xAxisInfo = (0, _alignmentD3Tests.getXAxisInfo)(document.querySelector('#x-axis'), dataAttr, coordAttr);
+	        FCC_Global.assert.isTrue(
+	        /**
+	         * Check that dots align with axis ticks
+	         * @function
+	         * @param {Object} xAxisInfo - from alignmentD3Tests.getAxisInfo
+	         * @param {HTMLCollection} dotsCollection - const
+	         * @param {Function} getXMisalignmentCount - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount
+	         * @param {Function} getFeatureValueInteger - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+	         * @param {Function} getTickValueInteger - Pass specified function for
+	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+	          * @returns {Boolean} True if no misalignments are counted
+	         */
+	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(xAxisInfo, dotsCollection, _alignmentD3Tests.getXMisalignmentCount, _alignmentD3Tests.getFeatureValueInteger, _alignmentD3Tests.getTickValueInteger), 'x values don\'t line up with x locations ');
 	      });
 
 	      it('8. The data-yvalue and its corresponding dot should align\n      with the corresponding point/value on the y-axis.', function () {
 	        var dotsCollection = document.getElementsByClassName('dot');
 	        FCC_Global.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
 
-	        var yAxisInfo = (0, _alignmentD3Tests.getYAxisInfo)(document.querySelector('#y-axis'));
+	        var dataAttr = 'data-yvalue';
+	        var coordAttr = 'cy';
+	        // construct an object with information about axis and data-type
+	        var yAxisInfo = (0, _alignmentD3Tests.getYAxisInfo)(document.querySelector('#y-axis'), dataAttr, coordAttr);
 
-	        FCC_Global.assert.isTrue((0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, dotsCollection, _alignmentD3Tests.getYMisalignmentCount), 'y values don\'t line up with y locations ');
+	        FCC_Global.assert.isTrue(
+	        /**
+	         * Check that dots align with axis ticks
+	         * @function
+	         * @param {Object} yAxisInfo - from alignmentD3Tests.getAxisInfo
+	         * @param {HTMLCollection} dotsCollection - const
+	         * @param {Function} getYMisalignmentCount - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount
+	         * @param {Function} getFeatureValueMinutes - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+	         * @param {Function} getTickValueMinutes - Pass specified function for
+	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+	          * @returns {Boolean} True if no misalignments are counted
+	         */
+	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, dotsCollection, _alignmentD3Tests.getYMisalignmentCount, _alignmentD3Tests.getFeatureValueMinutes, _alignmentD3Tests.getTickValueMinutes), 'y values don\'t line up with y locations ');
 	      });
 
 	      it('9. I can see multiple tick labels on the y-axis with "%M:%S" time\n      format.', function () {
@@ -21104,6 +21137,12 @@ var FCC_Global =
 	});
 	exports.getYAxisInfo = getYAxisInfo;
 	exports.getXAxisInfo = getXAxisInfo;
+	exports.getTickValueMinutes = getTickValueMinutes;
+	exports.getTickValueInteger = getTickValueInteger;
+	exports.getTickValueMonths = getTickValueMonths;
+	exports.getFeatureValueMinutes = getFeatureValueMinutes;
+	exports.getFeatureValueInteger = getFeatureValueInteger;
+	exports.getFeatureValueMonths = getFeatureValueMonths;
 	exports.isAxisAlignedWithDataPoints = isAxisAlignedWithDataPoints;
 	exports.getXMisalignmentCount = getXMisalignmentCount;
 	exports.getYMisalignmentCount = getYMisalignmentCount;
@@ -21116,6 +21155,7 @@ var FCC_Global =
 	 * M(1), which is 0.5, or the y coordinate at the top of the y axis.
 	 * @function
 	 * @param {String} pathDesc - d attribute. Ex: "M-6,0.5H0.5V500.5H-6"
+
 	 * @returns {Number} y coordinate at top of y axis
 	 */
 	var getYBegin = function getYBegin(pathDesc) {
@@ -21129,6 +21169,7 @@ var FCC_Global =
 	 * y axis.
 	 * @function
 	 * @param {String} pathDesc - d attribute. Ex: "M-6,0.5H0.5V500.5H-6"
+
 	 * @returns {Number} y coordinate at bottom of y axis
 	 */
 	var getYEnd = function getYEnd(pathDesc) {
@@ -21142,6 +21183,7 @@ var FCC_Global =
 	 * (left side) of the x axis.
 	 * @function
 	 * @param {String} pathDesc - d attribute. Ex: "M0.5,6V0.5H840.5V6"
+
 	 * @returns {Number} x coordinate at beginning of x axis
 	 */
 	var getXBegin = function getXBegin(pathDesc) {
@@ -21155,6 +21197,7 @@ var FCC_Global =
 	 * (right side) of the x axis.
 	 * @function
 	 * @param {String} pathDesc - d attribute. Ex: "M0.5,6V0.5H840.5V6"
+
 	 * @returns {Number} x coordinate at end of x axis
 	 */
 	var getXEnd = function getXEnd(pathDesc) {
@@ -21163,18 +21206,19 @@ var FCC_Global =
 	};
 
 	/**
-	 * Given axis x or y, return an object with size info, tick elements and labels.
+	 * Given axis x or y, return an object with size info, tick elements, labels,
+	 * and indicators for getting feature data attributes and coordinates.
 	 * @function
-	 * @param {HTMLElement} axis - HTMLElement g
-	 * @param {Number} getBegin - pixel value of axis begin (either x or y)
-	 * @param {Number} getEnd - pixel value of axis end (either x or y)
-	 * @param {Number} getEnd - pixel value of axis end (either x or y)
-	 * @param {Function} getTickLocation -
-	 * passes either getXTickLocation or getYTickLocation
-	 * via getXMisalignmentCount or getYMisalignmentCount
+	 * @param {HTMLElement} axis - HTMLElement g from
+	 * Ex. document.querySelector('#y-axis')
+	 * @param {String} dataAttr - data attribute to check: Ex. "data-yvalue"
+	 * @param {String} coordAttr - respective feature coordinate attribute: Ex. "cy"
+	 * @param {Function} getBegin - pass getBegin function (getXBegin or getYBegin)
+	 * @param {Function} getEnd - pass getEnd function (getXEnd or getYEnd)
+
 	 * @returns {Object} Size, begin and end coordinates, tick and text NodeLists
 	 */
-	var getAxisInfo = function getAxisInfo(axis, getBegin, getEnd, getTickLocation) {
+	var getAxisInfo = function getAxisInfo(axis, dataAttr, coordAttr, getBegin, getEnd, units) {
 	  var pathDesc = axis.querySelector('path').getAttribute('d'),
 	      begin = getBegin(pathDesc),
 	      end = getEnd(pathDesc);
@@ -21183,7 +21227,10 @@ var FCC_Global =
 	    begin: begin,
 	    end: end,
 	    ticks: axis.querySelectorAll('.tick'),
-	    text: axis.querySelectorAll('.tick text')
+	    text: axis.querySelectorAll('.tick text'),
+	    dataAttr: dataAttr,
+	    coordAttr: coordAttr,
+	    units: units ? units : ''
 	  };
 	};
 
@@ -21191,26 +21238,34 @@ var FCC_Global =
 	 * Run getAxisInfo with y axis specified.
 	 * @function
 	 * @param {HTMLElement} yAxis - HTMLElement g for y axis
+	 * @param {String} dataAttr - feature data attribute to check: Ex. "data-yvalue"
+	 * @param {String} coordAttr - feature y coordinate attribute: Ex. "cy"
+
 	 * @returns {function} with y axis specified
 	 */
-	function getYAxisInfo(yAxis) {
-	  return getAxisInfo(yAxis, getYBegin, getYEnd, getYTickLocation);
+	function getYAxisInfo(yAxis, dataAttr, coordAttr) {
+	  return getAxisInfo(yAxis, dataAttr, coordAttr, getYBegin, getYEnd);
 	}
 
 	/**
 	 * Run getAxisInfo with x axis specified.
 	 * @function
 	 * @param {HTMLElement} xAxis - HTMLElement g for x axis
+	 * @param {String} dataAttr - feature data attribute to check: Ex. "data-xvalue"
+	 * @param {String} coordAttr - feature x coordinate attribute: Ex. "cx"
+
 	 * @returns {function} with x axis specified
 	 */
-	function getXAxisInfo(xAxis) {
-	  return getAxisInfo(xAxis, getXBegin, getXEnd, getXTickLocation);
+	function getXAxisInfo(xAxis, dataAttr, coordAttr) {
+	  return getAxisInfo(xAxis, dataAttr, coordAttr, getXBegin, getXEnd);
 	}
 
 	/**
 	 * Get y coordinate of tick
 	 * @function
-	 * @param {HTMLElement} tick - HTMLElement g for given tick
+	 * @param {HTMLElement} tick - HTMLElement g for given tick iterated from
+	 * axis.querySelectorAll('.tick') in getAxisInfo
+
 	 * @returns {Number} pixel value of y translate coordinate
 	 */
 	var getYTickLocation = function getYTickLocation(tick) {
@@ -21220,7 +21275,9 @@ var FCC_Global =
 	/**
 	 * Get x coordinate of tick
 	 * @function
-	 * @param {HTMLElement} tick - HTMLElement g for given tick
+	 * @param {HTMLElement} tick - HTMLElement g for given tick iterated from
+	 * axis.querySelectorAll('.tick') in getAxisInfo
+
 	 * @returns {Number} pixel value of x translate coordinate
 	 */
 	var getXTickLocation = function getXTickLocation(tick) {
@@ -21231,47 +21288,103 @@ var FCC_Global =
 	 * Convert one axis tick's label innerHTML from mm:ss to decimal
 	 * @function
 	 * @param {String} axisTick - innerHTML from text of a single tick. Ex: "37:00"
+	 * from axis.querySelectorAll('.tick text') in getAxisInfo
+
 	 * @returns {Number} float
 	 */
-	var getTickValueMinutes = function getTickValueMinutes(axisTick) {
+	function getTickValueMinutes(axisTick) {
 	  return parseInt(axisTick.split(':')[0], 10) + parseInt(axisTick.split(':')[1], 10) / 60;
 	};
 
 	/**
-	 * Convert feature data-yvalue attribute from date object to to decimal minutes
+	 * Parse one axis tick's label innerHTML
 	 * @function
-	 * @param {String} feature - HTMLElement circle (.dot)
+	 * @param {String} axisTick - innerHTML from text of single tick. Ex: "1990"
+	 * from axis.querySelectorAll('.tick text') in getAxisInfo
+
+	 * @returns {Number} integer
+	 */
+	function getTickValueInteger(axisTick) {
+	  return parseInt(axisTick, 10);
+	};
+
+	/**
+	 * Convert one axis tick's label innerHTML from month string to index
+	 * @function
+	 * @param {String} axisTick - innerHTML from text of a single tick. Ex: "March"
+	 * from axis.querySelectorAll('.tick text') in getAxisInfo
+
+	 * @returns {Number} integer
+	 */
+	function getTickValueMonths(axisTick, axis) {
+	  var label = axisTick.toLowerCase();
+	  return axis.units.indexOf(label);
+	};
+
+	/**
+	 * Convert feature data-* attribute from date object to to decimal minutes
+	 * @function
+	 * @param {HTMLElement} feature - HTMLElement iterated from HTMLCollection from
+	 * project test, Ex. document.querySelectorAll('.cell').item(i) via
+	 * getMisalignmentCount
+	 * @param {Object} axis - constructed in getAxisInfo
+
 	 * @returns {Number} float
 	 */
-	var getFeatureValueMinutes = function getFeatureValueMinutes(feature) {
-	  var value = feature.getAttribute('data-yvalue');
+	function getFeatureValueMinutes(feature, axis) {
+	  var value = feature.getAttribute(axis.dataAttr);
 
 	  return new Date(value).getMinutes() + new Date(value).getSeconds() / 60;
 	};
 
 	/**
-	 * Parse feature data-xvalue attribute
+	 * Parse feature data-* or data-year attribute
 	 * @function
-	 * @param {String} feature - HTMLElement circle (.dot)
+	 * @param {HTMLElement} feature - HTMLElement iterated from HTMLCollection from
+	 * project test, Ex. document.querySelectorAll('.cell').item(i) via
+	 * getMisalignmentCount
+	 * @param {Object} axis - constructed in getAxisInfo
+
 	 * @returns {Number} integer
 	 */
-	var getFeatureValueYears = function getFeatureValueYears(feature) {
-	  var value = feature.getAttribute('data-xvalue');
+	function getFeatureValueInteger(feature, axis) {
+	  var value = feature.getAttribute(axis.dataAttr);
 
 	  return parseInt(value, 10);
 	};
 
 	/**
+	 * Get feature data-* attribute
+	 * @function
+	 * @param {HTMLElement} feature - HTMLElement iterated from HTMLCollection from
+	 * project test, Ex. document.querySelectorAll('.cell').item(i) via
+	 * getMisalignmentCount
+	 * @param {Object} axis - constructed in getAxisInfo
+
+	 * @returns {Number} integer
+	 */
+	function getFeatureValueMonths(feature, axis) {
+	  var value = parseInt(feature.getAttribute(axis.dataAttr), 10);
+	  if (isNaN(value)) {
+	    value = feature.getAttribute(axis.dataAttr).toLowerCase();
+	    return axis.units.indexOf(value);
+	  } else {
+	    return value;
+	  }
+	};
+
+	/**
 	 * Compare feature coordinate to tick[i] and tick[i+1] and return true if
 	 * feature coordinate is greater than or equal to the coordinate for tick[i]
-	 * and less than or equal to the coordinate for tick[i+1]
+	 * and less than the coordinate for tick[i+1]
 	 * @function
-	 * @param {Number} featureCoord - x or y coordinate per feature per axis
+	 * @param {Number} featureCoord - x or y pixel coordinate per feature per axis
 	 * @param {Object} axis - Object constructed from getAxisInfo
 	 * @param {Number} tickPxCur - Coordinate (x or y) for tick[i]
 	 * @param {Number} tickPxNext - Coordinate (x or y) for tick[i+1]
-	 * @returns {Boolean} true if feature position is between (inclusive) tick[i]
-	 * and tick[i+1]
+
+	 * @returns {Boolean} true if feature position is between tick[i] (inclusive)
+	 * and tick[i+1] (exclusive)
 	 */
 	var isFeatureAligned = function isFeatureAligned(featureCoord, axis, tickPxCur, tickPxNext) {
 	  // Determine lower / higher coordinate size between two ticks
@@ -21290,24 +21403,25 @@ var FCC_Global =
 	/**
 	 * For given tick i and i+1, get features whose associated values are
 	 * between (inclusive) tick i and i+1 values and runs isFeatureAligned on each.
+	 * @param {Object} axis - object created from getAxisInfo
+	 * @param {Array} collection - HTMLCollection of features from project test,
+	 * Ex. document.querySelectorAll('.cell')
+	 * @param {Function} getFeatureValueFunc - via getMisalignmentCountCaller
 	 * @param {Number} tickPxCur - Coordinate (x or y) for tick[i]
 	 * @param {Number} tickPxNext - Coordinate (x or y) for tick[i+1]
 	 * @param {Number} tickValCur - parsed from getTickValue(getTickText())
 	 * @param {Number} tickValNext - parsed from getTickValue(getTickText())
-	 * @param {Object} axis - object created from getAxisInfo
-	 * @param {Array} collection - HTMLCollection of features
-	 * @param {Function} getFeatureValue - (x or y) via getMisalignmentCountCaller
-	 * @param {Function} getFeatureCoord - (x or y) via getMisalignmentCountCaller
+
 	 * @return {Number} Count of misaligned features via isFeatureAligned
 	*/
-	var getMisalignmentCount = function getMisalignmentCount(tickPxCur, tickPxNext, tickValCur, tickValNext, axis, collection, getFeatureValue, getFeatureCoord) {
+	var getMisalignmentCount = function getMisalignmentCount(axis, collection, getFeatureValueFunc, tickPxCur, tickPxNext, tickValCur, tickValNext) {
 	  var count = 0;
 
 	  for (var j = 0; j < collection.length - 1; j++) {
 	    // get values for given feature (j)
-	    var featureVal = getFeatureValue(collection.item(j)),
-	        featureCoord = getFeatureCoord(collection.item(j));
-	    if (featureVal >= tickValCur && featureVal <= tickValNext) {
+	    var featureVal = getFeatureValueFunc(collection.item(j), axis),
+	        featureCoord = getFeatureCoord(collection.item(j), axis);
+	    if (featureVal >= tickValCur && featureVal < tickValNext) {
 	      if (!isFeatureAligned(featureCoord, axis, tickPxCur, tickPxNext)) {
 	        count++;
 	      }
@@ -21317,39 +21431,39 @@ var FCC_Global =
 	};
 
 	/**
-	 * Get x coordinate of given feature
+	 * Get x or y coordinate of given feature
 	 * @function
-	 * @param {String} feature - HTMLElement circle (.dot)
+	 * @param {HTMLElement} feature - HTMLElement (circle or rect) iterated from
+	 * collection of features in getMisalignmentCount
+	 * @param {Object} axis - constructed in getAxisInfo
+
 	 * @returns {Number} float
 	 */
-	var getXFeatureCoord = function getXFeatureCoord(feature) {
-	  return parseFloat(feature.getAttribute('cx'));
-	};
-
-	/**
-	 * Get y coordinate of given feature
-	 * @function
-	 * @param {String} feature - HTMLElement circle (.dot)
-	 * @returns {Number} float
-	 */
-	var getYFeatureCoord = function getYFeatureCoord(feature) {
-	  return parseFloat(feature.getAttribute('cy'));
-	};
-
-	/**
-	 * Parse y axis label (year)
-	 * @function
-	 * @param {String} axisTick - innerHTML from text element on y axis (year)
-	 * @returns {Number} integer
-	 */
-	var getTickValueYears = function getTickValueYears(axisTick) {
-	  return parseInt(axisTick, 10);
+	var getFeatureCoord = function getFeatureCoord(feature, axis) {
+	  //var type = feature.tagName;
+	  var coord;
+	  if (axis.coordAttr === 'cx' || axis.coordAttr === 'cy') {
+	    coord = parseFloat(feature.getAttribute(axis.coordAttr));
+	  } else {
+	    // the x, y attributes for each rect are from the top-left of the shape.
+	    // compute the mid-value for a coordinate to compare to axis tick
+	    var half;
+	    if (axis.coordAttr === 'x') {
+	      half = parseFloat(feature.getAttribute('width')) / 2;
+	    } else {
+	      half = parseFloat(feature.getAttribute('height')) / 2;
+	    }
+	    coord = parseFloat(feature.getAttribute(axis.coordAttr)) + half;
+	  }
+	  return coord;
 	};
 
 	/**
 	 * get innerHTML from text element inside a given <g class=".tick">
 	 * @function
-	 * @param {String} axisTick - HTMLElement g (.tick)
+	 * @param {HTMLElement} axisTick - HTMLElement g (.tick) iterated from
+	 * axis in getMisalignmentCountCaller
+
 	 * @returns {String} Label from axis
 	 */
 	var getTickText = function getTickText(axisTick) {
@@ -21360,32 +21474,27 @@ var FCC_Global =
 	 * Run getMisalignmentCount with parameters for either x or y axis /
 	 * x or y feature coordinate
 	 * @function
-	 * @param {Function} getTickLocation -
-	 * passes either getXTickLocation or getYTickLocation
-	 * via getXMisalignmentCount or getYMisalignmentCount
-	 * @param {Function} getTickValue -
-	 * passes either getTickValueYears or getTickValueMinutes
-	 * via getXMisalignmentCount or getYMisalignmentCount
 	 * @param {Object} axis - constructed in getAxisInfo
-	 * @param {Array}  collection - HTMLCollection of features
+	 * @param {Array}  collection - HTMLCollection of features from project test,
+	 * Ex. document.querySelectorAll('.cell') or document.querySelectorAll('.dot')
+	 * @param {Function} getFeatureValueFunc - getFeatureValueInteger or
+	 * getFeatureValueMinutes
+	 * @param {Function} getTickLocationFunc - getXTickLocation or getYTickLocation
+	 * @param {Function} getTickValueFunc - getTickValueInteger,
+	 * getTickValueMinutes, or getTickValueMonths
 	 * @param {Number} i - index of axis tick
-	 * @param {Function} getFeatureValue -
-	 * passes either getFeatureValueYears or getFeatureValueMinutes
-	 * via getXMisalignmentCount or getYMisalignmentCount
-	 * @param {Function} getFeatureCoord -
-	 * passes either getXFeatureCoord or getYFeatureCoord
-	 * via getXMisalignmentCount or getYMisalignmentCount
+
 	 * @returns {Function} getMisAlignmentCount with specified parameters
 	 */
-	var getMisalignmentCountCaller = function getMisalignmentCountCaller(getTickLocation, getTickValue, axis, collection, i, getFeatureValue, getFeatureCoord) {
-	  var tickValCur = getTickValue(getTickText(axis.ticks[i])),
-	      tickValNext = getTickValue(getTickText(axis.ticks[i + 1])),
+	var getMisalignmentCountCaller = function getMisalignmentCountCaller(axis, collection, getFeatureValueFunc, getTickLocationFunc, getTickValueFunc, i) {
+	  var tickValCur = getTickValueFunc(getTickText(axis.ticks[i]), axis),
+	      tickValNext = getTickValueFunc(getTickText(axis.ticks[i + 1]), axis),
 
 	  // d3 adds 0.5px to ends of axes, so subtract 0.5 to accurately compare
 	  // position to feature position.
-	  tickPxCur = getTickLocation(axis.ticks[i]) - 0.5,
-	      tickPxNext = getTickLocation(axis.ticks[i + 1]) - 0.5;
-	  return getMisalignmentCount(tickPxCur, tickPxNext, tickValCur, tickValNext, axis, collection, getFeatureValue, getFeatureCoord);
+	  tickPxCur = getTickLocationFunc(axis.ticks[i]) - 0.5,
+	      tickPxNext = getTickLocationFunc(axis.ticks[i + 1]) - 0.5;
+	  return getMisalignmentCount(axis, collection, getFeatureValueFunc, tickPxCur, tickPxNext, tickValCur, tickValNext);
 	};
 
 	/**
@@ -21393,16 +21502,21 @@ var FCC_Global =
 	 * that axis and keep a count
 	 * @function
 	 * @param {Object} axis - constructed in getAxisInfo
-	 * @param {Array}  collection - HTMLCollection of features
+	 * @param {Array}  collection - HTMLCollection of features from project test,
+	 * Ex. document.querySelectorAll('.cell') or document.querySelectorAll('.dot')
 	 * @param {Function} getMisalignmentCountFunc -
 	 * passes either getXMisalignmentCount or getYMisalignmentCount
+	 * @param {Function} getFeatureValueFunc - getFeatureValueInteger or
+	 * getFeatureValueMinutes
+	 * @param {Function} getTickValueFunc - getTickValueInteger,
+	 * getTickValueMinutes, or getTickValueMonths
+
 	 * @returns {Boolean} true if no misalignments are counted
 	 */
-	function isAxisAlignedWithDataPoints(axis, collection, getMisalignmentCountFunc) {
+	function isAxisAlignedWithDataPoints(axis, collection, getMisalignmentCountFunc, getFeatureValueFunc, getTickValueFunc) {
 	  var count = 0;
-
 	  for (var i = 0; i < axis.ticks.length - 1; i++) {
-	    count += getMisalignmentCountFunc(axis, collection, i);
+	    count += getMisalignmentCountFunc(axis, collection, getFeatureValueFunc, getTickValueFunc, i);
 	  }
 
 	  return count === 0;
@@ -21413,12 +21527,18 @@ var FCC_Global =
 	 * for a tick on the x axis
 	 * @function
 	 * @param {Object} axis - constructed in getAxisInfo
-	 * @param {Array}  collection - HTMLCollection of features
+	 * @param {Array}  collection - HTMLCollection of features from project test,
+	 * Ex. document.querySelectorAll('.cell') or document.querySelectorAll('.dot')
+	 * @param {Function} getFeatureValueFunc - getFeatureValueInteger or
+	 * getFeatureValueMinutes
+	 * @param {Function} getTickValueFunc - getTickValueInteger,
+	 * getTickValueMinutes, or getTickValueMonths
 	 * @param {Number} i - index of axis tick
+
 	 * @returns {Number} Count of misalignments
 	 */
-	function getXMisalignmentCount(axis, collection, i) {
-	  var count = getMisalignmentCountCaller(getXTickLocation, getTickValueYears, axis, collection, i, getFeatureValueYears, getXFeatureCoord);
+	function getXMisalignmentCount(axis, collection, getFeatureValueFunc, getTickValueFunc, i) {
+	  var count = getMisalignmentCountCaller(axis, collection, getFeatureValueFunc, getXTickLocation, getTickValueFunc, i);
 
 	  return count;
 	}
@@ -21427,13 +21547,19 @@ var FCC_Global =
 	 * Call getMisAlignmentCount via isAxisAlignedWithDataPoints
 	 * for a tick on the y axis
 	 * @function
-	 * @param {Object} axis - constructed in getAxisInfo
-	 * @param {Array}  collection - HTMLCollection of features
+	 * @param {Object} axis - HTMLElement
+	 * @param {Array}  collection - HTMLCollection of features from project test,
+	 * Ex. document.querySelectorAll('.cell') or document.querySelectorAll('.dot')
+	 * @param {Function} getFeatureValueFunc - getFeatureValueInteger or
+	 * getFeatureValueMinutes
+	 * @param {Function} getTickValueFunc - getTickValueInteger,
+	 * getTickValueMinutes, or getTickValueMonths
 	 * @param {Number} i - index of axis tick
+
 	 * @returns {Number} Count of misalignments
 	 */
-	function getYMisalignmentCount(axis, collection, i) {
-	  var count = getMisalignmentCountCaller(getYTickLocation, getTickValueMinutes, axis, collection, i, getFeatureValueMinutes, getYFeatureCoord);
+	function getYMisalignmentCount(axis, collection, getFeatureValueFunc, getTickValueFunc, i) {
+	  var count = getMisalignmentCountCaller(axis, collection, getFeatureValueFunc, getYTickLocation, getTickValueFunc, i);
 
 	  return count;
 	}
@@ -40687,6 +40813,10 @@ var FCC_Global =
 
 	var _globalD3Tests = __webpack_require__(54);
 
+	var _alignmentD3Tests = __webpack_require__(56);
+
+	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
 	function createHeatMapTests() {
 
 	  describe('#HeatMapTests', function () {
@@ -40781,42 +40911,58 @@ var FCC_Global =
 	        var cellsCollection = document.querySelectorAll('.cell');
 	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
 
-	        // convert to array
-	        var cells = [].slice.call(cellsCollection);
-	        var sortedCells = cells.sort(function (a, b) {
-	          return a.getAttribute('data-month') - b.getAttribute('data-month');
-	        });
-
-	        // check to see if the y locations of the new sorted array are in
-	        // ascending order
-	        for (var i = 0; i < sortedCells.length - 1; ++i) {
-	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute('y'), +sortedCells[i + 1].getAttribute('y'), 'month values don\'t line up with y locations ');
-	        }
+	        var dataAttr = 'data-month';
+	        var coordAttr = 'y';
+	        // construct an object with information about axis and data-type
+	        // supply hard-coded units for an axis if necessary
+	        var yAxisInfo = (0, _alignmentD3Tests.getYAxisInfo)(document.querySelector('#y-axis'), dataAttr, coordAttr, months);
+	        FCC_Global.assert.isTrue(
+	        /**
+	         * Check that cells align with axis ticks
+	         * @function
+	         * @param {Object} yAxisInfo - from alignmentD3Tests.getAxisInfo
+	         * @param {HTMLCollection} cellsCollection - const
+	         * @param {Function} getYMisalignmentCount - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount
+	         * @param {Function} getFeatureValueMonths - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+	         * @param {Function} getTickValueMonths - Pass specified function for
+	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+	          * @returns {Boolean} True if no misalignments are counted
+	         */
+	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, cellsCollection, _alignmentD3Tests.getYMisalignmentCount, _alignmentD3Tests.getFeatureValueMonths, _alignmentD3Tests.getTickValueMonths), 'month values don\'t line up with y locations ');
 	      });
 
 	      it('10. My heat map should have cells that align with the corresponding\n      year on the x-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('.cell');
 	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
 
-	        // convert to array
-	        var cells = [].slice.call(cellsCollection);
-	        var sortedCells = cells.sort(function (a, b) {
-	          return a.getAttribute('data-year') - b.getAttribute('data-year');
-	        });
+	        var dataAttr = 'data-year';
+	        var coordAttr = 'x';
+	        // construct an object with information about axis and data-type
+	        var xAxisInfo = (0, _alignmentD3Tests.getXAxisInfo)(document.querySelector('#x-axis'), dataAttr, coordAttr);
 
-	        // check to see if the x locations of the new sorted array are in
-	        // ascending order
-	        for (var i = 0; i < sortedCells.length - 1; ++i) {
-	          FCC_Global.assert.isAtMost(+sortedCells[i].getAttribute('x'), +sortedCells[i + 1].getAttribute('x'), 'year values don\'t line up with x locations');
-	        }
+	        FCC_Global.assert.isTrue(
+	        /**
+	         * Check that cells align with axis ticks
+	         * @function
+	         * @param {Object} xAxisInfo - from alignmentD3Tests.getAxisInfo
+	         * @param {HTMLCollection} cellsCollection - const
+	         * @param {Function} getXMisalignmentCount - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount
+	         * @param {Function} getFeatureValueInteger - Pass specified function
+	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+	         * @param {Function} getTickValueInteger - Pass specified function for
+	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+	          * @returns {Boolean} True if no misalignments are counted
+	         */
+	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(xAxisInfo, cellsCollection, _alignmentD3Tests.getXMisalignmentCount, _alignmentD3Tests.getFeatureValueInteger, _alignmentD3Tests.getTickValueInteger), 'year values don\'t line up with x locations ');
 	      });
 
 	      it('11. My heat map should have multiple tick labels on the y-axis with\n      the full month name.', function () {
 	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
 
 	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis');
-
-	        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 	        for (var i = 0; i < yAxisTickLabels.length; i++) {
 	          FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), 'Y axis labels should contain month names ');

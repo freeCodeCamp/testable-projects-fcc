@@ -1,4 +1,30 @@
 import {testToolTip} from '../assets/globalD3Tests';
+import {
+  getXAxisInfo,
+  getYAxisInfo,
+  getXMisalignmentCount,
+  getYMisalignmentCount,
+  getFeatureValueInteger,
+  getFeatureValueMonths,
+  getTickValueInteger,
+  getTickValueMonths,
+  isAxisAlignedWithDataPoints
+} from '../assets/alignmentD3Tests';
+
+const months = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+];
 
 export default function createHeatMapTests() {
 
@@ -168,21 +194,40 @@ export default function createHeatMapTests() {
           'Could not find any elements with a class=\"cell\" '
         );
 
-        // convert to array
-        const cells = [].slice.call(cellsCollection);
-        const sortedCells = cells.sort(function(a, b) {
-          return a.getAttribute('data-month') - b.getAttribute('data-month');
-        });
+        const dataAttr = 'data-month';
+        const coordAttr = 'y';
+        // construct an object with information about axis and data-type
+        // supply hard-coded units for an axis if necessary
+        var yAxisInfo = getYAxisInfo(
+          document.querySelector('#y-axis'),
+          dataAttr,
+          coordAttr,
+          months
+        );
+        FCC_Global.assert.isTrue(
+          /**
+           * Check that cells align with axis ticks
+           * @function
+           * @param {Object} yAxisInfo - from alignmentD3Tests.getAxisInfo
+           * @param {HTMLCollection} cellsCollection - const
+           * @param {Function} getYMisalignmentCount - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount
+           * @param {Function} getFeatureValueMonths - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+           * @param {Function} getTickValueMonths - Pass specified function for
+           * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
 
-        // check to see if the y locations of the new sorted array are in
-        // ascending order
-        for (var i = 0; i < sortedCells.length - 1; ++i) {
-          FCC_Global.assert.isAtMost(
-            +sortedCells[i].getAttribute('y'),
-            +sortedCells[i + 1].getAttribute('y'),
-            'month values don\'t line up with y locations '
-          );
-        }
+           * @returns {Boolean} True if no misalignments are counted
+           */
+          isAxisAlignedWithDataPoints(
+            yAxisInfo,
+            cellsCollection,
+            getYMisalignmentCount,
+            getFeatureValueMonths,
+            getTickValueMonths
+          ),
+          'month values don\'t line up with y locations '
+        );
       });
 
       it(`10. My heat map should have cells that align with the corresponding
@@ -195,21 +240,39 @@ export default function createHeatMapTests() {
           'Could not find any elements with a class=\"cell\" '
         );
 
-        // convert to array
-        const cells = [].slice.call(cellsCollection);
-        const sortedCells = cells.sort(function(a, b) {
-          return a.getAttribute('data-year') - b.getAttribute('data-year');
-        });
+        const dataAttr = 'data-year';
+        const coordAttr = 'x';
+        // construct an object with information about axis and data-type
+        var xAxisInfo = getXAxisInfo(
+          document.querySelector('#x-axis'),
+          dataAttr,
+          coordAttr
+        );
 
-        // check to see if the x locations of the new sorted array are in
-        // ascending order
-        for (var i = 0; i < sortedCells.length - 1; ++i) {
-          FCC_Global.assert.isAtMost(
-            +sortedCells[i].getAttribute('x'),
-            +sortedCells[i + 1].getAttribute('x'),
-            'year values don\'t line up with x locations'
-          );
-        }
+        FCC_Global.assert.isTrue(
+          /**
+           * Check that cells align with axis ticks
+           * @function
+           * @param {Object} xAxisInfo - from alignmentD3Tests.getAxisInfo
+           * @param {HTMLCollection} cellsCollection - const
+           * @param {Function} getXMisalignmentCount - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount
+           * @param {Function} getFeatureValueInteger - Pass specified function
+           * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
+           * @param {Function} getTickValueInteger - Pass specified function for
+           * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
+
+           * @returns {Boolean} True if no misalignments are counted
+           */
+          isAxisAlignedWithDataPoints(
+            xAxisInfo,
+            cellsCollection,
+            getXMisalignmentCount,
+            getFeatureValueInteger,
+            getTickValueInteger
+          ),
+          'year values don\'t line up with x locations '
+        );
       });
 
       it(`11. My heat map should have multiple tick labels on the y-axis with
@@ -222,21 +285,6 @@ export default function createHeatMapTests() {
           0,
           'Could not find tick labels on the y axis'
         );
-
-        const months = [
-          'january',
-          'february',
-          'march',
-          'april',
-          'may',
-          'june',
-          'july',
-          'august',
-          'september',
-          'october',
-          'november',
-          'december'
-        ];
 
         for (var i = 0; i < yAxisTickLabels.length; i++) {
           FCC_Global.assert.include(
