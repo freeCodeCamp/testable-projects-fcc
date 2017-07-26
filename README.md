@@ -1,3 +1,5 @@
+master branch: [![Build Status](https://travis-ci.org/freeCodeCamp/testable-projects-fcc.svg?branch=master)](https://travis-ci.org/freeCodeCamp/testable-projects-fcc)
+
 # testable-projects-fcc
 A CDN loaded test-suite for testing the beta.freecodecamp.com Frontend Libraries Certification waypoint projects.
 ![image](https://cloud.githubusercontent.com/assets/18563015/26524733/08557ed8-430b-11e7-9861-2d4e8e2806ae.png)
