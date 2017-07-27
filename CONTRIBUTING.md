@@ -236,6 +236,7 @@ For the names used by the grep option, see the `name` attribute in the
 `tests` array at the top of the `tests/codepen-project.js` file.
 
 **Running Chrome in a headless environment**
+
 Although it looks kind of magic to see the automated tests run inside Chrome the
 first few times, and it can be useful for debugging, it gets annoying quickly
 because the browser popping up interferes with other work.
@@ -274,7 +275,7 @@ which can be useful for debugging when the screenshots don't tell you enough.
 Run the following just before you start the tests. Note the `:99.0` from above:
 
 ```
-ffmpeg -video_size 1920x1080 -framerate 10 -f x11grab -i **:99.0** -crf 36 test-output.mp4
+ffmpeg -video_size 1920x1080 -framerate 10 -f x11grab -i :99.0 -crf 36 test-output.mp4
 ```
 
 Remember to kill the command (ctrl-c?) when your tests finish!
