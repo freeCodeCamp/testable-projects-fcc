@@ -20038,7 +20038,19 @@ var FCC_Global =
 	      it('1. The <img> element should responsively resize, relative to the width\n        of its parent element, without exceeding its original size.', function () {
 	        var img = document.getElementById('image');
 	        var maxWidthValue = getPropValue(img, 'max-width');
+	        var displayValue = getPropValue(img, 'display');
+	        var heightValue = void 0;
 	        FCC_Global.assert.notStrictEqual(maxWidthValue, 'none', 'Try using the "max-width" style property ');
+	        FCC_Global.assert.equal(displayValue, 'block', 'Use the "display" style property with a value of "block" for' + 'responsive images.');
+	        // In order to determine if the height style is "auto", we
+	        // need to use a little trick. If we use getComputedStyle and the
+	        // element has an actual size we will get the actual pixels. So we
+	        // temporarily set the "display" style to "none", which will tell
+	        // us if the height is "auto".
+	        img.style.display = 'none';
+	        heightValue = getPropValue(img, 'height');
+	        FCC_Global.assert.equal(heightValue, 'auto', 'Use the "height" style property with a value of "auto" for' + 'responsive images.');
+	        img.style.display = displayValue;
 	      });
 
 	      it('2. The <img> element should be centered within its parent element.', function () {
