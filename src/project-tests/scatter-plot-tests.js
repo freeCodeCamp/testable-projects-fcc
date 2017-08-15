@@ -35,7 +35,7 @@ export default function createScatterPlotTests() {
           'There should be an element with id="x-axis" '
         );
         FCC_Global.assert.isAbove(
-          document.querySelectorAll('#x-axis g').length,
+          document.querySelectorAll('g#x-axis').length,
           0,
           'x-axis should be a <g> SVG element '
         );
@@ -58,9 +58,9 @@ export default function createScatterPlotTests() {
       the data being plotted.`,
       function() {
         FCC_Global.assert.isAbove(
-          document.querySelectorAll('.dot').length,
+          document.querySelectorAll('circle.dot').length,
           0,
-          'Could not find any circles with class="dot" '
+          'Could not find any <circle> SVG elements with class="dot" '
         );
       });
 
@@ -87,7 +87,9 @@ export default function createScatterPlotTests() {
       });
 
       it(`6. The data-xvalue and data-yvalue of each dot should be within the
-      range of the actual data.`,
+      range of the actual data and in the correct data format. For data-xvalue, 
+      integers (full years) or Date objects are acceptable for test evaluation. 
+      For data-yvalue (minutes), use Date objects. `,
       function() {
         const MIN_X_VALUE = MIN_YEAR;
         const MAX_X_VALUE = MAX_YEAR;
@@ -100,15 +102,16 @@ export default function createScatterPlotTests() {
           0,
           'there are no elements with the class of "dot" '
         );
+        
         dots.forEach(dot => {
-
+          var xYear = new Date(dot.getAttribute('data-xvalue'));
           FCC_Global.assert.isAtLeast(
-            dot.getAttribute('data-xvalue'),
+            xYear.getFullYear(),
             MIN_X_VALUE,
             'The data-xvalue of a dot is below the range of the actual data '
           );
           FCC_Global.assert.isAtMost(
-            dot.getAttribute('data-xvalue'),
+            xYear.getFullYear(),
             MAX_X_VALUE,
             'The data-xvalue of a dot is above the range of the actual data '
           );
@@ -266,6 +269,7 @@ export default function createScatterPlotTests() {
           0,
           'Could not find tick labels on the x axis '
         );
+        
         xAxisTickLabels.forEach(label => {
           FCC_Global.assert.isAtLeast(
             label.textContent,
@@ -309,12 +313,24 @@ export default function createScatterPlotTests() {
         });
       });
 
-      it('13. I can see a legend that has id="legend".',
+      it(`13. I can see a legend containing descriptive text that has 
+      id="legend".`,
       function() {
         FCC_Global.assert.isNotNull(
           document.getElementById('legend'),
           'There should be an element with id="legend" '
         );
+        //A legend may be built with D3 svg <text> elements or with plain html
+        var legendText;
+        if (document.querySelector('#legend text') !== null) {
+          legendText = document.querySelector('#legend text').innerHTML
+        } else {
+          legendText = document.getElementById('legend').innerText
+        }
+        FCC_Global.assert.isNotNull(
+          legendText,
+          'The legend should contain text '
+        )
       });
     });
 
