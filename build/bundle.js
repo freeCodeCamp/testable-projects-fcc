@@ -21003,7 +21003,7 @@ var FCC_Global =
 
 	      it('2. I can see an x-axis that has a corresponding id="x-axis".', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'There should be an element with id="x-axis" ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#x-axis g').length, 0, 'x-axis should be a <g> SVG element ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
 	      });
 
 	      it('3. I can see a y-axis that has a corresponding id="y-axis".', function () {
@@ -21012,7 +21012,7 @@ var FCC_Global =
 	      });
 
 	      it('4. I can see dots, that each have a class of "dot", which represent\n      the data being plotted.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.dot').length, 0, 'Could not find any circles with class="dot" ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('circle.dot').length, 0, 'Could not find any <circle> SVG elements with class="dot" ');
 	      });
 
 	      it('5. Each dot should have the properties "data-xvalue" and\n      "data-yvalue" containing their corresponding x and y values.', function () {
@@ -21025,7 +21025,7 @@ var FCC_Global =
 	        }
 	      });
 
-	      it('6. The data-xvalue and data-yvalue of each dot should be within the\n      range of the actual data.', function () {
+	      it('6. The data-xvalue and data-yvalue of each dot should be within the\n      range of the actual data and in the correct data format. For data-xvalue, \n      integers (full years) or Date objects are acceptable for test evaluation. \n      For data-yvalue (minutes), use Date objects. ', function () {
 	        var MIN_X_VALUE = MIN_YEAR;
 	        var MAX_X_VALUE = MAX_YEAR;
 
@@ -21033,10 +21033,11 @@ var FCC_Global =
 	        // convert to array
 	        var dots = [].slice.call(dotsCollection);
 	        FCC_Global.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	        dots.forEach(function (dot) {
 
-	          FCC_Global.assert.isAtLeast(dot.getAttribute('data-xvalue'), MIN_X_VALUE, 'The data-xvalue of a dot is below the range of the actual data ');
-	          FCC_Global.assert.isAtMost(dot.getAttribute('data-xvalue'), MAX_X_VALUE, 'The data-xvalue of a dot is above the range of the actual data ');
+	        dots.forEach(function (dot) {
+	          var xYear = new Date(dot.getAttribute('data-xvalue'));
+	          FCC_Global.assert.isAtLeast(xYear.getFullYear(), MIN_X_VALUE, 'The data-xvalue of a dot is below the range of the actual data ');
+	          FCC_Global.assert.isAtMost(xYear.getFullYear(), MAX_X_VALUE, 'The data-xvalue of a dot is above the range of the actual data ');
 
 	          // compare just the minutes for a good approximation
 	          var yDate = new Date(dot.getAttribute('data-yvalue'));
@@ -21119,6 +21120,7 @@ var FCC_Global =
 	        var MIN_YEAR = 1994;
 	        var MAX_YEAR = 2016;
 	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
+
 	        xAxisTickLabels.forEach(function (label) {
 	          FCC_Global.assert.isAtLeast(label.textContent, MIN_YEAR, 'x axis labels are below the range of the actual data ');
 	          FCC_Global.assert.isAtMost(label.textContent, MAX_YEAR, 'x axis labels are above the range of the actual data ');
@@ -21140,8 +21142,16 @@ var FCC_Global =
 	        });
 	      });
 
-	      it('13. I can see a legend that has id="legend".', function () {
+	      it('13. I can see a legend containing descriptive text that has \n      id="legend".', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
+	        //A legend may be built with D3 svg <text> elements or with plain html
+	        var legendText;
+	        if (document.querySelector('#legend text') !== null) {
+	          legendText = document.querySelector('#legend text').innerHTML;
+	        } else {
+	          legendText = document.getElementById('legend').innerText;
+	        }
+	        FCC_Global.assert.isNotNull(legendText, 'The legend should contain text ');
 	      });
 	    });
 
