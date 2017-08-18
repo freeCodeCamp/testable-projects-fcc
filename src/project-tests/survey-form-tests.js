@@ -69,8 +69,7 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`3. I am presented with a <form> with id="survey-form". The <form> must
-      contain all other form elements.`,
+      it(`3. I can see a <form> with id="survey-form".`,
       function() {
         var form = document.getElementById('survey-form');
         FCC_Global.assert.isNotNull(
@@ -84,7 +83,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`4. I am required to enter my name in a field with id="name".`,
+      it(`4. Inside the form element, I am required to enter my name in a field
+      with id="name".`,
       function() {
         var name = document.getElementById('name');
         FCC_Global.assert.isNotNull(
@@ -107,7 +107,8 @@ export default function createSurveyFormTests() {
         );
       })
 
-      it(`5. I am required to enter an email in a field with id="email".`,
+      it(`5. Inside the form element, I am required to enter an email in a
+      field with id="email".`,
       function() {
         var email = document.getElementById('email');
         FCC_Global.assert.isNotNull(
@@ -136,7 +137,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`7. I can enter a number in a field with id="number".`,
+      it(`7. Inside the form, I can enter a number in a field with
+      id="number".`,
       function() {
         var number = document.getElementById('number');
         FCC_Global.assert.isNotNull(
@@ -150,7 +152,7 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`8. If I enter non-numbers in a number field, I will see an HTML5
+      it(`8. If I enter non-numbers in the number input, I will see an HTML5
       validation error.`,
       function() {
         var number = document.getElementById('number');
@@ -161,7 +163,7 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`9. If I enter numbers outside the range of the number field, I will
+      it(`9. If I enter numbers outside the range of the number input, I will
       see an HTML5 validation error.'`,
       function() {
         var number = document.getElementById('number');
@@ -175,8 +177,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`10. For the name, email, and number input fields, I can see
-      corresponding labels that describe the purpose of each field with the
+      it(`10. For the name, email, and number input fields inside the form I can
+      see corresponding labels that describe the purpose of each field with the
       following ids: id="name-label", id="email-label", and id="number-label".`,
       function() {
         const nameLabel = document.getElementById('name-label');
@@ -253,8 +255,8 @@ export default function createSurveyFormTests() {
         FCC_Global.assert.isAbove(
           document.getElementById('name').placeholder.length,
           0,
-          'The name input field\'s placeholder attribute should have a value ' +
-          'of some text '
+          'The name input field\'s placeholder attribute should have ' +
+          'some text for its value'
         );
         FCC_Global.assert.strictEqual(
           document.getElementById('email').hasAttribute('placeholder'),
@@ -264,8 +266,8 @@ export default function createSurveyFormTests() {
         FCC_Global.assert.isAbove(
           document.getElementById('email').placeholder.length,
           0,
-          'The email input field\'s placeholder attribute should have a value' +
-          'of some text '
+          'The email input field\'s placeholder attribute should have ' +
+          'some text for its value'
         );
         FCC_Global.assert.strictEqual(
           document.getElementById('number').hasAttribute('placeholder'),
@@ -275,13 +277,13 @@ export default function createSurveyFormTests() {
         FCC_Global.assert.isAbove(
           document.getElementById('number').placeholder.length,
           0,
-          'The number input field\'s placeholder attribute should have a ' +
-          'value of some text '
+          'The number input field\'s placeholder attribute should have ' +
+          'some text for its value '
         );
       });
 
-      it(`12. I can select an option from a dropdown that has corresponding
-      id="dropdown".'`,
+      it(`12. Inside the form element, I can select an option from a dropdown
+      that has corresponding id="dropdown".'`,
       function() {
         var dropdown = document.getElementById('dropdown');
         var dropdownTag = dropdown.tagName;
@@ -313,8 +315,9 @@ export default function createSurveyFormTests() {
         );
       })
 
-      it(`13. I can select a field from one or more groups of radio buttons.
-      Each group should be grouped using the name attribute.`,
+      it(`13. Inside the form element, I can select a field from one or more
+      groups of radio buttons. Each group should be grouped using the name
+      attribute.`,
       function() {
         var radioButtons = document.querySelectorAll('input[type="radio"]');
         FCC_Global.assert.isAtLeast(
@@ -355,34 +358,26 @@ export default function createSurveyFormTests() {
         }
       });
 
-      it(`14. I can select several fields from a series of checkboxes.`,
+      it(`14. Inside the form element, I can select several fields from a
+      series of checkboxes, each of which must have a value attribute.`,
       function() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        // need to make sure there are more than two checkboxes, as our default
-        // code contains a checkbox as well if we are detecting only two, one of
-        // them is ours; our checkbox does not have a value-attribute so we
-        // must use "-1" in the third test
+        var checkboxes = document.querySelectorAll(
+          '#survey-form input[type="checkbox"]'
+        );
         FCC_Global.assert.isAtLeast(
           checkboxes.length,
-          3,
-          'There should be at least 2 checkboxes '
-        );
-        FCC_Global.assert.isAtLeast(
-          document.querySelectorAll(
-            '#survey-form input[type="checkbox"]'
-          ).length,
           2,
-          'The checkboxes are not inside the form element '
+          'There should be at least 2 checkboxes inside the form '
         );
         FCC_Global.assert.strictEqual(
-          checkboxes.length - 1,
+          checkboxes.length,
           getNumValues(checkboxes),
           'All your checkboxes must have a value attribute '
         );
       });
 
-      it(`15. I am presented with a <textarea> at the end for additional
-      comments.'`,
+      it(`15. Inside the form element, I am presented with a <textarea> at the
+      end for additional comments.'`,
       function() {
         var textareas = document.getElementsByTagName('textarea');
         FCC_Global.assert.isAtLeast(
@@ -397,8 +392,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`16. I am presented with a button with id="submit" to submit all my
-      inputs.`,
+      it(`16. Inside the form element, I am presented with a button with
+      id="submit" to submit all my inputs.`,
       function() {
         var button = document.getElementById('submit');
         FCC_Global.assert.isNotNull(
