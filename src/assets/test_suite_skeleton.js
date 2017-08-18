@@ -1,3 +1,15 @@
+// Please note making changes to the styles here might make some of the project
+// tests no longer work, or even just give a false positive. Especially if you
+// change a selector name.
+// The project tests generally try to filter out any CSS selectors that
+// contain 'fcc_test', or that contain 'mocha'. So please make sure the
+// selectors here use that naming convention.
+// See the following project tests which rely on filtering out the CSS rules
+// used here. If you find other project tests that rely on the CSS here,
+// please add them to the list:
+// - styleSheetUtils.js
+// - product-landing-page-tests.js
+
 const test_suite_skeleton = `
   <style>
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans');

@@ -107,35 +107,35 @@ var FCC_Global =
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
-	var _surveyFormTests = __webpack_require__(51);
+	var _surveyFormTests = __webpack_require__(53);
 
 	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
 
-	var _technicalDocsTests = __webpack_require__(52);
+	var _technicalDocsTests = __webpack_require__(54);
 
 	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
 
-	var _barChartTests = __webpack_require__(53);
+	var _barChartTests = __webpack_require__(55);
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(55);
+	var _scatterPlotTests = __webpack_require__(57);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(57);
+	var _choroplethTests = __webpack_require__(59);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(59);
+	var _treeMapTests = __webpack_require__(61);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(60);
+	var _quoteMachineTests = __webpack_require__(62);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(61);
+	var _heatMapTests = __webpack_require__(63);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
@@ -19017,6 +19017,18 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	// Please note making changes to the styles here might make some of the project
+	// tests no longer work, or even just give a false positive. Especially if you
+	// change a selector name.
+	// The project tests generally try to filter out any CSS selectors that
+	// contain 'fcc_test', or that contain 'mocha'. So please make sure the
+	// selectors here use that naming convention.
+	// See the following project tests which rely on filtering out the CSS rules
+	// used here. If you find other project tests that rely on the CSS here,
+	// please add them to the list:
+	// - styleSheetUtils.js
+	// - product-landing-page-tests.js
+
 	var test_suite_skeleton = "\n  <style>\n    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n    /* TEST/MESSAGE CENTER CSS */\n\n    #fcc_test_message-box {\n      font-size: 20px !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8) !important;\n      transition: all .5s;\n      z-index: 100000;\n      overflow: auto;\n    }\n\n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n\n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black !important;\n      background-color: white !important;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto !important;\n      text-align: initial;\n      border-radius: 10px !important;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      flex: none;\n      box-sizing: border-box !important;\n      padding: 10px !important;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n      height: 60px;\n    }\n\n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px !important;\n      line-height: 40px !important;\n      margin-left: 10px !important;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n      height: 70px;\n    }\n\n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px !important;\n      margin-bottom: 10px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px !important;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245) !important;\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial !important;\n      text-align: initial;\n    }\n    #mocha * {\n      font-family: Noto Sans, arial, sans-serif !important;\n      border: none !important;\n    }\n\n    div {\n      position: static;\n    }\n\n    /* FOLDOUT MENU CSS */\n\n    #fcc_foldout_menu {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 320px;\n      height: 210px;\n      border-radius: 0 !important;\n      border-bottom-right-radius: 5px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      z-index: 99997;\n      font-family: Noto Sans, arial, sans-serif !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      transition: .5s;\n    }\n    #toggle:checked ~ #fcc_foldout_menu {\n      left: -320px;\n      transition: .5s ease-in-out;\n    }\n    #fcc_foldout_menu_inner {\n      position: relative;\n    }\n    #toggle {\n      height: 24px;\n      width: 25px;\n      position: fixed;\n      top: 7px;\n      left: 20px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 99999;\n    }\n    #fcc_foldout_toggler {\n      position: absolute;\n      top: 20px;\n      left: 20px;\n      z-index: 99998;\n    }\n\n    .transform_top {\n      opacity: 1;\n      transform: rotate(45deg) translate(-2px, -1px);\n    }\n    .transform_middle {\n      opacity: 0;\n      transform: rotate(0deg) scale(0.2, 0.2);\n    }\n    .transform_bottom {\n      opacity: 1;\n      transform: rotate(-45deg) translate(-1px, -1px);\n    }\n\n    .fcc_hamburger {\n      position: relative;\n      width: 25px;\n      height: 3px;\n      display: block;\n      background: black !important;\n      border-radius: 5px !important;\n      transform-origin: 4px 0px;\n      transition: transform 0.4s ease, opacity 0.55s ease;\n    }\n    #hamburger_top {\n      position: absolute;\n      top: -6px;\n      transform-origin: 0% 80%;\n    }\n    #hamburger_bottom {\n      position: absolute;\n      bottom: -6px;\n      transform-origin: 20% 80%;\n    }\n\n    #fcc_foldout_menu label {\n      top: 38px;\n      left: 20px;\n      position: absolute;\n      font-size: 15px !important;\n      color: black !important;\n    }\n    #fcc_foldout_menu select {\n      display: block;\n      padding: 0;\n      height: auto;\n      width: auto;\n      top: 61px;\n      left: 18px;\n      position: absolute;\n      font-size: 12px !important;\n      font-family: Noto Sans, Arial, sans-serif !important;\n    }\n\n    .fcc_foldout_buttons {\n      position: absolute;\n      left: 20px;\n      height: 20px;\n      width: 110px;\n      padding: 10px !important;\n      display: block;\n      font-size: 15px !important;\n      line-height: 15px !important;\n      text-align: center;\n      border: none !important;\n      outline: none !important;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      box-sizing: content-box !important;\n      z-index: 0;\n      cursor: pointer;\n      box-shadow: 1px 1px 4px black;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n    #fcc_test_message-box-rerun-button {\n      top: 90px;\n      transition: all .3s;\n    }\n    #fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      top: 140px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-executing {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    #fcc_report-bug {\n      position: absolute;\n      top: 186px;\n      left: 20px;\n      width: 110px;\n      padding: 0 10px !important;\n      font-size: 12px !important;\n      text-align: center;\n    }\n\n    #fcc_legend_wrapper {\n      position: absolute;\n      top: 95px;\n      left: 160px;\n      width: 125px;\n      vertical-align: top;\n      text-align: left !important;\n      font-size: 15px !important;\n      background: none !important;\n    }\n    #fcc_legend_wrapper span {\n      height: 15px;\n      margin-top: 6px !important;\n      font-size: 12px  !important;\n      color: black !important;\n      background: none !important;\n    }\n    .key {\n      height: 15px;\n      width: 15px;\n      margin: 5px !important;\n      vertical-align: top;\n      border-radius: 0 !important;\n    }\n    .key:first-of-type {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .key:nth-of-type(2) {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    .key:nth-of-type(3) {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_legend {\n      position: relative;\n      display: inline-block;\n    }\n\n    #fcc_test_suite_indicator_wrapper {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n    }\n    #fcc_test_suite_indicator {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n      font-size: 12px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      color: black !important;\n      padding: 3px 5px !important;\n      border-radius: 5px !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n  </style>\n\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\" title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\" onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page</option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\" class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\" onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\" class=\"fcc_foldout_buttons fcc_test_btn-default\" title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div><span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\" target=\"_blank\">Report Bug</a></span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\" onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\" onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
 
 	exports.default = test_suite_skeleton;
@@ -20209,7 +20221,7 @@ var FCC_Global =
 
 /***/ }),
 /* 50 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -20218,6 +20230,10 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
+	var _sharedTestStrings = __webpack_require__(51);
+
+	var _styleSheetUtils = __webpack_require__(52);
+
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function createProductLandingPageTests() {
@@ -20225,15 +20241,20 @@ var FCC_Global =
 
 	    describe('#Content', function () {
 
+	      // Describes the allowed stack for this project.
+	      it(_sharedTestStrings.responsiveWebDesignStack, function () {
+	        return true;
+	      });
+
 	      it('1. My product landing page should have a <header> element with\n      corresponding id="header".', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('header'), '#header is not defined ');
 	      });
 
-	      it('2. I can see an image within the #header element with a corresponding\n      id="header-img".', function () {
+	      it('2. I can see an image within the #header element with a corresponding\n      id="header-img". A company logo would make a good image here. ', function () {
 	        var img = document.getElementById('header-img');
 	        FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
 	        FCC_Global.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is a child of #header element ');
 	        FCC_Global.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
 	        FCC_Global.assert.include(img.src, 'http', 'The src attribute\'s value should be a url (http...) ');
 	      });
@@ -20250,12 +20271,11 @@ var FCC_Global =
 
 	      it('5. When I click a .nav-link button in the nav element, I am taken to\n      the corresponding section of the landing page.\'', function () {
 	        var navLinks = document.querySelectorAll('#nav-bar .nav-link');
-	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ');
 	        navLinks.forEach(function (link) {
 	          FCC_Global.assert.isNotNull(link);
 	          FCC_Global.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
 	          var linkDestination = link.getAttribute('href').slice(1);
-	          FCC_Global.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element ');
+	          FCC_Global.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element on the page ');
 	        });
 	      });
 
@@ -20278,40 +20298,40 @@ var FCC_Global =
 	      });
 
 	      it('9. The #email input field should have placeholder text to let the\n      user know what the field is for.', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('email'), '#email is not defined ');
-	        FCC_Global.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The input field does not have placeholder text ');
-	        FCC_Global.assert.isAbove(document.getElementById('email').getAttribute('placeholder').length, 0, 'The placeholder attribute should have some text ');
+	        var emailElem = document.getElementById('email');
+	        FCC_Global.assert.strictEqual(emailElem.hasAttribute('placeholder'), true, 'The #email input field does not have placeholder text ');
+	        FCC_Global.assert.isAbove(emailElem.getAttribute('placeholder').length, 0, 'The #email placeholder attribute should have some text ');
 	      });
 
 	      it('10. The #email input field uses HTML5 validation to confirm that the\n      entered text is an email address.', function () {
-	        var emailField = document.getElementById('email');
-	        FCC_Global.assert.isNotNull(document.getElementById('email'), '#email is not defined ');
-	        FCC_Global.assert.strictEqual(emailField.type, 'email', 'Email field should use HTML5 validation ');
+	        var emailElem = document.getElementById('email');
+	        FCC_Global.assert.strictEqual(emailElem.type, 'email', 'The #email input element should use HTML5 validation ');
 	      });
 
 	      it('11. Within the form, there is a submit <input> with corresponding\n      id="submit".', function () {
 	        var submitButton = document.getElementById('submit');
 	        FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
 	        FCC_Global.assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
-	        FCC_Global.assert.strictEqual(submitButton.nodeName, 'INPUT', '#email should be an <input> element ');
-	        FCC_Global.assert.strictEqual(submitButton.type, 'submit', 'The input type is incorrect ');
+	        FCC_Global.assert.strictEqual(submitButton.nodeName, 'INPUT', '#submit should be an <input> element ');
+	        FCC_Global.assert.strictEqual(submitButton.type, 'submit', 'The #submit element input type is incorrect ');
 	      });
 
-	      it('12. When I click the #submit button, the email is submitted to a\n      static page (use this mock URL: https://www.freecodecamp.com/email-submit)\n      that confirms the email address was entered (and that it posted\n      successfully).', function () {
-	        var emailField = document.getElementById('email');
-	        var form = document.getElementById('form');
-	        var submitButton = document.getElementById('submit');
-	        FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
-	        FCC_Global.assert.strictEqual(form.hasAttribute('action'), true, 'The #form should have an action attribute ');
-	        FCC_Global.assert.include(form.action, 'http', 'The action attribute\'s value should be a url (http...) ');
-	        FCC_Global.assert.strictEqual(emailField.hasAttribute('name'), true, 'The #email input should have a name attribute ');
-	        FCC_Global.assert.strictEqual(emailField.name, 'email', 'The name attribute should have a value of "email" ');
+	      it('12. When I click the #submit element, the email is submitted to a\n      static page (use this mock URL: https://www.freecodecamp.com/email-submit)\n      that confirms the email address was entered (and that it posted\n      successfully).', function () {
+	        var emailElem = document.getElementById('email');
+	        var formElem = document.getElementById('form');
+	        var submitElem = document.getElementById('submit');
+	        FCC_Global.assert.strictEqual(formElem.hasAttribute('action'), true, 'The #form should have an action attribute ');
+	        FCC_Global.assert.include(formElem.action, 'http', 'The action attribute\'s value should be a url (http...) ');
+	        FCC_Global.assert.strictEqual(emailElem.hasAttribute('name'), true, 'The #email input should have a name attribute ');
+	        FCC_Global.assert.strictEqual(emailElem.name, 'email', 'The #email element\'s name attribute should have a value of "email" ');
 	      });
 
 	      // END #Content
 	    });
 
 	    describe('#Layout', function () {
+	      // TODO: Most of this function should be extracted to a utility that
+	      // can be reused.
 	      it('1. The navbar should always be at the top of the viewport.', function () {
 	        var header = document.getElementById('header');
 	        var headerChildren = header.children;
@@ -20341,40 +20361,35 @@ var FCC_Global =
 	      });
 
 	      it('2. My product landing page should have at least one media query.', function () {
-	        var queryRules = [];
-	        // loop through all associated stylesheets and look for media query
-	        for (var i = 0; i < document.styleSheets.length; i++) {
-	          if (document.styleSheets[i].cssRules !== null) {
-	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	              if (document.styleSheets[i].cssRules[j].type === 4) {
-	                // push query rules to empty array
-	                queryRules.push(document.styleSheets[i].cssRules[j]);
-	              }
-	            }
-	          }
-	        }
-	        // there is one media query in Mocha.css, so must detect more than 1
-	        // query
-	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+
+	        // Filter to get only media queries.
+	        var queryRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
+	          return rule.type === CSSRule.MEDIA_RULE;
+	        });
+
+	        // Filter out our test suite and Mocha CSS rules. This may be trickier
+	        // than looks. The reason we can use allCSSRulesAsArray is because
+	        // media rules have a cssRules attribute.
+	        var cssMediaRules = (0, _styleSheetUtils.allCSSRulesAsArray)(queryRules).filter(function (rule) {
+	          return !(0, _styleSheetUtils.isTestSuiteRule)(rule);
+	        });
+
+	        FCC_Global.assert.isAbove(cssMediaRules.length, 0, 'No media queries detected ');
 	      });
 
 	      it('3. My product landing page should utilize CSS flexbox at least once.', function () {
-	        // loop through all associated stylesheets and look for display of flex
-	        var flexCount = [];
-	        for (var i = 0; i < document.styleSheets.length; i++) {
-	          if (document.styleSheets[i].cssRules !== null) {
-	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	              if (document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'flex' || document.styleSheets[i].cssRules[j].style !== undefined && document.styleSheets[i].cssRules[j].style.display === 'inline-flex') {
-	                flexCount.push(1);
-	              }
-	            }
+	        // Find CSS rules that use flexbox.
+	        var flexRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
+	          // Eliminate any CSS Rules that are part of our test suite UI.
+	          if ((0, _styleSheetUtils.isTestSuiteRule)(rule)) {
+	            return false;
 	          }
-	        }
 
-	        // our test suite uses a display of flex, so we need to count how many
-	        // times its used and confirm that its more than once. If we just
-	        // detect one instance, its ours.
-	        FCC_Global.assert.isAbove(flexCount.length, 1, 'We do not detect a display property set to flex or inline-flex ' + 'anywhere in your CSS ');
+	          // Only include flexbox rules.
+	          return typeof rule.style !== 'undefined' && typeof rule.style.display !== 'undefined' && (rule.style.display === 'flex' || rule.style.display === 'inline-flex');
+	        });
+
+	        FCC_Global.assert.isAbove(flexRules.length, 0, 'We do not detect a display property set to flex or inline-flex ' + 'anywhere in your CSS ');
 	      });
 
 	      // END #Layout
@@ -20388,6 +20403,89 @@ var FCC_Global =
 
 /***/ }),
 /* 51 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '0. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. The use of ' + 'additional technologies (just for example jQuery, React, Angular, or Vue) ' + 'are not recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	/*
+	 * Given a list of styleSheet-like objects, it returns an array of CSSStyleRule
+	 * objects.
+	 *
+	 * You can use the returned array to easily filter the CSS rules used on a
+	 * page. For example, the following could be used to find all CSS media rules,
+	 * and is much shorter than the corresponding code using nested "for loops":
+	 *
+	 * ```
+	 * const queryRules = allCSSRulesAsArray(document.styleSheets)
+	     .filter(rule => rule.type === CSSRule.MEDIA_RULE);
+	 * ```
+	 *
+	 * The styleSheets parameter accepts any array or array-like list, as long as
+	 * each object has a cssRules attribute. A StyleSheetList would fit this
+	 * requirement.
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList
+	 *
+	 * For example, `document.styleSheets` returns a StyleSheetList.
+	 *
+	 * The cssRules attribute is another array-like list.
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList
+	 *
+	 */
+	var allCSSRulesAsArray = exports.allCSSRulesAsArray = function allCSSRulesAsArray(styleSheets) {
+	  // Convert to an array, and then use reduce.
+	  return [].slice.call(styleSheets).reduce(function (prev, styleSheet) {
+
+	    // The styleSheet might not contain any rules.
+	    if (styleSheet.cssRules) {
+	      // Convert the list of rules into an array.
+	      var rulesAsArray = [].slice.call(styleSheet.cssRules);
+	      // Use the spread operator to push each individual element onto the
+	      // return array.
+	      prev.push.apply(prev, _toConsumableArray(rulesAsArray));
+	    }
+
+	    return prev;
+	  }, []);
+	};
+
+	/*
+	 * Given a CSS Style Rule it will determine if the rule is one of our internal
+	 * test suite UI rules.
+	 *
+	 * There is a small chance a student could use a selector that includes
+	 * the text we are using below to determine if it's our CSS. In the off chance
+	 * that happens, it's best to just ask them to rename it differently.
+	 *
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule
+	 *
+	 */
+	var isTestSuiteRule = exports.isTestSuiteRule = function isTestSuiteRule(cssStyleRule) {
+	  if (typeof cssStyleRule.selectorText !== 'undefined' && (cssStyleRule.selectorText.includes('fcc_test') || cssStyleRule.selectorText.includes('mocha'))) {
+	    return true;
+	  }
+
+	  return false;
+	};
+
+/***/ }),
+/* 53 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20582,7 +20680,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20772,7 +20870,7 @@ var FCC_Global =
 	} // end createTechnicalDocsPageTests()
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20786,7 +20884,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _globalD3Tests = __webpack_require__(54);
+	var _globalD3Tests = __webpack_require__(56);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20882,7 +20980,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20987,7 +21085,7 @@ var FCC_Global =
 	};
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20997,9 +21095,9 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _globalD3Tests = __webpack_require__(54);
+	var _globalD3Tests = __webpack_require__(56);
 
-	var _alignmentD3Tests = __webpack_require__(56);
+	var _alignmentD3Tests = __webpack_require__(58);
 
 	function createScatterPlotTests() {
 
@@ -21173,7 +21271,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -21611,7 +21709,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21625,11 +21723,11 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _education = __webpack_require__(58);
+	var _education = __webpack_require__(60);
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(54);
+	var _globalD3Tests = __webpack_require__(56);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21748,7 +21846,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -40607,7 +40705,7 @@ var FCC_Global =
 	]
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40621,7 +40719,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _globalD3Tests = __webpack_require__(54);
+	var _globalD3Tests = __webpack_require__(56);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40729,7 +40827,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -40847,7 +40945,7 @@ var FCC_Global =
 	} // END createRandomQuoteMachineTests()
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40857,9 +40955,9 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _globalD3Tests = __webpack_require__(54);
+	var _globalD3Tests = __webpack_require__(56);
 
-	var _alignmentD3Tests = __webpack_require__(56);
+	var _alignmentD3Tests = __webpack_require__(58);
 
 	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
