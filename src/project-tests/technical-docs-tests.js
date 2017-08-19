@@ -1,3 +1,6 @@
+import { responsiveWebDesignStack } from '../assets/sharedTestStrings';
+import { allCSSRulesAsArray, isTestSuiteRule } from '../assets/styleSheetUtils';
+
 export default function createTechnicalDocsPageTests() {
 
   const classArray = (className) => {
@@ -19,6 +22,12 @@ export default function createTechnicalDocsPageTests() {
   describe('Technical Documentation Page tests',
   function() {
     describe('#Content', function() {
+
+      // Describes the allowed tech stack for this project.
+      it(responsiveWebDesignStack, function() {
+        return true;
+      });
+
       it(`1. I can see a <main> element with a corresponding id="main-doc",
       which contains the page's main content (technical documentation).`,
       function() {
@@ -71,12 +80,14 @@ export default function createTechnicalDocsPageTests() {
         let mustContainText = classArray('main-section').filter(
           el => el.firstElementChild.innerText.length > 0
         );
-        FCC_Global.assert.isAbove(classQty,
+        FCC_Global.assert.isAbove(
+          classQty,
           0,
           'No elements with the class "main-section" are defined '
         );
         sharedHeaderTest(classQty);
-        FCC_Global.assert.strictEqual(mustContainText.length,
+        FCC_Global.assert.strictEqual(
+          mustContainText.length,
           classQty,
           'Not all first-child <header> elements within "main-section" ' +
           'elements contain text '
@@ -350,23 +361,20 @@ export default function createTechnicalDocsPageTests() {
       it(`2. My Technical Documentation page should use at least one media
       query.`,
       function() {
-        let queryRules = [];
-        // loop through all associated stylesheets and look for media query
-        for (var i = 0; i < document.styleSheets.length; i++) {
-          if (document.styleSheets[i].cssRules !== null) {
-            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-              if (document.styleSheets[i].cssRules[j].type === 4) {
-                // push query rules to empty array
-                queryRules.push(document.styleSheets[i].cssRules[j]);
-              }
-            }
-          }
-        }
-        // there is one media query in Mocha.css, so must detect more than 1
-        // query
+
+        // Filter to get only media queries.
+        let queryRules = allCSSRulesAsArray(document.styleSheets)
+          .filter(rule => rule.type === CSSRule.MEDIA_RULE);
+
+        // Filter out our test suite and Mocha CSS rules. This may be trickier
+        // than looks. The reason we can use allCSSRulesAsArray is because
+        // media rules have a cssRules attribute.
+        let cssMediaRules = allCSSRulesAsArray(queryRules)
+          .filter(rule => !isTestSuiteRule(rule));
+
         FCC_Global.assert.isAbove(
-          queryRules.length,
-          1,
+          cssMediaRules.length,
+          0,
           'No media queries detected '
         );
       });
