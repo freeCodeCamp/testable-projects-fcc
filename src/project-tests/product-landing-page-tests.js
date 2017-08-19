@@ -1,7 +1,15 @@
+import { responsiveWebDesignStack } from '../assets/sharedTestStrings';
+import { allCSSRulesAsArray, isTestSuiteRule } from '../assets/styleSheetUtils';
+
 export default function createProductLandingPageTests() {
   describe('#Product Landing Page tests', function() {
 
     describe('#Content', function() {
+
+      // Describes the allowed stack for this project.
+      it(responsiveWebDesignStack, function() {
+        return true;
+      });
 
       it(`1. My product landing page should have a <header> element with
       corresponding id="header".`,
@@ -13,7 +21,7 @@ export default function createProductLandingPageTests() {
       });
 
       it(`2. I can see an image within the #header element with a corresponding
-      id="header-img".`,
+      id="header-img". A company logo would make a good image here. `,
       function() {
         const img = document.getElementById('header-img');
         FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
@@ -25,7 +33,7 @@ export default function createProductLandingPageTests() {
         FCC_Global.assert.strictEqual(
           document.querySelectorAll('#header #header-img').length,
           1,
-          '#header-img is not a child of #header '
+          '#header-img is not a child of #header element '
         );
         FCC_Global.assert.strictEqual(
           img.hasAttribute('src'),
@@ -72,11 +80,6 @@ export default function createProductLandingPageTests() {
       the corresponding section of the landing page.'`,
       function() {
         const navLinks = document.querySelectorAll('#nav-bar .nav-link');
-        FCC_Global.assert.isAtLeast(
-          document.querySelectorAll('#nav-bar .nav-link').length,
-          3,
-          'There are not at least 3 elements with a class of "nav-link" '
-        );
         navLinks.forEach(link => {
           FCC_Global.assert.isNotNull(link);
           FCC_Global.assert.strictEqual(
@@ -89,7 +92,7 @@ export default function createProductLandingPageTests() {
             document.getElementById(linkDestination),
             'The .nav-link with href="' +
             link.getAttribute('href') +
-            '" is not linked to a corresponding element '
+            '" is not linked to a corresponding element on the page '
           );
         });
       });
@@ -145,34 +148,27 @@ export default function createProductLandingPageTests() {
       it(`9. The #email input field should have placeholder text to let the
       user know what the field is for.`,
       function() {
-        FCC_Global.assert.isNotNull(
-          document.getElementById('email'),
-          '#email is not defined '
-        );
+        const emailElem = document.getElementById('email');
         FCC_Global.assert.strictEqual(
-          document.getElementById('email').hasAttribute('placeholder'),
+          emailElem.hasAttribute('placeholder'),
           true,
-          'The input field does not have placeholder text '
+          'The #email input field does not have placeholder text '
         );
         FCC_Global.assert.isAbove(
-          document.getElementById('email').getAttribute('placeholder').length,
+          emailElem.getAttribute('placeholder').length,
           0,
-          'The placeholder attribute should have some text '
+          'The #email placeholder attribute should have some text '
         );
       });
 
       it(`10. The #email input field uses HTML5 validation to confirm that the
       entered text is an email address.`,
       function() {
-        const emailField = document.getElementById('email');
-        FCC_Global.assert.isNotNull(
-          document.getElementById('email'),
-          '#email is not defined '
-        );
+        const emailElem = document.getElementById('email');
         FCC_Global.assert.strictEqual(
-          emailField.type,
+          emailElem.type,
           'email',
-          'Email field should use HTML5 validation '
+          'The #email input element should use HTML5 validation '
         );
       });
 
@@ -192,46 +188,42 @@ export default function createProductLandingPageTests() {
         FCC_Global.assert.strictEqual(
           submitButton.nodeName,
           'INPUT',
-          '#email should be an <input> element '
+          '#submit should be an <input> element '
         );
         FCC_Global.assert.strictEqual(
           submitButton.type,
           'submit',
-          'The input type is incorrect '
+          'The #submit element input type is incorrect '
         );
       });
 
-      it(`12. When I click the #submit button, the email is submitted to a
+      it(`12. When I click the #submit element, the email is submitted to a
       static page (use this mock URL: https://www.freecodecamp.com/email-submit)
       that confirms the email address was entered (and that it posted
       successfully).`,
       function() {
-        const emailField = document.getElementById('email');
-        const form = document.getElementById('form');
-        const submitButton = document.getElementById('submit');
-        FCC_Global.assert.isNotNull(
-          submitButton,
-          '#submit is not defined '
-        );
+        const emailElem = document.getElementById('email');
+        const formElem = document.getElementById('form');
+        const submitElem = document.getElementById('submit');
         FCC_Global.assert.strictEqual(
-          form.hasAttribute('action'),
+          formElem.hasAttribute('action'),
           true,
           'The #form should have an action attribute '
         )
         FCC_Global.assert.include(
-          form.action,
+          formElem.action,
           'http',
           'The action attribute\'s value should be a url (http...) '
         );
         FCC_Global.assert.strictEqual(
-          emailField.hasAttribute('name'),
+          emailElem.hasAttribute('name'),
           true,
           'The #email input should have a name attribute '
         );
         FCC_Global.assert.strictEqual(
-          emailField.name,
+          emailElem.name,
           'email',
-          'The name attribute should have a value of "email" '
+          'The #email element\'s name attribute should have a value of "email" '
         );
       });
 
@@ -239,6 +231,8 @@ export default function createProductLandingPageTests() {
     });
 
     describe('#Layout', function() {
+      // TODO: Most of this function should be extracted to a utility that
+      // can be reused.
       it(`1. The navbar should always be at the top of the viewport.`,
       function() {
         const header = document.getElementById('header');
@@ -286,52 +280,48 @@ export default function createProductLandingPageTests() {
 
       it(`2. My product landing page should have at least one media query.`,
       function() {
-        let queryRules = [];
-        // loop through all associated stylesheets and look for media query
-        for (var i = 0; i < document.styleSheets.length; i++) {
-          if (document.styleSheets[i].cssRules !== null) {
-            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-              if (document.styleSheets[i].cssRules[j].type === 4) {
-                // push query rules to empty array
-                queryRules.push(document.styleSheets[i].cssRules[j]);
-              }
-            }
-          }
-        }
-        // there is one media query in Mocha.css, so must detect more than 1
-        // query
+
+        // Filter to get only media queries.
+        let queryRules = allCSSRulesAsArray(document.styleSheets)
+          .filter(rule => rule.type === CSSRule.MEDIA_RULE);
+
+        // Filter out our test suite and Mocha CSS rules. This may be trickier
+        // than looks. The reason we can use allCSSRulesAsArray is because
+        // media rules have a cssRules attribute.
+        let cssMediaRules = allCSSRulesAsArray(queryRules)
+          .filter(rule => !isTestSuiteRule(rule));
+
         FCC_Global.assert.isAbove(
-          queryRules.length,
-          1,
+          cssMediaRules.length,
+          0,
           'No media queries detected '
         );
       });
 
       it(`3. My product landing page should utilize CSS flexbox at least once.`,
       function() {
-        // loop through all associated stylesheets and look for display of flex
-        const flexCount = [];
-        for (var i = 0; i < document.styleSheets.length; i++) {
-          if (document.styleSheets[i].cssRules !== null) {
-            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-              if (document.styleSheets[i].cssRules[j].style !== undefined &&
-                document.styleSheets[i].cssRules[j].style.display === 'flex' ||
-                document.styleSheets[i].cssRules[j].style !== undefined &&
-                document.styleSheets[i].cssRules[j].style.display ===
-                'inline-flex'
-              ) {
-                flexCount.push(1);
-              }
+        // Find CSS rules that use flexbox.
+        const flexRules = allCSSRulesAsArray(document.styleSheets)
+          .filter(rule => {
+            // Eliminate any CSS Rules that are part of our test suite UI.
+            if (isTestSuiteRule(rule)) {
+              return false;
             }
-          }
-        }
 
-        // our test suite uses a display of flex, so we need to count how many
-        // times its used and confirm that its more than once. If we just
-        // detect one instance, its ours.
+            // Only include flexbox rules.
+            return (
+              typeof rule.style !== 'undefined' &&
+              typeof rule.style.display !== 'undefined'
+            ) &&
+            (
+              rule.style.display === 'flex' ||
+              rule.style.display === 'inline-flex'
+            );
+          });
+
         FCC_Global.assert.isAbove(
-          flexCount.length,
-          1,
+          flexRules.length,
+          0,
           'We do not detect a display property set to flex or inline-flex ' +
           'anywhere in your CSS '
         );
