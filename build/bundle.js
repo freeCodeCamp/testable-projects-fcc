@@ -20254,7 +20254,7 @@ var FCC_Global =
 	        var img = document.getElementById('header-img');
 	        FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
 	        FCC_Global.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is a child of #header element ');
+	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header element ');
 	        FCC_Global.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
 	        FCC_Global.assert.include(img.src, 'http', 'The src attribute\'s value should be a url (http...) ');
 	      });
@@ -20410,7 +20410,7 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '0. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. The use of ' + 'additional technologies (just for example jQuery, React, Angular, or Vue) ' + 'are not recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '0. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
 
 /***/ }),
 /* 52 */
@@ -20676,7 +20676,7 @@ var FCC_Global =
 
 /***/ }),
 /* 54 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -20684,6 +20684,11 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createTechnicalDocsPageTests;
+
+	var _sharedTestStrings = __webpack_require__(51);
+
+	var _styleSheetUtils = __webpack_require__(52);
+
 	function createTechnicalDocsPageTests() {
 
 	  var classArray = function classArray(className) {
@@ -20699,6 +20704,12 @@ var FCC_Global =
 
 	  describe('Technical Documentation Page tests', function () {
 	    describe('#Content', function () {
+
+	      // Describes the allowed tech stack for this project.
+	      it(_sharedTestStrings.responsiveWebDesignStack, function () {
+	        return true;
+	      });
+
 	      it('1. I can see a <main> element with a corresponding id="main-doc",\n      which contains the page\'s main content (technical documentation).', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('main-doc'), 'There is no element with an id of \'main-doc\' ');
 	        FCC_Global.assert.strictEqual(document.getElementById('main-doc').nodeName, 'MAIN', 'The \'main-doc\' element should be a <main> ');
@@ -20850,21 +20861,20 @@ var FCC_Global =
 	      });
 
 	      it('2. My Technical Documentation page should use at least one media\n      query.', function () {
-	        var queryRules = [];
-	        // loop through all associated stylesheets and look for media query
-	        for (var i = 0; i < document.styleSheets.length; i++) {
-	          if (document.styleSheets[i].cssRules !== null) {
-	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	              if (document.styleSheets[i].cssRules[j].type === 4) {
-	                // push query rules to empty array
-	                queryRules.push(document.styleSheets[i].cssRules[j]);
-	              }
-	            }
-	          }
-	        }
-	        // there is one media query in Mocha.css, so must detect more than 1
-	        // query
-	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+
+	        // Filter to get only media queries.
+	        var queryRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
+	          return rule.type === CSSRule.MEDIA_RULE;
+	        });
+
+	        // Filter out our test suite and Mocha CSS rules. This may be trickier
+	        // than looks. The reason we can use allCSSRulesAsArray is because
+	        // media rules have a cssRules attribute.
+	        var cssMediaRules = (0, _styleSheetUtils.allCSSRulesAsArray)(queryRules).filter(function (rule) {
+	          return !(0, _styleSheetUtils.isTestSuiteRule)(rule);
+	        });
+
+	        FCC_Global.assert.isAbove(cssMediaRules.length, 0, 'No media queries detected ');
 	      });
 
 	      // END #Layout
