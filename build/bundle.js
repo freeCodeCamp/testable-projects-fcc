@@ -20091,12 +20091,14 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createPortfolioTests;
+	/* globals FCC_Global */
+
 	function createPortfolioTests() {
 
 	  describe('#Portfolio tests', function () {
 
 	    describe('#Content', function () {
-	      it('1. My portfolio should have a Welcome section with an id of \"welcome-section\".', function () {
+	      it('1. My portfolio should have a Welcome section with an id of\n      "welcome-section".', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('welcome-section'));
 	      });
 
@@ -20105,28 +20107,28 @@ var FCC_Global =
 
 	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
 
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper name ');
+	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper ' + 'name ');
 	      });
 
-	      it('3. My portfolio should have a projects section with an id of \"projects\".', function () {
+	      it('3. My portfolio should have a projects section with an id of\n      "projects".', function () {
 	        FCC_Global.assert.isNotNull(document.getElementById('projects'));
 	      });
 
-	      it('4. The projects section should contain at least one element with a class of \"project-tile\" to hold a project.', function () {
+	      it('4. The projects section should contain at least one element with a\n      class of "project-tile" to hold a project.', function () {
 	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
 	      });
 
-	      it('5. The projects section should contain at least one link to a project.', function () {
+	      it('5. The projects section should contain at least one link to a\n      project.', function () {
 	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects a').length, 0);
 	      });
 
-	      it('6. My portfolio should have a navbar with an id of \"navbar\".', function () {
+	      it('6. My portfolio should have a navbar with an id of "navbar".', function () {
 	        var navbar = document.getElementById('navbar');
 
 	        FCC_Global.assert.isNotNull(navbar);
 	      });
 
-	      it('7. The navbar should contain at least one link that I can click on to navigate to different sections of the page.', function () {
+	      it('7. The navbar should contain at least one link that I can click on to\n      navigate to different sections of the page.', function () {
 	        FCC_Global.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
 
 	        var links = document.querySelectorAll('#navbar a');
@@ -20164,7 +20166,7 @@ var FCC_Global =
 	        FCC_Global.assert.isOk(false, 'At least one navbar link should move the page position when clicked ');
 	      });
 
-	      it('8. My portfolio should have a link with an id of \"profile-link\", which opens my GitHub or FCC profile in a new tab.', function () {
+	      it('8. My portfolio should have a link with an id of "profile-link",\n      which opens my GitHub or FCC profile in a new tab.', function () {
 	        var profileLink = document.getElementById('profile-link');
 
 	        FCC_Global.assert.isNotNull(profileLink);
@@ -20175,7 +20177,9 @@ var FCC_Global =
 
 	        FCC_Global.assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
 	      });
-	    }); // END #Content
+
+	      // END #Content
+	    });
 
 	    describe('#Layout', function () {
 
@@ -20192,32 +20196,40 @@ var FCC_Global =
 	            }
 	          }
 	        }
-	        // there is one media query in Mocha.css, so must detect more than 1 query
+	        // there is one media query in Mocha.css, so must detect more than 1
+	        // query
 	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
 	      });
 
-	      it('2. The height of the welcome section should be equal to the height of the viewport.', function () {
-	        FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the viewport ');
+	      it('2. The height of the welcome section should be equal to the height of\n      the viewport.', function () {
+	        FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the ' + 'viewport ');
 	      });
 
 	      it('3. The navbar should always be at the top of the viewport.', function (done) {
 	        var navbar = document.getElementById('navbar');
-	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of the viewport ');
+	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of ' + 'the viewport ');
 	        window.scroll(0, 500);
 
-	        // This timeout is to allow page layout to happen after the window.scroll. Without it
-	        // the getBoundingClientRect can sometimes report the wrong value while the page is
-	        // still laying out, when using CSS position:sticky.
-	        // This is apparently a bug with Chrome https://bugs.chromium.org/p/chromium/issues/detail?id=672457
+	        // This timeout is to allow page layout to happen after the
+	        // window.scroll. Without it the getBoundingClientRect can sometimes
+	        // report the wrong value while the page is still laying out, when using
+	        // CSS position:sticky. This is apparently a bug with Chrome.
+	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=672457
 	        setTimeout(function () {
 	          FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
 	          window.scroll(0, 0);
 	          done();
 	        }, 1);
 	      });
-	    }); // END #Layout
-	  }); // END #PortfolioTests
-	} // END createPortfolioTests()
+
+	      // END #Layout
+	    });
+
+	    // END #PortfolioTests
+	  });
+
+	  // END createPortfolioTests()
+	}
 
 /***/ }),
 /* 50 */
