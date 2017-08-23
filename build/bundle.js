@@ -103,7 +103,7 @@ var FCC_Global =
 
 	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
 
-	var _productLandingPageTests = __webpack_require__(50);
+	var _productLandingPageTests = __webpack_require__(52);
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
@@ -20083,7 +20083,7 @@ var FCC_Global =
 
 /***/ }),
 /* 49 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -20091,132 +20091,164 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createPortfolioTests;
-	/* globals FCC_Global */
+
+	var _sharedTestStrings = __webpack_require__(50);
+
+	var _styleSheetUtils = __webpack_require__(51);
+
+	var _chai = __webpack_require__(2);
 
 	function createPortfolioTests() {
 
 	  describe('#Portfolio tests', function () {
 
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.responsiveWebDesignStack, function () {
+	        return true;
+	      });
+	    });
+
 	    describe('#Content', function () {
-	      it('1. My portfolio should have a Welcome section with an id of\n      "welcome-section".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('welcome-section'));
+	      var reqNum = 0;
+
+	      reqNum++;
+	      it(reqNum + '. My portfolio should have a Welcome section with an id of\n      "welcome-section".', function () {
+	        _chai.assert.isNotNull(document.getElementById('welcome-section'));
 	      });
 
-	      it('2. The welcome section should have an h1 element that contains text.', function () {
-	        var welcome = document.getElementById('welcome-section');
+	      reqNum++;
+	      it(reqNum + '. The welcome section should have an h1 element that contains\n      text.', function () {
 
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
+	        _chai.assert.isAbove(document.querySelectorAll('#welcome-section h1').length, 0, 'Welcome section should contain an h1 element ');
 
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper ' + 'name ');
+	        _chai.assert.isAbove(document.querySelectorAll('#welcome-section h1')[0].innerText.length, 0, 'h1 element in welcome section should contain your name or camper ' + 'name ');
 	      });
 
-	      it('3. My portfolio should have a projects section with an id of\n      "projects".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('projects'));
+	      reqNum++;
+	      it(reqNum + '. My portfolio should have a projects section with an id of\n      "projects".', function () {
+	        _chai.assert.isNotNull(document.getElementById('projects'));
 	      });
 
-	      it('4. The projects section should contain at least one element with a\n      class of "project-tile" to hold a project.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
+	      reqNum++;
+	      it(reqNum + '. The projects section should contain at least one element\n      with a class of "project-tile" to hold a project.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('#projects .project-tile').length, 0);
 	      });
 
-	      it('5. The projects section should contain at least one link to a\n      project.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#projects a').length, 0);
+	      reqNum++;
+	      it(reqNum + '. The projects section should contain at least one link to a\n      project.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('#projects a').length, 0);
 	      });
 
-	      it('6. My portfolio should have a navbar with an id of "navbar".', function () {
+	      reqNum++;
+	      it(reqNum + '. My portfolio should have a navbar with an id of "navbar".', function () {
 	        var navbar = document.getElementById('navbar');
 
-	        FCC_Global.assert.isNotNull(navbar);
+	        _chai.assert.isNotNull(navbar);
 	      });
 
-	      it('7. The navbar should contain at least one link that I can click on to\n      navigate to different sections of the page.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
+	      reqNum++;
+	      it(reqNum + '. The navbar should contain at least one link that I can\n      click on to navigate to different sections of the page.', function () {
+	        var links = Array.from(document.querySelectorAll('#navbar a'));
+	        var didScroll = false;
 
-	        var links = document.querySelectorAll('#navbar a');
+	        _chai.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
 
-	        for (var i = 0; i < links.length; i++) {
-	          links[i].click();
+	        window.scroll(0, 0);
+	        didScroll = links.some(function (link) {
+	          link.click();
+	          // Returning a true value ends the loop, so we continue until the
+	          // window Y position is other than 0.
+	          return window.scrollY !== 0;
+	        });
 
-	          if (window.scrollY) {
-	            // if the window's y position is not 0, clicking a link made it move
-	            FCC_Global.assert.ok(true);
-	            window.scroll(0, 0);
-	            return;
-	          }
+	        // Test passes succesfully if the window scrolled, so we end the test.
+	        if (didScroll) {
+	          _chai.assert.ok(true);
+	          window.scroll(0, 0);
+	          return;
 	        }
 
-	        // move window to bottom
+	        // No scroll yet, so move window to bottom and try again.
 	        window.scroll(0, document.body.scrollHeight);
 	        var bottomPositionY = window.scrollY;
 
-	        for (var i = 0; i < links.length; i++) {
-	          links[i].click();
-
+	        didScroll = links.some(function (link) {
+	          link.click();
 	          var distanceFromBottom = bottomPositionY - window.scrollY;
+	          // if distance from bottom is not 0, clicking a link made it move,
+	          // so we end the loop.
+	          return distanceFromBottom !== 0;
+	        });
 
-	          if (distanceFromBottom) {
-	            // if distance from bottom is not 0, clicking a link made it move
-	            FCC_Global.assert.ok(true);
-	            window.scroll(0, 0);
-	            return;
-	          }
+	        // Test passes succesfully if the window scrolled, so we end the test.
+	        if (didScroll) {
+	          _chai.assert.ok(true);
+	          window.scroll(0, 0);
+	          return;
 	        }
 
-	        // none of the links changed the scroll position
+	        // If we got here, none of the links changed the scroll position.
 	        window.scroll(0, 0);
-	        FCC_Global.assert.isOk(false, 'At least one navbar link should move the page position when clicked ');
+	        _chai.assert.ok(false, 'At least one navbar link should move the page position when clicked ');
+
+	        return;
 	      });
 
-	      it('8. My portfolio should have a link with an id of "profile-link",\n      which opens my GitHub or FCC profile in a new tab.', function () {
+	      reqNum++;
+	      it(reqNum + '. My portfolio should have a link with an id of\n      "profile-link", which opens my GitHub or FCC profile in a new tab.', function () {
 	        var profileLink = document.getElementById('profile-link');
 
-	        FCC_Global.assert.isNotNull(profileLink);
+	        _chai.assert.isNotNull(profileLink);
 
-	        FCC_Global.assert.equal(profileLink.nodeName, 'A');
+	        _chai.assert.equal(profileLink.nodeName, 'A');
 
-	        FCC_Global.assert.strictEqual(profileLink.hasAttribute('target'), true, '#profile-link should have a target attribute ');
+	        _chai.assert.strictEqual(profileLink.hasAttribute('target'), true, '#profile-link should have a target attribute ');
 
-	        FCC_Global.assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
+	        _chai.assert.equal(profileLink.target, '_blank', 'Clicking #profile-link should cause a link to open in a new tab ');
 	      });
 
 	      // END #Content
 	    });
 
 	    describe('#Layout', function () {
+	      var reqNum = 0;
 
-	      it('1. My portfolio should have at least one media query.', function () {
-	        var queryRules = [];
-	        // loop through all associated stylesheets and look for media query
-	        for (var i = 0; i < document.styleSheets.length; i++) {
-	          if (document.styleSheets[i].cssRules !== null) {
-	            for (var j = 0; j < document.styleSheets[i].cssRules.length; j++) {
-	              if (document.styleSheets[i].cssRules[j].type === 4) {
-	                // push query rules to empty array
-	                queryRules.push(document.styleSheets[i].cssRules[j]);
-	              }
-	            }
-	          }
-	        }
-	        // there is one media query in Mocha.css, so must detect more than 1
-	        // query
-	        FCC_Global.assert.isAbove(queryRules.length, 1, 'No media queries detected ');
+	      reqNum++;
+	      it(reqNum + '. My portfolio should have at least one media query.', function () {
+
+	        // Filter to get only media queries.
+	        var queryRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
+	          return rule.type === CSSRule.MEDIA_RULE;
+	        });
+
+	        // Filter out our test suite and Mocha CSS rules. This may be trickier
+	        // than looks. The reason we can use allCSSRulesAsArray is because
+	        // media rules have a cssRules attribute.
+	        var cssMediaRules = (0, _styleSheetUtils.allCSSRulesAsArray)(queryRules).filter(function (rule) {
+	          return !(0, _styleSheetUtils.isTestSuiteRule)(rule);
+	        });
+
+	        _chai.assert.isAbove(cssMediaRules.length, 0, 'No media queries detected ');
 	      });
 
-	      it('2. The height of the welcome section should be equal to the height of\n      the viewport.', function () {
-	        FCC_Global.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the ' + 'viewport ');
+	      reqNum++;
+	      it(reqNum + '. The height of the welcome section should be equal to the\n      height of the viewport.', function () {
+	        _chai.assert.equal(document.getElementById('welcome-section').offsetHeight, window.innerHeight, 'The height of #welcome-section is not equal to the height of the ' + 'viewport ');
 	      });
 
-	      it('3. The navbar should always be at the top of the viewport.', function (done) {
+	      reqNum++;
+	      it(reqNum + '. The navbar should always be at the top of the viewport.', function (done) {
 	        var navbar = document.getElementById('navbar');
-	        FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of ' + 'the viewport ');
-	        window.scroll(0, 500);
+	        _chai.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar\'s parent should be body and it should be at the top of ' + 'the viewport ');
 
+	        window.scroll(0, 500);
 	        // This timeout is to allow page layout to happen after the
 	        // window.scroll. Without it the getBoundingClientRect can sometimes
 	        // report the wrong value while the page is still laying out, when using
 	        // CSS position:sticky. This is apparently a bug with Chrome.
 	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=672457
 	        setTimeout(function () {
-	          FCC_Global.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
+	          _chai.assert.approximately(navbar.getBoundingClientRect().top, 0, 15, 'Navbar should be at the top of the viewport even after scrolling ');
 	          window.scroll(0, 0);
 	          done();
 	        }, 1);
@@ -20233,6 +20265,89 @@ var FCC_Global =
 
 /***/ }),
 /* 50 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '0. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	/*
+	 * Given a list of styleSheet-like objects, it returns an array of CSSStyleRule
+	 * objects.
+	 *
+	 * You can use the returned array to easily filter the CSS rules used on a
+	 * page. For example, the following could be used to find all CSS media rules,
+	 * and is much shorter than the corresponding code using nested "for loops":
+	 *
+	 * ```
+	 * const queryRules = allCSSRulesAsArray(document.styleSheets)
+	     .filter(rule => rule.type === CSSRule.MEDIA_RULE);
+	 * ```
+	 *
+	 * The styleSheets parameter accepts any array or array-like list, as long as
+	 * each object has a cssRules attribute. A StyleSheetList would fit this
+	 * requirement.
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList
+	 *
+	 * For example, `document.styleSheets` returns a StyleSheetList.
+	 *
+	 * The cssRules attribute is another array-like list.
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList
+	 *
+	 */
+	var allCSSRulesAsArray = exports.allCSSRulesAsArray = function allCSSRulesAsArray(styleSheets) {
+	  // Convert to an array, and then use reduce.
+	  return [].slice.call(styleSheets).reduce(function (prev, styleSheet) {
+
+	    // The styleSheet might not contain any rules.
+	    if (styleSheet.cssRules) {
+	      // Convert the list of rules into an array.
+	      var rulesAsArray = [].slice.call(styleSheet.cssRules);
+	      // Use the spread operator to push each individual element onto the
+	      // return array.
+	      prev.push.apply(prev, _toConsumableArray(rulesAsArray));
+	    }
+
+	    return prev;
+	  }, []);
+	};
+
+	/*
+	 * Given a CSS Style Rule it will determine if the rule is one of our internal
+	 * test suite UI rules.
+	 *
+	 * There is a small chance a student could use a selector that includes
+	 * the text we are using below to determine if it's our CSS. In the off chance
+	 * that happens, it's best to just ask them to rename it differently.
+	 *
+	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule
+	 *
+	 */
+	var isTestSuiteRule = exports.isTestSuiteRule = function isTestSuiteRule(cssStyleRule) {
+	  if (typeof cssStyleRule.selectorText !== 'undefined' && (cssStyleRule.selectorText.includes('fcc_test') || cssStyleRule.selectorText.includes('mocha'))) {
+	    return true;
+	  }
+
+	  return false;
+	};
+
+/***/ }),
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20242,9 +20357,9 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(51);
+	var _sharedTestStrings = __webpack_require__(50);
 
-	var _styleSheetUtils = __webpack_require__(52);
+	var _styleSheetUtils = __webpack_require__(51);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -20412,89 +20527,6 @@ var FCC_Global =
 
 	  // END createProductLandingPageTests()
 	}
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '0. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	/*
-	 * Given a list of styleSheet-like objects, it returns an array of CSSStyleRule
-	 * objects.
-	 *
-	 * You can use the returned array to easily filter the CSS rules used on a
-	 * page. For example, the following could be used to find all CSS media rules,
-	 * and is much shorter than the corresponding code using nested "for loops":
-	 *
-	 * ```
-	 * const queryRules = allCSSRulesAsArray(document.styleSheets)
-	     .filter(rule => rule.type === CSSRule.MEDIA_RULE);
-	 * ```
-	 *
-	 * The styleSheets parameter accepts any array or array-like list, as long as
-	 * each object has a cssRules attribute. A StyleSheetList would fit this
-	 * requirement.
-	 * See https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList
-	 *
-	 * For example, `document.styleSheets` returns a StyleSheetList.
-	 *
-	 * The cssRules attribute is another array-like list.
-	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList
-	 *
-	 */
-	var allCSSRulesAsArray = exports.allCSSRulesAsArray = function allCSSRulesAsArray(styleSheets) {
-	  // Convert to an array, and then use reduce.
-	  return [].slice.call(styleSheets).reduce(function (prev, styleSheet) {
-
-	    // The styleSheet might not contain any rules.
-	    if (styleSheet.cssRules) {
-	      // Convert the list of rules into an array.
-	      var rulesAsArray = [].slice.call(styleSheet.cssRules);
-	      // Use the spread operator to push each individual element onto the
-	      // return array.
-	      prev.push.apply(prev, _toConsumableArray(rulesAsArray));
-	    }
-
-	    return prev;
-	  }, []);
-	};
-
-	/*
-	 * Given a CSS Style Rule it will determine if the rule is one of our internal
-	 * test suite UI rules.
-	 *
-	 * There is a small chance a student could use a selector that includes
-	 * the text we are using below to determine if it's our CSS. In the off chance
-	 * that happens, it's best to just ask them to rename it differently.
-	 *
-	 * See https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule
-	 *
-	 */
-	var isTestSuiteRule = exports.isTestSuiteRule = function isTestSuiteRule(cssStyleRule) {
-	  if (typeof cssStyleRule.selectorText !== 'undefined' && (cssStyleRule.selectorText.includes('fcc_test') || cssStyleRule.selectorText.includes('mocha'))) {
-	    return true;
-	  }
-
-	  return false;
-	};
 
 /***/ }),
 /* 53 */
@@ -20697,9 +20729,9 @@ var FCC_Global =
 	});
 	exports.default = createTechnicalDocsPageTests;
 
-	var _sharedTestStrings = __webpack_require__(51);
+	var _sharedTestStrings = __webpack_require__(50);
 
-	var _styleSheetUtils = __webpack_require__(52);
+	var _styleSheetUtils = __webpack_require__(51);
 
 	function createTechnicalDocsPageTests() {
 
