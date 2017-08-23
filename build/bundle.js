@@ -40857,16 +40857,19 @@ var FCC_Global =
 
 /***/ }),
 /* 62 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = createRandomQuoteMachineTests;
+
+	var _chai = __webpack_require__(2);
+
 	function createRandomQuoteMachineTests() {
-	  describe("Random Quote Machine tests", function () {
+	  describe('Random Quote Machine tests', function () {
 
 	    var requestTimeout = 3000;
 
@@ -40875,103 +40878,120 @@ var FCC_Global =
 	      var centeredElementBounds = centeredElement.getBoundingClientRect();
 	      var leftGap = centeredElementBounds.left;
 	      var rightGap = window.innerWidth - centeredElementBounds.right;
-	      return Math.abs(leftGap - rightGap) < 20; // allow for scrollbar width
+	      // allow for scrollbar width
+	      return Math.abs(leftGap - rightGap) < 20;
 	    }
 
 	    beforeEach(function () {});
 
 	    after(function () {});
 
-	    describe("#Content", function () {
+	    describe('#Content', function () {
 	      it('1. I can see a wrapper element with a corresponding id="quote-box".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("quote-box"));
+	        _chai.assert.isNotNull(document.getElementById('quote-box'));
 	      });
 
-	      it('2. Within #quote-box, I can see an element with corresponding id="text".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("text"), '#text is not defined ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #text').length, 1, '#text is not a child of #quote-box ');
+	      it('2. Within #quote-box, I can see an element with corresponding\n      id="text".', function () {
+	        _chai.assert.isNotNull(document.getElementById('text'), '#text is not defined ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #text').length, 1, '#text is not a child of #quote-box ');
 	      });
 
-	      it('3. Within #quote-box, I can see an element with corresponding id="author".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("author"), '#author is not defined ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #author').length, 1, '#author is not a child of #quote-box ');
+	      it('3. Within #quote-box, I can see an element with corresponding\n      id="author".', function () {
+	        _chai.assert.isNotNull(document.getElementById('author'), '#author is not defined ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #author').length, 1, '#author is not a child of #quote-box ');
 	      });
 
-	      it('4. Within #quote-box, I can see a clickable element with corresponding id="new-quote".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("new-quote"), '#new-quote is not defined ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
+	      it('4. Within #quote-box, I can see a clickable element with\n      corresponding id="new-quote".', function () {
+	        _chai.assert.isNotNull(document.getElementById('new-quote'), '#new-quote is not defined ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
 	      });
 
-	      it('5. Within #quote-box, I can see a clickable <a> element with corresponding id="tweet-quote".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("tweet-quote"));
-	        FCC_Global.assert.strictEqual(document.getElementById("tweet-quote").nodeName, "A", '#tweet-quote element is not an <a> element');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote element is not a child of #quote-box ');
+	      it('5. Within #quote-box, I can see a clickable <a> element with\n      corresponding id="tweet-quote".', function () {
+	        _chai.assert.isNotNull(document.getElementById('tweet-quote'));
+	        _chai.assert.strictEqual(document.getElementById('tweet-quote').nodeName, 'A', '#tweet-quote element is not an <a> element');
+	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote element is not a child of #quote-box ');
 	      });
 
-	      it('6. On first load, my quote machine displays a random quote in the element with id="text".', function () {
+	      it('6. On first load, my quote machine displays a random quote in the\n      element with id="text".', function () {
 	        this.timeout(requestTimeout + 1000);
 	        return new Promise(function (resolve, reject) {
-	          setTimeout(function (_) {
-	            var text = document.getElementById("text");
-	            if (text.innerText.length > 0) resolve();else reject(new Error("There is no initial quote displayed "));
+	          setTimeout(function () {
+	            var text = document.getElementById('text');
+	            if (text.innerText.length > 0) {
+	              resolve();
+	            } else {
+	              reject(new Error('There is no initial quote displayed '));
+	            }
 	          }, requestTimeout);
 	        });
 	      });
 
-	      it('7. On first load, my quote machine displays the random quote\'s author in the element with id="author".', function () {
+	      it('7. On first load, my quote machine displays the random quote\'s author\n      in the element with id="author".', function () {
 	        this.timeout(requestTimeout + 1000);
 	        return new Promise(function (resolve, reject) {
-	          setTimeout(function (_) {
-	            var author = document.getElementById("author");
-	            if (author.innerText.length > 0) resolve();else reject(new Error("There is no initial author displayed "));
+	          setTimeout(function () {
+	            var author = document.getElementById('author');
+	            if (author.innerText.length > 0) {
+	              resolve();
+	            } else {
+	              reject(new Error('There is no initial author displayed '));
+	            }
 	          }, requestTimeout);
 	        });
 	      });
 
-	      it("8. When the #new-quote button is clicked, my quote machine should fetch a new quote and display it in the #text element.", function (done) {
+	      it('8. When the #new-quote button is clicked, my quote machine should\n      fetch a new quote and display it in the #text element.', function (done) {
 	        this.timeout(requestTimeout + 1000);
-	        var prevText = document.getElementById("text").innerText;
-	        document.getElementById("new-quote").click();
-	        setTimeout(function (_) {
-	          var newText = document.getElementById("text").innerText;
+	        var prevText = document.getElementById('text').innerText;
+	        document.getElementById('new-quote').click();
+	        setTimeout(function () {
+	          var newText = document.getElementById('text').innerText;
 	          if (newText === prevText) {
-	            done("The text hasn't changed after button click ");
+	            done('The text hasn\'t changed after button click ');
 	          } else {
 	            done();
 	          }
 	        }, requestTimeout);
 	      });
 
-	      it("9. My quote machine should fetch the new quote\'s author when the #new-quote button is clicked and display it in the #author element.", function (done) {
+	      it('9. My quote machine should fetch the new quote\'s author when the\n      #new-quote button is clicked and display it in the #author element.', function (done) {
 	        this.timeout(requestTimeout + 1000);
-	        var prevAuth = document.getElementById("author").innerText;
-	        document.getElementById("new-quote").click();
-	        setTimeout(function (_) {
-	          var newAuth = document.getElementById("author").innerText;
+	        var prevAuth = document.getElementById('author').innerText;
+	        document.getElementById('new-quote').click();
+	        setTimeout(function () {
+	          var newAuth = document.getElementById('author').innerText;
 	          if (newAuth === prevAuth) {
-	            done("The text hasn't changed after button click ");
+	            done('The text hasn\'t changed after button click ');
 	          } else {
 	            done();
 	          }
 	        }, requestTimeout);
 	      });
 
-	      it('10. I can tweet the current quote by clicking on the #tweet-quote <a> element. This <a> element should include the "twitter.com/intent/tweet" path in it\'s href attribute to tweet the current quote.', function () {
+	      it('10. I can tweet the current quote by clicking on the #tweet-quote <a>\n      element. This <a> element should include the "twitter.com/intent/tweet"\n      path in it\'s href attribute to tweet the current quote.', function () {
 	        this.timeout(requestTimeout + 1000);
-	        FCC_Global.assert.isOk(document.getElementById("tweet-quote").hasAttribute('href'), '#tweet-quote <a> element must have an href attribute ');
-	        var href = document.getElementById("tweet-quote").href;
-	        FCC_Global.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter intent ');
+	        _chai.assert.isOk(document.getElementById('tweet-quote').hasAttribute('href'), '#tweet-quote <a> element must have an href attribute ');
+	        var href = document.getElementById('tweet-quote').href;
+	        _chai.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter ' + 'intent ');
 	      });
-	    }); // END #Content
 
-	    describe("#Layout", function () {
+	      // END #Content
+	    });
 
-	      it('1. The #quote-box wrapper element should be horizontally centered.  Please run tests with browser\'s zoom level at 100% and page maximized.', function () {
-	        FCC_Global.assert.isOk(testHorizontallyCentered('quote-box'));
+	    describe('#Layout', function () {
+
+	      it('1. The #quote-box wrapper element should be horizontally centered.\n      Please run tests with browser\'s zoom level at 100% and page maximized.', function () {
+	        _chai.assert.isOk(testHorizontallyCentered('quote-box'));
 	      });
-	    }); // END #Layout
-	  }); // END Random Quote Machine tests
-	} // END createRandomQuoteMachineTests()
+
+	      // END #Layout
+	    });
+
+	    // END Random Quote Machine tests
+	  });
+
+	  // END createRandomQuoteMachineTests()
+	}
 
 /***/ }),
 /* 63 */
