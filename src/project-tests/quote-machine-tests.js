@@ -1,30 +1,34 @@
 import { assert } from 'chai';
+import { testHorizontallyCentered } from '../assets/elementUtils';
+import { frontEndLibrariesStack } from '../assets/sharedTestStrings';
 
 export default function createRandomQuoteMachineTests() {
   describe('Random Quote Machine tests', function() {
 
-    const requestTimeout = 3000;
+    // We set the timeout at a very generous 15 seconds because it might take
+    // a long time on a slow network to load a new quote. The tests are
+    // written in a way that they will pass as soon as we detect success,
+    // usually far sooner than 15 seconds.
+    const requestTimeout = 15000;
 
-    function testHorizontallyCentered(elName) {
-      const centeredElement = document.getElementById(elName);
-      const centeredElementBounds = centeredElement.getBoundingClientRect();
-      const leftGap = centeredElementBounds.left;
-      const rightGap = window.innerWidth - centeredElementBounds.right;
-      // allow for scrollbar width
-      return Math.abs(leftGap - rightGap) < 20;
-    }
-
-    beforeEach(function() {});
-
-    after(function() {});
+    describe('#Technology Stack', function() {
+      it(frontEndLibrariesStack, function() {
+        return true;
+      });
+    });
 
     describe('#Content', function() {
-      it(`1. I can see a wrapper element with a corresponding id="quote-box".`,
+      let reqNum = 0;
+
+      reqNum++;
+      it(`${reqNum}. I can see a wrapper element with a corresponding
+      id="quote-box".`,
       function() {
         assert.isNotNull(document.getElementById('quote-box'));
       });
 
-      it(`2. Within #quote-box, I can see an element with corresponding
+      reqNum++;
+      it(`${reqNum}. Within #quote-box, I can see an element with corresponding
       id="text".`,
       function() {
         assert.isNotNull(
@@ -38,7 +42,8 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      it(`3. Within #quote-box, I can see an element with corresponding
+      reqNum++;
+      it(`${reqNum}. Within #quote-box, I can see an element with corresponding
       id="author".`,
       function() {
         assert.isNotNull(
@@ -52,7 +57,8 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      it(`4. Within #quote-box, I can see a clickable element with
+      reqNum++;
+      it(`${reqNum}. Within #quote-box, I can see a clickable element with
       corresponding id="new-quote".`,
       function() {
         assert.isNotNull(
@@ -66,7 +72,8 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      it(`5. Within #quote-box, I can see a clickable <a> element with
+      reqNum++;
+      it(`${reqNum}. Within #quote-box, I can see a clickable <a> element with
       corresponding id="tweet-quote".`,
       function() {
         assert.isNotNull(document.getElementById('tweet-quote'));
@@ -82,75 +89,92 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      it(`6. On first load, my quote machine displays a random quote in the
-      element with id="text".`,
+      reqNum++;
+      it(`${reqNum}. On first load, my quote machine displays a random quote in
+      the element with id="text".`,
       function() {
-        this.timeout(requestTimeout + 1000);
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
+        this.timeout(requestTimeout);
+        // Check every half second if the test passes. If we don't ever detect
+        // the success condition, the test will fail by timing out.
+        return new Promise((resolve) => {
+          const intervalId = setInterval(() => {
             const text = document.getElementById('text');
             if (text.innerText.length > 0) {
+              console.log('Clearing interval ' + intervalId);
+              clearInterval(intervalId);
               resolve();
-            } else {
-              reject(new Error('There is no initial quote displayed '));
             }
-          }, requestTimeout);
+          }, 500);
         });
       });
 
-      it(`7. On first load, my quote machine displays the random quote's author
-      in the element with id="author".`,
+      reqNum++;
+      it(`${reqNum}. On first load, my quote machine displays the random quote's
+      author in the element with id="author".`,
       function() {
-        this.timeout(requestTimeout + 1000);
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
+        this.timeout(requestTimeout);
+        return new Promise((resolve) => {
+          const intervalId = setInterval(() => {
             const author = document.getElementById('author');
             if (author.innerText.length > 0) {
+              console.log('Clearing interval ' + intervalId);
+              clearInterval(intervalId);
               resolve();
-            } else {
-              reject(new Error('There is no initial author displayed '));
             }
-          }, requestTimeout);
+          }, 500);
         });
       });
 
-      it(`8. When the #new-quote button is clicked, my quote machine should
-      fetch a new quote and display it in the #text element.`,
-      function(done) {
-        this.timeout(requestTimeout + 1000);
-        const prevText = document.getElementById('text').innerText;
-        document.getElementById('new-quote').click();
-        setTimeout(() => {
-          const newText = document.getElementById('text').innerText;
-          if (newText === prevText) {
-            done('The text hasn\'t changed after button click ');
-          } else {
-            done();
-          }
-        }, requestTimeout);
-      });
-
-      it(`9. My quote machine should fetch the new quote's author when the
-      #new-quote button is clicked and display it in the #author element.`,
-      function(done) {
-        this.timeout(requestTimeout + 1000);
-        const prevAuth = document.getElementById('author').innerText;
-        document.getElementById('new-quote').click();
-        setTimeout(() => {
-          const newAuth = document.getElementById('author').innerText;
-          if (newAuth === prevAuth) {
-            done('The text hasn\'t changed after button click ');
-          } else {
-            done();
-          }
-        }, requestTimeout);
-      });
-
-      it(`10. I can tweet the current quote by clicking on the #tweet-quote <a>
-      element. This <a> element should include the "twitter.com/intent/tweet"
-      path in it's href attribute to tweet the current quote.`,
+      reqNum++;
+      it(`${reqNum}. When the #new-quote button is clicked, my quote machine
+      should fetch a new quote and display it in the #text element.`,
       function() {
-        this.timeout(requestTimeout + 1000);
+        let prevText;
+
+        this.timeout(requestTimeout);
+
+        prevText = document.getElementById('text').innerText;
+        document.getElementById('new-quote').click();
+
+        return new Promise((resolve) => {
+          const intervalId = setInterval(() => {
+            const newText = document.getElementById('text').innerText;
+            if (newText !== prevText) {
+              clearInterval(intervalId);
+              resolve();
+            }
+          }, 500);
+        });
+      });
+
+      reqNum++;
+      it(`${reqNum}. My quote machine should fetch the new quote's author when
+      the #new-quote button is clicked and display it in the #author element.`,
+      function() {
+        let prevAuth;
+
+        this.timeout(requestTimeout);
+
+        prevAuth = document.getElementById('author').innerText;
+        document.getElementById('new-quote').click();
+
+        return new Promise((resolve) => {
+          const intervalId = setInterval(() => {
+            const newAuth = document.getElementById('author').innerText;
+            if (newAuth !== prevAuth) {
+              clearInterval(intervalId);
+              resolve();
+            }
+          }, 500);
+        });
+      });
+
+      reqNum++;
+      it(`${reqNum}. I can tweet the current quote by clicking on the
+      #tweet-quote <a> element. This <a> element should include the
+      "twitter.com/intent/tweet" path in it's href attribute to tweet the
+      current quote.`,
+      function() {
         assert.isOk(
           document.getElementById('tweet-quote').hasAttribute('href'),
           '#tweet-quote <a> element must have an href attribute '
@@ -168,11 +192,14 @@ export default function createRandomQuoteMachineTests() {
     });
 
     describe('#Layout', function() {
+      let reqNum = 0;
 
-      it(`1. The #quote-box wrapper element should be horizontally centered.
-      Please run tests with browser\'s zoom level at 100% and page maximized.`,
+      reqNum++;
+      it(`${reqNum}. The #quote-box wrapper element should be horizontally
+      centered. Please run tests with browser's zoom level at 100% and page
+      maximized.`,
       function() {
-        assert.isOk(testHorizontallyCentered('quote-box'));
+        assert.isOk(testHorizontallyCentered('quote-box', window));
       });
 
     // END #Layout
