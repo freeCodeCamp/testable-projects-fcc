@@ -20556,7 +20556,7 @@ var FCC_Global =
 
 /***/ }),
 /* 53 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -20564,123 +20564,121 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createSurveyFormTests;
-	function createSurveyFormTests() {
-	  /*
-	    Returns the number of elements that are selectable
-	  */
-	  function getNumOptions(elems) {
-	    var numActive = 0;
-	    for (var i = 0; i < elems.length; i++) {
-	      var el = elems[i];
-	      if (!el.disabled) {
-	        numActive++;
-	      }
-	    }
-	    return numActive;
-	  }
 
-	  /*
-	    Returns the number of elements that have a value-attribute
-	  */
-	  function getNumValues(elems) {
-	    var numValues = 0;
-	    for (var i = 0; i < elems.length; i++) {
-	      var el = elems[i];
-	      if (el.hasAttribute('value')) {
-	        numValues++;
-	      }
-	    }
-	    return numValues;
-	  }
+	var _chai = __webpack_require__(2);
+
+	var _sharedTestStrings = __webpack_require__(49);
+
+	function createSurveyFormTests() {
 
 	  describe('Survey Form tests', function () {
+
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.responsiveWebDesignStack, function () {
+	        _chai.assert.ok(true);
+	      });
+	    });
+
 	    describe('#Content', function () {
+	      var reqNum = 0;
 
-	      it('1. I can see a title with id="title" in H1 sized text.', function () {
+	      reqNum++;
+	      it(reqNum + '. I can see a title with id="title" in H1 sized text.', function () {
 	        var title = document.getElementById('title');
-	        FCC_Global.assert.isNotNull(title, 'There should be an element with id="title" ');
-	        FCC_Global.assert.strictEqual(title.tagName, 'H1', '#title should be in H1 sized text ');
-	        FCC_Global.assert.isAbove(title.innerText.length, 0, '#title should contain some text ');
+	        _chai.assert.isNotNull(title, 'There should be an element with id="title" ');
+	        _chai.assert.strictEqual(title.tagName, 'H1', '#title should be in H1 sized text ');
+	        _chai.assert.isAbove(title.innerText.length, 0, '#title should contain some text ');
 	      });
 
-	      it('2. I can see a short explanation with id="description" in P sized\n      text.', function () {
+	      reqNum++;
+	      it(reqNum + '. I can see a short explanation with id="description" in P\n      sized text.', function () {
 	        var description = document.getElementById('description');
-	        FCC_Global.assert.isNotNull(description, 'There should be an element with id="description" ');
-	        FCC_Global.assert.strictEqual(description.tagName, 'P', '#description should be in P sized text ');
-	        FCC_Global.assert.isAbove(description.innerText.length, 0, '#description should contain some text ');
+	        _chai.assert.isNotNull(description, 'There should be an element with id="description" ');
+	        _chai.assert.strictEqual(description.tagName, 'P', '#description should be in P sized text ');
+	        _chai.assert.isAbove(description.innerText.length, 0, '#description should contain some text ');
 	      });
 
-	      it('3. I can see a <form> with id="survey-form".', function () {
+	      reqNum++;
+	      it(reqNum + '. I can see a <form> with id="survey-form".', function () {
 	        var form = document.getElementById('survey-form');
-	        FCC_Global.assert.isNotNull(form, 'There should be an element with id="survey-form" ');
-	        FCC_Global.assert.strictEqual(form.tagName, 'FORM', '#survey-form should be a <form>-element ');
+	        _chai.assert.isNotNull(form, 'There should be an element with id="survey-form" ');
+	        _chai.assert.strictEqual(form.tagName, 'FORM', '#survey-form should be a <form>-element ');
 	      });
 
-	      it('4. Inside the form element, I am required to enter my name in a field\n      with id="name".', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I am required to enter my name in\n      a field with id="name".', function () {
 	        var name = document.getElementById('name');
-	        FCC_Global.assert.isNotNull(name, 'There should be an input text field with id="name" ');
-	        FCC_Global.assert.strictEqual(name.type, 'text', 'input field with id="name" should be a text field ');
-	        FCC_Global.assert.isOk(name.required, 'Name input field should be required ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #name').length, 0, 'The field with id="name" is not inside the form element ');
+	        _chai.assert.isNotNull(name, 'There should be an input text field with id="name" ');
+	        _chai.assert.strictEqual(name.type, 'text', 'input field with id="name" should be a text field ');
+	        _chai.assert.isOk(name.required, 'Name input field should be required ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #name').length, 0, 'The field with id="name" is not inside the form element ');
 	      });
 
-	      it('5. Inside the form element, I am required to enter an email in a\n      field with id="email".', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I am required to enter an email in\n      a field with id="email".', function () {
 	        var email = document.getElementById('email');
-	        FCC_Global.assert.isNotNull(email, 'There should be an input text field with id="email" ');
-	        FCC_Global.assert.isOk(email.required, 'Email input field should be required ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #email').length, 0, 'The field with id="email" is not inside the form element ');
+	        _chai.assert.isNotNull(email, 'There should be an input text field with id="email" ');
+	        _chai.assert.isOk(email.required, 'Email input field should be required ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #email').length, 0, 'The field with id="email" is not inside the form element ');
 	      });
 
-	      it('6. If I enter an email that is not formatted correctly, I will see an\n      HTML5 validation error.', function () {
+	      reqNum++;
+	      it(reqNum + '. If I enter an email that is not formatted correctly, I will\n      see an HTML5 validation error.', function () {
 	        var email = document.getElementById('email');
-	        FCC_Global.assert.strictEqual(email.type, 'email', 'Email field should be HTML5 validated ');
+	        _chai.assert.strictEqual(email.type, 'email', 'Email field should be HTML5 validated ');
 	      });
 
-	      it('7. Inside the form, I can enter a number in a field with\n      id="number".', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form, I can enter a number in a field with\n      id="number".', function () {
 	        var number = document.getElementById('number');
-	        FCC_Global.assert.isNotNull(number, 'There should be an input text field with id="number" ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #number').length, 0, 'The field with id="number" is not inside the form element ');
+	        _chai.assert.isNotNull(number, 'There should be an input text field with id="number" ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #number').length, 0, 'The field with id="number" is not inside the form element ');
 	      });
 
-	      it('8. If I enter non-numbers in the number input, I will see an HTML5\n      validation error.', function () {
+	      reqNum++;
+	      it(reqNum + '. If I enter non-numbers in the number input, I will see an\n      HTML5 validation error.', function () {
 	        var number = document.getElementById('number');
-	        FCC_Global.assert.strictEqual(number.type, 'number', 'Number field should be HTML5 validated ');
+	        _chai.assert.strictEqual(number.type, 'number', 'Number field should be HTML5 validated ');
 	      });
 
-	      it('9. If I enter numbers outside the range of the number input, I will\n      see an HTML5 validation error.\'', function () {
+	      reqNum++;
+	      it(reqNum + '. If I enter numbers outside the range of the number input, I\n      will see an HTML5 validation error.\'', function () {
 	        var number = document.getElementById('number');
-	        FCC_Global.assert.isNotNaN(parseInt(number.min), 'Minimum number should be defined ');
-	        FCC_Global.assert.isNotNaN(parseInt(number.max), 'Maximum number should be defined ');
+	        _chai.assert.isNotNaN(parseInt(number.min, 10), 'Minimum number should be defined ');
+	        _chai.assert.isNotNaN(parseInt(number.max, 10), 'Maximum number should be defined ');
 	      });
 
-	      it('10. For the name, email, and number input fields inside the form I can\n      see corresponding labels that describe the purpose of each field with the\n      following ids: id="name-label", id="email-label", and id="number-label".', function () {
+	      reqNum++;
+	      it(reqNum + '. For the name, email, and number input fields inside the\n      form I can see corresponding labels that describe the purpose of each\n      field with the following ids: id="name-label", id="email-label", and\n      id="number-label".', function () {
 	        var nameLabel = document.getElementById('name-label');
 	        var emailLabel = document.getElementById('email-label');
 	        var numberLabel = document.getElementById('number-label');
-	        FCC_Global.assert.isNotNull(nameLabel, '#name-label is not defined ');
-	        FCC_Global.assert.strictEqual(nameLabel.nodeName, 'LABEL', '#name-label should be a <label> element ');
-	        FCC_Global.assert.isAbove(nameLabel.innerText.length, 0, '#name-label should contain some text ');
-	        FCC_Global.assert.isNotNull(emailLabel, '#email-label is not defined ');
-	        FCC_Global.assert.strictEqual(emailLabel.nodeName, 'LABEL', '#email-label should be a <label> element ');
-	        FCC_Global.assert.isAbove(emailLabel.innerText.length, 0, '#email-label should contain some text ');
-	        FCC_Global.assert.isNotNull(numberLabel, '#number-label is not defined ');
-	        FCC_Global.assert.strictEqual(numberLabel.nodeName, 'LABEL', '#number-label should be a <label> element ');
-	        FCC_Global.assert.isAbove(numberLabel.innerText.length, 0, '#number-label should contain some text ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #name-label').length, 0, 'The label with id="name-label" is not inside the form element ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #email-label').length, 0, 'The label with id="email-label" is not inside the form element ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #number-label').length, 0, 'The label with id="number-label" is not inside the form element ');
+	        _chai.assert.isNotNull(nameLabel, '#name-label is not defined ');
+	        _chai.assert.strictEqual(nameLabel.nodeName, 'LABEL', '#name-label should be a <label> element ');
+	        _chai.assert.isAbove(nameLabel.innerText.length, 0, '#name-label should contain some text ');
+	        _chai.assert.isNotNull(emailLabel, '#email-label is not defined ');
+	        _chai.assert.strictEqual(emailLabel.nodeName, 'LABEL', '#email-label should be a <label> element ');
+	        _chai.assert.isAbove(emailLabel.innerText.length, 0, '#email-label should contain some text ');
+	        _chai.assert.isNotNull(numberLabel, '#number-label is not defined ');
+	        _chai.assert.strictEqual(numberLabel.nodeName, 'LABEL', '#number-label should be a <label> element ');
+	        _chai.assert.isAbove(numberLabel.innerText.length, 0, '#number-label should contain some text ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #name-label').length, 0, 'The label with id="name-label" is not inside the form element ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #email-label').length, 0, 'The label with id="email-label" is not inside the form element ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #number-label').length, 0, 'The label with id="number-label" is not inside the form element ');
 	      });
 
-	      it('11. For the name, email, and number input fields, I can see\n      placeholder text that gives me a description or instructions for each\n      field.\'', function () {
-	        FCC_Global.assert.strictEqual(document.getElementById('name').hasAttribute('placeholder'), true, 'The name input field should have a placeholder attribute ');
-	        FCC_Global.assert.isAbove(document.getElementById('name').placeholder.length, 0, 'The name input field\'s placeholder attribute should have ' + 'some text for its value');
-	        FCC_Global.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The email input field should have a placeholder attribute ');
-	        FCC_Global.assert.isAbove(document.getElementById('email').placeholder.length, 0, 'The email input field\'s placeholder attribute should have ' + 'some text for its value');
-	        FCC_Global.assert.strictEqual(document.getElementById('number').hasAttribute('placeholder'), true, 'The number input field should have a placeholder attribute ');
-	        FCC_Global.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have ' + 'some text for its value ');
+	      reqNum++;
+	      it(reqNum + '. For the name, email, and number input fields, I can see\n      placeholder text that gives me a description or instructions for each\n      field.\'', function () {
+	        _chai.assert.strictEqual(document.getElementById('name').hasAttribute('placeholder'), true, 'The name input field should have a placeholder attribute ');
+	        _chai.assert.isAbove(document.getElementById('name').placeholder.length, 0, 'The name input field\'s placeholder attribute should have ' + 'some text for its value');
+	        _chai.assert.strictEqual(document.getElementById('email').hasAttribute('placeholder'), true, 'The email input field should have a placeholder attribute ');
+	        _chai.assert.isAbove(document.getElementById('email').placeholder.length, 0, 'The email input field\'s placeholder attribute should have ' + 'some text for its value');
+	        _chai.assert.strictEqual(document.getElementById('number').hasAttribute('placeholder'), true, 'The number input field should have a placeholder attribute ');
+	        _chai.assert.isAbove(document.getElementById('number').placeholder.length, 0, 'The number input field\'s placeholder attribute should have ' + 'some text for its value ');
 	      });
 
-	      it('12. Inside the form element, I can select an option from a dropdown\n      that has corresponding id="dropdown".\'', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I can select an option from a\n      dropdown that has corresponding id="dropdown".\'', function () {
 	        var dropdown = document.getElementById('dropdown');
 	        var dropdownTag = dropdown.tagName;
 	        var inputSibling = null;
@@ -20688,51 +20686,67 @@ var FCC_Global =
 	        if (dropdownTag === 'DATALIST') {
 	          inputSibling = dropdown.previousElementSibling;
 	          inputName = inputSibling.getAttribute('list');
-	          FCC_Global.assert.strictEqual(inputName, 'dropdown', 'When using the datalist tag, the accompanying input tag must ' + 'contain a name attribute matching the datalist id.');
+	          _chai.assert.strictEqual(inputName, 'dropdown', 'When using the datalist tag, the accompanying input tag must ' + 'contain a name attribute matching the datalist id.');
 	        }
-	        FCC_Global.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
-	        FCC_Global.assert.isAtLeast(getNumOptions(dropdown.options), 2, 'Select should contain at least 2 selectable options ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #dropdown').length, 0, 'The select field with id="dropdown" is not inside the form element ');
+	        _chai.assert.isNotNull(dropdown, 'There should be a select field with id="dropdown" ');
+	        _chai.assert.isAtLeast(document.querySelectorAll('#dropdown option:not([disabled])').length, 2, 'Select should contain at least 2 selectable options ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #dropdown').length, 0, 'The select field with id="dropdown" is not inside the form element ');
 	      });
 
-	      it('13. Inside the form element, I can select a field from one or more\n      groups of radio buttons. Each group should be grouped using the name\n      attribute.', function () {
-	        var radioButtons = document.querySelectorAll('input[type="radio"]');
-	        FCC_Global.assert.isAtLeast(radioButtons.length, 2, 'There should be at least 2 radio buttons ');
-	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="radio"]').length, 2, 'There should be at least 2 radio buttons inside the #survey-form ');
-	        FCC_Global.assert.strictEqual(radioButtons.length, getNumValues(radioButtons), 'All your radio-buttons must have a value attribute ');
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I can select a field from one or\n      more groups of radio buttons. Each group should be grouped using the name\n      attribute.', function () {
+	        var groups = void 0;
+	        // [].slice.call converts to array.
+	        var radioButtons = [].slice.call(document.querySelectorAll('input[type="radio"]'));
 
-	        var groups = {};
-	        for (var i = 0; i < radioButtons.length; i++) {
-	          var groupName = radioButtons[i].name;
-	          FCC_Global.assert.isAbove(groupName.length, 0, 'All your radio-buttons need a name attribute ');
-	          var objRef = groups[groupName];
-	          groups[groupName] = objRef ? objRef + 1 : 1;
-	        }
+	        _chai.assert.isAtLeast(radioButtons.length, 2, 'There should be at least 2 radio buttons ');
+	        _chai.assert.isAtLeast(document.querySelectorAll('#survey-form input[type="radio"]').length, 2, 'There should be at least 2 radio buttons inside the #survey-form ');
+	        _chai.assert.strictEqual(radioButtons.length, document.querySelectorAll('input[value][type="radio"]:not([value=""])').length, 'All your radio-buttons must have a value attribute ');
+
+	        _chai.assert.strictEqual(radioButtons.length, document.querySelectorAll('input[name][type="radio"]:not([name=""])').length, 'All your radio-buttons need a name attribute ');
+
+	        // Count the number of radio buttons per group.
+	        groups = radioButtons.reduce(function (groups, radioButton) {
+	          if (groups.hasOwnProperty(radioButton.name)) {
+	            groups[radioButton.name]++;
+	          } else {
+	            groups[radioButton.name] = 1;
+	          }
+	          return groups;
+	        }, {});
+
+	        // Make sure each group has at least two radio buttons.
 	        for (var group in groups) {
-	          FCC_Global.assert.isAtLeast(groups[group], 2, 'Every radio-button group should have at least 2 radio buttons ');
+	          if (Object.prototype.hasOwnProperty.call(groups, group)) {
+	            console.log(groups[group]);
+	            _chai.assert.isAtLeast(groups[group], 2, 'Every radio-button group should have at least 2 radio buttons ');
+	          }
 	        }
 	      });
 
-	      it('14. Inside the form element, I can select several fields from a\n      series of checkboxes, each of which must have a value attribute.', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I can select several fields from a\n      series of checkboxes, each of which must have a value attribute.', function () {
 	        var checkboxes = document.querySelectorAll('#survey-form input[type="checkbox"]');
-	        FCC_Global.assert.isAtLeast(checkboxes.length, 2, 'There should be at least 2 checkboxes inside the form ');
-	        FCC_Global.assert.strictEqual(checkboxes.length, getNumValues(checkboxes), 'All your checkboxes must have a value attribute ');
+	        _chai.assert.isAtLeast(checkboxes.length, 2, 'There should be at least 2 checkboxes inside the form ');
+	        _chai.assert.strictEqual(checkboxes.length, document.querySelectorAll('#survey-form input[value][type="checkbox"]:not([value=""]').length, 'All your checkboxes must have a value attribute ');
 	      });
 
-	      it('15. Inside the form element, I am presented with a <textarea> at the\n      end for additional comments.\'', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I am presented with a <textarea>\n      at the end for additional comments.\'', function () {
 	        var textareas = document.getElementsByTagName('textarea');
-	        FCC_Global.assert.isAtLeast(textareas.length, 1, 'There should be at least 1 <textarea> ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form textarea').length, 0, 'The textarea is not inside the form element ');
+	        _chai.assert.isAtLeast(textareas.length, 1, 'There should be at least 1 <textarea> ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form textarea').length, 0, 'The textarea is not inside the form element ');
 	      });
 
-	      it('16. Inside the form element, I am presented with a button with\n      id="submit" to submit all my inputs.', function () {
+	      reqNum++;
+	      it(reqNum + '. Inside the form element, I am presented with a button with\n      id="submit" to submit all my inputs.', function () {
 	        var button = document.getElementById('submit');
-	        FCC_Global.assert.isNotNull(button, 'There should be a button with id="submit" ');
+	        _chai.assert.isNotNull(button, 'There should be a button with id="submit" ');
 	        if (button.nodeName === 'INPUT') {
-	          FCC_Global.assert.strictEqual(button.hasAttribute('type'), true, 'If you are using an <input> element for your button you need to ' + 'define a type attribute ');
+	          _chai.assert.strictEqual(button.hasAttribute('type'), true, 'If you are using an <input> element for your button you need to ' + 'define a type attribute ');
 	        }
-	        FCC_Global.assert.strictEqual(button.type, 'submit', 'Your button\'s type attribute should have a value of "submit" ');
-	        FCC_Global.assert.isAbove(document.querySelectorAll('#survey-form #submit').length, 0, 'The button with id="submit" is not inside the form element ');
+	        _chai.assert.strictEqual(button.type, 'submit', 'Your button\'s type attribute should have a value of "submit" ');
+	        _chai.assert.isAbove(document.querySelectorAll('#survey-form #submit').length, 0, 'The button with id="submit" is not inside the form element ');
 	      });
 
 	      // END #Content
