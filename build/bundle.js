@@ -20387,105 +20387,123 @@ var FCC_Global =
 
 	var _styleSheetUtils = __webpack_require__(51);
 
+	var _chai = __webpack_require__(2);
+
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function createProductLandingPageTests() {
 	  describe('#Product Landing Page tests', function () {
 
-	    describe('#Content', function () {
-
-	      // Describes the allowed stack for this project.
+	    describe('#Technology Stack', function () {
 	      it(_sharedTestStrings.responsiveWebDesignStack, function () {
-	        return true;
+	        _chai.assert.ok(true);
+	      });
+	    });
+
+	    describe('#Content', function () {
+	      var reqNum = 0;
+
+	      reqNum++;
+	      it(reqNum + '. My product landing page should have a <header> element with\n      corresponding id="header".', function () {
+	        _chai.assert.isNotNull(document.getElementById('header'), '#header is not defined ');
 	      });
 
-	      it('1. My product landing page should have a <header> element with\n      corresponding id="header".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('header'), '#header is not defined ');
-	      });
-
-	      it('2. I can see an image within the #header element with a corresponding\n      id="header-img". A company logo would make a good image here. ', function () {
+	      reqNum++;
+	      it(reqNum + '. I can see an image within the #header element with a\n      corresponding id="header-img". A company logo would make a good image\n      here. ', function () {
 	        var img = document.getElementById('header-img');
-	        FCC_Global.assert.isNotNull(img, '#header-img is not defined ');
-	        FCC_Global.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header element ');
-	        FCC_Global.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
-	        FCC_Global.assert.include(img.src, 'http', 'The src attribute\'s value should be a url (http...) ');
+	        _chai.assert.isNotNull(img, '#header-img is not defined ');
+	        _chai.assert.strictEqual(img.nodeName, 'IMG', '#header-img is not an <img> element ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#header #header-img').length, 1, '#header-img is not a child of #header element ');
+	        _chai.assert.strictEqual(img.hasAttribute('src'), true, '#header-img must have a src attribute ');
+	        _chai.assert.include(img.src, 'http', 'The src attribute\'s value should be a url (http...) ');
 	      });
 
-	      it('3. Within the <header> element I can see a <nav> element with\n      corresponding id="nav-bar".\'', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('nav-bar'), '#nav-bar is not defined ');
-	        FCC_Global.assert.strictEqual(document.getElementById('nav-bar').nodeName, 'NAV', 'The #nav-bar element is not a <nav> element ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#header #nav-bar').length, 1, '#nav-bar is not a child of #header ');
+	      reqNum++;
+	      it(reqNum + '. Within the <header> element I can see a <nav> element with\n      corresponding id="nav-bar".\'', function () {
+	        _chai.assert.isNotNull(document.getElementById('nav-bar'), '#nav-bar is not defined ');
+	        _chai.assert.strictEqual(document.getElementById('nav-bar').nodeName, 'NAV', 'The #nav-bar element is not a <nav> element ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#header #nav-bar').length, 1, '#nav-bar is not a child of #header ');
 	      });
 
-	      it('4. I can see at least three clickable elements inside the nav\n      element, each with the class "nav-link".', function () {
-	        FCC_Global.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ' + 'within the #nav-bar element ');
+	      reqNum++;
+	      it(reqNum + '. I can see at least three clickable elements inside the nav\n      element, each with the class "nav-link".', function () {
+	        _chai.assert.isAtLeast(document.querySelectorAll('#nav-bar .nav-link').length, 3, 'There are not at least 3 elements with a class of "nav-link" ' + 'within the #nav-bar element ');
 	      });
 
-	      it('5. When I click a .nav-link button in the nav element, I am taken to\n      the corresponding section of the landing page.\'', function () {
+	      reqNum++;
+	      it(reqNum + '. When I click a .nav-link button in the nav element, I am\n      taken to the corresponding section of the landing page.\'', function () {
 	        var navLinks = document.querySelectorAll('#nav-bar .nav-link');
 	        navLinks.forEach(function (link) {
-	          FCC_Global.assert.isNotNull(link);
-	          FCC_Global.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
+	          _chai.assert.isNotNull(link);
+	          _chai.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');
 	          var linkDestination = link.getAttribute('href').slice(1);
-	          FCC_Global.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element on the page ');
+	          _chai.assert.isNotNull(document.getElementById(linkDestination), 'The .nav-link with href="' + link.getAttribute('href') + '" is not linked to a corresponding element on the page ');
 	        });
 	      });
 
-	      it('6. I can watch an embedded product video with id="video".', function () {
+	      reqNum++;
+	      it(reqNum + '. I can watch an embedded product video with id="video".', function () {
 	        var video = document.getElementById('video');
-	        FCC_Global.assert.isNotNull(video, '#video is not defined ');
-	        FCC_Global.assert(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
-	        FCC_Global.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
+	        _chai.assert.isNotNull(video, '#video is not defined ');
+	        (0, _chai.assert)(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
+	        _chai.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
 	      });
 
-	      it('7. My landing page has a <form> element with a corresponding\n      id="form".\'', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('form'), '#form is not defined ');
-	        FCC_Global.assert.strictEqual(document.getElementById('form').nodeName, 'FORM', '#form should be a <form> element ');
+	      reqNum++;
+	      it(reqNum + '. My landing page has a <form> element with a corresponding\n      id="form".\'', function () {
+	        _chai.assert.isNotNull(document.getElementById('form'), '#form is not defined ');
+	        _chai.assert.strictEqual(document.getElementById('form').nodeName, 'FORM', '#form should be a <form> element ');
 	      });
 
-	      it('8. Within the form, there is an <input> field with id="email" where I\n      can enter an email address.', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('email'), '#email is not defined ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#form #email').length, 1, '#email should be a child of the #form element ');
-	        FCC_Global.assert.strictEqual(document.getElementById('email').nodeName, 'INPUT', '#email should be an <input> element ');
+	      reqNum++;
+	      it(reqNum + '. Within the form, there is an <input> field with id="email"\n      where I can enter an email address.', function () {
+	        _chai.assert.isNotNull(document.getElementById('email'), '#email is not defined ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#form #email').length, 1, '#email should be a child of the #form element ');
+	        _chai.assert.strictEqual(document.getElementById('email').nodeName, 'INPUT', '#email should be an <input> element ');
 	      });
 
-	      it('9. The #email input field should have placeholder text to let the\n      user know what the field is for.', function () {
+	      reqNum++;
+	      it(reqNum + '. The #email input field should have placeholder text to let\n      the user know what the field is for.', function () {
 	        var emailElem = document.getElementById('email');
-	        FCC_Global.assert.strictEqual(emailElem.hasAttribute('placeholder'), true, 'The #email input field does not have placeholder text ');
-	        FCC_Global.assert.isAbove(emailElem.getAttribute('placeholder').length, 0, 'The #email placeholder attribute should have some text ');
+	        _chai.assert.strictEqual(emailElem.hasAttribute('placeholder'), true, 'The #email input field does not have placeholder text ');
+	        _chai.assert.isAbove(emailElem.getAttribute('placeholder').length, 0, 'The #email placeholder attribute should have some text ');
 	      });
 
-	      it('10. The #email input field uses HTML5 validation to confirm that the\n      entered text is an email address.', function () {
+	      reqNum++;
+	      it(reqNum + '. The #email input field uses HTML5 validation to confirm\n      that the entered text is an email address.', function () {
 	        var emailElem = document.getElementById('email');
-	        FCC_Global.assert.strictEqual(emailElem.type, 'email', 'The #email input element should use HTML5 validation ');
+	        _chai.assert.strictEqual(emailElem.type, 'email', 'The #email input element should use HTML5 validation ');
 	      });
 
-	      it('11. Within the form, there is a submit <input> with corresponding\n      id="submit".', function () {
+	      reqNum++;
+	      it(reqNum + '. Within the form, there is a submit <input> with\n      corresponding id="submit".', function () {
 	        var submitButton = document.getElementById('submit');
-	        FCC_Global.assert.isNotNull(submitButton, '#submit is not defined ');
-	        FCC_Global.assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
-	        FCC_Global.assert.strictEqual(submitButton.nodeName, 'INPUT', '#submit should be an <input> element ');
-	        FCC_Global.assert.strictEqual(submitButton.type, 'submit', 'The #submit element input type is incorrect ');
+	        _chai.assert.isNotNull(submitButton, '#submit is not defined ');
+	        _chai.assert.strictEqual(document.querySelectorAll('#form #submit').length, 1, '#submit should be a child of the #form element ');
+	        _chai.assert.strictEqual(submitButton.nodeName, 'INPUT', '#submit should be an <input> element ');
+	        _chai.assert.strictEqual(submitButton.type, 'submit', 'The #submit element input type is incorrect ');
 	      });
 
-	      it('12. When I click the #submit element, the email is submitted to a\n      static page (use this mock URL: https://www.freecodecamp.com/email-submit)\n      that confirms the email address was entered (and that it posted\n      successfully).', function () {
+	      reqNum++;
+	      it(reqNum + '. When I click the #submit element, the email is submitted to\n      a static page (use this mock URL:\n      https://www.freecodecamp.com/email-submit) that confirms the email address\n      was entered (and that it posted successfully).', function () {
 	        var emailElem = document.getElementById('email');
 	        var formElem = document.getElementById('form');
-	        var submitElem = document.getElementById('submit');
-	        FCC_Global.assert.strictEqual(formElem.hasAttribute('action'), true, 'The #form should have an action attribute ');
-	        FCC_Global.assert.include(formElem.action, 'http', 'The action attribute\'s value should be a url (http...) ');
-	        FCC_Global.assert.strictEqual(emailElem.hasAttribute('name'), true, 'The #email input should have a name attribute ');
-	        FCC_Global.assert.strictEqual(emailElem.name, 'email', 'The #email element\'s name attribute should have a value of "email" ');
+	        _chai.assert.strictEqual(formElem.hasAttribute('action'), true, 'The #form should have an action attribute ');
+	        _chai.assert.include(formElem.action, 'http', 'The action attribute\'s value should be a url (http...) ');
+	        _chai.assert.strictEqual(emailElem.hasAttribute('name'), true, 'The #email input should have a name attribute ');
+	        _chai.assert.strictEqual(emailElem.name, 'email', 'The #email element\'s name attribute should have a value of "email" ');
 	      });
 
 	      // END #Content
 	    });
 
 	    describe('#Layout', function () {
+	      var reqNum = 0;
+
 	      // TODO: Most of this function should be extracted to a utility that
 	      // can be reused.
-	      it('1. The navbar should always be at the top of the viewport.', function () {
+	      reqNum++;
+	      it(reqNum + '. The navbar should always be at the top of the viewport.', function () {
 	        var header = document.getElementById('header');
 	        var headerChildren = header.children;
 	        // array of all potential elements serving as a navbar
@@ -20507,13 +20525,14 @@ var FCC_Global =
 	          return candidatePosition;
 	        }
 
-	        FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport ');
+	        _chai.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the viewport ');
 	        window.scroll(0, 500);
-	        FCC_Global.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the ' + 'viewport even after scrolling ');
+	        _chai.assert.approximately(getNavbarPosition(navbarCandidates), 0, 15, '#header or one of its children should be at the top of the ' + 'viewport even after scrolling ');
 	        window.scroll(0, 0);
 	      });
 
-	      it('2. My product landing page should have at least one media query.', function () {
+	      reqNum++;
+	      it(reqNum + '. My product landing page should have at least one media\n      query.', function () {
 
 	        // Filter to get only media queries.
 	        var queryRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
@@ -20527,10 +20546,11 @@ var FCC_Global =
 	          return !(0, _styleSheetUtils.isTestSuiteRule)(rule);
 	        });
 
-	        FCC_Global.assert.isAbove(cssMediaRules.length, 0, 'No media queries detected ');
+	        _chai.assert.isAbove(cssMediaRules.length, 0, 'No media queries detected ');
 	      });
 
-	      it('3. My product landing page should utilize CSS flexbox at least once.', function () {
+	      reqNum++;
+	      it(reqNum + '. My product landing page should utilize CSS flexbox at least\n      once.', function () {
 	        // Find CSS rules that use flexbox.
 	        var flexRules = (0, _styleSheetUtils.allCSSRulesAsArray)(document.styleSheets).filter(function (rule) {
 	          // Eliminate any CSS Rules that are part of our test suite UI.
@@ -20542,7 +20562,7 @@ var FCC_Global =
 	          return typeof rule.style !== 'undefined' && typeof rule.style.display !== 'undefined' && (rule.style.display === 'flex' || rule.style.display === 'inline-flex');
 	        });
 
-	        FCC_Global.assert.isAbove(flexRules.length, 0, 'We do not detect a display property set to flex or inline-flex ' + 'anywhere in your CSS ');
+	        _chai.assert.isAbove(flexRules.length, 0, 'We do not detect a display property set to flex or inline-flex ' + 'anywhere in your CSS ');
 	      });
 
 	      // END #Layout
