@@ -135,7 +135,7 @@ var FCC_Global =
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(63);
+	var _heatMapTests = __webpack_require__(64);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
@@ -20161,6 +20161,8 @@ var FCC_Global =
 	  value: true
 	});
 	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '1. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+
+	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
 
 /***/ }),
 /* 50 */
@@ -41026,108 +41028,132 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
+	var _elementUtils = __webpack_require__(63);
+
+	var _sharedTestStrings = __webpack_require__(49);
+
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {
 
-	    var requestTimeout = 3000;
+	    // We set the timeout at a very generous 15 seconds because it might take
+	    // a long time on a slow network to load a new quote. The tests are
+	    // written in a way that they will pass as soon as we detect success,
+	    // usually far sooner than 15 seconds.
+	    var requestTimeout = 15000;
 
-	    function testHorizontallyCentered(elName) {
-	      var centeredElement = document.getElementById(elName);
-	      var centeredElementBounds = centeredElement.getBoundingClientRect();
-	      var leftGap = centeredElementBounds.left;
-	      var rightGap = window.innerWidth - centeredElementBounds.right;
-	      // allow for scrollbar width
-	      return Math.abs(leftGap - rightGap) < 20;
-	    }
-
-	    beforeEach(function () {});
-
-	    after(function () {});
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.frontEndLibrariesStack, function () {
+	        return true;
+	      });
+	    });
 
 	    describe('#Content', function () {
-	      it('1. I can see a wrapper element with a corresponding id="quote-box".', function () {
+	      var reqNum = 0;
+
+	      reqNum++;
+	      it(reqNum + '. I can see a wrapper element with a corresponding\n      id="quote-box".', function () {
 	        _chai.assert.isNotNull(document.getElementById('quote-box'));
 	      });
 
-	      it('2. Within #quote-box, I can see an element with corresponding\n      id="text".', function () {
+	      reqNum++;
+	      it(reqNum + '. Within #quote-box, I can see an element with corresponding\n      id="text".', function () {
 	        _chai.assert.isNotNull(document.getElementById('text'), '#text is not defined ');
 	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #text').length, 1, '#text is not a child of #quote-box ');
 	      });
 
-	      it('3. Within #quote-box, I can see an element with corresponding\n      id="author".', function () {
+	      reqNum++;
+	      it(reqNum + '. Within #quote-box, I can see an element with corresponding\n      id="author".', function () {
 	        _chai.assert.isNotNull(document.getElementById('author'), '#author is not defined ');
 	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #author').length, 1, '#author is not a child of #quote-box ');
 	      });
 
-	      it('4. Within #quote-box, I can see a clickable element with\n      corresponding id="new-quote".', function () {
+	      reqNum++;
+	      it(reqNum + '. Within #quote-box, I can see a clickable element with\n      corresponding id="new-quote".', function () {
 	        _chai.assert.isNotNull(document.getElementById('new-quote'), '#new-quote is not defined ');
 	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #new-quote').length, 1, '#new-quote button is not a child of #quote-box ');
 	      });
 
-	      it('5. Within #quote-box, I can see a clickable <a> element with\n      corresponding id="tweet-quote".', function () {
+	      reqNum++;
+	      it(reqNum + '. Within #quote-box, I can see a clickable <a> element with\n      corresponding id="tweet-quote".', function () {
 	        _chai.assert.isNotNull(document.getElementById('tweet-quote'));
 	        _chai.assert.strictEqual(document.getElementById('tweet-quote').nodeName, 'A', '#tweet-quote element is not an <a> element');
 	        _chai.assert.strictEqual(document.querySelectorAll('#quote-box #tweet-quote').length, 1, '#tweet-quote element is not a child of #quote-box ');
 	      });
 
-	      it('6. On first load, my quote machine displays a random quote in the\n      element with id="text".', function () {
-	        this.timeout(requestTimeout + 1000);
-	        return new Promise(function (resolve, reject) {
-	          setTimeout(function () {
+	      reqNum++;
+	      it(reqNum + '. On first load, my quote machine displays a random quote in\n      the element with id="text".', function () {
+	        this.timeout(requestTimeout);
+	        // Check every half second if the test passes. If we don't ever detect
+	        // the success condition, the test will fail by timing out.
+	        return new Promise(function (resolve) {
+	          var intervalId = setInterval(function () {
 	            var text = document.getElementById('text');
 	            if (text.innerText.length > 0) {
+	              console.log('Clearing interval ' + intervalId);
+	              clearInterval(intervalId);
 	              resolve();
-	            } else {
-	              reject(new Error('There is no initial quote displayed '));
 	            }
-	          }, requestTimeout);
+	          }, 500);
 	        });
 	      });
 
-	      it('7. On first load, my quote machine displays the random quote\'s author\n      in the element with id="author".', function () {
-	        this.timeout(requestTimeout + 1000);
-	        return new Promise(function (resolve, reject) {
-	          setTimeout(function () {
+	      reqNum++;
+	      it(reqNum + '. On first load, my quote machine displays the random quote\'s\n      author in the element with id="author".', function () {
+	        this.timeout(requestTimeout);
+	        return new Promise(function (resolve) {
+	          var intervalId = setInterval(function () {
 	            var author = document.getElementById('author');
 	            if (author.innerText.length > 0) {
+	              console.log('Clearing interval ' + intervalId);
+	              clearInterval(intervalId);
 	              resolve();
-	            } else {
-	              reject(new Error('There is no initial author displayed '));
 	            }
-	          }, requestTimeout);
+	          }, 500);
 	        });
 	      });
 
-	      it('8. When the #new-quote button is clicked, my quote machine should\n      fetch a new quote and display it in the #text element.', function (done) {
-	        this.timeout(requestTimeout + 1000);
-	        var prevText = document.getElementById('text').innerText;
+	      reqNum++;
+	      it(reqNum + '. When the #new-quote button is clicked, my quote machine\n      should fetch a new quote and display it in the #text element.', function () {
+	        var prevText = void 0;
+
+	        this.timeout(requestTimeout);
+
+	        prevText = document.getElementById('text').innerText;
 	        document.getElementById('new-quote').click();
-	        setTimeout(function () {
-	          var newText = document.getElementById('text').innerText;
-	          if (newText === prevText) {
-	            done('The text hasn\'t changed after button click ');
-	          } else {
-	            done();
-	          }
-	        }, requestTimeout);
+
+	        return new Promise(function (resolve) {
+	          var intervalId = setInterval(function () {
+	            var newText = document.getElementById('text').innerText;
+	            if (newText !== prevText) {
+	              clearInterval(intervalId);
+	              resolve();
+	            }
+	          }, 500);
+	        });
 	      });
 
-	      it('9. My quote machine should fetch the new quote\'s author when the\n      #new-quote button is clicked and display it in the #author element.', function (done) {
-	        this.timeout(requestTimeout + 1000);
-	        var prevAuth = document.getElementById('author').innerText;
+	      reqNum++;
+	      it(reqNum + '. My quote machine should fetch the new quote\'s author when\n      the #new-quote button is clicked and display it in the #author element.', function () {
+	        var prevAuth = void 0;
+
+	        this.timeout(requestTimeout);
+
+	        prevAuth = document.getElementById('author').innerText;
 	        document.getElementById('new-quote').click();
-	        setTimeout(function () {
-	          var newAuth = document.getElementById('author').innerText;
-	          if (newAuth === prevAuth) {
-	            done('The text hasn\'t changed after button click ');
-	          } else {
-	            done();
-	          }
-	        }, requestTimeout);
+
+	        return new Promise(function (resolve) {
+	          var intervalId = setInterval(function () {
+	            var newAuth = document.getElementById('author').innerText;
+	            if (newAuth !== prevAuth) {
+	              clearInterval(intervalId);
+	              resolve();
+	            }
+	          }, 500);
+	        });
 	      });
 
-	      it('10. I can tweet the current quote by clicking on the #tweet-quote <a>\n      element. This <a> element should include the "twitter.com/intent/tweet"\n      path in it\'s href attribute to tweet the current quote.', function () {
-	        this.timeout(requestTimeout + 1000);
+	      reqNum++;
+	      it(reqNum + '. I can tweet the current quote by clicking on the\n      #tweet-quote <a> element. This <a> element should include the\n      "twitter.com/intent/tweet" path in it\'s href attribute to tweet the\n      current quote.', function () {
 	        _chai.assert.isOk(document.getElementById('tweet-quote').hasAttribute('href'), '#tweet-quote <a> element must have an href attribute ');
 	        var href = document.getElementById('tweet-quote').href;
 	        _chai.assert.include(href.toLowerCase(), 'twitter.com/intent/tweet', 'The #tweet-quote element does not utilize the correct twitter ' + 'intent ');
@@ -41137,9 +41163,11 @@ var FCC_Global =
 	    });
 
 	    describe('#Layout', function () {
+	      var reqNum = 0;
 
-	      it('1. The #quote-box wrapper element should be horizontally centered.\n      Please run tests with browser\'s zoom level at 100% and page maximized.', function () {
-	        _chai.assert.isOk(testHorizontallyCentered('quote-box'));
+	      reqNum++;
+	      it(reqNum + '. The #quote-box wrapper element should be horizontally\n      centered. Please run tests with browser\'s zoom level at 100% and page\n      maximized.', function () {
+	        _chai.assert.isOk((0, _elementUtils.testHorizontallyCentered)('quote-box', window));
 	      });
 
 	      // END #Layout
@@ -41153,6 +41181,25 @@ var FCC_Global =
 
 /***/ }),
 /* 63 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.testHorizontallyCentered = testHorizontallyCentered;
+	function testHorizontallyCentered(elName, window) {
+	  var centeredElement = window.document.getElementById(elName);
+	  var centeredElementBounds = centeredElement.getBoundingClientRect();
+	  var leftGap = centeredElementBounds.left;
+	  var rightGap = window.innerWidth - centeredElementBounds.right;
+	  // allow for scrollbar width
+	  return Math.abs(leftGap - rightGap) < 20;
+	}
+
+/***/ }),
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
