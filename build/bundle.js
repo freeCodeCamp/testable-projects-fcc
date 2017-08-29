@@ -87,15 +87,15 @@ var FCC_Global =
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
-	var _calculatorTests = __webpack_require__(46);
+	var _calculatorTests = __webpack_require__(47);
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroClockTests = __webpack_require__(47);
+	var _pomodoroClockTests = __webpack_require__(48);
 
 	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
-	var _tributePageTests = __webpack_require__(48);
+	var _tributePageTests = __webpack_require__(49);
 
 	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
 
@@ -19174,10 +19174,13 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
+	var _sharedTestStrings = __webpack_require__(46);
+
 	function createMarkdownPreviewerTests() {
 
 	  describe('Markdown Previewer tests', function () {
 
+	    // Save the values of the editor and preview.
 	    var editor = document.getElementById('editor');
 	    var preview = document.getElementById('preview');
 	    var markdownOnLoad = void 0,
@@ -19189,20 +19192,32 @@ var FCC_Global =
 	      previewOnLoad = preview.innerHTML;
 	    }
 
+	    // A change in the editor value won't be detected unless the correct event
+	    // is dispatched.
 	    function triggerChange(str) {
 	      // REACT
-	      editor.value = str;
 	      var eventReact = new Event('input', { bubbles: true });
+	      var eventJS = void 0;
+
+	      editor.value = str;
 	      editor.dispatchEvent(eventReact);
+
+	      // If the React dispatch worked, we can already return.
 	      if (preview.innerHTML === str) {
 	        return;
-	      } else {
-	        // jQUERY OR JAVASCRIPT
-	        // must be keyup to live preview
-	        var eventJS = new Event('keyup', { bubbles: true });
-	        editor.dispatchEvent(eventJS);
 	      }
+
+	      // jQUERY OR JAVASCRIPT
+	      // must be keyup to live preview
+	      eventJS = new Event('keyup', { bubbles: true });
+	      editor.dispatchEvent(eventJS);
 	    }
+
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.frontEndLibrariesStack, function () {
+	        return true;
+	      });
+	    });
 
 	    describe('#Tests', function () {
 	      var reqNum = 0;
@@ -19225,7 +19240,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I enter GitHub flavored markdown into the #editor\n      element, the text is rendered as HTML to #preview as I type (Hint: You\n      don\'t need to parse Markdown yourself - you can import the Marked library\n      for this: https://cdnjs.com/libraries/marked)', function () {
+	      it(reqNum + '. When I enter GitHub flavored markdown into the #editor\n      element, the text is rendered as HTML in the #preview element as I type\n      (Hint: You don\'t need to parse Markdown yourself - you can import the\n      Marked library for this: https://cdnjs.com/libraries/marked)', function () {
 	        var error = 'The markdown in #editor is not being interpreted ' + 'correctly and/or rendered into #preview ';
 	        triggerChange('');
 	        _chai.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
@@ -19240,15 +19255,14 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When my markdown previewer first loads, the #editor field\n      should contain valid default markdown that provides a brief description\n      of the project and demonstrates the previewer\'s capabilities', function () {
-	        _chai.assert.notStrictEqual(markdownOnLoad, 'undefined');
-	        _chai.assert.notStrictEqual(markdownOnLoad, '', '#editor should contain some text ');
-	      });
-
-	      reqNum++;
 	      it(reqNum + '. When my markdown previewer first loads, the default text in\n      the #editor field should contain valid markdown that represents at least\n      one of each of the following elements: a header (H1 size), a sub header\n      (H2 size), a link, inline code, a code block, a list item, a blockquote,\n      an image, and bolded text', function () {
+	        var markdown = void 0;
+
+	        _chai.assert.notStrictEqual(markdownOnLoad, 'undefined', '#editor value is undefined ');
+	        _chai.assert.notStrictEqual(markdownOnLoad, '', '#editor does not contain any text ');
+
 	        triggerChange(markdownOnLoad);
-	        var markdown = editor.value;
+	        markdown = editor.value;
 
 	        // h1
 	        _chai.assert.notStrictEqual(markdown.search(/#\s.+/), -1, 'write some markdown representing an <h1> ');
@@ -19280,10 +19294,15 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. When my markdown previewer first loads, the default\n      markdown in the #editor field should be rendered as HTML in the #preview\n      element', function () {
+	        var markdown = editor.value;
+	        var h1Text = void 0,
+	            h1Match = void 0,
+	            h2Text = void 0,
+	            h2Match = void 0;
+
 	        triggerChange(markdownOnLoad);
 	        _chai.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
 	        _chai.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
-	        var markdown = editor.value;
 	        // this could be significantly shortened into one test, however
 	        // feedback would not be specific
 	        _chai.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1, '#preview does not contain at least one <h1> ');
@@ -19300,8 +19319,8 @@ var FCC_Global =
 	        // are actually the ones represented by the markdown:
 
 	        // find matching H1 element
-	        var h1Text = /#\s.*/.exec(markdown)[0].slice(2);
-	        var h1Match = [];
+	        h1Text = /#\s.*/.exec(markdown)[0].slice(2);
+	        h1Match = [];
 	        document.querySelectorAll('#preview h1').forEach(function (h1) {
 	          if (h1.innerText === h1Text) {
 	            h1Match.push(h1);
@@ -19310,8 +19329,8 @@ var FCC_Global =
 	        _chai.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the ' + 'markdown in the #editor field with the inner text ' + h1Text + ' ');
 
 	        // find matching H2 element
-	        var h2Text = /##\s.*/.exec(markdown)[0].slice(3);
-	        var h2Match = [];
+	        h2Text = /##\s.*/.exec(markdown)[0].slice(3);
+	        h2Match = [];
 	        document.querySelectorAll('#preview h2').forEach(function (h2) {
 	          if (h2.innerText === h2Text) {
 	            h2Match.push(h2);
@@ -19321,7 +19340,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. OPTIONAL BONUS: When I click a link rendered by my\n      markdown previewer, the link is opened up in a new tab (HINT: read the\n      Marked.js docs for this one!)', function () {
+	      it(reqNum + '. OPTIONAL BONUS (you do not need to make this test pass):\n      When I click a link rendered by my markdown previewer, the link is opened\n      up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
 	        var links = document.querySelectorAll('#preview a');
 	        links.forEach(function (a) {
 	          if (a.hasAttribute('target')) {
@@ -19331,8 +19350,21 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. OPTIONAL BONUS: My markdown previewer interprets carriage\n      returns and renders them as line break', function () {
-	        // see marked.js options for this and more cool features
+	      it(reqNum + '. OPTIONAL BONUS (you do not need to make this test pass):\n      My markdown previewer interprets carriage returns and renders them as <br>\n      (line break) elements', function () {
+	        var brCount = void 0;
+
+	        // This markup should produce two <br> elements.
+	        triggerChange('First line.\n           Second line, same paragraph.\n           Third line, same paragraph.');
+
+	        // Count number of <br> elements in the preview area.
+	        brCount = (preview.innerHTML.match(/<br>/g) || []).length;
+
+	        // Restore the original markdown before the assertion. This is to not
+	        // surprise the Camper who all of a sudden sees something
+	        // unexpected in their editor and preview areas.
+	        triggerChange(markdownOnLoad);
+
+	        _chai.assert.strictEqual(brCount, 2, 'See the marked.js options for this and other cool features ');
 	      });
 
 	      // END #Tests
@@ -19346,6 +19378,19 @@ var FCC_Global =
 
 /***/ }),
 /* 46 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '1. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+
+	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -19507,7 +19552,7 @@ var FCC_Global =
 	} // END createCalculatorTests()
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20089,7 +20134,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20105,7 +20150,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20220,19 +20265,6 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '1. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
-
-	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
-
-/***/ }),
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20243,7 +20275,7 @@ var FCC_Global =
 	});
 	exports.default = createPortfolioTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	var _styleSheetUtils = __webpack_require__(51);
 
@@ -20497,7 +20529,7 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	var _styleSheetUtils = __webpack_require__(51);
 
@@ -20701,7 +20733,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	function createSurveyFormTests() {
 
@@ -20905,7 +20937,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	var _styleSheetUtils = __webpack_require__(51);
 
@@ -41098,7 +41130,7 @@ var FCC_Global =
 
 	var _elementUtils = __webpack_require__(63);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(46);
 
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {

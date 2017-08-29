@@ -1,9 +1,11 @@
 import { assert } from 'chai';
+import { frontEndLibrariesStack } from '../assets/sharedTestStrings';
 
 export default function createMarkdownPreviewerTests() {
 
   describe('Markdown Previewer tests', function() {
 
+    // Save the values of the editor and preview.
     const editor = document.getElementById('editor');
     const preview = document.getElementById('preview');
     let markdownOnLoad,
@@ -15,20 +17,33 @@ export default function createMarkdownPreviewerTests() {
       previewOnLoad = preview.innerHTML;
     }
 
+    // A change in the editor value won't be detected unless the correct event
+    // is dispatched.
     function triggerChange(str) {
       // REACT
-      editor.value = str;
       const eventReact = new Event('input', {bubbles: true});
+      let eventJS;
+
+      editor.value = str;
       editor.dispatchEvent(eventReact);
+
+      // If the React dispatch worked, we can already return.
       if (preview.innerHTML === str) {
         return;
-      } else {
-        // jQUERY OR JAVASCRIPT
-        // must be keyup to live preview
-        const eventJS = new Event('keyup', {bubbles: true});
-        editor.dispatchEvent(eventJS);
       }
+
+      // jQUERY OR JAVASCRIPT
+      // must be keyup to live preview
+      eventJS = new Event('keyup', {bubbles: true});
+      editor.dispatchEvent(eventJS);
+
     }
+
+    describe('#Technology Stack', function() {
+      it(frontEndLibrariesStack, function() {
+        return true;
+      });
+    });
 
     describe('#Tests', function() {
       let reqNum = 0;
@@ -66,9 +81,9 @@ export default function createMarkdownPreviewerTests() {
 
       reqNum++;
       it(`${reqNum}. When I enter GitHub flavored markdown into the #editor
-      element, the text is rendered as HTML to #preview as I type (Hint: You
-      don't need to parse Markdown yourself - you can import the Marked library
-      for this: https://cdnjs.com/libraries/marked)`,
+      element, the text is rendered as HTML in the #preview element as I type
+      (Hint: You don't need to parse Markdown yourself - you can import the
+      Marked library for this: https://cdnjs.com/libraries/marked)`,
       function() {
         const error = 'The markdown in #editor is not being interpreted ' +
           'correctly and/or rendered into #preview ';
@@ -97,27 +112,27 @@ export default function createMarkdownPreviewerTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When my markdown previewer first loads, the #editor field
-      should contain valid default markdown that provides a brief description
-      of the project and demonstrates the previewer's capabilities`,
-      function() {
-        assert.notStrictEqual(markdownOnLoad, 'undefined');
-        assert.notStrictEqual(
-          markdownOnLoad,
-          '',
-          '#editor should contain some text '
-        );
-      });
-
-      reqNum++;
       it(`${reqNum}. When my markdown previewer first loads, the default text in
       the #editor field should contain valid markdown that represents at least
       one of each of the following elements: a header (H1 size), a sub header
       (H2 size), a link, inline code, a code block, a list item, a blockquote,
       an image, and bolded text`,
       function() {
+        let markdown;
+
+        assert.notStrictEqual(
+          markdownOnLoad,
+          'undefined',
+          '#editor value is undefined '
+        );
+        assert.notStrictEqual(
+          markdownOnLoad,
+          '',
+          '#editor does not contain any text '
+        );
+
         triggerChange(markdownOnLoad);
-        const markdown = editor.value;
+        markdown = editor.value;
 
         // h1
         assert.notStrictEqual(
@@ -189,6 +204,12 @@ export default function createMarkdownPreviewerTests() {
       markdown in the #editor field should be rendered as HTML in the #preview
       element`,
       function() {
+        const markdown = editor.value;
+        let h1Text,
+          h1Match,
+          h2Text,
+          h2Match;
+
         triggerChange(markdownOnLoad);
         assert.notStrictEqual(
           preview.innerHTML,
@@ -200,7 +221,6 @@ export default function createMarkdownPreviewerTests() {
           previewOnLoad,
           '#editor\'s  markdown does not render correctly on window load '
         );
-        const markdown = editor.value;
         // this could be significantly shortened into one test, however
         // feedback would not be specific
         assert.isAtLeast(
@@ -253,8 +273,8 @@ export default function createMarkdownPreviewerTests() {
         // are actually the ones represented by the markdown:
 
         // find matching H1 element
-        const h1Text = (/#\s.*/).exec(markdown)[0].slice(2);
-        const h1Match = [];
+        h1Text = (/#\s.*/).exec(markdown)[0].slice(2);
+        h1Match = [];
         document.querySelectorAll('#preview h1').forEach(h1 => {
           if (h1.innerText === h1Text) {
             h1Match.push(h1);
@@ -268,8 +288,8 @@ export default function createMarkdownPreviewerTests() {
         );
 
         // find matching H2 element
-        const h2Text = (/##\s.*/).exec(markdown)[0].slice(3);
-        const h2Match = [];
+        h2Text = (/##\s.*/).exec(markdown)[0].slice(3);
+        h2Match = [];
         document.querySelectorAll('#preview h2').forEach(h2 => {
           if (h2.innerText === h2Text) {
             h2Match.push(h2);
@@ -285,9 +305,9 @@ export default function createMarkdownPreviewerTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. OPTIONAL BONUS: When I click a link rendered by my
-      markdown previewer, the link is opened up in a new tab (HINT: read the
-      Marked.js docs for this one!)`,
+      it(`${reqNum}. OPTIONAL BONUS (you do not need to make this test pass):
+      When I click a link rendered by my markdown previewer, the link is opened
+      up in a new tab (HINT: read the Marked.js docs for this one!)`,
       function() {
         const links = document.querySelectorAll('#preview a');
         links.forEach(a => {
@@ -295,14 +315,35 @@ export default function createMarkdownPreviewerTests() {
             assert.strictEqual(a.target, '_blank');
           }
         });
-
       });
 
       reqNum++;
-      it(`${reqNum}. OPTIONAL BONUS: My markdown previewer interprets carriage
-      returns and renders them as line break`,
+      it(`${reqNum}. OPTIONAL BONUS (you do not need to make this test pass):
+      My markdown previewer interprets carriage returns and renders them as <br>
+      (line break) elements`,
       function() {
-        // see marked.js options for this and more cool features
+        let brCount;
+
+        // This markup should produce two <br> elements.
+        triggerChange(
+          `First line.
+           Second line, same paragraph.
+           Third line, same paragraph.`
+        );
+
+        // Count number of <br> elements in the preview area.
+        brCount = (preview.innerHTML.match(/<br>/g) || []).length;
+
+        // Restore the original markdown before the assertion. This is to not
+        // surprise the Camper who all of a sudden sees something
+        // unexpected in their editor and preview areas.
+        triggerChange(markdownOnLoad);
+
+        assert.strictEqual(
+          brCount,
+          2,
+          'See the marked.js options for this and other cool features '
+        );
       });
 
     // END #Tests
