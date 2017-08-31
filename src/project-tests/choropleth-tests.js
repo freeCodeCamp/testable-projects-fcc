@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import educationData from '../data/choropleth_map/education.json';
-import { testToolTip } from '../assets/globalD3Tests';
+import { testToolTip } from '../assets/global-D3-tests';
 
 export default function createChoroplethTests() {
 
