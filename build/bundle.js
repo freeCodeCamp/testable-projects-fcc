@@ -19047,7 +19047,7 @@ var FCC_Global =
 
 /***/ }),
 /* 44 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -19055,9 +19055,14 @@ var FCC_Global =
 	  value: true
 	});
 	exports.default = createDrumMachineTests;
+
+	var _chai = __webpack_require__(2);
+
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
 
+	  // I'll remove this whole function when I add the tech stack requirements.
+	  // So the remaining FCC_Global is ok for now.
 	  var isChrome = !!window.chrome && !!window.chrome.webstore;
 	  if (isChrome === false) {
 	    FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in browsers other than Chrome');
@@ -19071,78 +19076,87 @@ var FCC_Global =
 
 	    // functions:
 	    function __triggerKeyboardEvent(el, keyCode) {
-	      var eventObj = document.createEventObject ? document.createEventObject() : document.createEvent("Events");
+	      var eventObj = document.createEventObject ? document.createEventObject() : document.createEvent('Events');
 	      if (eventObj.initEvent) {
-	        eventObj.initEvent("keydown", true, true);
+	        eventObj.initEvent('keydown', true, true);
 	      }
 	      eventObj.keyCode = keyCode;
 	      eventObj.which = keyCode;
-	      el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent("onkeydown", eventObj);
+	      /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
+	      el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent('onkeydown', eventObj);
 	    }
 
 	    describe('#Tests', function () {
+	      var reqNum = 0;
 
-	      it('1. I should be able to see an outer container with a corresponding id="drum-machine" that contains ' + 'all other elements', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("drum-machine"));
-	        FCC_Global.assert(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine #display,\n          #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
+	      reqNum++;
+	      it(reqNum + '. I should be able to see an outer container with a\n      corresponding id="drum-machine" that contains all other elements', function () {
+	        _chai.assert.isNotNull(document.getElementById('drum-machine'));
+	        (0, _chai.assert)(document.querySelectorAll('#drum-machine div, #drum-machine .drum-pad, #drum-machine ' + '#display, #drum-machine .clip').length, 'The #drum-machine element must contain other elements ');
 	      });
 
-	      it('2. Within #drum-machine I can see an element with corresponding id="display".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById("display"));
+	      reqNum++;
+	      it(reqNum + '. Within #drum-machine I can see an element with\n      corresponding id="display".', function () {
+	        _chai.assert.isNotNull(document.getElementById('display'));
 	      });
 
-	      it('3. Within #drum-machine I can see 9 clickable "drum pad" elements, each with a class name of "drum-pad", ' + 'a unique id that describes the audio clip the drum pad will be set up to trigger, and an inner text that ' + 'corresponds to one of the following keys on the keyboard: Q, W, E, A, S, D, Z, X, C. The drum pads MUST be in this order.', function () {
-	        // using .isAtLeast() and .includeMembers() in this challenge so that users have the freedom to add more than 9 drum pads
+	      reqNum++;
+	      it(reqNum + '. Within #drum-machine I can see 9 clickable "drum pad"\n      elements, each with a class name of "drum-pad", a unique id that describes\n      the audio clip the drum pad will be set up to trigger, and an inner text\n      that corresponds to one of the following keys on the keyboard: Q, W, E, A,\n      S, D, Z, X, C. The drum pads MUST be in this order.', function () {
+	        // using .isAtLeast() and .includeMembers() in this challenge so that
+	        // users have the freedom to add more than 9 drum pads
 	        var drumPadInnerText = [];
 	        drumPads.forEach(function (pad) {
 	          drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
-	          FCC_Global.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
+	          _chai.assert.strictEqual(pad.hasAttribute('id'), true, 'Each .drum-pad element must have an id attribute ');
 	        });
-	        FCC_Global.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
-	        FCC_Global.assert.includeMembers(drumPadInnerText, // superset
-	        ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"], // subset
-	        'Each .drum-pad\'s inner text should be one of the following letters ' + '(all letters must be represented): "Q", "W", "E", "A", "S", "D", "Z", "X", "C" ');
+	        _chai.assert.isAtLeast(drumPads.length, 9, 'There should be at least 9 elements with the class "drum-pad" ');
+	        // drumPadInnerText is the superset, the array of letters is the subset.
+	        _chai.assert.includeMembers(drumPadInnerText, ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'], 'Each .drum-pad\'s inner text should be one of the following ' + 'letters (all letters must be represented): "Q", "W", "E", "A", ' + '"S", "D", "Z", "X", "C" ');
 	      });
 
-	      it('4. Within each .drum-pad, there should be an HTML5 <audio> element which has a src attribute pointing to ' + 'an audio clip, a class name of "clip", and an id corresponding to the inner text of its parent .drum-pad ' + '(e.g. id="Q", id="W", id="E" etc.).', function () {
-	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Each .drum-pad should have a child element with the class of "clip" ');
+	      reqNum++;
+	      it(reqNum + '. Within each .drum-pad, there should be an HTML5 <audio>\n      element which has a src attribute pointing to an audio clip, a class name\n      of "clip", and an id corresponding to the inner text of its parent\n      .drum-pad (e.g. id="Q", id="W", id="E" etc.).', function () {
+	        _chai.assert.isAtLeast(audioElements.length, 9, 'Each .drum-pad should have a child element with the class of "clip" ');
 	        audioElements.forEach(function (el) {
-	          FCC_Global.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
-	          FCC_Global.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
-	          FCC_Global.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
-	          FCC_Global.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal ' + 'to its parent .drum-pad\'s inner-text ');
+	          _chai.assert.strictEqual(el.nodeName, 'AUDIO', 'Each .clip element should be an HTML5 <audio> element ');
+	          _chai.assert.strictEqual(el.hasAttribute('src'), true, 'Each <audio> element should have a "src" attribute ');
+	          _chai.assert.strictEqual(el.hasAttribute('id'), true, 'Each <audio> element should have an "id" attribute ');
+	          _chai.assert.strictEqual(el.id, el.parentElement.innerText.replace(/\s/g, ''), 'Each <audio> element should have an id equal to its parent ' + '.drum-pad\'s inner-text ');
 	        });
 	      });
 
-	      it('5. When I click on a .drum-pad element, the audio clip contained in its child <audio> element ' + 'should be triggered.', function () {
-	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
+	      reqNum++;
+	      it(reqNum + '. When I click on a .drum-pad element, the audio clip\n      contained in its child <audio> element should be triggered.', function () {
+	        _chai.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
 	        audioElements.forEach(function (el) {
 	          document.getElementById(el.parentElement.id).click();
-	          FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'The <audio> element with id="' + el.id + '" does not play when the ' + el.id + ' .drum-pad is clicked ');
+	          _chai.assert.isNotOk(document.getElementById(el.id).paused, 'The <audio> element with id="' + el.id + '" does not play when the ' + el.id + ' .drum-pad is clicked ');
 	        });
 	      });
 
-	      it('6. When I press the trigger key associated with each .drum-pad, the audio clip contained in ' + 'its child <audio> element should be triggered (e.g. pressing the Q key should trigger the drum ' + 'pad which contains the string "Q", pressing the W key should trigger the drum pad which contains ' + 'the string "W", etc.).', function () {
+	      reqNum++;
+	      it(reqNum + '. When I press the trigger key associated with each\n      .drum-pad, the audio clip contained in its child <audio> element should be\n      triggered (e.g. pressing the Q key should trigger the drum pad which\n      contains the string "Q", pressing the W key should trigger the drum pad\n      which contains the string "W", etc.).', function () {
 	        this.timeout(900);
 	        var keyCodes = [81, 87, 69, 65, 83, 68, 90, 88, 67];
-	        FCC_Global.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
-	        return new Promise(function (resolve, reject) {
+	        _chai.assert.isAtLeast(audioElements.length, 9, 'Audio elements do not exist ');
+	        return new Promise(function (resolve) {
 	          setTimeout(function () {
 	            audioElements.forEach(function (el, i) {
 	              __triggerKeyboardEvent(document.getElementById(el.parentElement.id), keyCodes[i]);
-	              FCC_Global.assert.isNotOk(document.getElementById(el.id).paused, 'No audio plays when the ' + el.id + ' key is pressed ');
+	              _chai.assert.isNotOk(document.getElementById(el.id).paused, 'No audio plays when the ' + el.id + ' key is pressed ');
 	            });
 	            resolve();
 	          }, 800);
 	        });
 	      });
 
-	      it('7. When a .drum-pad is triggered, a string describing the associated audio clip is displayed as ' + 'the inner text of the #display element (each string must be unique).', function () {
+	      reqNum++;
+	      it(reqNum + '. When a .drum-pad is triggered, a string describing the\n      associated audio clip is displayed as the inner text of the #display\n      element (each string must be unique).', function () {
 	        this.timeout(900);
 	        var displayText = [];
 	        return new Promise(function (resolve, reject) {
-	          setTimeout(function (_) {
-	            drumPads.forEach(function (pad, i) {
+	          setTimeout(function () {
+	            drumPads.forEach(function (pad) {
 	              document.getElementById(pad.id).click();
 	              displayText.push(document.getElementById('display').innerText);
 	            });
@@ -19152,14 +19166,19 @@ var FCC_Global =
 	            if (displayText.length === 1) {
 	              resolve();
 	            } else {
-	              reject(new Error("Each time a drum pad is triggered, a unique string should be displayed in the " + "element with the id 'display' "));
+	              reject(new Error('Each time a drum pad is triggered, a unique string should ' + 'be displayed in the element with the id "display"'));
 	            }
 	          }, 800);
 	        });
 	      });
-	    }); // END #Tests
-	  }); // END #DrumMachineTests
-	} // END createDrumMachineTests()
+	    });
+	    // END #Tests
+
+	    // END #DrumMachineTests
+	  });
+
+	  // END createDrumMachineTests()
+	}
 
 /***/ }),
 /* 45 */
