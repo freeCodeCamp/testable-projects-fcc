@@ -75,9 +75,9 @@ var FCC_Global =
 
 	var _test_suite_skeleton2 = _interopRequireDefault(_test_suite_skeleton);
 
-	var _mocha_CSS = __webpack_require__(43);
+	var _mochaCSS = __webpack_require__(43);
 
-	var _mocha_CSS2 = _interopRequireDefault(_mocha_CSS);
+	var _mochaCSS2 = _interopRequireDefault(_mochaCSS);
 
 	var _drumMachineTests = __webpack_require__(44);
 
@@ -146,7 +146,7 @@ var FCC_Global =
 	// load mocha
 	(function () {
 	  // write mocha CSS to page head
-	  document.write('<style>' + _mocha_CSS2.default + '</style>');
+	  document.write('<style>' + _mochaCSS2.default + '</style>');
 	  // add a script tag to load mocha JS from a CDN
 	  var mocha_cdn = document.createElement('script');
 	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
@@ -170,9 +170,9 @@ var FCC_Global =
 	    try {
 	      if (mocha) {
 	        clearInterval(mochaCheck);
-	        mocha.setup("bdd");
-	        var testDiv = document.createElement("div");
-	        testDiv.style.position = "inherit";
+	        mocha.setup('bdd');
+	        var testDiv = document.createElement('div');
+	        testDiv.style.position = 'inherit';
 	        testDiv.innerHTML = _test_suite_skeleton2.default;
 	        document.body.appendChild(testDiv);
 	        // Once testDiv is loaded:
@@ -184,16 +184,16 @@ var FCC_Global =
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
 	        } else if (typeof project_name !== 'undefined') {
 	          document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
-	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + localStorage.getItem('example_project') + '</span>';;
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + localStorage.getItem('example_project') + '</span>';
 	        } else {
 	          document.getElementById('placeholder').innerHTML = project_titleCase;
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
 	        }
-	      };
+	      }
 	    } catch (err) {
 	      console.warn('mocha not loaded yet');
-	    };
-	  };
+	    }
+	  }
 	  runCheck();
 	});
 
@@ -216,9 +216,9 @@ var FCC_Global =
 	  var button = document.getElementById('fcc_test_button');
 	  button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
 	  if (nbFailed) {
-	    button.classList.add("fcc_test_btn-error");
+	    button.classList.add('fcc_test_btn-error');
 	  } else {
-	    button.classList.add("fcc_test_btn-success");
+	    button.classList.add('fcc_test_btn-success');
 	  }
 	}
 
@@ -232,15 +232,15 @@ var FCC_Global =
 	// open main modal
 	function FCCOpenTestModal() {
 	  var modal = document.getElementById('fcc_test_message-box');
-	  modal.classList.remove("fcc_test_message-box-hidden");
-	  modal.classList.add("fcc_test_message-box-shown");
+	  modal.classList.remove('fcc_test_message-box-hidden');
+	  modal.classList.add('fcc_test_message-box-shown');
 	}
 
 	// close main modal
 	function FCCCloseTestModal() {
 	  var modal = document.getElementById('fcc_test_message-box');
-	  modal.classList.remove("fcc_test_message-box-shown");
-	  modal.classList.add("fcc_test_message-box-hidden");
+	  modal.classList.remove('fcc_test_message-box-shown');
+	  modal.classList.add('fcc_test_message-box-hidden');
 	}
 
 	// close modal on ESC press
@@ -278,8 +278,8 @@ var FCC_Global =
 	  button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
 	  button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
 	  clearClassList(button);
-	  button.classList.add("fcc_foldout_buttons");
-	  button.classList.add("fcc_test_btn-default");
+	  button.classList.add('fcc_foldout_buttons');
+	  button.classList.add('fcc_test_btn-default');
 	  FCCInitTestRunner();
 	}
 
@@ -308,7 +308,7 @@ var FCC_Global =
 	    }
 	  } else if (map[17] && map[16] && map[84]) {
 	    // open/close modal: Ctrl + Shift + T
-	    if (modal.classList.contains("fcc_test_message-box-hidden")) {
+	    if (modal.classList.contains('fcc_test_message-box-hidden')) {
 	      FCCOpenTestModal();
 	    } else {
 	      FCCCloseTestModal();
@@ -347,29 +347,29 @@ var FCC_Global =
 	function FCCInitTestRunner() {
 	  var testRunner = null;
 	  // empty the mocha tag in case of rerun
-	  document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
+	  document.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
 	  // empty the test suite in the mocha object
 	  mocha.suite.suites = [];
 	  // check for hard-coded project selector (for our example projects)
 	  var hardCoded_project_name = typeof project_name === 'undefined' ? null : project_name;
 	  // create tests
 	  switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
-	    case "random-quote-machine":
+	    case 'random-quote-machine':
 	      (0, _quoteMachineTests2.default)();
 	      break;
-	    case "javascript-calculator":
+	    case 'javascript-calculator':
 	      (0, _calculatorTests2.default)();
 	      break;
-	    case "pomodoro-clock":
+	    case 'pomodoro-clock':
 	      (0, _pomodoroClockTests2.default)();
 	      break;
-	    case "tribute-page":
+	    case 'tribute-page':
 	      (0, _tributePageTests2.default)();
 	      break;
-	    case "drum-machine":
+	    case 'drum-machine':
 	      (0, _drumMachineTests2.default)();
 	      break;
-	    case "portfolio":
+	    case 'portfolio':
 	      (0, _portfolioTests2.default)();
 	      break;
 	    case 'product-landing-page':
@@ -399,7 +399,7 @@ var FCC_Global =
 	    case 'tree-map':
 	      (0, _treeMapTests2.default)();
 	      break;
-	  };
+	  }
 
 	  // save the number of tests in the selected suite
 	  var nbTests = 0;
@@ -424,22 +424,24 @@ var FCC_Global =
 	  if (testRunner) {
 	    FCCResetTests(mocha.suite);
 	    testRunner.abort();
-	    testRunner.removeListener("pass", hasPassed);
-	    testRunner.removeListener("fail", hasFailed);
-	    testRunner.removeListener("test end", updateProgress);
-	    testRunner.removeListener("end", updateEnd);
-	  };
+	    testRunner.removeListener('pass', hasPassed);
+	    testRunner.removeListener('fail', hasFailed);
+	    testRunner.removeListener('test end', updateProgress);
+	    testRunner.removeListener('end', updateEnd);
+	  }
 	  // Run the test suite
 	  testRunner = mocha.run();
-	  testRunner.on("pass", hasPassed);
-	  testRunner.on("fail", hasFailed);
-	  testRunner.on("test end", updateProgress);
-	  testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
-	};
+	  testRunner.on('pass', hasPassed);
+	  testRunner.on('fail', hasFailed);
+	  testRunner.on('test end', updateProgress);
+	  testRunner.on('end', updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+	}
 
 	// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
 	(function () {
-	  if (typeof NodeList.prototype.forEach === "function") return false;
+	  if (typeof NodeList.prototype.forEach === 'function') {
+	    return false;
+	  }
 	  NodeList.prototype.forEach = Array.prototype.forEach;
 	})();
 
@@ -19042,8 +19044,11 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var mocha_CSS = "@charset \"utf-8\";#mocha .test .html-error,#mocha .test pre{float:left;clear:left;word-wrap:break-word}#mocha ul,#mocha-stats li{list-style:none}#mocha h1,#mocha h2{margin:0}#mocha{font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;margin:60px 50px}#mocha li,#mocha ul{margin:0;padding:0}#mocha .suite,#mocha .test{margin-left:15px}#mocha h1{margin-top:15px;font-size:1em;font-weight:200}#mocha h1 a{text-decoration:none;color:inherit}#mocha h1 a:hover{text-decoration:underline}#mocha .suite .suite h1{margin-top:0;font-size:.8em}#mocha .hidden{display:none}#mocha h2{font-size:12px;font-weight:400;cursor:pointer}#mocha .test{overflow:hidden}#mocha .test.pending:hover h2::after{content:'(pending)';font-family:arial,sans-serif}#mocha .test.pass.medium .duration{background:#c09853}#mocha .test.pass.slow .duration{background:#b94a48}#mocha .test.pass::before{content:'\u2713';font-size:12px;display:block;float:left;margin-right:5px;color:#00d6b2}#mocha .test.pass .duration{font-size:9px;margin-left:5px;padding:2px 5px;color:#fff;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);box-shadow:inset 0 1px 1px rgba(0,0,0,.2);-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}#mocha .test.pass.fast .duration{display:none}#mocha .test.pending{color:#0b97c4}#mocha .test.pending::before{content:'\u25E6';color:#0b97c4}#mocha .test.fail{color:#c00}#mocha .test.fail pre{color:#000}#mocha .test.fail::before{content:'\u2716';font-size:12px;display:block;float:left;margin-right:5px;color:#c00}#mocha .test pre.error{color:#c00;max-height:300px;overflow:auto}#mocha .test .html-error{overflow:auto;color:#000;line-height:1.5;display:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px solid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:calc(100% - 42px);max-height:300px;border-bottom-color:#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}#mocha .test .html-error pre.error{border:none;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:0;-moz-box-shadow:0;box-shadow:0;padding:0;margin:18px 0 0;max-height:none}#mocha .test pre{display:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px solid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:calc(100% - 42px);border-bottom-color:#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}#mocha .test h2{position:relative}#mocha .test a.replay{position:absolute;top:3px;right:0;text-decoration:none;vertical-align:middle;display:block;width:15px;height:15px;line-height:15px;text-align:center;background:#eee;font-size:15px;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;-webkit-transition:opacity .2s;-moz-transition:opacity .2s;-o-transition:opacity .2s;transition:opacity .2s;opacity:.3;color:#888}#mocha .test:hover a.replay{opacity:1}#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{display:none}#mocha-report.pending .test.pass.pending{display:block}#mocha-error{color:#c00;font-size:1.5em;font-weight:100;letter-spacing:1px}#mocha-stats{position:fixed;top:15px;right:10px;font-size:12px;margin:0;color:#888;z-index:1}#mocha-stats .progress{float:right;padding-top:0;height:auto;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:initial}#mocha-stats em{color:#000}#mocha-stats a{text-decoration:none;color:inherit}#mocha-stats a:hover{border-bottom:1px solid #eee}#mocha-stats li{display:inline-block;margin:0 5px;padding-top:11px}#mocha-stats canvas{width:40px;height:40px}#mocha code .comment{color:#ddd}#mocha code .init{color:#2f6fad}#mocha code .string{color:#5890ad}#mocha code .keyword{color:#8a6343}#mocha code .number{color:#2f6fad}@media screen and (max-device-width:480px){#mocha{margin:60px 0}#mocha #stats{position:absolute}}/*# sourceMappingURL=mocha.min.css.map */";
-	exports.default = mocha_CSS;
+	// TODO: This is ugly and obviously difficult to maintain. See if we can use
+	// a regular .css file, or at least something better than a huge string.
+	// See
+	var mochaCSS = "@charset \"utf-8\";#mocha .test .html-error,#mocha\n.test pre{float:left;clear:left;word-wrap:break-word}#mocha ul,#mocha-stats\nli{list-style:none}#mocha h1,#mocha h2{margin:0}#mocha{font:20px/1.5\n\"Helvetica Neue\",Helvetica,Arial,sans-serif;margin:60px 50px}#mocha\nli,#mocha ul{margin:0;padding:0}#mocha .suite,#mocha .test{margin-left:15px}\n#mocha h1{margin-top:15px;font-size:1em;font-weight:200}#mocha h1\na{text-decoration:none;color:inherit}#mocha h1\na:hover{text-decoration:underline}#mocha .suite .suite\nh1{margin-top:0;font-size:.8em}#mocha .hidden{display:none}#mocha\nh2{font-size:12px;font-weight:400;cursor:pointer}#mocha\n.test{overflow:hidden}#mocha .test.pending:hover h2::after{content:'(pending)';\nfont-family:arial,sans-serif}#mocha .test.pass.medium .duration{background:\n#c09853}#mocha .test.pass.slow .duration{background:#b94a48}#mocha .test.pass::\nbefore{content:'\u2713';font-size:12px;display:block;float:left;margin-right:5px;\ncolor:#00d6b2}#mocha .test.pass .duration{font-size:9px;margin-left:5px;\npadding:2px 5px;color:#fff;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);box-shadow:inset 0 1px 1px\nrgba(0,0,0,.2);-webkit-border-radius:5px;-moz-border-radius:5px;\n-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}\n#mocha .test.pass.fast .duration{display:none}#mocha .test.pending{color:\n#0b97c4}#mocha .test.pending::before{content:'\u25E6';color:#0b97c4}#mocha\n.test.fail{color:#c00}#mocha .test.fail pre{color:#000}#mocha\n.test.fail::before{content:'\u2716';font-size:12px;display:block;float:left;\nmargin-right:5px;color:#c00}#mocha .test pre.error{color:#c00;max-height:\n300px;overflow:auto}#mocha .test .html-error{overflow:auto;color:#000;\nline-height:1.5;display:block;font:12px/1.5 monaco,monospace;margin:5px;\npadding:15px;border:1px solid #eee;max-width:85%;max-width:\n-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:\ncalc(100% - 42px);max-height:300px;border-bottom-color:#ddd;-webkit-box-shadow:\n0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;\n-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}\n#mocha .test .html-error pre.error{border:none;-webkit-border-radius:0;\n-moz-border-radius:0;border-radius:0;-webkit-box-shadow:0;-moz-box-shadow:0;\nbox-shadow:0;padding:0;margin:18px 0 0;max-height:none}#mocha .test pre{\ndisplay:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px\nsolid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc\n(100% - 42px);max-width:calc(100% - 42px);border-bottom-color:\n#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px\n#eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;\nborder-radius:3px}#mocha .test h2{position:relative}#mocha .test a.replay{\nposition:absolute;top:3px;right:0;text-decoration:none;vertical-align:\nmiddle;display:block;width:15px;height:15px;line-height:15px;text-align:center;\nbackground:#eee;font-size:15px;-webkit-border-radius:15px;-moz-border-radius:\n15px;border-radius:15px;-webkit-transition:opacity .2s;-moz-transition:opacity\n.2s;-o-transition:opacity .2s;transition:opacity .2s;opacity:.3;color:#888}\n#mocha .test:hover a.replay{opacity:1}#mocha-report.fail .test.pass,\n#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,\n#mocha-report.pending .test.pass{display:none}#mocha-report.pending\n.test.pass.pending{display:block}#mocha-error{color:#c00;font-size:1.5em;\nfont-weight:100;letter-spacing:1px}#mocha-stats{position:fixed;top:15px;right:\n10px;font-size:12px;margin:0;color:#888;z-index:1}#mocha-stats\n.progress{float:right;padding-top:0;height:auto;-webkit-box-shadow:none;\n-moz-box-shadow:none;box-shadow:none;background-color:initial}#mocha-stats em{\ncolor:#000}#mocha-stats a{text-decoration:none;color:inherit}#mocha-stats\na:hover{border-bottom:1px solid #eee}#mocha-stats li{display:inline-block;\nmargin:0 5px;padding-top:11px}#mocha-stats canvas{width:40px;height:40px}\n#mocha code .comment{color:#ddd}#mocha code .init{color:#2f6fad}#mocha code\n.string{color:#5890ad}#mocha code .keyword{color:#8a6343}#mocha code\n.number{color:#2f6fad}@media screen and (max-device-width:480px){\n#mocha{margin:60px 0}#mocha #stats{position:absolute}}\n/*# sourceMappingURL=mocha.min.css.map */";
+	exports.default = mochaCSS;
 
 /***/ }),
 /* 44 */

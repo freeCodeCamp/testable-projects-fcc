@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import chai from 'chai';
 import test_suite_skeleton from './assets/test_suite_skeleton';
-import mocha_CSS from './assets/mocha_CSS';
+import mochaCSS from './assets/mocha-CSS';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests';
 import createCalculatorTests from './project-tests/calculator-tests';
@@ -23,7 +23,7 @@ export const assert = chai.assert;
 // load mocha
 (function() {
   // write mocha CSS to page head
-  document.write(`<style>${mocha_CSS}</style>`);
+  document.write(`<style>${mochaCSS}</style>`);
   // add a script tag to load mocha JS from a CDN
   var mocha_cdn = document.createElement('script');
   mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
@@ -45,9 +45,9 @@ $(document).ready(function() {
     try {
       if (mocha) {
         clearInterval(mochaCheck);
-        mocha.setup("bdd");
-        const testDiv = document.createElement("div");
-        testDiv.style.position = "inherit";
+        mocha.setup('bdd');
+        const testDiv = document.createElement('div');
+        testDiv.style.position = 'inherit';
         testDiv.innerHTML = test_suite_skeleton;
         document.body.appendChild(testDiv);
         // Once testDiv is loaded:
@@ -59,16 +59,16 @@ $(document).ready(function() {
           document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
         } else if (typeof project_name !== 'undefined') {
           document.getElementById('placeholder').innerHTML = `${localStorage.getItem('example_project')}`;
-          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;;
+          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;
         } else {
           document.getElementById('placeholder').innerHTML = project_titleCase;
           document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
         }
-      };
+      }
     } catch (err) {
       console.warn('mocha not loaded yet');
-    };
-  };
+    }
+  }
   runCheck();
 });
 
@@ -89,9 +89,9 @@ export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
   const button = document.getElementById('fcc_test_button');
   button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
   if (nbFailed) {
-    button.classList.add("fcc_test_btn-error");
+    button.classList.add('fcc_test_btn-error');
   } else {
-    button.classList.add("fcc_test_btn-success");
+    button.classList.add('fcc_test_btn-success');
   }
 }
 
@@ -105,15 +105,15 @@ export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
 // open main modal
 export function FCCOpenTestModal() {
   const modal = document.getElementById('fcc_test_message-box');
-  modal.classList.remove("fcc_test_message-box-hidden");
-  modal.classList.add("fcc_test_message-box-shown");
+  modal.classList.remove('fcc_test_message-box-hidden');
+  modal.classList.add('fcc_test_message-box-shown');
 }
 
 // close main modal
 export function FCCCloseTestModal() {
   const modal = document.getElementById('fcc_test_message-box');
-  modal.classList.remove("fcc_test_message-box-shown");
-  modal.classList.add("fcc_test_message-box-hidden");
+  modal.classList.remove('fcc_test_message-box-shown');
+  modal.classList.add('fcc_test_message-box-hidden');
 }
 
 // close modal on ESC press
@@ -141,7 +141,7 @@ function clearClassList(elem) {
   }
 
   for (var i = 0; i < classListAsArray.length; i++) {
-    elem.classList.remove(classListAsArray[i])
+    elem.classList.remove(classListAsArray[i]);
   }
 }
 
@@ -155,8 +155,8 @@ export function FCCRerunTests() {
     ? 'Select test suite from dropdown above'
     : 'CTRL + SHIFT + T';
   clearClassList(button);
-  button.classList.add("fcc_foldout_buttons");
-  button.classList.add("fcc_test_btn-default");
+  button.classList.add('fcc_foldout_buttons');
+  button.classList.add('fcc_test_btn-default');
   FCCInitTestRunner();
 }
 
@@ -183,15 +183,15 @@ onkeydown = onkeyup = function(e) {
       FCCRerunTests();
     }
   } else if (map[17] && map[16] && map[84]) { // open/close modal: Ctrl + Shift + T
-    if (modal.classList.contains("fcc_test_message-box-hidden")) {
-      FCCOpenTestModal()
+    if (modal.classList.contains('fcc_test_message-box-hidden')) {
+      FCCOpenTestModal();
     } else {
       FCCCloseTestModal();
     }
   } else if (map[17] && map[16] && map[79]) { // open/close foldout menu: Ctrl + Shift + O
     document.getElementById('toggle').click();
   }
-}
+};
 
 // shortcuts interfere w/ markdown tests, disable and alert
 export function alertOnce(item, message) {
@@ -221,7 +221,7 @@ export function hamburger_transform() {
 export function FCCInitTestRunner() {
   let testRunner = null;
   // empty the mocha tag in case of rerun
-  document.querySelector(".fcc_test_message-box-body #mocha").innerHTML = "";
+  document.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
   // empty the test suite in the mocha object
   mocha.suite.suites = [];
   // check for hard-coded project selector (for our example projects)
@@ -230,22 +230,22 @@ export function FCCInitTestRunner() {
     : project_name;
   // create tests
   switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
-    case "random-quote-machine":
+    case 'random-quote-machine':
       createRandomQuoteMachineTests();
       break;
-    case "javascript-calculator":
+    case 'javascript-calculator':
       createCalculatorTests();
       break;
-    case "pomodoro-clock":
+    case 'pomodoro-clock':
       createPomodoroClockTests();
       break;
-    case "tribute-page":
+    case 'tribute-page':
       createTributePageTests();
       break;
-    case "drum-machine":
+    case 'drum-machine':
       createDrumMachineTests();
       break;
-    case "portfolio":
+    case 'portfolio':
       createPortfolioTests();
       break;
     case 'product-landing-page':
@@ -275,7 +275,7 @@ export function FCCInitTestRunner() {
     case 'tree-map':
       createTreeMapTests();
       break;
-  };
+  }
 
   // save the number of tests in the selected suite
   let nbTests = 0;
@@ -290,22 +290,21 @@ export function FCCInitTestRunner() {
   if (testRunner) {
     FCCResetTests(mocha.suite);
     testRunner.abort();
-    testRunner.removeListener("pass", hasPassed);
-    testRunner.removeListener("fail", hasFailed);
-    testRunner.removeListener("test end", updateProgress);
-    testRunner.removeListener("end", updateEnd);
-  };
+    testRunner.removeListener('pass', hasPassed);
+    testRunner.removeListener('fail', hasFailed);
+    testRunner.removeListener('test end', updateProgress);
+    testRunner.removeListener('end', updateEnd);
+  }
   // Run the test suite
   testRunner = mocha.run();
-  testRunner.on("pass", hasPassed);
-  testRunner.on("fail", hasFailed);
-  testRunner.on("test end", updateProgress);
-  testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
-};
+  testRunner.on('pass', hasPassed);
+  testRunner.on('fail', hasFailed);
+  testRunner.on('test end', updateProgress);
+  testRunner.on('end', updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+}
 
 // polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
 (function() {
-  if (typeof NodeList.prototype.forEach === "function")
-    return false;
+  if (typeof NodeList.prototype.forEach === 'function') {return false;}
   NodeList.prototype.forEach = Array.prototype.forEach;
 })();
