@@ -41329,9 +41329,11 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _globalD3Tests = __webpack_require__(56);
-
 	var _alignmentD3Tests = __webpack_require__(58);
+
+	var _chai = __webpack_require__(2);
+
+	var _globalD3Tests = __webpack_require__(56);
 
 	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
@@ -41339,27 +41341,35 @@ var FCC_Global =
 
 	  describe('#HeatMapTests', function () {
 	    describe('#Content', function () {
-	      it('1. My heat map should have a title with a corresponding id="title".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
+	      var reqNum = 0;
+
+	      reqNum++;
+	      it(reqNum + '. My heat map should have a title with a corresponding\n      id="title".', function () {
+	        _chai.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id="title" ');
 	      });
 
-	      it('2. My heat map should have a description with a corresponding\n      id="description".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find an element with id=\"description\" ');
+	      reqNum++;
+	      it(reqNum + '. My heat map should have a description with a corresponding\n      id="description".', function () {
+	        _chai.assert.isNotNull(document.getElementById('description'), 'Could not find an element with id="description" ');
 	      });
 
-	      it('3. My heat map should have an x-axis with a corresponding\n      id="x-axis".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('x-axis'), 'Could not find an element with id=\"x-axis\" ');
+	      reqNum++;
+	      it(reqNum + '. My heat map should have an x-axis with a corresponding\n      id="x-axis".', function () {
+	        _chai.assert.isNotNull(document.getElementById('x-axis'), 'Could not find an element with id="x-axis" ');
 	      });
 
-	      it('4. My heat map should have a y-axis with a corresponding\n      id="y-axis".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('y-axis'), 'Could not find an element with id=\"y-axis\" ');
+	      reqNum++;
+	      it(reqNum + '. My heat map should have a y-axis with a corresponding\n      id="y-axis".', function () {
+	        _chai.assert.isNotNull(document.getElementById('y-axis'), 'Could not find an element with id="y-axis" ');
 	      });
 
-	      it('5. My heat map should have cells with a corresponding class="cell"\n      that represent the data.', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.cell').length, 0, 'Could not find any elements with a class=\"cell\" ');
+	      reqNum++;
+	      it(reqNum + '. My heat map should have cells with a corresponding\n      class="cell" that represent the data.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('.cell').length, 0, 'Could not find any elements with a class="cell" ');
 	      });
 
-	      it('6. There should be at least 4 different fill colors used for the\n      cells.', function () {
+	      reqNum++;
+	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the cells.', function () {
 	        var cells = document.querySelectorAll('.cell');
 	        var uniqueColors = [];
 
@@ -41371,35 +41381,37 @@ var FCC_Global =
 	            uniqueColors.push(cellColor);
 	          }
 	        }
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
+	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
 	      });
 
-	      it('7. Each cell will have the properties "data-month", "data-year",\n      "data-temp" containing their corresponding month, year, and temperature\n      values.', function () {
+	      reqNum++;
+	      it(reqNum + '. Each cell will have the properties "data-month",\n      "data-year", "data-temp" containing their corresponding month, year, and\n      temperature values.', function () {
 	        var cells = document.querySelectorAll('.cell');
 
-	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        _chai.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
 	        for (var i = 0; i < cells.length; i++) {
 	          var cell = cells[i];
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
 	        }
 	      });
 
-	      it('8. The "data-month", "data-year" of each cell should be within\n      the range of the data.', function () {
+	      reqNum++;
+	      it(reqNum + '. The "data-month", "data-year" of each cell should be\n      within the range of the data.', function () {
 
 	        // NOTE:  This test contains the same exact tests from 6 and 7.
 	        // Is there a way to only run test 8 if test 6 and 7 pass?
 	        // Should we be putting this code in a utility function?
 	        var cells = document.querySelectorAll('.cell');
-	        FCC_Global.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        _chai.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
 
 	        for (var i = 0; i < cells.length; i++) {
 	          var cell = cells[i];
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
-	          FCC_Global.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
+	          _chai.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
 	        }
 
 	        var cellMonths = [];
@@ -41421,89 +41433,70 @@ var FCC_Global =
 	          }
 	          return true;
 	        }
-	        FCC_Global.assert(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
-	        FCC_Global.assert(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
+	        (0, _chai.assert)(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
+	        (0, _chai.assert)(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
 	      });
 
-	      it('9. My heat map should have cells that align with the corresponding\n      month on the y-axis.', function () {
+	      reqNum++;
+	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding month on the y-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('.cell');
-	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
-
 	        var dataAttr = 'data-month';
 	        var coordAttr = 'y';
+
+	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class="cell" ');
+
 	        // construct an object with information about axis and data-type
 	        // supply hard-coded units for an axis if necessary
 	        var yAxisInfo = (0, _alignmentD3Tests.getYAxisInfo)(document.querySelector('#y-axis'), dataAttr, coordAttr, months);
-	        FCC_Global.assert.isTrue(
-	        /**
-	         * Check that cells align with axis ticks
-	         * @function
-	         * @param {Object} yAxisInfo - from alignmentD3Tests.getAxisInfo
-	         * @param {HTMLCollection} cellsCollection - const
-	         * @param {Function} getYMisalignmentCount - Pass specified function
-	         * for alignmentD3Tests.getMisalignmentCount
-	         * @param {Function} getFeatureValueMonths - Pass specified function
-	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
-	         * @param {Function} getTickValueMonths - Pass specified function for
-	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
-	          * @returns {Boolean} True if no misalignments are counted
-	         */
-	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, cellsCollection, _alignmentD3Tests.getYMisalignmentCount, _alignmentD3Tests.getFeatureValueMonths, _alignmentD3Tests.getTickValueMonths), 'month values don\'t line up with y locations ');
+	        _chai.assert.isTrue((0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(yAxisInfo, cellsCollection, _alignmentD3Tests.getYMisalignmentCount, _alignmentD3Tests.getFeatureValueMonths, _alignmentD3Tests.getTickValueMonths), 'month values don\'t line up with y locations ');
 	      });
 
-	      it('10. My heat map should have cells that align with the corresponding\n      year on the x-axis.', function () {
+	      reqNum++;
+	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding year on the x-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('.cell');
-	        FCC_Global.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class=\"cell\" ');
-
 	        var dataAttr = 'data-year';
 	        var coordAttr = 'x';
+
+	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class="cell" ');
+
 	        // construct an object with information about axis and data-type
 	        var xAxisInfo = (0, _alignmentD3Tests.getXAxisInfo)(document.querySelector('#x-axis'), dataAttr, coordAttr);
 
-	        FCC_Global.assert.isTrue(
-	        /**
-	         * Check that cells align with axis ticks
-	         * @function
-	         * @param {Object} xAxisInfo - from alignmentD3Tests.getAxisInfo
-	         * @param {HTMLCollection} cellsCollection - const
-	         * @param {Function} getXMisalignmentCount - Pass specified function
-	         * for alignmentD3Tests.getMisalignmentCount
-	         * @param {Function} getFeatureValueInteger - Pass specified function
-	         * for alignmentD3Tests.getMisalignmentCount.getFeatureValueFunc
-	         * @param {Function} getTickValueInteger - Pass specified function for
-	         * alignmentD3Tests.getMisalignmentCountCaller.getTickValueFunc
-	          * @returns {Boolean} True if no misalignments are counted
-	         */
-	        (0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(xAxisInfo, cellsCollection, _alignmentD3Tests.getXMisalignmentCount, _alignmentD3Tests.getFeatureValueInteger, _alignmentD3Tests.getTickValueInteger), 'year values don\'t line up with x locations ');
+	        _chai.assert.isTrue((0, _alignmentD3Tests.isAxisAlignedWithDataPoints)(xAxisInfo, cellsCollection, _alignmentD3Tests.getXMisalignmentCount, _alignmentD3Tests.getFeatureValueInteger, _alignmentD3Tests.getTickValueInteger), 'year values don\'t line up with x locations ');
 	      });
 
-	      it('11. My heat map should have multiple tick labels on the y-axis with\n      the full month name.', function () {
+	      reqNum++;
+	      it(reqNum + '. My heat map should have multiple tick labels on the y-axis\n      with the full month name.', function () {
 	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
 
-	        FCC_Global.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis');
+	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis');
 
 	        for (var i = 0; i < yAxisTickLabels.length; i++) {
-	          FCC_Global.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), 'Y axis labels should contain month names ');
+	          _chai.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), 'Y axis labels should contain month names ');
 	        }
 	      });
 
-	      it('12. My heat map should have multiple tick labels on the x-axis with\n      the years between 1754 and 2015.', function () {
+	      reqNum++;
+	      it(reqNum + '. My heat map should have multiple tick labels on the x-axis\n      with the years between 1754 and 2015.', function () {
 	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
-	        FCC_Global.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis');
+	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis');
 
 	        for (var i = 0; i < xAxisTickLabels.length; i++) {
 
-	          FCC_Global.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, 'X axis labels should contain a year that\'s at least 1754 ');
+	          _chai.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, 'X axis labels should contain a year that\'s at least 1754 ');
 
-	          FCC_Global.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, 'X axis labels should contain a year that\'s at most 2015 ');
+	          _chai.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, 'X axis labels should contain a year that\'s at most 2015 ');
 	        }
 	      });
 
-	      it('13. My heat map should have a legend with corresponding id="legend".', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
+	      reqNum++;
+	      it(reqNum + '. My heat map should have a legend with corresponding\n      id="legend".', function () {
+	        _chai.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
 	      });
 	    });
+
+	    // Addtional tests.
 	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), 'data-year', 'data-year');
 	  });
 	}
