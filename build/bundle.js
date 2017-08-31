@@ -22028,9 +22028,7 @@ var FCC_Global =
 	});
 	exports.default = createChoroplethTests;
 
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
+	var _chai = __webpack_require__(2);
 
 	var _education = __webpack_require__(60);
 
@@ -22045,96 +22043,109 @@ var FCC_Global =
 	  describe('#ChoroplethTests', function () {
 
 	    describe('#Content', function () {
+	      var reqNum = 0;
 
-	      it('1. My Choropleth should have a title with a corresponding id=\"title\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id=\"title\" ');
+	      reqNum++;
+	      it(reqNum + '. My Choropleth should have a title with a corresponding\n      id="title"', function () {
+	        _chai.assert.isNotNull(document.getElementById('title'), 'Could not find an element with id="title" ');
 	      });
 
-	      it('2. My Choropleth should have a description with a corresponding id=\"description\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('description'), 'Could not find element with id=\"description\" ');
+	      reqNum++;
+	      it(reqNum + '. My Choropleth should have a description element with a\n      corresponding id="description"', function () {
+	        _chai.assert.isNotNull(document.getElementById('description'), 'Could not find element with id="description" ');
 	      });
 
-	      it('3. My Choropleth should have counties with a corresponding class=\"county\" that represent the data', function () {
-	        FCC_Global.assert.isAbove(document.querySelectorAll('.county').length, 0, "Could not find any elements with class=\"county\" ");
+	      reqNum++;
+	      it(reqNum + '. My Choropleth should have counties with a corresponding\n      class="county" that represent the data', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('.county').length, 0, 'Could not find any elements with class="county" ');
 	      });
 
-	      it('4. There should be at least 4 different fill colors used for the counties', function () {
+	      reqNum++;
+	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the counties', function () {
 	        var counties = document.querySelectorAll('.county');
 	        var uniqueColors = [];
 
 	        for (var i = 0; i < counties.length; i++) {
 	          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
 
-	          // if the current color isn't in the uniqueColors arr, push it
+	          // If the current color isn't in the uniqueColors arr, push it.
 	          if (uniqueColors.indexOf(countyColor) === -1) {
 	            uniqueColors.push(countyColor);
 	          }
 	        }
 
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
+	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
 	      });
 
-	      it('5. My counties should each have \"data-fips\" and \"data-education\" properties containing their corresponding fips and education values', function () {
+	      reqNum++;
+	      it(reqNum + '. My counties should each have "data-fips" and\n      "data-education" properties containing their corresponding fips and\n      education values', function () {
 	        var counties = document.querySelectorAll('.county');
-	        FCC_Global.assert.isAbove(counties.length, 0, "Could not find any elements with a class=\"counties\" ");
+	        _chai.assert.isAbove(counties.length, 0, 'Could not find any elements with a class="counties" ');
 
 	        for (var i = 0; i < counties.length; i++) {
 	          var county = counties[i];
-	          FCC_Global.assert.isNotNull(county.getAttribute("data-fips"), "Could not find property \"data-fips\" in county ");
-	          FCC_Global.assert.isNotNull(county.getAttribute("data-education"), "Could not find property \"data-education\" in county ");
+	          _chai.assert.isNotNull(county.getAttribute('data-fips'), 'Could not find property "data-fips" in county ');
+	          _chai.assert.isNotNull(county.getAttribute('data-education'), 'Could not find property "data-education" in county ');
 	        }
 	      });
 
-	      it('6. My Choropleth should have a county for each provided data point', function () {
+	      reqNum++;
+	      it(reqNum + '. My Choropleth should have a county for each provided data\n      point', function () {
 	        var counties = document.querySelectorAll('.county');
 
-	        FCC_Global.assert.equal(counties.length, _education2.default.length);
+	        _chai.assert.equal(counties.length, _education2.default.length);
 	      });
 
-	      it('7. The counties should have data-fips and data-education values that match the sample data', function () {
+	      reqNum++;
+	      it(reqNum + '. The counties should have data-fips and data-education\n      values that match the sample data', function () {
 	        var counties = document.querySelectorAll('.county');
 	        var educationDataFips = _education2.default.map(function (item) {
 	          return item.fips;
 	        });
 	        var uniqueFipsFromChoropleth = [];
-	        // check for any duplicate fips values
+	        // Check for any duplicate fips values.
 	        for (var i = 0; i < counties.length; i++) {
 	          var fips = counties[i].getAttribute('data-fips');
 
-	          FCC_Global.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, "There should be no duplicate fips values ");
+	          _chai.assert.equal(uniqueFipsFromChoropleth.indexOf(fips), -1, 'There should be no duplicate fips values ');
 	          uniqueFipsFromChoropleth.push(+fips);
 	        }
 
-	        // iterate through each data point and make sure all given data appears on the Choropleth, and that the Choropleth doesn't contain extra data
+	        // Iterate through each data point and make sure all given data appears
+	        // on the Choropleth, and that the Choropleth doesn't contain extra
+	        // data.
 	        for (var j = 0; j < _education2.default.length; j++) {
-	          // test that every value in the sample data is in the Choropleth
-	          FCC_Global.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, "Choropleth does not contain all fips from sample data ");
+	          // Test that every value in the sample data is in the Choropleth.
+	          _chai.assert.notEqual(uniqueFipsFromChoropleth.indexOf(educationDataFips[j]), -1, 'Choropleth does not contain all fips from sample data ');
 
-	          // test that every value in the Choropleth is in the sample data
-	          FCC_Global.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, "Choropleth contains fips data not found in sample data ");
+	          // Test that every value in the Choropleth is in the sample data.
+	          _chai.assert.notEqual(educationDataFips.indexOf(uniqueFipsFromChoropleth[j]), -1, 'Choropleth contains fips data not found in sample data ');
 	        }
 
-	        // index educationData by fips
+	        // Index educationData by fips.
 	        var educationDataByFips = _education2.default.reduce(function (data, item) {
 	          data[item.fips] = item;
 	          return data;
 	        }, {});
 
-	        // check if the counties on the Choropleth have data-education values that correspond to the correct data-fips value
+	        // Check if the counties on the Choropleth have data-education values
+	        // that correspond to the correct data-fips value.
 	        for (var k = 0; k < counties.length; k++) {
 	          var countyFips = +counties[k].getAttribute('data-fips');
 	          var countyEducation = counties[k].getAttribute('data-education');
 	          var sampleEducation = educationDataByFips[countyFips].bachelorsOrHigher;
 
-	          FCC_Global.assert.equal(countyEducation, sampleEducation, "County fips and education data does not match ");
+	          _chai.assert.equal(countyEducation, sampleEducation, 'County fips and education data does not match ');
 	        }
 	      });
 
-	      it('8. My Choropleth should have a legend with a corresponding id=\"legend\"', function () {
-	        FCC_Global.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id=\"legend\" ');
+	      reqNum++;
+	      it(reqNum + '. My Choropleth should have a legend with a corresponding\n      id="legend"', function () {
+	        _chai.assert.isNotNull(document.getElementById('legend'), 'Could not find element with id="legend" ');
 	      });
 
-	      it('9. There should be at least 4 different fill colors used for the legend', function () {
+	      reqNum++;
+	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the legend', function () {
 	        var rects = document.querySelectorAll('#legend rect');
 	        var uniqueColors = [];
 
@@ -22146,11 +22157,12 @@ var FCC_Global =
 	            uniqueColors.push(rectColor);
 	          }
 	        }
-	        FCC_Global.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
+	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
 	      });
 	    });
 
-	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.county'), "data-education", "data-education");
+	    // Additional tests.
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.county'), 'data-education', 'data-education');
 	  });
 	}
 
