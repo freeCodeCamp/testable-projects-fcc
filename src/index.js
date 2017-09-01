@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import chai from 'chai';
-import test_suite_skeleton from './assets/test_suite_skeleton';
+import testSuiteSkeleton from './assets/test-suite-skeleton';
 import mochaCSS from './assets/mocha-CSS';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests';
@@ -48,7 +48,7 @@ $(document).ready(function() {
         mocha.setup('bdd');
         const testDiv = document.createElement('div');
         testDiv.style.position = 'inherit';
-        testDiv.innerHTML = test_suite_skeleton;
+        testDiv.innerHTML = testSuiteSkeleton;
         document.body.appendChild(testDiv);
         // Once testDiv is loaded:
         let project_titleCase = localStorage.getItem('project_titleCase');

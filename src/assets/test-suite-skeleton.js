@@ -10,7 +10,7 @@
 // - styleSheetUtils.js
 // - product-landing-page-tests.js
 
-const test_suite_skeleton = `
+const testSuiteSkeleton = `
   <style>
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
 
@@ -330,17 +330,20 @@ const test_suite_skeleton = `
     <span id="hamburger_middle" class="fcc_hamburger transform_middle"></span>
     <span id="hamburger_bottom" class="fcc_hamburger transform_bottom"></span>
   </div>
-  <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox" title="CTRL + SHIFT + O">
+  <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox"
+    title="CTRL + SHIFT + O">
   <div id="fcc_foldout_menu">
     <div id="fcc_foldout_menu_inner">
       <label for="test-suite-selector">Select Test Suite: </label>
-      <select name="Test Suite Selector" id="test-suite-selector" onchange="FCC_Global.selectProject(this.value)">
+      <select name="Test Suite Selector" id="test-suite-selector"
+        onchange="FCC_Global.selectProject(this.value)">
         <option id="placeholder" value="">- - -</option>
         <option value="tribute-page">Tribute Page</option>
         <option value="portfolio">Personal Portfolio</option>
         <option value="survey-form">Survey Form</option>
         <option value="product-landing-page">Product Landing Page</option>
-        <option value="technical-docs-page">Technical Documentation Page</option>
+        <option value="technical-docs-page">Technical Documentation Page
+        </option>
         <option value="random-quote-machine">Random Quote Machine</option>
         <option value="markdown-previewer">Markdown Previewer</option>
         <option value="drum-machine">Drum Machine</option>
@@ -352,21 +355,32 @@ const test_suite_skeleton = `
         <option value="choropleth">D3: Choropleth</option>
         <option value="tree-map">D3: Tree Map</option>
       </select>
-      <button id="fcc_test_message-box-rerun-button" type="button" class="fcc_foldout_buttons" title="CTRL + SHIFT + ENTER" onclick="FCC_Global.FCCRerunTests()">
+      <button id="fcc_test_message-box-rerun-button" type="button"
+        class="fcc_foldout_buttons" title="CTRL + SHIFT + ENTER"
+        onclick="FCC_Global.FCCRerunTests()">
         Run Tests
       </button>
-      <button id="fcc_test_button" type="button" class="fcc_foldout_buttons fcc_test_btn-default" title="CTRL + SHIFT + T" onclick="FCC_Global.FCCOpenTestModal()">
+      <button id="fcc_test_button" type="button"
+        class="fcc_foldout_buttons fcc_test_btn-default"
+        title="CTRL + SHIFT + T" onclick="FCC_Global.FCCOpenTestModal()">
         Tests
       </button>
       <div id="fcc_legend_wrapper">
-        <div class="fcc_legend key"></div><span class="fcc_legend">Test(s) Failed</span>
-        <div class="fcc_legend key"></div><span class="fcc_legend">Tests Passed</span>
-        <div class="fcc_legend key"></div><span class="fcc_legend">Tests Executing</span>
+        <div class="fcc_legend key"></div>
+        <span class="fcc_legend">Test(s) Failed</span>
+        <div class="fcc_legend key"></div>
+        <span class="fcc_legend">Tests Passed</span>
+        <div class="fcc_legend key"></div>
+        <span class="fcc_legend">Tests Executing</span>
       </div>
-      <span id="fcc_report-bug"><a href="https://github.com/freeCodeCamp/testable-projects-fcc/issues/new" target="_blank">Report Bug</a></span>
+      <span id="fcc_report-bug"><a
+        href="https://github.com/freeCodeCamp/testable-projects-fcc/issues/new"
+        target="_blank">Report Bug</a>
+      </span>
     </div>
   </div>
-  <div id="fcc_test_message-box" class="fcc_test_message-box-hidden" onclick="FCC_Global.FCCclickOutsideToCloseModal(event)">
+  <div id="fcc_test_message-box" class="fcc_test_message-box-hidden"
+    onclick="FCC_Global.FCCclickOutsideToCloseModal(event)">
     <div class="fcc_test_message-box-content">
       <div class="fcc_test_message-box-header">
         <div class="title">Unit tests</div>
@@ -375,9 +389,10 @@ const test_suite_skeleton = `
         <div id="mocha">Run Test Suite to See Unit Tests!</div>
       </div>
       <div class="fcc_test_message-box-footer">
-        <div class="fcc_test_message-box-close-btn" onclick="FCC_Global.FCCCloseTestModal()">Close</div>
+        <div class="fcc_test_message-box-close-btn"
+          onclick="FCC_Global.FCCCloseTestModal()">Close</div>
       </div>
     </div>
   </div>`;
 
-export default test_suite_skeleton;
+export default testSuiteSkeleton;
