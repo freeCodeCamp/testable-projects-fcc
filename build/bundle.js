@@ -75,81 +75,81 @@ var FCC_Global =
 
 	var _testSuiteSkeleton2 = _interopRequireDefault(_testSuiteSkeleton);
 
-	var _mochaCSS = __webpack_require__(43);
+	var _style = __webpack_require__(43);
 
-	var _mochaCSS2 = _interopRequireDefault(_mochaCSS);
+	var _style2 = _interopRequireDefault(_style);
 
-	var _drumMachineTests = __webpack_require__(44);
+	var _drumMachineTests = __webpack_require__(48);
 
 	var _drumMachineTests2 = _interopRequireDefault(_drumMachineTests);
 
-	var _markdownPreviewerTests = __webpack_require__(46);
+	var _markdownPreviewerTests = __webpack_require__(50);
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
-	var _calculatorTests = __webpack_require__(47);
+	var _calculatorTests = __webpack_require__(51);
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroClockTests = __webpack_require__(49);
+	var _pomodoroClockTests = __webpack_require__(53);
 
 	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
-	var _tributePageTests = __webpack_require__(50);
+	var _tributePageTests = __webpack_require__(54);
 
 	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
 
-	var _portfolioTests = __webpack_require__(51);
+	var _portfolioTests = __webpack_require__(55);
 
 	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
 
-	var _productLandingPageTests = __webpack_require__(53);
+	var _productLandingPageTests = __webpack_require__(57);
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
-	var _surveyFormTests = __webpack_require__(54);
+	var _surveyFormTests = __webpack_require__(58);
 
 	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
 
-	var _technicalDocsTests = __webpack_require__(55);
+	var _technicalDocsTests = __webpack_require__(59);
 
 	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
 
-	var _barChartTests = __webpack_require__(56);
+	var _barChartTests = __webpack_require__(60);
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(58);
+	var _scatterPlotTests = __webpack_require__(62);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(60);
+	var _choroplethTests = __webpack_require__(64);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(62);
+	var _treeMapTests = __webpack_require__(66);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(63);
+	var _quoteMachineTests = __webpack_require__(67);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(64);
+	var _heatMapTests = __webpack_require__(68);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// the !- prefixes are for process arguments respective of plugins
+	// Example: https://stackoverflow.com/a/42440360/3530394
+	// style-loader injects css loaded by css-loader through this import statement.
 	var assert = exports.assert = _chai2.default.assert; /* global project_name, projectName */
 
 	var projectNameLocal = false;
 
 	// Load mocha.
 	(function () {
-	  // Write mocha CSS to page head.
-	  document.write('<style>' + _mochaCSS2.default + '</style>');
-	  // Add a script tag to load mocha JS from a CDN.
 	  var mochaCdn = document.createElement('script');
 	  mochaCdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
 	  document.head.appendChild(mochaCdn);
@@ -19053,27 +19053,593 @@ var FCC_Global =
 	// - styleSheetUtils.js
 	// - product-landing-page-tests.js
 
-	var testSuiteSkeleton = "\n  <style>\n    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n    /* TEST/MESSAGE CENTER CSS */\n\n    #fcc_test_message-box {\n      font-size: 20px !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8) !important;\n      transition: all .5s;\n      z-index: 100000;\n      overflow: auto;\n    }\n\n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n\n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black !important;\n      background-color: white !important;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto !important;\n      text-align: initial;\n      border-radius: 10px !important;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      flex: none;\n      box-sizing: border-box !important;\n      padding: 10px !important;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n      height: 60px;\n    }\n\n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px !important;\n      line-height: 40px !important;\n      margin-left: 10px !important;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n      height: 70px;\n    }\n\n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px !important;\n      margin-bottom: 10px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px !important;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245) !important;\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial !important;\n      text-align: initial;\n    }\n    #mocha * {\n      font-family: Noto Sans, arial, sans-serif !important;\n      border: none !important;\n    }\n\n    div {\n      position: static;\n    }\n\n    /* FOLDOUT MENU CSS */\n\n    #fcc_foldout_menu {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 320px;\n      height: 210px;\n      border-radius: 0 !important;\n      border-bottom-right-radius: 5px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      z-index: 99997;\n      font-family: Noto Sans, arial, sans-serif !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      transition: .5s;\n    }\n    #toggle:checked ~ #fcc_foldout_menu {\n      left: -320px;\n      transition: .5s ease-in-out;\n    }\n    #fcc_foldout_menu_inner {\n      position: relative;\n    }\n    #toggle {\n      height: 24px;\n      width: 25px;\n      position: fixed;\n      top: 7px;\n      left: 20px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 99999;\n    }\n    #fcc_foldout_toggler {\n      position: absolute;\n      top: 20px;\n      left: 20px;\n      z-index: 99998;\n    }\n\n    .transform_top {\n      opacity: 1;\n      transform: rotate(45deg) translate(-2px, -1px);\n    }\n    .transform_middle {\n      opacity: 0;\n      transform: rotate(0deg) scale(0.2, 0.2);\n    }\n    .transform_bottom {\n      opacity: 1;\n      transform: rotate(-45deg) translate(-1px, -1px);\n    }\n\n    .fcc_hamburger {\n      position: relative;\n      width: 25px;\n      height: 3px;\n      display: block;\n      background: black !important;\n      border-radius: 5px !important;\n      transform-origin: 4px 0px;\n      transition: transform 0.4s ease, opacity 0.55s ease;\n    }\n    #hamburger_top {\n      position: absolute;\n      top: -6px;\n      transform-origin: 0% 80%;\n    }\n    #hamburger_bottom {\n      position: absolute;\n      bottom: -6px;\n      transform-origin: 20% 80%;\n    }\n\n    #fcc_foldout_menu label {\n      top: 38px;\n      left: 20px;\n      position: absolute;\n      font-size: 15px !important;\n      color: black !important;\n    }\n    #fcc_foldout_menu select {\n      display: block;\n      padding: 0;\n      height: auto;\n      width: auto;\n      top: 61px;\n      left: 18px;\n      position: absolute;\n      font-size: 12px !important;\n      font-family: Noto Sans, Arial, sans-serif !important;\n    }\n\n    .fcc_foldout_buttons {\n      position: absolute;\n      left: 20px;\n      height: 20px;\n      width: 110px;\n      padding: 10px !important;\n      display: block;\n      font-size: 15px !important;\n      line-height: 15px !important;\n      text-align: center;\n      border: none !important;\n      outline: none !important;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      box-sizing: content-box !important;\n      z-index: 0;\n      cursor: pointer;\n      box-shadow: 1px 1px 4px black;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n    #fcc_test_message-box-rerun-button {\n      top: 90px;\n      transition: all .3s;\n    }\n    #fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      top: 140px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-executing {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    #fcc_report-bug {\n      position: absolute;\n      top: 186px;\n      left: 20px;\n      width: 110px;\n      padding: 0 10px !important;\n      font-size: 12px !important;\n      text-align: center;\n    }\n\n    #fcc_legend_wrapper {\n      position: absolute;\n      top: 95px;\n      left: 160px;\n      width: 125px;\n      vertical-align: top;\n      text-align: left !important;\n      font-size: 15px !important;\n      background: none !important;\n    }\n    #fcc_legend_wrapper span {\n      height: 15px;\n      margin-top: 6px !important;\n      font-size: 12px  !important;\n      color: black !important;\n      background: none !important;\n    }\n    .key {\n      height: 15px;\n      width: 15px;\n      margin: 5px !important;\n      vertical-align: top;\n      border-radius: 0 !important;\n    }\n    .key:first-of-type {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .key:nth-of-type(2) {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    .key:nth-of-type(3) {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_legend {\n      position: relative;\n      display: inline-block;\n    }\n\n    #fcc_test_suite_indicator_wrapper {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n    }\n    #fcc_test_suite_indicator {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n      font-size: 12px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      color: black !important;\n      padding: 3px 5px !important;\n      border-radius: 5px !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n  </style>\n\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n    title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n        onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page\n        </option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n        class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n        onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\"\n        class=\"fcc_foldout_buttons fcc_test_btn-default\"\n        title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a\n        href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n        target=\"_blank\">Report Bug</a>\n      </span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n    onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\"\n          onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
+	var testSuiteSkeleton = "\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n    title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n        onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page\n        </option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n        class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n        onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\"\n        class=\"fcc_foldout_buttons fcc_test_btn-default\"\n        title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a\n        href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n        target=\"_blank\">Report Bug</a>\n      </span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n    onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\"\n          onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
 
 	exports.default = testSuiteSkeleton;
 
 /***/ }),
 /* 43 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	// style-loader: Adds some css to the DOM by adding a <style> tag
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	// TODO: This is ugly and obviously difficult to maintain. See if we can use
-	// a regular .css file, or at least something better than a huge string.
-	// See
-	var mochaCSS = "@charset \"utf-8\";#mocha .test .html-error,#mocha\n.test pre{float:left;clear:left;word-wrap:break-word}#mocha ul,#mocha-stats\nli{list-style:none}#mocha h1,#mocha h2{margin:0}#mocha{font:20px/1.5\n\"Helvetica Neue\",Helvetica,Arial,sans-serif;margin:60px 50px}#mocha\nli,#mocha ul{margin:0;padding:0}#mocha .suite,#mocha .test{margin-left:15px}\n#mocha h1{margin-top:15px;font-size:1em;font-weight:200}#mocha h1\na{text-decoration:none;color:inherit}#mocha h1\na:hover{text-decoration:underline}#mocha .suite .suite\nh1{margin-top:0;font-size:.8em}#mocha .hidden{display:none}#mocha\nh2{font-size:12px;font-weight:400;cursor:pointer}#mocha\n.test{overflow:hidden}#mocha .test.pending:hover h2::after{content:'(pending)';\nfont-family:arial,sans-serif}#mocha .test.pass.medium .duration{background:\n#c09853}#mocha .test.pass.slow .duration{background:#b94a48}#mocha .test.pass::\nbefore{content:'\u2713';font-size:12px;display:block;float:left;margin-right:5px;\ncolor:#00d6b2}#mocha .test.pass .duration{font-size:9px;margin-left:5px;\npadding:2px 5px;color:#fff;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);box-shadow:inset 0 1px 1px\nrgba(0,0,0,.2);-webkit-border-radius:5px;-moz-border-radius:5px;\n-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}\n#mocha .test.pass.fast .duration{display:none}#mocha .test.pending{color:\n#0b97c4}#mocha .test.pending::before{content:'\u25E6';color:#0b97c4}#mocha\n.test.fail{color:#c00}#mocha .test.fail pre{color:#000}#mocha\n.test.fail::before{content:'\u2716';font-size:12px;display:block;float:left;\nmargin-right:5px;color:#c00}#mocha .test pre.error{color:#c00;max-height:\n300px;overflow:auto}#mocha .test .html-error{overflow:auto;color:#000;\nline-height:1.5;display:block;font:12px/1.5 monaco,monospace;margin:5px;\npadding:15px;border:1px solid #eee;max-width:85%;max-width:\n-webkit-calc(100% - 42px);max-width:-moz-calc(100% - 42px);max-width:\ncalc(100% - 42px);max-height:300px;border-bottom-color:#ddd;-webkit-box-shadow:\n0 1px 3px #eee;-moz-box-shadow:0 1px 3px #eee;box-shadow:0 1px 3px #eee;\n-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}\n#mocha .test .html-error pre.error{border:none;-webkit-border-radius:0;\n-moz-border-radius:0;border-radius:0;-webkit-box-shadow:0;-moz-box-shadow:0;\nbox-shadow:0;padding:0;margin:18px 0 0;max-height:none}#mocha .test pre{\ndisplay:block;font:12px/1.5 monaco,monospace;margin:5px;padding:15px;border:1px\nsolid #eee;max-width:85%;max-width:-webkit-calc(100% - 42px);max-width:-moz-calc\n(100% - 42px);max-width:calc(100% - 42px);border-bottom-color:\n#ddd;-webkit-box-shadow:0 1px 3px #eee;-moz-box-shadow:0 1px 3px\n#eee;box-shadow:0 1px 3px #eee;-webkit-border-radius:3px;-moz-border-radius:3px;\nborder-radius:3px}#mocha .test h2{position:relative}#mocha .test a.replay{\nposition:absolute;top:3px;right:0;text-decoration:none;vertical-align:\nmiddle;display:block;width:15px;height:15px;line-height:15px;text-align:center;\nbackground:#eee;font-size:15px;-webkit-border-radius:15px;-moz-border-radius:\n15px;border-radius:15px;-webkit-transition:opacity .2s;-moz-transition:opacity\n.2s;-o-transition:opacity .2s;transition:opacity .2s;opacity:.3;color:#888}\n#mocha .test:hover a.replay{opacity:1}#mocha-report.fail .test.pass,\n#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,\n#mocha-report.pending .test.pass{display:none}#mocha-report.pending\n.test.pass.pending{display:block}#mocha-error{color:#c00;font-size:1.5em;\nfont-weight:100;letter-spacing:1px}#mocha-stats{position:fixed;top:15px;right:\n10px;font-size:12px;margin:0;color:#888;z-index:1}#mocha-stats\n.progress{float:right;padding-top:0;height:auto;-webkit-box-shadow:none;\n-moz-box-shadow:none;box-shadow:none;background-color:initial}#mocha-stats em{\ncolor:#000}#mocha-stats a{text-decoration:none;color:inherit}#mocha-stats\na:hover{border-bottom:1px solid #eee}#mocha-stats li{display:inline-block;\nmargin:0 5px;padding-top:11px}#mocha-stats canvas{width:40px;height:40px}\n#mocha code .comment{color:#ddd}#mocha code .init{color:#2f6fad}#mocha code\n.string{color:#5890ad}#mocha code .keyword{color:#8a6343}#mocha code\n.number{color:#2f6fad}@media screen and (max-device-width:480px){\n#mocha{margin:60px 0}#mocha #stats{position:absolute}}\n/*# sourceMappingURL=mocha.min.css.map */";
-	exports.default = mochaCSS;
+	// load the styles
+	var content = __webpack_require__(44);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(46)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ }),
 /* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(45)(undefined);
+	// imports
+	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
+
+	// module
+	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n#mocha h1,#mocha h2{\n  margin:0;\n}\n#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n}\n#mocha .test a.replay{\n  position:absolute;\n  top:3px;\n  right:0;\n  text-decoration:none;\n  vertical-align:middle;\n  display:block;\n  width:15px;\n  height:15px;\n  line-height:15px;\n  text-align:center;\n  background:#eee;\n  font-size:15px;\n  -webkit-border-radius:15px;\n  -moz-border-radius:15px;\n  border-radius:15px;\n  -webkit-transition:opacity .2s;\n  -moz-transition:opacity .2s;\n  -o-transition:opacity .2s;\n  transition:opacity .2s;\n  opacity:.3;\n  color:#888;\n}\n#mocha .test:hover a.replay{\n  opacity:1;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:15px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\n#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\n.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n}\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n}\n\n.fcc_test_message-box-body {\n  flex: 1;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\n#mocha {\n  margin: 10px !important;\n}\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n#mocha-stats {\n  position: absolute;\n}\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n/* FOLDOUT MENU CSS */\n\n#fcc_foldout_menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 320px;\n  height: 210px;\n  border-radius: 0 !important;\n  border-bottom-right-radius: 5px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  z-index: 99997;\n  font-family: Noto Sans, arial, sans-serif !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  transition: .5s;\n}\n#toggle:checked ~ #fcc_foldout_menu {\n  left: -320px;\n  transition: .5s ease-in-out;\n}\n#fcc_foldout_menu_inner {\n  position: relative;\n}\n#toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n}\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  z-index: 99998;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 3px;\n  display: block;\n  background: black !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n}\n#hamburger_top {\n  position: absolute;\n  top: -6px;\n  transform-origin: 0% 80%;\n}\n#hamburger_bottom {\n  position: absolute;\n  bottom: -6px;\n  transform-origin: 20% 80%;\n}\n\n#fcc_foldout_menu label {\n  top: 38px;\n  left: 20px;\n  position: absolute;\n  font-size: 15px !important;\n  color: black !important;\n}\n#fcc_foldout_menu select {\n  display: block;\n  padding: 0;\n  height: auto;\n  width: auto;\n  top: 61px;\n  left: 18px;\n  position: absolute;\n  font-size: 12px !important;\n  font-family: Noto Sans, Arial, sans-serif !important;\n}\n\n.fcc_foldout_buttons {\n  position: absolute;\n  left: 20px;\n  height: 20px;\n  width: 110px;\n  padding: 10px !important;\n  display: block;\n  font-size: 15px !important;\n  line-height: 15px !important;\n  text-align: center;\n  border: none !important;\n  outline: none !important;\n  color: white;\n  background-color: rgba(128, 128, 128, 0.7);\n  border-radius: 4px;\n  box-sizing: content-box !important;\n  z-index: 0;\n  cursor: pointer;\n  box-shadow: 1px 1px 4px black;\n  font-family: Noto Sans, arial, sans-serif !important;\n}\n#fcc_test_message-box-rerun-button {\n  top: 90px;\n  transition: all .3s;\n}\n#fcc_test_message-box-rerun-button:hover {\n  color: white;\n  background-color: black;\n}\n#fcc_test_button {\n  top: 140px;\n}\n.fcc_test_btn-default {\n  background-color: rgba(128, 128, 128, 0.7);\n}\n.fcc_test_btn-executing {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_test_btn-error {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.fcc_test_btn-success {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n#fcc_report-bug {\n  position: absolute;\n  top: 186px;\n  left: 20px;\n  width: 110px;\n  padding: 0 10px !important;\n  font-size: 12px !important;\n  text-align: center;\n}\n\n#fcc_legend_wrapper {\n  position: absolute;\n  top: 95px;\n  left: 160px;\n  width: 125px;\n  vertical-align: top;\n  text-align: left !important;\n  font-size: 15px !important;\n  background: none !important;\n}\n#fcc_legend_wrapper span {\n  height: 15px;\n  margin-top: 6px !important;\n  font-size: 12px  !important;\n  color: black !important;\n  background: none !important;\n}\n.key {\n  height: 15px;\n  width: 15px;\n  margin: 5px !important;\n  vertical-align: top;\n  border-radius: 0 !important;\n}\n.key:first-of-type {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.key:nth-of-type(2) {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n.key:nth-of-type(3) {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_legend {\n  position: relative;\n  display: inline-block;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n}\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  color: black !important;\n  padding: 3px 5px !important;\n  border-radius: 5px !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n}", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function(useSourceMap) {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			return this.map(function (item) {
+				var content = cssWithMappingToString(item, useSourceMap);
+				if(item[2]) {
+					return "@media " + item[2] + "{" + content + "}";
+				} else {
+					return content;
+				}
+			}).join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+	function cssWithMappingToString(item, useSourceMap) {
+		var content = item[1] || '';
+		var cssMapping = item[3];
+		if (!cssMapping) {
+			return content;
+		}
+
+		if (useSourceMap && typeof btoa === 'function') {
+			var sourceMapping = toComment(cssMapping);
+			var sourceURLs = cssMapping.sources.map(function (source) {
+				return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+			});
+
+			return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+		}
+
+		return [content].join('\n');
+	}
+
+	// Adapted from convert-source-map (MIT)
+	function toComment(sourceMap) {
+		// eslint-disable-next-line no-undef
+		var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+		var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+		return '/*# ' + data + ' */';
+	}
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+
+	var stylesInDom = {};
+
+	var	memoize = function (fn) {
+		var memo;
+
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	};
+
+	var isOldIE = memoize(function () {
+		// Test for IE <= 9 as proposed by Browserhacks
+		// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+		// Tests for existence of standard globals is to allow style-loader
+		// to operate correctly into non-standard environments
+		// @see https://github.com/webpack-contrib/style-loader/issues/177
+		return window && document && document.all && !window.atob;
+	});
+
+	var getElement = (function (fn) {
+		var memo = {};
+
+		return function(selector) {
+			if (typeof memo[selector] === "undefined") {
+				memo[selector] = fn.call(this, selector);
+			}
+
+			return memo[selector]
+		};
+	})(function (target) {
+		return document.querySelector(target)
+	});
+
+	var singleton = null;
+	var	singletonCounter = 0;
+	var	stylesInsertedAtTop = [];
+
+	var	fixUrls = __webpack_require__(47);
+
+	module.exports = function(list, options) {
+		if (false) {
+			if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+
+		options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (!options.singleton) options.singleton = isOldIE();
+
+		// By default, add <style> tags to the <head> element
+		if (!options.insertInto) options.insertInto = "head";
+
+		// By default, add <style> tags to the bottom of the target
+		if (!options.insertAt) options.insertAt = "bottom";
+
+		var styles = listToStyles(list, options);
+
+		addStylesToDom(styles, options);
+
+		return function update (newList) {
+			var mayRemove = [];
+
+			for (var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+
+			if(newList) {
+				var newStyles = listToStyles(newList, options);
+				addStylesToDom(newStyles, options);
+			}
+
+			for (var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+
+				if(domStyle.refs === 0) {
+					for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	};
+
+	function addStylesToDom (styles, options) {
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			if(domStyle) {
+				domStyle.refs++;
+
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles (list, options) {
+		var styles = [];
+		var newStyles = {};
+
+		for (var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = options.base ? item[0] + options.base : item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+
+			if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+			else newStyles[id].parts.push(part);
+		}
+
+		return styles;
+	}
+
+	function insertStyleElement (options, style) {
+		var target = getElement(options.insertInto)
+
+		if (!target) {
+			throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+		}
+
+		var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+		if (options.insertAt === "top") {
+			if (!lastStyleElementInsertedAtTop) {
+				target.insertBefore(style, target.firstChild);
+			} else if (lastStyleElementInsertedAtTop.nextSibling) {
+				target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				target.appendChild(style);
+			}
+			stylesInsertedAtTop.push(style);
+		} else if (options.insertAt === "bottom") {
+			target.appendChild(style);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement (style) {
+		if (style.parentNode === null) return false;
+		style.parentNode.removeChild(style);
+
+		var idx = stylesInsertedAtTop.indexOf(style);
+		if(idx >= 0) {
+			stylesInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement (options) {
+		var style = document.createElement("style");
+
+		options.attrs.type = "text/css";
+
+		addAttrs(style, options.attrs);
+		insertStyleElement(options, style);
+
+		return style;
+	}
+
+	function createLinkElement (options) {
+		var link = document.createElement("link");
+
+		options.attrs.type = "text/css";
+		options.attrs.rel = "stylesheet";
+
+		addAttrs(link, options.attrs);
+		insertStyleElement(options, link);
+
+		return link;
+	}
+
+	function addAttrs (el, attrs) {
+		Object.keys(attrs).forEach(function (key) {
+			el.setAttribute(key, attrs[key]);
+		});
+	}
+
+	function addStyle (obj, options) {
+		var style, update, remove, result;
+
+		// If a transform function was defined, run it on the css
+		if (options.transform && obj.css) {
+		    result = options.transform(obj.css);
+
+		    if (result) {
+		    	// If transform returns a value, use that instead of the original css.
+		    	// This allows running runtime transformations on the css.
+		    	obj.css = result;
+		    } else {
+		    	// If the transform function returns a falsy value, don't add this css.
+		    	// This allows conditional loading of css
+		    	return function() {
+		    		// noop
+		    	};
+		    }
+		}
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+
+			style = singleton || (singleton = createStyleElement(options));
+
+			update = applyToSingletonTag.bind(null, style, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+		} else if (
+			obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function"
+		) {
+			style = createLinkElement(options);
+			update = updateLink.bind(null, style, options);
+			remove = function () {
+				removeStyleElement(style);
+
+				if(style.href) URL.revokeObjectURL(style.href);
+			};
+		} else {
+			style = createStyleElement(options);
+			update = applyToTag.bind(null, style);
+			remove = function () {
+				removeStyleElement(style);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle (newObj) {
+			if (newObj) {
+				if (
+					newObj.css === obj.css &&
+					newObj.media === obj.media &&
+					newObj.sourceMap === obj.sourceMap
+				) {
+					return;
+				}
+
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag (style, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (style.styleSheet) {
+			style.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = style.childNodes;
+
+			if (childNodes[index]) style.removeChild(childNodes[index]);
+
+			if (childNodes.length) {
+				style.insertBefore(cssNode, childNodes[index]);
+			} else {
+				style.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag (style, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			style.setAttribute("media", media)
+		}
+
+		if(style.styleSheet) {
+			style.styleSheet.cssText = css;
+		} else {
+			while(style.firstChild) {
+				style.removeChild(style.firstChild);
+			}
+
+			style.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink (link, options, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		/*
+			If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+			and there is no publicPath defined then lets turn convertToAbsoluteUrls
+			on by default.  Otherwise default to the convertToAbsoluteUrls option
+			directly
+		*/
+		var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+		if (options.convertToAbsoluteUrls || autoFixUrls) {
+			css = fixUrls(css);
+		}
+
+		if (sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = link.href;
+
+		link.href = URL.createObjectURL(blob);
+
+		if(oldSrc) URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+	
+	/**
+	 * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+	 * embed the css on the page. This breaks all relative urls because now they are relative to a
+	 * bundle instead of the current page.
+	 *
+	 * One solution is to only use full urls, but that may be impossible.
+	 *
+	 * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+	 *
+	 * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+	 *
+	 */
+
+	module.exports = function (css) {
+	  // get current location
+	  var location = typeof window !== "undefined" && window.location;
+
+	  if (!location) {
+	    throw new Error("fixUrls requires window.location");
+	  }
+
+		// blank or null?
+		if (!css || typeof css !== "string") {
+		  return css;
+	  }
+
+	  var baseUrl = location.protocol + "//" + location.host;
+	  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+		// convert each url(...)
+		/*
+		This regular expression is just a way to recursively match brackets within
+		a string.
+
+		 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+		   (  = Start a capturing group
+		     (?:  = Start a non-capturing group
+		         [^)(]  = Match anything that isn't a parentheses
+		         |  = OR
+		         \(  = Match a start parentheses
+		             (?:  = Start another non-capturing groups
+		                 [^)(]+  = Match anything that isn't a parentheses
+		                 |  = OR
+		                 \(  = Match a start parentheses
+		                     [^)(]*  = Match anything that isn't a parentheses
+		                 \)  = Match a end parentheses
+		             )  = End Group
+	              *\) = Match anything and then a close parens
+	          )  = Close non-capturing group
+	          *  = Match anything
+	       )  = Close capturing group
+		 \)  = Match a close parens
+
+		 /gi  = Get all matches, not the first.  Be case insensitive.
+		 */
+		var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+			// strip quotes (if they exist)
+			var unquotedOrigUrl = origUrl
+				.trim()
+				.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+				.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+			// already a full url? no change
+			if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+			  return fullMatch;
+			}
+
+			// convert the url to a full url
+			var newUrl;
+
+			if (unquotedOrigUrl.indexOf("//") === 0) {
+			  	//TODO: should we add protocol?
+				newUrl = unquotedOrigUrl;
+			} else if (unquotedOrigUrl.indexOf("/") === 0) {
+				// path should be relative to the base url
+				newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+			} else {
+				// path should be relative to current directory
+				newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+			}
+
+			// send back the fixed url(...)
+			return "url(" + JSON.stringify(newUrl) + ")";
+		});
+
+		// send back the fixed css
+		return fixedCss;
+	};
+
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19085,7 +19651,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
@@ -19209,7 +19775,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -19222,7 +19788,7 @@ var FCC_Global =
 	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19234,7 +19800,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
 	function createMarkdownPreviewerTests() {
 
@@ -19437,7 +20003,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19449,7 +20015,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(48);
+	var _elementUtils = __webpack_require__(52);
 
 	function createCalculatorTests() {
 
@@ -19613,7 +20179,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -19648,7 +20214,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19660,7 +20226,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(48);
+	var _elementUtils = __webpack_require__(52);
 
 	function createPomodoroClockTests() {
 
@@ -20220,7 +20786,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20236,7 +20802,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20351,7 +20917,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20361,9 +20927,9 @@ var FCC_Global =
 	});
 	exports.default = createPortfolioTests;
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
-	var _styleSheetUtils = __webpack_require__(52);
+	var _styleSheetUtils = __webpack_require__(56);
 
 	var _chai = __webpack_require__(2);
 
@@ -20533,7 +21099,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20605,7 +21171,7 @@ var FCC_Global =
 	};
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20615,9 +21181,9 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
-	var _styleSheetUtils = __webpack_require__(52);
+	var _styleSheetUtils = __webpack_require__(56);
 
 	var _chai = __webpack_require__(2);
 
@@ -20807,7 +21373,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20819,7 +21385,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
 	function createSurveyFormTests() {
 
@@ -21011,7 +21577,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21023,9 +21589,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
-	var _styleSheetUtils = __webpack_require__(52);
+	var _styleSheetUtils = __webpack_require__(56);
 
 	function createTechnicalDocsPageTests() {
 
@@ -21245,7 +21811,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21257,7 +21823,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(57);
+	var _globalD3Tests = __webpack_require__(61);
 
 	var _jquery = __webpack_require__(1);
 
@@ -21367,7 +21933,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21483,7 +22049,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21493,11 +22059,11 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _alignmentD3Tests = __webpack_require__(59);
+	var _alignmentD3Tests = __webpack_require__(63);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(57);
+	var _globalD3Tests = __webpack_require__(61);
 
 	function createScatterPlotTests() {
 
@@ -21658,7 +22224,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22095,7 +22661,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22107,11 +22673,11 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _education = __webpack_require__(61);
+	var _education = __webpack_require__(65);
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(57);
+	var _globalD3Tests = __webpack_require__(61);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22244,7 +22810,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -41103,7 +41669,7 @@ var FCC_Global =
 	]
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41115,7 +41681,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(57);
+	var _globalD3Tests = __webpack_require__(61);
 
 	function createTreeMapTests() {
 
@@ -41246,7 +41812,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41258,9 +41824,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(48);
+	var _elementUtils = __webpack_require__(52);
 
-	var _sharedTestStrings = __webpack_require__(45);
+	var _sharedTestStrings = __webpack_require__(49);
 
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {
@@ -41410,7 +41976,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41420,11 +41986,11 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _alignmentD3Tests = __webpack_require__(59);
+	var _alignmentD3Tests = __webpack_require__(63);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(57);
+	var _globalD3Tests = __webpack_require__(61);
 
 	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 

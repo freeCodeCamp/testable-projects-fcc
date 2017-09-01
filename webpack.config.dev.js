@@ -1,12 +1,12 @@
 const path = require('path');
 
-const PROJECT_PATH = path(__dirname, '/local_test');
+const PROJECT_PATH = path.join(__dirname, '/local_test');
 
 module.exports = {
     entry: './src/index.js',
     output: {
         library: 'FCC_Global',
-        path: path(PROJECT_PATH, '/js'),
+        path: path.join(PROJECT_PATH, '/js'),
         filename: 'bundle.js'
     },
     module: {
@@ -18,6 +18,13 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
+            },
+            {
+              test: /\.css$/,
+              exclude: /node_modules/,
+              // chained loaders: 
+              // style-loader injects css imported by css-loader
+              loader: 'style-loader!css-loader'
             }
         ]
     }

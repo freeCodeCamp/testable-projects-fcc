@@ -3,7 +3,11 @@
 import $ from 'jquery';
 import chai from 'chai';
 import testSuiteSkeleton from './assets/test-suite-skeleton';
-import mochaCSS from './assets/mocha-CSS';
+// the !- prefixes are for process arguments respective of plugins
+// Example: https://stackoverflow.com/a/42440360/3530394
+// style-loader injects css loaded by css-loader through this import statement.
+import testSuiteFCCStyles from 
+  '!style-loader!css-loader!./stylesheets/style.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
   './project-tests/markdown-previewer-tests';
@@ -28,9 +32,6 @@ let projectNameLocal = false;
 
 // Load mocha.
 (function() {
-  // Write mocha CSS to page head.
-  document.write(`<style>${mochaCSS}</style>`);
-  // Add a script tag to load mocha JS from a CDN.
   var mochaCdn = document.createElement('script');
   mochaCdn.setAttribute(
     'src',
