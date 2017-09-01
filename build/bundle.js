@@ -146,7 +146,7 @@ var FCC_Global =
 	// load mocha
 	(function () {
 	  // write mocha CSS to page head
-	  document.write('<style>' + _mocha_CSS2.default + '</style>');
+	  //document.write(`<style>${mocha_CSS}</style>`);
 	  // add a script tag to load mocha JS from a CDN
 	  var mocha_cdn = document.createElement('script');
 	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
@@ -170,7 +170,10 @@ var FCC_Global =
 	    try {
 	      if (mocha) {
 	        clearInterval(mochaCheck);
-	        mocha.setup("bdd");
+	        mocha.setup({
+	          ui: 'bdd',
+	          reporter: 'spec'
+	        });
 	        var testDiv = document.createElement("div");
 	        testDiv.style.position = "inherit";
 	        testDiv.innerHTML = _test_suite_skeleton2.default;
@@ -214,12 +217,32 @@ var FCC_Global =
 	// Updates the button color and text on the target project, to show how many tests passed and how many failed.
 	function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
 	  var button = document.getElementById('fcc_test_button');
-	  button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
+	  button.innerHTML = 'Tests ' + nbPassed + '/' + (nbPassed + nbFailed);
 	  if (nbFailed) {
 	    button.classList.add("fcc_test_btn-error");
 	  } else {
 	    button.classList.add("fcc_test_btn-success");
 	  }
+	  var stats = document.createElement('h6');
+	  stats.setAttribute('class', 'stats');
+	  var str = document.createTextNode('Passed: ' + nbPassed + ' Failed: ' + nbFailed);
+	  stats.appendChild(str);
+	  document.querySelector(".fcc_test_message-box-header").appendChild(stats);
+	  var fccpassed = document.getElementsByClassName('fcc_passed');
+	  function handleTestClick(e) {
+	    if (e.target.style.height === 'auto') {
+	      e.target.style.height = '1.3em';
+	      e.target.style['white-space'] = 'nowrap';
+	      e.target.querySelector('a').style.color = '#ccc';
+	    } else {
+	      e.target.style.height = 'auto';
+	      e.target.style['white-space'] = 'normal';
+	      e.target.querySelector('a').style.color = '#000';
+	    }
+	  }
+	  [].forEach.call(fccpassed, function (e) {
+	    e.addEventListener('click', handleTestClick, false);
+	  });
 	}
 
 	// Updates the button text on the target project, to show how many tests were executed so far.
@@ -290,6 +313,83 @@ var FCC_Global =
 	    t.timedOut = false;
 	  });
 	  suite.suites.forEach(FCCResetTests);
+	}
+
+	var count = 0;
+	var str = '';
+	var parentTitle;
+	// Custom Reporter
+	function appendTestResults(test) {
+	  var testSectionNode = document.createElement('div');
+	  testSectionNode.setAttribute('class', 'fcc_section');
+	  var textNode;
+	  var parentParentTitle = test.parent.parent.title;
+	  var mainTitleNode = document.querySelector('.fcc_test_message-box-header .title');
+	  mainTitleNode.innerHTML = parentParentTitle.replace('#', '');
+	  var testSection;
+	  if (parentTitle === undefined) {
+	    parentTitle = '';
+	  }
+
+	  if (test.state === 'passed') {
+	    // If passed, append an accordion-style status
+	    str = ' <p class="fcc_passed"><span style="pointer-events: none;"><a href="#">' + test.title + (test.speed !== 'fast' ? ' `duration: ' + test.duration + 'ms`' : '') + '</a></span></p> ';
+	  } else {
+	    // If failed, append an error block status
+	    if (test.err !== undefined) {
+	      // msg
+	      var msg;
+	      var err = test.err;
+	      var message;
+	      if (err.message && typeof err.message.toString === 'function') {
+	        message = err.message + '';
+	      } else if (typeof err.inspect === 'function') {
+	        message = err.inspect() + '';
+	      } else {
+	        message = '';
+	      }
+	      var stack = err.stack || message;
+	      var index = message ? stack.indexOf(message) : -1;
+	      var actual = err.actual;
+	      var expected = err.expected;
+	      var escape = true;
+
+	      if (index === -1) {
+	        msg = message;
+	      } else {
+	        index += message.length;
+	        msg = stack.slice(0, index);
+	        // remove msg from stack
+	        stack = stack.slice(index + 1);
+	      }
+	      console.log(err.stack);
+	      // uncaught
+	      if (err.uncaught) {
+	        msg = 'Uncaught ' + msg;
+	      }
+	    }
+	    // concatenate error string with markdown formatting
+	    var errStr = '```' + msg + ' \n ' + stack.split('\n').join('```  \n' + '  ``` ') + '```';
+	    var fullTitle = test.parent.fullTitle() + ' ' + test.title;
+	    // Use Mocha's grep query to enable linking to a single test-runner in a new window / tab
+	    str = ' <p class="fcc_external"><span><a target="_blank" title="run single test" href="' + window.location.href + '/?grep=' + encodeURIComponent(fullTitle) + '"> ' + test.title + (test.speed !== 'fast' ? ' `duration: ' + test.duration + 'ms`' : '') + '</a></span><p class="fcc_err">' + errStr + '</p></p>';
+	  }
+	  if (parentTitle !== test.parent.title) {
+	    // if scoped parentTitle is outdated, count up and prepare a new section
+	    count++;
+	    testSection = document.createElement('div');
+	    parentTitle = test.parent.title;
+	    testSection.innerHTML = parentTitle.replace('#', '');
+	    testSectionNode.appendChild(testSection);
+	    textNode = document.createElement('ol');
+	    textNode.setAttribute('class', 'fcc_markdown_' + count);
+	    textNode.setAttribute('markdown', '1');
+	    textNode.innerHTML += str;
+	    testSectionNode.appendChild(textNode);
+	    document.querySelector(".fcc_test_message-box-body #mocha").appendChild(testSectionNode);
+	  } else {
+	    document.getElementsByClassName('fcc_markdown_' + count)[0].innerHTML += str;
+	  }
 	}
 
 	// shortcut keys
@@ -428,6 +528,7 @@ var FCC_Global =
 	    testRunner.removeListener("fail", hasFailed);
 	    testRunner.removeListener("test end", updateProgress);
 	    testRunner.removeListener("end", updateEnd);
+	    testRunner.removeListener("test end", appendTestResults);
 	  };
 	  // Run the test suite
 	  testRunner = mocha.run();
@@ -435,6 +536,7 @@ var FCC_Global =
 	  testRunner.on("fail", hasFailed);
 	  testRunner.on("test end", updateProgress);
 	  testRunner.on("end", updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+	  testRunner.on('test end', appendTestResults);
 	};
 
 	// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
