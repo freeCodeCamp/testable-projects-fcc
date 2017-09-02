@@ -17,7 +17,11 @@ export default function createPomodoroClockTests() {
 
   function clickButtonsById(buttonIds) {
     const keys = getElements(buttonIds);
-    keys.forEach(key => key.click());
+    keys.forEach(key => {
+      if (key && (typeof key.click === 'function')) {
+        key.click();
+      }
+    });
   }
 
   function resetTimer() {
@@ -59,12 +63,12 @@ export default function createPomodoroClockTests() {
     return observer;
   }
 
-  // We "Hack" the global setTimeout and setInterval functions so time elapses 
+  // We "Hack" the global setTimeout and setInterval functions so time elapses
   // faster (delay is forced to 30ms)
-  // Note: we should consider putting these hacks in the beforeEach function 
+  // Note: we should consider putting these hacks in the beforeEach function
   // so every timed test can be done in less time
-  // The problem is that we still don't know if it's acceptable to use this 
-  // hack, because it implies forcing the campers to use setTimeout and 
+  // The problem is that we still don't know if it's acceptable to use this
+  // hack, because it implies forcing the campers to use setTimeout and
   // setInterval functions to measure time in their pomodoro.
   const savedSetTimeout = window.setTimeout;
   const savedSetInterval = window.setInterval;
@@ -91,7 +95,7 @@ export default function createPomodoroClockTests() {
 
     beforeEach(function() {
       resetTimer();
-      // We "Hack" the global setTimeout and setInterval functions so time 
+      // We "Hack" the global setTimeout and setInterval functions so time
       // elapses faster (delay is forced to 30ms)
       hackGlobalTimerFunctions();
     });
@@ -110,7 +114,7 @@ export default function createPomodoroClockTests() {
       let reqNum = 0;
 
       reqNum++;
-      it(`${reqNum}. I can see an element with id="break-label" that contains a 
+      it(`${reqNum}. I can see an element with id="break-label" that contains a
       string (e.g. “Break Length).`, function() {
         const breakTitle = document.getElementById('break-label');
         assert.isAbove(
@@ -121,7 +125,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I can see an element with id="session-label" that contains 
+      it(`${reqNum}. I can see an element with id="session-label" that contains
       a string (e.g. "Session Length”).`,
       function() {
         const sessionTitle = document.getElementById('session-label');
@@ -133,7 +137,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I can see two clickable elements with corresponding IDs: 
+      it(`${reqNum}. I can see two clickable elements with corresponding IDs:
       id="break-decrement" and id="session-decrement".`,
       function() {
         assert.isNotNull(document.getElementById('break-decrement'));
@@ -141,7 +145,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I can see two clickable elements with corresponding IDs: 
+      it(`${reqNum}. I can see two clickable elements with corresponding IDs:
       id="break-increment" and id="session-increment".`,
       function() {
         assert.isNotNull(document.getElementById('break-increment'));
@@ -161,7 +165,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I can see an element, with corresponding 
+      it(`${reqNum}. I can see an element, with corresponding
       id="session-length", which by default displays a value of 25.`,
       function() {
         const sessionLength = document.getElementById('session-length');
@@ -174,7 +178,7 @@ export default function createPomodoroClockTests() {
 
       reqNum++;
       it(`${reqNum}. I can see an element, with corresponding id="timer-label",
-      that contains a string indicating a session is initialized 
+      that contains a string indicating a session is initialized
       (e.g. "Session").`,
       function() {
         const timerLabel = document.getElementById('timer-label');
@@ -186,29 +190,29 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I can see an element with corresponding id="time-left". 
-      NOTE: Paused or running, the value in this field should always be 
+      it(`${reqNum}. I can see an element with corresponding id="time-left".
+      NOTE: Paused or running, the value in this field should always be
       displayed in mm:ss format (i.e. 25:00).`,
       function() {
         assert.isNotNull(document.getElementById('time-left'));
       });
 
       reqNum++;
-      it(`${reqNum}. I can see a clickable element with corresponding 
+      it(`${reqNum}. I can see a clickable element with corresponding
       id="start_stop".`,
       function() {
         assert.isNotNull(document.getElementById('start_stop'));
       });
 
       reqNum++;
-      it(`${reqNum}. I can see a clickable element with corresponding 
+      it(`${reqNum}. I can see a clickable element with corresponding
       id="reset".`,
       function() {
         assert.isNotNull(document.getElementById('reset'));
       });
 
       reqNum++;
-      it(`${reqNum}. When I click the element with the id of "reset", any 
+      it(`${reqNum}. When I click the element with the id of "reset", any
       running timer should be stopped, the value within id="break-length" should
       return to 5, the value within id="session-length" should return to 25, and
       the element with id="time-left" should reset to it's default state.`,
@@ -223,7 +227,7 @@ export default function createPomodoroClockTests() {
           const timeLeft = document.getElementById('time-left');
           const observer = observeElement('time-left', () => {
             if (timeLeft.innerHTML === '00:00') {
-              // once timer has reached zero wait 1.5 seconds then reset and 
+              // once timer has reached zero wait 1.5 seconds then reset and
               // see if every default value is reset
               setTimeout(() => {
                 resetTimer();
@@ -241,7 +245,7 @@ export default function createPomodoroClockTests() {
                   );
                 }
 
-                // wait another 1.5 seconds to be sure value has not changed 
+                // wait another 1.5 seconds to be sure value has not changed
                 // (pomodoro is stopped)
                 setTimeout(() => {
                   const breakLenAfterResetCorrect = (
@@ -284,8 +288,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When I click the element with the id of "break-decrement", 
-      the value within id="break-length" decrements by a value of 1, and I can 
+      it(`${reqNum}. When I click the element with the id of "break-decrement",
+      the value within id="break-length" decrements by a value of 1, and I can
       see the updated value.`,
       function() {
         clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
@@ -302,8 +306,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When I click the element with the id of "break-increment", 
-      the value within id="break-length" increments by a value of 1, and I can 
+      it(`${reqNum}. When I click the element with the id of "break-increment",
+      the value within id="break-length" increments by a value of 1, and I can
       see the updated value.`,
       function() {
         clickButtonsById(Array(4).fill(breakPlus));
@@ -319,8 +323,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When I click the element with the id of 
-      "session-decrement", the value within id="session-length" decrements by a 
+      it(`${reqNum}. When I click the element with the id of
+      "session-decrement", the value within id="session-length" decrements by a
       value of 1, and I can see the updated value.`,
       function() {
         clickButtonsById(Array(4).fill(seshMin));
@@ -337,8 +341,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When I click the element with the id of 
-      "session-increment", the value within id="session-length" increments by a 
+      it(`${reqNum}. When I click the element with the id of
+      "session-increment", the value within id="session-length" increments by a
       value of 1, and I can see the updated value.`,
       function() {
         clickButtonsById(Array(4).fill(seshPlus));
@@ -355,7 +359,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I should not be able to set a session or break length to 
+      it(`${reqNum}. I should not be able to set a session or break length to
       <= 0.`,
       function() {
         clickButtonsById(Array(10).fill(breakMin));
@@ -374,7 +378,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I should not be able to set a session or break length to 
+      it(`${reqNum}. I should not be able to set a session or break length to
       > 60.`,
       function() {
         clickButtonsById(Array(60).fill(breakPlus));
@@ -393,9 +397,9 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When I first click the element with id="start_stop", the 
-      timer should begin running from the value currently displayed in 
-      id="session-length", even if the value has been incremented or 
+      it(`${reqNum}. When I first click the element with id="start_stop", the
+      timer should begin running from the value currently displayed in
+      id="session-length", even if the value has been incremented or
       decremented from the original value of 25.`,
       function() {
         clickButtonsById([startStop]);
@@ -408,8 +412,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. If the timer is running, the element with the id of 
-      "time-left" should display the remaining time in mm:ss format 
+      it(`${reqNum}. If the timer is running, the element with the id of
+      "time-left" should display the remaining time in mm:ss format
       (decrementing by a value of 1 and updating the display every 1000ms).`,
       function() {
         this.timeout(2500);
@@ -419,7 +423,7 @@ export default function createPomodoroClockTests() {
           document.getElementById('time-left').innerHTML
         );
         return new Promise((resolve, reject) => {
-          // wait 1.5 seconds then see if displayed time has changed 
+          // wait 1.5 seconds then see if displayed time has changed
           // (decremented)
           setTimeout(() => {
             const secondsAfter = getSeconds(
@@ -439,7 +443,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. If the timer is running and I click the element with 
+      it(`${reqNum}. If the timer is running and I click the element with
       id="start_stop", the countdown should pause.`,
       function() {
         this.timeout(4000);
@@ -482,8 +486,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. If the timer is paused and I click the element with 
-      id="start_stop", the countdown should resume running from the point at 
+      it(`${reqNum}. If the timer is paused and I click the element with
+      id="start_stop", the countdown should resume running from the point at
       which it was paused.`,
       function() {
         this.timeout(5000);
@@ -542,8 +546,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When a session countdown reaches zero (NOTE: timer MUST 
-      reach 00:00), and a new countdown begins, the element with the id of 
+      it(`${reqNum}. When a session countdown reaches zero (NOTE: timer MUST
+      reach 00:00), and a new countdown begins, the element with the id of
       "timer-label" should display a string indicating a break has begun.`,
       function() {
         this.timeout(5000);
@@ -588,8 +592,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When a session countdown reaches zero (NOTE: timer MUST 
-      reach 00:00), a new break countdown should begin, counting down from the 
+      it(`${reqNum}. When a session countdown reaches zero (NOTE: timer MUST
+      reach 00:00), a new break countdown should begin, counting down from the
       value currently displayed in the id="break-length" element.`,
       function() {
         this.timeout(5000);
@@ -600,7 +604,7 @@ export default function createPomodoroClockTests() {
         return new Promise((resolve, reject) => {
           const timeLeft = document.getElementById('time-left');
           let shouldBeInBreak = false;
-          // Since not requiring specific labels, save the 'session' label to a 
+          // Since not requiring specific labels, save the 'session' label to a
           // variable, then test within observer function that label has changed
           // to know when in break
           let sessionLabel = document.getElementById('timer-label').innerHTML;
@@ -651,7 +655,7 @@ export default function createPomodoroClockTests() {
 
       reqNum++;
       it(`${reqNum}. When a break countdown reaches zero (NOTE: timer MUST reach
-      00:00), and a new countdown begins, the element with the id of 
+      00:00), and a new countdown begins, the element with the id of
       "timer-label" should display a string indicating a session has begun.`,
       function() {
         this.timeout(5000);
@@ -672,7 +676,7 @@ export default function createPomodoroClockTests() {
               } else {
                 shouldBeInSessionAgain = true;
                 shouldBeInBreak = false;
-                // when in break, save 'break' label to var, then test below 
+                // when in break, save 'break' label to var, then test below
                 // that label has changed
                 breakLabel = document.getElementById('timer-label').innerHTML;
               }
@@ -695,8 +699,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When a break countdown reaches zero (NOTE: timer MUST 
-      reach 00:00), a new session countdown should begin, counting down from 
+      it(`${reqNum}. When a break countdown reaches zero (NOTE: timer MUST
+      reach 00:00), a new session countdown should begin, counting down from
       the value currently displayed in the id="session-length" element.`,
       function() {
         this.timeout(5000);
@@ -717,7 +721,7 @@ export default function createPomodoroClockTests() {
               } else {
                 shouldBeInSessionAgain = true;
                 shouldBeInBreak = false;
-                // when in break, save 'break' label to var, then test below 
+                // when in break, save 'break' label to var, then test below
                 // that label has changed
                 breakLabel = document.getElementById('timer-label').innerHTML;
               }
@@ -753,8 +757,8 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When a countdown reaches zero (NOTE: timer MUST reach 
-      00:00), a sound indicating that time is up should play. This should 
+      it(`${reqNum}. When a countdown reaches zero (NOTE: timer MUST reach
+      00:00), a sound indicating that time is up should play. This should
       utilize an HTML5 <audio> tag and have a corresponding id="beep".`,
       function() {
         this.timeout(5000);
@@ -776,7 +780,7 @@ export default function createPomodoroClockTests() {
                 )
               );
             } else if (timeLeft.innerHTML === '00:00') {
-              // note: sound has to be longer than 200 ms, or the test will 
+              // note: sound has to be longer than 200 ms, or the test will
               // fail if the sound stops before the test actually happens
               savedSetTimeout(() => {
                 const audioElem = document.getElementById('beep');
@@ -800,7 +804,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. The audio element with id="beep" must be 1 second or 
+      it(`${reqNum}. The audio element with id="beep" must be 1 second or
       longer.`,
       function() {
         assert.isAbove(
@@ -811,7 +815,7 @@ export default function createPomodoroClockTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. The audio element with id of "beep" must stop playing and 
+      it(`${reqNum}. The audio element with id of "beep" must stop playing and
       be rewound to the beginning when the element with the id of "reset" is
       clicked.`,
       function() {
