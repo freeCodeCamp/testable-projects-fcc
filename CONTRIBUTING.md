@@ -86,72 +86,9 @@ need to be run one time.
 1. You should have already run `npm install` per the forking instructions.
 1. Make sure you have the Chrome browser installed. You should have version
 59.0.3071.115 or later.
-1. To make your local `bundle.js` available via https you will need to create
-server certificates (see below).
 1. You need to configure your test environment by setting up the `test/setup.js`
 file (see below).
 
-**Creating Self-Signed Server Certificates**
-
-In order to serve your local bundle.js and test it, you need to use https. We
-have done most of the work for you, but you will need to run a few quick
-commands. The below works for both Linux and Mac. (YMMV for Windows, and please
-update these docs if you figure out how to do this for Windows).
-
-Create the Certificates
-- Make sure you have OpenSSL installed.
-- From this project's root directory run the following and follow the prompts.
-You will need to enter a passphrase (which you will need later), and the answers
-to the other questions do not matter so put whatever you want:
-
-```
-cd config
-openssl genrsa -des3 -out server.key 2048
-openssl req -new -key server.key -out server.csr
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-cp live-server-https.example live-server-https.js
-```
-
-You should now have the following files in your `config` directory:
-
-```
-live-server-https.js
-live-server-https.js.example
-server.crt
-server.csr
-server.key
-```
-
-Edit the `live-server-https.js` file and change the passphrase to what you used
-above. (The `live-server-https.js` file along with your certificates are all
-ignored by git, so you don't need to worry about your passphrase being committed
-to the repo and the files should be safe from being overwritten once you create
-them).
-
-If for some reason these files get clobbered, you can safely re-run the above
-commands to recreate the certs.
-
-You can test your work by running the following command:
-
-```
-npm run live-serve-build
-```
-
-You should see something like the following:
-
-```
-> webpack-test@1.0.0 live-serve-build /home/foobar/testable-projects-fcc
-> live-server --no-browser --https=config/live-server-https build
-
-Serving "build" at https://127.0.0.1:8080
-Ready for changes
-```
-
-Save the above address (e.g. https://127.0.0.1:8080) for configuring `setup.js`
-in the section below.
-
-You can leave this command running, and every time you rebuild the `bundle.js`,
-it will automatically detect the change and reload.
 
 **Configuring your test environment with setup.js**
 
@@ -166,9 +103,9 @@ Now you can edit the `test/setup.js` file and to reflect your environment. It
 is well documented inside the file and the defaults should work but at the very
 least you will have to choose a value for `global.chromeBinaryPath`.
 
-NOTE: If the address used by `npm run live-serve-build` from the section above
-is different from `https://127.0.0.1:8080` you will also need to change the
-value of `global.bundleUrl` accordingly.
+NOTE: If the address used by `npm run serve-https-local` is different from
+`https://localhost.daplie.me:8080` you will also need to change the value of
+`global.bundleUrl` accordingly.
 
 (The `setup.js` file is ignored by git, so you can be sure it won't be
 overwritten by other contributers once you have created it).
@@ -188,7 +125,7 @@ Per the previous section, in a separate window, make sure your `bundle.js` is
 available via https:
 
 ```
-npm run live-serve-build
+npm run serve-https-local
 ```
 
 Leave that running. And in a new window, you can run the tests:
@@ -285,9 +222,9 @@ small, but if the video quality is not good enough, you can increase the
 `-framerate` value and / or lower the `-crf` value.
 
 #### Port 8080
-Note that the `npm run live-serve-build` command may choose a different Port
+Note that the `npm run serve-https-local` command may choose a different port
 if 8080 is already in use. You will either have to adjust your `test/setup.js`
-file to reflect what port the live-serve-build script uses, or make sure port
+file to reflect what port the serve-https-local script uses, or make sure port
 8080 is not in use before running the script.
 
 #### Mac Retina display
@@ -303,7 +240,7 @@ global.browserMaxHeight = 900;
 
 #### Dependencies
 Much like the project tests, we use Mocha and Chai. For automating the browser
-we also use Selenium, chromedriver, and live-server. Please be cautious about
+we also use Selenium, chromedriver, and serve-https. Please be cautious about
 adding new dependencies unless absolutely needed.
 
 #### Travis CI
@@ -347,13 +284,26 @@ bug that effects their local project it can be useful to copy their code for
 local testing and debugging. There may be other use cases too.
 
 ### To test your code locally:
-- Import the code from the [official FCC example project](http://codepen.io/collection/npZPmR) that you are creating/editing the test suite for into the `local_test` directory:
-	- Create folders for your code, i.e. JS, CSS, etc. (NOTE: even if your project does not have JS, you **MUST** create a folder called **JS** - this is where bundle.js will be created).
-	- Include the JS & CSS (if using SCSS or LESS, compile down to CSS first) in the folders you created in `local_test/`.
-	- Modify index.html to point to your files and include any other external resources you need (e.g. React, jQuery, D3, FontAwesome, etc.).
-	- **NOTE:** Before you push your changes, please be sure to return index.html to its original state.
+- Import the code from the
+[official FCC example project](http://codepen.io/collection/npZPmR) that you
+are creating/editing the test suite for into the `local_test` directory:
+- Create folders for your code, i.e. JS, CSS, etc. (NOTE: even if your project
+does not have JS, you **MUST** create a folder called **JS** - this is where
+bundle.js will be created).
+- Include the JS & CSS (if using SCSS or LESS, compile down to CSS first) in
+the folders you created in `local_test/`.
+- Modify index.html to point to your files and include any other external
+resources you need (e.g. React, jQuery, D3, FontAwesome, etc.).
+- **NOTE:** Before you push your changes, please be sure to return index.html to
+its original state.
 - Run `npm start` to start watching your files for changes.
-- Then, in another terminal tab navigate into the `local_test` directory and run `live-server`.
-- Now your changes to the test files will be automatically bundled by webpack and served in the project that is running locally.
-- Your changes will not be saved to the bundle we're using for production until you run `npm run build`.
-- As a less desireable alternative, you can push your changes to your fork of this repo and utilize rawgit.com for a CDN style link that you can use to populate the test suite in CodePen or wherever else (use the right hand, non-production link).
+- Then, in another terminal tab navigate into the `local_test` directory and run
+`npm run serve-https-local`.
+- Now your changes to the test files will be automatically bundled by webpack
+and served in the project that is running locally.
+- Your changes will not be saved to the bundle we're using for production until
+you run `npm run build` and create a PR that is eventually merged.
+- As a less desireable alternative, you can push your changes to your fork of
+this repo and utilize rawgit.com for a CDN style link that you can use to
+populate the test suite in CodePen or wherever else (use the right hand,
+non-production link).

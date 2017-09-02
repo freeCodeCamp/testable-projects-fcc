@@ -13,6 +13,9 @@ before_script:
   # Same as what we specified for Xvfb.
   - "export DISPLAY=:99.0"
   - cp test/setup.js.travis test/setup.js
+  # Start https server (and sleep) so we can get the local bundle.js via https.
+  - npm run serve-https-local > /dev/null 2>&1 &
+  - sleep 3
 cache:
   directories:
     - node_modules
