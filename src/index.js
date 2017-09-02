@@ -1,14 +1,18 @@
+/* global project_name */
+
 import $ from 'jquery';
 import chai from 'chai';
 import testSuiteSkeleton from './assets/test-suite-skeleton';
 import mochaCSS from './assets/mocha-CSS';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
-import createMarkdownPreviewerTests from './project-tests/markdown-previewer-tests';
+import createMarkdownPreviewerTests from
+  './project-tests/markdown-previewer-tests';
 import createCalculatorTests from './project-tests/calculator-tests';
 import createPomodoroClockTests from './project-tests/pomodoro-clock-tests';
 import createTributePageTests from './project-tests/tribute-page-tests';
 import createPortfolioTests from './project-tests/portfolio-tests';
-import createProductLandingPageTests from './project-tests/product-landing-page-tests';
+import createProductLandingPageTests from
+  './project-tests/product-landing-page-tests';
 import createSurveyFormTests from './project-tests/survey-form-tests';
 import createTechnicalDocsPageTests from './project-tests/technical-docs-tests';
 import createBarChartTests from './project-tests/bar-chart-tests';
@@ -20,25 +24,35 @@ import createHeatMapTests from './project-tests/heat-map-tests';
 
 export const assert = chai.assert;
 
-// load mocha
+// Load mocha.
 (function() {
-  // write mocha CSS to page head
+  // Write mocha CSS to page head.
   document.write(`<style>${mochaCSS}</style>`);
-  // add a script tag to load mocha JS from a CDN
-  var mocha_cdn = document.createElement('script');
-  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
-  document.head.appendChild(mocha_cdn);
+  // Add a script tag to load mocha JS from a CDN.
+  var mochaCdn = document.createElement('script');
+  mochaCdn.setAttribute(
+    'src',
+    'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js'
+  );
+  document.head.appendChild(mochaCdn);
 })();
 
-// When the document is fully loaded,
-// create the "Tests" button and the corresponding modal window, jquery required)
+// When the document is fully loaded, create the "Tests" button and the
+// corresponding modal window, (jquery required)
 $(document).ready(function() {
-  // alert users about cross-browser compatibility issues
+  // Alert users about cross-browser compatibility issues.
   const isChrome = !!window.chrome && !!window.chrome.webstore;
   if (isChrome === false) {
-    FCC_Global.alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known issues that we are trying to work through to make these suites fully cross-browser compatible, but it is a work in progress. For the best user experience, please use Chrome until these issues are resolved. Thanks and Happy Coding!');
+    alertOnce(
+      'Intro Alert',
+      'Test suites are currently optimized for Chrome. There are known ' +
+      'issues that we are trying to work through to make these suites fully ' +
+      'cross-browser compatible, but it is a work in progress. For the best ' +
+      'user experience, please use Chrome until these issues are resolved. ' +
+      'Thanks and Happy Coding!'
+    );
   }
-  // check mocha is loaded and populate test suite
+  // Check mocha is loaded and populate test suite.
   let mochaCheck = setInterval(() => runCheck(), 50);
 
   function runCheck() {
@@ -51,18 +65,32 @@ $(document).ready(function() {
         testDiv.innerHTML = testSuiteSkeleton;
         document.body.appendChild(testDiv);
         // Once testDiv is loaded:
-        let project_titleCase = localStorage.getItem('project_titleCase');
-        // project_name variable is defined in our example projects so the correct test suite is automatically
-        // loaded. This Sets default text for <option> text and project indicator in top right corner.
-        if (typeof project_name === 'undefined' && project_titleCase === null) {
+        let projectTitleCase = localStorage.getItem('projectTitleCase');
+        // project_name variable is defined in our example projects so the
+        // correct test suite is automatically loaded. This sets default text
+        // for <option> text and project indicator in top right corner.
+        // TODO: In order to fix project_name to make it camel case, we need
+        // to coordinate this change with all the example CodePen projects.
+        if (typeof project_name === 'undefined' && projectTitleCase === null) {
           document.getElementById('placeholder').innerHTML = '- - -';
-          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+          document.getElementById(
+            'fcc_test_suite_indicator_wrapper'
+          ).innerHTML = '';
         } else if (typeof project_name !== 'undefined') {
-          document.getElementById('placeholder').innerHTML = `${localStorage.getItem('example_project')}`;
-          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${localStorage.getItem('example_project')}</span>`;
+          document.getElementById('placeholder').innerHTML =
+            `${localStorage.getItem('example_project')}`;
+          document.getElementById(
+            'fcc_test_suite_indicator_wrapper'
+          ).innerHTML =
+            '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
+            `${localStorage.getItem('example_project')}</span>`;
         } else {
-          document.getElementById('placeholder').innerHTML = project_titleCase;
-          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
+          document.getElementById('placeholder').innerHTML = projectTitleCase;
+          document.getElementById(
+            'fcc_test_suite_indicator_wrapper'
+          ).innerHTML =
+            '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
+            `${projectTitleCase}</span>`;
         }
       }
     } catch (err) {
@@ -74,17 +102,23 @@ $(document).ready(function() {
 
 // UTILITY FUNCTIONS:
 
-// select project dropdown
+// Select project dropdown.
 export function selectProject(project) {
-  // store project_selector for initTestRunner function
+  // Store project_selector for initTestRunner function.
   localStorage.setItem('project_selector', project);
-  // create & store pretty-print project name for display in indicator div
-  let project_titleCase = project.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
-  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = `<span id=fcc_test_suite_indicator>FCC Test Suite: ${project_titleCase}</span>`;
-  localStorage.setItem('project_titleCase', project_titleCase);
+  // Create & store pretty-print project name for display in indicator div.
+  let projectTitleCase = project.replace(/-/g, ' ').split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
+  document.getElementById(
+    'fcc_test_suite_indicator_wrapper'
+  ).innerHTML =
+    '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
+    `${projectTitleCase}</span>`;
+  localStorage.setItem('projectTitleCase', projectTitleCase);
 }
 
-// Updates the button color and text on the target project, to show how many tests passed and how many failed.
+// Updates the button color and text on the target project, to show how many
+// tests passed and how many failed.
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
   const button = document.getElementById('fcc_test_button');
   button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
@@ -95,44 +129,46 @@ export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
   }
 }
 
-// Updates the button text on the target project, to show how many tests were executed so far.
+// Updates the button text on the target project, to show how many tests were
+// executed so far.
 export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
   const button = document.getElementById('fcc_test_button');
   button.classList.add('fcc_test_btn-executing');
   button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
 }
 
-// open main modal
+// Open the main modal.
 export function FCCOpenTestModal() {
   const modal = document.getElementById('fcc_test_message-box');
   modal.classList.remove('fcc_test_message-box-hidden');
   modal.classList.add('fcc_test_message-box-shown');
 }
 
-// close main modal
+// Close the main modal.
 export function FCCCloseTestModal() {
   const modal = document.getElementById('fcc_test_message-box');
   modal.classList.remove('fcc_test_message-box-shown');
   modal.classList.add('fcc_test_message-box-hidden');
 }
 
-// close modal on ESC press
+// Close modal on ESC press.
 $(document).keyup(function(e) {
   e = e || window.event;
-  if (e.keyCode == 27) {
+  if (e.keyCode === 27) {
     FCCCloseTestModal();
   }
 });
 
-// close modal on click outside el
+// Close modal on click outside el.
 export function FCCclickOutsideToCloseModal(e) {
   if (e.target.id === 'fcc_test_message-box') {
     FCCCloseTestModal();
   }
 }
 
-// cannot reset classList with an = assignment
-// due to cross-browser conflicts
+// Cannot reset classList with an = assignment due to cross-browser conflicts.
+// TODO: Refactor to eliminate for loops. The first for loop is simply:
+// let classListArray = [].slice.call(elem.classList);
 function clearClassList(elem) {
   var classListAsArray = new Array(elem.classList.length);
 
@@ -140,18 +176,20 @@ function clearClassList(elem) {
     classListAsArray[i] = elem.classList[i];
   }
 
-  for (var i = 0; i < classListAsArray.length; i++) {
-    elem.classList.remove(classListAsArray[i]);
+  for (var j = 0; j < classListAsArray.length; j++) {
+    elem.classList.remove(classListAsArray[j]);
   }
 }
 
 // run tests
 export function FCCRerunTests() {
   const button = document.getElementById('fcc_test_button');
-  button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null
+  button.innerHTML = typeof project_name === 'undefined' &&
+    localStorage.getItem('project_selector') === null
     ? 'Load Tests!'
     : 'Testing';
-  button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null
+  button.title = typeof project_name === 'undefined' &&
+    localStorage.getItem('project_selector') === null
     ? 'Select test suite from dropdown above'
     : 'CTRL + SHIFT + T';
   clearClassList(button);
@@ -160,7 +198,7 @@ export function FCCRerunTests() {
   FCCInitTestRunner();
 }
 
-// reset tests
+// Reset tests.
 export function FCCResetTests(suite) {
   suite.tests.forEach(function(t) {
     delete t.state;
@@ -169,67 +207,92 @@ export function FCCResetTests(suite) {
   suite.suites.forEach(FCCResetTests);
 }
 
-// shortcut keys
+// Shortcut keys.
+// TODO: Need better inline docs on why we need to redefine the global
+// onkeydown and onkeyup.
 const map = [];
+/* global onkeydown:true, onkeyup:true */
+/* exported onkeydown, onkeyup */
 onkeydown = onkeyup = function(e) {
   const modal = document.getElementById('fcc_test_message-box');
   e = e || window.event;
-  map[e.keyCode] = e.type == 'keydown';
-  if (map[17] && map[16] && map[13]) { // run tests: Ctrl + Shift + Enter
+  map[e.keyCode] = e.type === 'keydown';
+  // run tests: Ctrl + Shift + Enter
+  if (map[17] && map[16] && map[13]) {
     if (localStorage.getItem('project_selector') === 'markdown-previewer') {
-      alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
+      alertOnce(
+        'alerted',
+        'Run-Test hotkey disabled for this project, please use mouse.'
+      );
       return;
     } else {
       FCCRerunTests();
     }
-  } else if (map[17] && map[16] && map[84]) { // open/close modal: Ctrl + Shift + T
+  // Open/close modal: Ctrl + Shift + T.
+  } else if (map[17] && map[16] && map[84]) {
     if (modal.classList.contains('fcc_test_message-box-hidden')) {
       FCCOpenTestModal();
     } else {
       FCCCloseTestModal();
     }
-  } else if (map[17] && map[16] && map[79]) { // open/close foldout menu: Ctrl + Shift + O
+  // Open/close foldout menu: Ctrl + Shift + O.
+  } else if (map[17] && map[16] && map[79]) {
     document.getElementById('toggle').click();
   }
 };
 
-// shortcuts interfere w/ markdown tests, disable and alert
+// Shortcuts interfere w/ markdown tests, disable and alert.
 export function alertOnce(item, message) {
   const alerted = sessionStorage.getItem(item) || false;
   if (alerted) {
     return;
   } else {
+    /* eslint no-alert: "off" */
     alert(message);
     sessionStorage.setItem(item, true);
   }
 }
 
-// hamburger menu transformation
-export function hamburger_transform() {
-  if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
-    document.getElementById('hamburger_top').classList.remove('transform_top');
-    document.getElementById('hamburger_middle').classList.remove('transform_middle');
-    document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
+// Hamburger menu transformation
+export function hamburgerTransform() {
+  if (document.getElementById('hamburger_top').classList.contains(
+    'transform_top')
+  ) {
+    document.getElementById('hamburger_top').classList.remove(
+      'transform_top'
+    );
+    document.getElementById('hamburger_middle').classList.remove(
+      'transform_middle'
+    );
+    document.getElementById('hamburger_bottom').classList.remove(
+      'transform_bottom'
+    );
   } else {
-    document.getElementById('hamburger_top').classList.add('transform_top');
-    document.getElementById('hamburger_middle').classList.add('transform_middle');
-    document.getElementById('hamburger_bottom').classList.add('transform_bottom');
+    document.getElementById('hamburger_top').classList.add(
+      'transform_top'
+    );
+    document.getElementById('hamburger_middle').classList.add(
+      'transform_middle'
+    );
+    document.getElementById('hamburger_bottom').classList.add(
+      'transform_bottom'
+    );
   }
 }
 
-// init tests
+// Init tests.
 export function FCCInitTestRunner() {
   let testRunner = null;
-  // empty the mocha tag in case of rerun
+  // Empty the mocha tag in case of rerun.
   document.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
-  // empty the test suite in the mocha object
+  // Empty the test suite in the mocha object.
   mocha.suite.suites = [];
-  // check for hard-coded project selector (for our example projects)
-  const hardCoded_project_name = typeof project_name === 'undefined'
+  // Check for hard-coded project selector (for our example projects).
+  const hardCodedProjectName = typeof project_name === 'undefined'
     ? null
     : project_name;
   // create tests
-  switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
+  switch (hardCodedProjectName || localStorage.getItem('project_selector')) {
     case 'random-quote-machine':
       createRandomQuoteMachineTests();
       break;
@@ -275,18 +338,22 @@ export function FCCInitTestRunner() {
     case 'tree-map':
       createTreeMapTests();
       break;
+    default:
+      // Do nothing.
   }
 
-  // save the number of tests in the selected suite
+  // Save the number of tests in the selected suite.
   let nbTests = 0;
-  mocha.suite.eachTest(_ => nbTests++);
+  mocha.suite.eachTest(() => nbTests++);
   let nbTestsExecuted = 0;
   let nbPassed = 0;
   let nbFailed = 0;
-  const hasPassed = _ => nbPassed++;
-  const hasFailed = _ => nbFailed++;
-  const updateProgress = _ => FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
-  const updateEnd = _ => FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
+  const hasPassed = () => nbPassed++;
+  const hasFailed = () => nbFailed++;
+  const updateProgress = () =>
+    FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
+  const updateEnd = () =>
+    FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
   if (testRunner) {
     FCCResetTests(mocha.suite);
     testRunner.abort();
@@ -295,16 +362,18 @@ export function FCCInitTestRunner() {
     testRunner.removeListener('test end', updateProgress);
     testRunner.removeListener('end', updateEnd);
   }
-  // Run the test suite
+  // Run the test suite.
   testRunner = mocha.run();
   testRunner.on('pass', hasPassed);
   testRunner.on('fail', hasFailed);
   testRunner.on('test end', updateProgress);
-  testRunner.on('end', updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+  // Update the "tests" button caption at the end of the overhall execution.
+  testRunner.on('end', updateEnd);
 }
 
-// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
+// Polyfill for enabling NodeList.forEach() method - IE, Edge, Safari.
 (function() {
-  if (typeof NodeList.prototype.forEach === 'function') {return false;}
-  NodeList.prototype.forEach = Array.prototype.forEach;
+  if (typeof NodeList.prototype.forEach !== 'function') {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+  }
 })();
