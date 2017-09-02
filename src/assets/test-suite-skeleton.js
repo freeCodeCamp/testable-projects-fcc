@@ -330,7 +330,7 @@ const testSuiteSkeleton = `
     <span id="hamburger_middle" class="fcc_hamburger transform_middle"></span>
     <span id="hamburger_bottom" class="fcc_hamburger transform_bottom"></span>
   </div>
-  <input id="toggle" onclick="FCC_Global.hamburger_transform()" type="checkbox"
+  <input id="toggle" onclick="FCC_Global.hamburgerTransform()" type="checkbox"
     title="CTRL + SHIFT + O">
   <div id="fcc_foldout_menu">
     <div id="fcc_foldout_menu_inner">

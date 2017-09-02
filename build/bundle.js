@@ -60,7 +60,7 @@ var FCC_Global =
 	exports.FCCRerunTests = FCCRerunTests;
 	exports.FCCResetTests = FCCResetTests;
 	exports.alertOnce = alertOnce;
-	exports.hamburger_transform = hamburger_transform;
+	exports.hamburgerTransform = hamburgerTransform;
 	exports.FCCInitTestRunner = FCCInitTestRunner;
 
 	var _jquery = __webpack_require__(1);
@@ -143,25 +143,27 @@ var FCC_Global =
 
 	var assert = exports.assert = _chai2.default.assert;
 
-	// load mocha
+	// Load mocha.
+	/* global project_name */
+
 	(function () {
-	  // write mocha CSS to page head
+	  // Write mocha CSS to page head.
 	  document.write('<style>' + _mochaCSS2.default + '</style>');
-	  // add a script tag to load mocha JS from a CDN
-	  var mocha_cdn = document.createElement('script');
-	  mocha_cdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
-	  document.head.appendChild(mocha_cdn);
+	  // Add a script tag to load mocha JS from a CDN.
+	  var mochaCdn = document.createElement('script');
+	  mochaCdn.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js');
+	  document.head.appendChild(mochaCdn);
 	})();
 
-	// When the document is fully loaded,
-	// create the "Tests" button and the corresponding modal window, jquery required)
+	// When the document is fully loaded, create the "Tests" button and the
+	// corresponding modal window, (jquery required)
 	(0, _jquery2.default)(document).ready(function () {
-	  // alert users about cross-browser compatibility issues
+	  // Alert users about cross-browser compatibility issues.
 	  var isChrome = !!window.chrome && !!window.chrome.webstore;
 	  if (isChrome === false) {
-	    FCC_Global.alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known issues that we are trying to work through to make these suites fully cross-browser compatible, but it is a work in progress. For the best user experience, please use Chrome until these issues are resolved. Thanks and Happy Coding!');
+	    alertOnce('Intro Alert', 'Test suites are currently optimized for Chrome. There are known ' + 'issues that we are trying to work through to make these suites fully ' + 'cross-browser compatible, but it is a work in progress. For the best ' + 'user experience, please use Chrome until these issues are resolved. ' + 'Thanks and Happy Coding!');
 	  }
-	  // check mocha is loaded and populate test suite
+	  // Check mocha is loaded and populate test suite.
 	  var mochaCheck = setInterval(function () {
 	    return runCheck();
 	  }, 50);
@@ -176,18 +178,21 @@ var FCC_Global =
 	        testDiv.innerHTML = _testSuiteSkeleton2.default;
 	        document.body.appendChild(testDiv);
 	        // Once testDiv is loaded:
-	        var project_titleCase = localStorage.getItem('project_titleCase');
-	        // project_name variable is defined in our example projects so the correct test suite is automatically
-	        // loaded. This Sets default text for <option> text and project indicator in top right corner.
-	        if (typeof project_name === 'undefined' && project_titleCase === null) {
+	        var projectTitleCase = localStorage.getItem('projectTitleCase');
+	        // project_name variable is defined in our example projects so the
+	        // correct test suite is automatically loaded. This sets default text
+	        // for <option> text and project indicator in top right corner.
+	        // TODO: In order to fix project_name to make it camel case, we need
+	        // to coordinate this change with all the example CodePen projects.
+	        if (typeof project_name === 'undefined' && projectTitleCase === null) {
 	          document.getElementById('placeholder').innerHTML = '- - -';
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
 	        } else if (typeof project_name !== 'undefined') {
 	          document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
-	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + localStorage.getItem('example_project') + '</span>';
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (localStorage.getItem('example_project') + '</span>');
 	        } else {
-	          document.getElementById('placeholder').innerHTML = project_titleCase;
-	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
+	          document.getElementById('placeholder').innerHTML = projectTitleCase;
+	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (projectTitleCase + '</span>');
 	        }
 	      }
 	    } catch (err) {
@@ -199,19 +204,20 @@ var FCC_Global =
 
 	// UTILITY FUNCTIONS:
 
-	// select project dropdown
+	// Select project dropdown.
 	function selectProject(project) {
-	  // store project_selector for initTestRunner function
+	  // Store project_selector for initTestRunner function.
 	  localStorage.setItem('project_selector', project);
-	  // create & store pretty-print project name for display in indicator div
-	  var project_titleCase = project.replace(/-/g, ' ').split(' ').map(function (word) {
+	  // Create & store pretty-print project name for display in indicator div.
+	  var projectTitleCase = project.replace(/-/g, ' ').split(' ').map(function (word) {
 	    return word.charAt(0).toUpperCase() + word.substr(1);
 	  }).join(' ');
-	  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + project_titleCase + '</span>';
-	  localStorage.setItem('project_titleCase', project_titleCase);
+	  document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (projectTitleCase + '</span>');
+	  localStorage.setItem('projectTitleCase', projectTitleCase);
 	}
 
-	// Updates the button color and text on the target project, to show how many tests passed and how many failed.
+	// Updates the button color and text on the target project, to show how many
+	// tests passed and how many failed.
 	function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
 	  var button = document.getElementById('fcc_test_button');
 	  button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
@@ -222,44 +228,46 @@ var FCC_Global =
 	  }
 	}
 
-	// Updates the button text on the target project, to show how many tests were executed so far.
+	// Updates the button text on the target project, to show how many tests were
+	// executed so far.
 	function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
 	  var button = document.getElementById('fcc_test_button');
 	  button.classList.add('fcc_test_btn-executing');
 	  button.innerHTML = 'Testing ' + nbTestsExecuted + '/' + nbTests;
 	}
 
-	// open main modal
+	// Open the main modal.
 	function FCCOpenTestModal() {
 	  var modal = document.getElementById('fcc_test_message-box');
 	  modal.classList.remove('fcc_test_message-box-hidden');
 	  modal.classList.add('fcc_test_message-box-shown');
 	}
 
-	// close main modal
+	// Close the main modal.
 	function FCCCloseTestModal() {
 	  var modal = document.getElementById('fcc_test_message-box');
 	  modal.classList.remove('fcc_test_message-box-shown');
 	  modal.classList.add('fcc_test_message-box-hidden');
 	}
 
-	// close modal on ESC press
+	// Close modal on ESC press.
 	(0, _jquery2.default)(document).keyup(function (e) {
 	  e = e || window.event;
-	  if (e.keyCode == 27) {
+	  if (e.keyCode === 27) {
 	    FCCCloseTestModal();
 	  }
 	});
 
-	// close modal on click outside el
+	// Close modal on click outside el.
 	function FCCclickOutsideToCloseModal(e) {
 	  if (e.target.id === 'fcc_test_message-box') {
 	    FCCCloseTestModal();
 	  }
 	}
 
-	// cannot reset classList with an = assignment
-	// due to cross-browser conflicts
+	// Cannot reset classList with an = assignment due to cross-browser conflicts.
+	// TODO: Refactor to eliminate for loops. The first for loop is simply:
+	// let classListArray = [].slice.call(elem.classList);
 	function clearClassList(elem) {
 	  var classListAsArray = new Array(elem.classList.length);
 
@@ -267,8 +275,8 @@ var FCC_Global =
 	    classListAsArray[i] = elem.classList[i];
 	  }
 
-	  for (var i = 0; i < classListAsArray.length; i++) {
-	    elem.classList.remove(classListAsArray[i]);
+	  for (var j = 0; j < classListAsArray.length; j++) {
+	    elem.classList.remove(classListAsArray[j]);
 	  }
 	}
 
@@ -283,7 +291,7 @@ var FCC_Global =
 	  FCCInitTestRunner();
 	}
 
-	// reset tests
+	// Reset tests.
 	function FCCResetTests(suite) {
 	  suite.tests.forEach(function (t) {
 	    delete t.state;
@@ -292,46 +300,51 @@ var FCC_Global =
 	  suite.suites.forEach(FCCResetTests);
 	}
 
-	// shortcut keys
+	// Shortcut keys.
+	// TODO: Need better inline docs on why we need to redefine the global
+	// onkeydown and onkeyup.
 	var map = [];
+	/* global onkeydown:true, onkeyup:true */
+	/* exported onkeydown, onkeyup */
 	onkeydown = onkeyup = function onkeyup(e) {
 	  var modal = document.getElementById('fcc_test_message-box');
 	  e = e || window.event;
-	  map[e.keyCode] = e.type == 'keydown';
+	  map[e.keyCode] = e.type === 'keydown';
+	  // run tests: Ctrl + Shift + Enter
 	  if (map[17] && map[16] && map[13]) {
-	    // run tests: Ctrl + Shift + Enter
 	    if (localStorage.getItem('project_selector') === 'markdown-previewer') {
 	      alertOnce('alerted', 'Run-Test hotkey disabled for this project, please use mouse.');
 	      return;
 	    } else {
 	      FCCRerunTests();
 	    }
+	    // Open/close modal: Ctrl + Shift + T.
 	  } else if (map[17] && map[16] && map[84]) {
-	    // open/close modal: Ctrl + Shift + T
 	    if (modal.classList.contains('fcc_test_message-box-hidden')) {
 	      FCCOpenTestModal();
 	    } else {
 	      FCCCloseTestModal();
 	    }
+	    // Open/close foldout menu: Ctrl + Shift + O.
 	  } else if (map[17] && map[16] && map[79]) {
-	    // open/close foldout menu: Ctrl + Shift + O
 	    document.getElementById('toggle').click();
 	  }
 	};
 
-	// shortcuts interfere w/ markdown tests, disable and alert
+	// Shortcuts interfere w/ markdown tests, disable and alert.
 	function alertOnce(item, message) {
 	  var alerted = sessionStorage.getItem(item) || false;
 	  if (alerted) {
 	    return;
 	  } else {
+	    /* eslint no-alert: "off" */
 	    alert(message);
 	    sessionStorage.setItem(item, true);
 	  }
 	}
 
-	// hamburger menu transformation
-	function hamburger_transform() {
+	// Hamburger menu transformation
+	function hamburgerTransform() {
 	  if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
 	    document.getElementById('hamburger_top').classList.remove('transform_top');
 	    document.getElementById('hamburger_middle').classList.remove('transform_middle');
@@ -343,17 +356,17 @@ var FCC_Global =
 	  }
 	}
 
-	// init tests
+	// Init tests.
 	function FCCInitTestRunner() {
 	  var testRunner = null;
-	  // empty the mocha tag in case of rerun
+	  // Empty the mocha tag in case of rerun.
 	  document.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
-	  // empty the test suite in the mocha object
+	  // Empty the test suite in the mocha object.
 	  mocha.suite.suites = [];
-	  // check for hard-coded project selector (for our example projects)
-	  var hardCoded_project_name = typeof project_name === 'undefined' ? null : project_name;
+	  // Check for hard-coded project selector (for our example projects).
+	  var hardCodedProjectName = typeof project_name === 'undefined' ? null : project_name;
 	  // create tests
-	  switch (hardCoded_project_name || localStorage.getItem('project_selector')) {
+	  switch (hardCodedProjectName || localStorage.getItem('project_selector')) {
 	    case 'random-quote-machine':
 	      (0, _quoteMachineTests2.default)();
 	      break;
@@ -399,26 +412,28 @@ var FCC_Global =
 	    case 'tree-map':
 	      (0, _treeMapTests2.default)();
 	      break;
+	    default:
+	    // Do nothing.
 	  }
 
-	  // save the number of tests in the selected suite
+	  // Save the number of tests in the selected suite.
 	  var nbTests = 0;
-	  mocha.suite.eachTest(function (_) {
+	  mocha.suite.eachTest(function () {
 	    return nbTests++;
 	  });
 	  var nbTestsExecuted = 0;
 	  var nbPassed = 0;
 	  var nbFailed = 0;
-	  var hasPassed = function hasPassed(_) {
+	  var hasPassed = function hasPassed() {
 	    return nbPassed++;
 	  };
-	  var hasFailed = function hasFailed(_) {
+	  var hasFailed = function hasFailed() {
 	    return nbFailed++;
 	  };
-	  var updateProgress = function updateProgress(_) {
+	  var updateProgress = function updateProgress() {
 	    return FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
 	  };
-	  var updateEnd = function updateEnd(_) {
+	  var updateEnd = function updateEnd() {
 	    return FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
 	  };
 	  if (testRunner) {
@@ -429,20 +444,20 @@ var FCC_Global =
 	    testRunner.removeListener('test end', updateProgress);
 	    testRunner.removeListener('end', updateEnd);
 	  }
-	  // Run the test suite
+	  // Run the test suite.
 	  testRunner = mocha.run();
 	  testRunner.on('pass', hasPassed);
 	  testRunner.on('fail', hasFailed);
 	  testRunner.on('test end', updateProgress);
-	  testRunner.on('end', updateEnd); // update the "tests" button caption at  the end of the overhall execution.
+	  // Update the "tests" button caption at the end of the overhall execution.
+	  testRunner.on('end', updateEnd);
 	}
 
-	// polyfill for enabling NodeList.forEach() method - IE, Edge, Safari
+	// Polyfill for enabling NodeList.forEach() method - IE, Edge, Safari.
 	(function () {
-	  if (typeof NodeList.prototype.forEach === 'function') {
-	    return false;
+	  if (typeof NodeList.prototype.forEach !== 'function') {
+	    NodeList.prototype.forEach = Array.prototype.forEach;
 	  }
-	  NodeList.prototype.forEach = Array.prototype.forEach;
 	})();
 
 /***/ }),
@@ -19031,7 +19046,7 @@ var FCC_Global =
 	// - styleSheetUtils.js
 	// - product-landing-page-tests.js
 
-	var testSuiteSkeleton = "\n  <style>\n    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n    /* TEST/MESSAGE CENTER CSS */\n\n    #fcc_test_message-box {\n      font-size: 20px !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8) !important;\n      transition: all .5s;\n      z-index: 100000;\n      overflow: auto;\n    }\n\n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n\n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black !important;\n      background-color: white !important;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto !important;\n      text-align: initial;\n      border-radius: 10px !important;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      flex: none;\n      box-sizing: border-box !important;\n      padding: 10px !important;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n      height: 60px;\n    }\n\n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px !important;\n      line-height: 40px !important;\n      margin-left: 10px !important;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n      height: 70px;\n    }\n\n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px !important;\n      margin-bottom: 10px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px !important;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245) !important;\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial !important;\n      text-align: initial;\n    }\n    #mocha * {\n      font-family: Noto Sans, arial, sans-serif !important;\n      border: none !important;\n    }\n\n    div {\n      position: static;\n    }\n\n    /* FOLDOUT MENU CSS */\n\n    #fcc_foldout_menu {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 320px;\n      height: 210px;\n      border-radius: 0 !important;\n      border-bottom-right-radius: 5px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      z-index: 99997;\n      font-family: Noto Sans, arial, sans-serif !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      transition: .5s;\n    }\n    #toggle:checked ~ #fcc_foldout_menu {\n      left: -320px;\n      transition: .5s ease-in-out;\n    }\n    #fcc_foldout_menu_inner {\n      position: relative;\n    }\n    #toggle {\n      height: 24px;\n      width: 25px;\n      position: fixed;\n      top: 7px;\n      left: 20px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 99999;\n    }\n    #fcc_foldout_toggler {\n      position: absolute;\n      top: 20px;\n      left: 20px;\n      z-index: 99998;\n    }\n\n    .transform_top {\n      opacity: 1;\n      transform: rotate(45deg) translate(-2px, -1px);\n    }\n    .transform_middle {\n      opacity: 0;\n      transform: rotate(0deg) scale(0.2, 0.2);\n    }\n    .transform_bottom {\n      opacity: 1;\n      transform: rotate(-45deg) translate(-1px, -1px);\n    }\n\n    .fcc_hamburger {\n      position: relative;\n      width: 25px;\n      height: 3px;\n      display: block;\n      background: black !important;\n      border-radius: 5px !important;\n      transform-origin: 4px 0px;\n      transition: transform 0.4s ease, opacity 0.55s ease;\n    }\n    #hamburger_top {\n      position: absolute;\n      top: -6px;\n      transform-origin: 0% 80%;\n    }\n    #hamburger_bottom {\n      position: absolute;\n      bottom: -6px;\n      transform-origin: 20% 80%;\n    }\n\n    #fcc_foldout_menu label {\n      top: 38px;\n      left: 20px;\n      position: absolute;\n      font-size: 15px !important;\n      color: black !important;\n    }\n    #fcc_foldout_menu select {\n      display: block;\n      padding: 0;\n      height: auto;\n      width: auto;\n      top: 61px;\n      left: 18px;\n      position: absolute;\n      font-size: 12px !important;\n      font-family: Noto Sans, Arial, sans-serif !important;\n    }\n\n    .fcc_foldout_buttons {\n      position: absolute;\n      left: 20px;\n      height: 20px;\n      width: 110px;\n      padding: 10px !important;\n      display: block;\n      font-size: 15px !important;\n      line-height: 15px !important;\n      text-align: center;\n      border: none !important;\n      outline: none !important;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      box-sizing: content-box !important;\n      z-index: 0;\n      cursor: pointer;\n      box-shadow: 1px 1px 4px black;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n    #fcc_test_message-box-rerun-button {\n      top: 90px;\n      transition: all .3s;\n    }\n    #fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      top: 140px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-executing {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    #fcc_report-bug {\n      position: absolute;\n      top: 186px;\n      left: 20px;\n      width: 110px;\n      padding: 0 10px !important;\n      font-size: 12px !important;\n      text-align: center;\n    }\n\n    #fcc_legend_wrapper {\n      position: absolute;\n      top: 95px;\n      left: 160px;\n      width: 125px;\n      vertical-align: top;\n      text-align: left !important;\n      font-size: 15px !important;\n      background: none !important;\n    }\n    #fcc_legend_wrapper span {\n      height: 15px;\n      margin-top: 6px !important;\n      font-size: 12px  !important;\n      color: black !important;\n      background: none !important;\n    }\n    .key {\n      height: 15px;\n      width: 15px;\n      margin: 5px !important;\n      vertical-align: top;\n      border-radius: 0 !important;\n    }\n    .key:first-of-type {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .key:nth-of-type(2) {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    .key:nth-of-type(3) {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_legend {\n      position: relative;\n      display: inline-block;\n    }\n\n    #fcc_test_suite_indicator_wrapper {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n    }\n    #fcc_test_suite_indicator {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n      font-size: 12px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      color: black !important;\n      padding: 3px 5px !important;\n      border-radius: 5px !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n  </style>\n\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburger_transform()\" type=\"checkbox\"\n    title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n        onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page\n        </option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n        class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n        onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\"\n        class=\"fcc_foldout_buttons fcc_test_btn-default\"\n        title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a\n        href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n        target=\"_blank\">Report Bug</a>\n      </span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n    onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\"\n          onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
+	var testSuiteSkeleton = "\n  <style>\n    @import url('https://fonts.googleapis.com/css?family=Noto+Sans');\n\n    /* TEST/MESSAGE CENTER CSS */\n\n    #fcc_test_message-box {\n      font-size: 20px !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n      position: fixed;\n      left: 0;\n      bottom: 0;\n      right: 0;\n      text-align: center;\n      background-color: rgba(0, 0, 0, 0.8) !important;\n      transition: all .5s;\n      z-index: 100000;\n      overflow: auto;\n    }\n\n    .fcc_test_message-box-hidden {\n      visibility: hidden;\n      opacity: 0;\n      top: -300px;\n    }\n\n    .fcc_test_message-box-shown {\n      visibility: visible;\n      opacity: 1;\n      top: 0;\n    }\n\n    .fcc_test_message-box-content {\n      position: relative;\n      color: black !important;\n      background-color: white !important;\n      top: 10vh;\n      width: 80%;\n      margin: 0 auto !important;\n      text-align: initial;\n      border-radius: 10px !important;\n      display: flex;\n      flex-direction: column;\n    }\n    .fcc_test_message-box-header,\n    .fcc_test_message-box-footer{\n      position: relative;\n      flex: none;\n      box-sizing: border-box !important;\n      padding: 10px !important;\n    }\n    .fcc_test_message-box-header {\n      border-bottom: 1px solid rgb(229,229,229);\n      height: 60px;\n    }\n\n    .fcc_test_message-box-header .title {\n      float: left;\n      font-size: 30px !important;\n      line-height: 40px !important;\n      margin-left: 10px !important;\n    }\n\n    .fcc_test_message-box-body {\n      flex: 1;\n    }\n\n    .fcc_test_message-box-footer {\n      border-top: 1px solid rgb(229,229,229);\n      height: 70px;\n    }\n\n    .fcc_test_message-box-close-btn {\n      float: right;\n      color: black;\n      background-color: white;\n      border: 1px solid rgb(229,229,229);\n      border-radius: 4px;\n      padding: 10px 20px !important;\n      margin-bottom: 10px;\n      transition: all .3s;\n    }\n    .fcc_test_message-box-close-btn:hover {\n      color: white;\n      background-color: black;\n    }\n\n    #mocha {\n      margin: 10px !important;\n    }\n    #mocha .test pre {\n      background-color: rgb(245, 245, 245) !important;\n    }\n    #mocha-stats {\n      position: absolute;\n    }\n    #mocha ul {\n      max-width: initial;\n      margin: initial !important;\n      text-align: initial;\n    }\n    #mocha * {\n      font-family: Noto Sans, arial, sans-serif !important;\n      border: none !important;\n    }\n\n    div {\n      position: static;\n    }\n\n    /* FOLDOUT MENU CSS */\n\n    #fcc_foldout_menu {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 320px;\n      height: 210px;\n      border-radius: 0 !important;\n      border-bottom-right-radius: 5px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      z-index: 99997;\n      font-family: Noto Sans, arial, sans-serif !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      transition: .5s;\n    }\n    #toggle:checked ~ #fcc_foldout_menu {\n      left: -320px;\n      transition: .5s ease-in-out;\n    }\n    #fcc_foldout_menu_inner {\n      position: relative;\n    }\n    #toggle {\n      height: 24px;\n      width: 25px;\n      position: fixed;\n      top: 7px;\n      left: 20px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 99999;\n    }\n    #fcc_foldout_toggler {\n      position: absolute;\n      top: 20px;\n      left: 20px;\n      z-index: 99998;\n    }\n\n    .transform_top {\n      opacity: 1;\n      transform: rotate(45deg) translate(-2px, -1px);\n    }\n    .transform_middle {\n      opacity: 0;\n      transform: rotate(0deg) scale(0.2, 0.2);\n    }\n    .transform_bottom {\n      opacity: 1;\n      transform: rotate(-45deg) translate(-1px, -1px);\n    }\n\n    .fcc_hamburger {\n      position: relative;\n      width: 25px;\n      height: 3px;\n      display: block;\n      background: black !important;\n      border-radius: 5px !important;\n      transform-origin: 4px 0px;\n      transition: transform 0.4s ease, opacity 0.55s ease;\n    }\n    #hamburger_top {\n      position: absolute;\n      top: -6px;\n      transform-origin: 0% 80%;\n    }\n    #hamburger_bottom {\n      position: absolute;\n      bottom: -6px;\n      transform-origin: 20% 80%;\n    }\n\n    #fcc_foldout_menu label {\n      top: 38px;\n      left: 20px;\n      position: absolute;\n      font-size: 15px !important;\n      color: black !important;\n    }\n    #fcc_foldout_menu select {\n      display: block;\n      padding: 0;\n      height: auto;\n      width: auto;\n      top: 61px;\n      left: 18px;\n      position: absolute;\n      font-size: 12px !important;\n      font-family: Noto Sans, Arial, sans-serif !important;\n    }\n\n    .fcc_foldout_buttons {\n      position: absolute;\n      left: 20px;\n      height: 20px;\n      width: 110px;\n      padding: 10px !important;\n      display: block;\n      font-size: 15px !important;\n      line-height: 15px !important;\n      text-align: center;\n      border: none !important;\n      outline: none !important;\n      color: white;\n      background-color: rgba(128, 128, 128, 0.7);\n      border-radius: 4px;\n      box-sizing: content-box !important;\n      z-index: 0;\n      cursor: pointer;\n      box-shadow: 1px 1px 4px black;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n    #fcc_test_message-box-rerun-button {\n      top: 90px;\n      transition: all .3s;\n    }\n    #fcc_test_message-box-rerun-button:hover {\n      color: white;\n      background-color: black;\n    }\n    #fcc_test_button {\n      top: 140px;\n    }\n    .fcc_test_btn-default {\n      background-color: rgba(128, 128, 128, 0.7);\n    }\n    .fcc_test_btn-executing {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_test_btn-error {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .fcc_test_btn-success {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    #fcc_report-bug {\n      position: absolute;\n      top: 186px;\n      left: 20px;\n      width: 110px;\n      padding: 0 10px !important;\n      font-size: 12px !important;\n      text-align: center;\n    }\n\n    #fcc_legend_wrapper {\n      position: absolute;\n      top: 95px;\n      left: 160px;\n      width: 125px;\n      vertical-align: top;\n      text-align: left !important;\n      font-size: 15px !important;\n      background: none !important;\n    }\n    #fcc_legend_wrapper span {\n      height: 15px;\n      margin-top: 6px !important;\n      font-size: 12px  !important;\n      color: black !important;\n      background: none !important;\n    }\n    .key {\n      height: 15px;\n      width: 15px;\n      margin: 5px !important;\n      vertical-align: top;\n      border-radius: 0 !important;\n    }\n    .key:first-of-type {\n      background-color: rgba(255, 0, 0, 0.7);\n    }\n    .key:nth-of-type(2) {\n      background-color: rgba(81, 211, 81, 0.9);\n    }\n    .key:nth-of-type(3) {\n      background-color: rgba(255, 153, 0, 0.9);\n    }\n    .fcc_legend {\n      position: relative;\n      display: inline-block;\n    }\n\n    #fcc_test_suite_indicator_wrapper {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n    }\n    #fcc_test_suite_indicator {\n      position: fixed;\n      top: 15px;\n      right: 20px;\n      font-size: 12px !important;\n      background-color: rgba(255, 255, 204, 0.9) !important;\n      color: black !important;\n      padding: 3px 5px !important;\n      border-radius: 5px !important;\n      box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n      font-family: Noto Sans, arial, sans-serif !important;\n    }\n  </style>\n\n  <div id=\"fcc_test_suite_indicator_wrapper\"></div>\n  <div id=\"fcc_foldout_toggler\">\n    <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n    <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n    <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n  </div>\n  <input id=\"toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n    title=\"CTRL + SHIFT + O\">\n  <div id=\"fcc_foldout_menu\">\n    <div id=\"fcc_foldout_menu_inner\">\n      <label for=\"test-suite-selector\">Select Test Suite: </label>\n      <select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n        onchange=\"FCC_Global.selectProject(this.value)\">\n        <option id=\"placeholder\" value=\"\">- - -</option>\n        <option value=\"tribute-page\">Tribute Page</option>\n        <option value=\"portfolio\">Personal Portfolio</option>\n        <option value=\"survey-form\">Survey Form</option>\n        <option value=\"product-landing-page\">Product Landing Page</option>\n        <option value=\"technical-docs-page\">Technical Documentation Page\n        </option>\n        <option value=\"random-quote-machine\">Random Quote Machine</option>\n        <option value=\"markdown-previewer\">Markdown Previewer</option>\n        <option value=\"drum-machine\">Drum Machine</option>\n        <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n        <option value=\"javascript-calculator\">Javascript Calculator</option>\n        <option value=\"bar-chart\">D3: Bar Chart</option>\n        <option value=\"scatter-plot\">D3: Scatter Plot</option>\n        <option value=\"heat-map\">D3: Heat Map</option>\n        <option value=\"choropleth\">D3: Choropleth</option>\n        <option value=\"tree-map\">D3: Tree Map</option>\n      </select>\n      <button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n        class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n        onclick=\"FCC_Global.FCCRerunTests()\">\n        Run Tests\n      </button>\n      <button id=\"fcc_test_button\" type=\"button\"\n        class=\"fcc_foldout_buttons fcc_test_btn-default\"\n        title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n        Tests\n      </button>\n      <div id=\"fcc_legend_wrapper\">\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Test(s) Failed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Passed</span>\n        <div class=\"fcc_legend key\"></div>\n        <span class=\"fcc_legend\">Tests Executing</span>\n      </div>\n      <span id=\"fcc_report-bug\"><a\n        href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n        target=\"_blank\">Report Bug</a>\n      </span>\n    </div>\n  </div>\n  <div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n    onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n    <div class=\"fcc_test_message-box-content\">\n      <div class=\"fcc_test_message-box-header\">\n        <div class=\"title\">Unit tests</div>\n      </div>\n      <div class=\"fcc_test_message-box-body\">\n        <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n      </div>\n      <div class=\"fcc_test_message-box-footer\">\n        <div class=\"fcc_test_message-box-close-btn\"\n          onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n      </div>\n    </div>\n  </div>";
 
 	exports.default = testSuiteSkeleton;
 
