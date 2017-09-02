@@ -21697,7 +21697,7 @@ var FCC_Global =
 	 * @param {String} coordAttr - respective feature coordinate attribute: Ex. "cy"
 	 * @param {Function} getBegin - pass getBegin function (getXBegin or getYBegin)
 	 * @param {Function} getEnd - pass getEnd function (getXEnd or getYEnd)
-
+	 * @param {Array} units - Array of month names
 	 * @returns {Object} Size, begin and end coordinates, tick and text NodeLists
 	 */
 	var getAxisInfo = function getAxisInfo(axis, dataAttr, coordAttr, getBegin, getEnd, units) {
@@ -21776,7 +21776,7 @@ var FCC_Global =
 	 */
 	function getTickValueMinutes(axisTick) {
 	  return parseInt(axisTick.split(':')[0], 10) + parseInt(axisTick.split(':')[1], 10) / 60;
-	};
+	}
 
 	/**
 	 * Parse one axis tick's label innerHTML
@@ -21788,20 +21788,20 @@ var FCC_Global =
 	 */
 	function getTickValueInteger(axisTick) {
 	  return parseInt(axisTick, 10);
-	};
+	}
 
 	/**
 	 * Convert one axis tick's label innerHTML from month string to index
 	 * @function
 	 * @param {String} axisTick - innerHTML from text of a single tick. Ex: "March"
 	 * from axis.querySelectorAll('.tick text') in getAxisInfo
-
+	 * @param {Object} axis - constructed in getAxisInfo
 	 * @returns {Number} integer
 	 */
 	function getTickValueMonths(axisTick, axis) {
 	  var label = axisTick.toLowerCase();
 	  return axis.units.indexOf(label);
-	};
+	}
 
 	/**
 	 * Convert feature data-* attribute from date object to to decimal minutes
@@ -21817,7 +21817,7 @@ var FCC_Global =
 	  var value = feature.getAttribute(axis.dataAttr);
 
 	  return new Date(value).getMinutes() + new Date(value).getSeconds() / 60;
-	};
+	}
 
 	/**
 	 * Parse feature data-* or data-year attribute
@@ -21833,7 +21833,7 @@ var FCC_Global =
 	  var value = feature.getAttribute(axis.dataAttr);
 
 	  return parseInt(value, 10);
-	};
+	}
 
 	/**
 	 * Get feature data-* attribute
@@ -21853,7 +21853,7 @@ var FCC_Global =
 	  } else {
 	    return value;
 	  }
-	};
+	}
 
 	/**
 	 * Compare feature coordinate to tick[i] and tick[i+1] and return true if
@@ -21922,7 +21922,6 @@ var FCC_Global =
 	 * @returns {Number} float
 	 */
 	var getFeatureCoord = function getFeatureCoord(feature, axis) {
-	  //var type = feature.tagName;
 	  var coord;
 	  if (axis.coordAttr === 'cx' || axis.coordAttr === 'cy') {
 	    coord = parseFloat(feature.getAttribute(axis.coordAttr));

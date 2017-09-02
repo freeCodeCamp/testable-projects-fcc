@@ -67,7 +67,7 @@ var getXEnd = function(pathDesc) {
  * @param {String} coordAttr - respective feature coordinate attribute: Ex. "cy"
  * @param {Function} getBegin - pass getBegin function (getXBegin or getYBegin)
  * @param {Function} getEnd - pass getEnd function (getXEnd or getYEnd)
-
+ * @param {Array} units - Array of month names
  * @returns {Object} Size, begin and end coordinates, tick and text NodeLists
  */
  var getAxisInfo = function(
@@ -154,7 +154,7 @@ var getXTickLocation = function(tick) {
 export function getTickValueMinutes(axisTick) {
   return parseInt(axisTick.split(':')[0], 10) +
     (parseInt(axisTick.split(':')[1], 10) / 60);
-};
+}
 
 /**
  * Parse one axis tick's label innerHTML
@@ -166,20 +166,20 @@ export function getTickValueMinutes(axisTick) {
  */
 export function getTickValueInteger(axisTick) {
   return parseInt(axisTick, 10);
-};
+}
 
 /**
  * Convert one axis tick's label innerHTML from month string to index
  * @function
  * @param {String} axisTick - innerHTML from text of a single tick. Ex: "March"
  * from axis.querySelectorAll('.tick text') in getAxisInfo
-
+ * @param {Object} axis - constructed in getAxisInfo
  * @returns {Number} integer
  */
 export function getTickValueMonths(axisTick, axis) {
   var label = axisTick.toLowerCase();
   return axis.units.indexOf(label);
-};
+}
 
 /**
  * Convert feature data-* attribute from date object to to decimal minutes
@@ -196,7 +196,7 @@ export function getFeatureValueMinutes(feature, axis) {
 
   return new Date(value).getMinutes() +
     (new Date(value).getSeconds() / 60);
-};
+}
 
 /**
  * Parse feature data-* or data-year attribute
@@ -212,7 +212,7 @@ export function getFeatureValueInteger(feature, axis) {
   var value = feature.getAttribute(axis.dataAttr);
 
   return parseInt(value, 10);
-};
+}
 
 /**
  * Get feature data-* attribute
@@ -232,7 +232,7 @@ export function getFeatureValueMonths(feature, axis) {
   } else {
     return value;
   }
-};
+}
 
 /**
  * Compare feature coordinate to tick[i] and tick[i+1] and return true if
@@ -258,7 +258,7 @@ var isFeatureAligned = function(featureCoord, axis, tickPxCur, tickPxNext) {
   // (inclusive) the two ticks' axis coordinates, plus-or-minus 1px.
   // Codepen and regular browser had 0.5px differences for these coordinates,
   // hence the 1px buffer.
-  return featureCoord >= minTickCoord - 1 && featureCoord <= maxTickCoord + 1
+  return featureCoord >= minTickCoord - 1 && featureCoord <= maxTickCoord + 1;
 };
 
 /**
@@ -309,7 +309,6 @@ var getMisalignmentCount = function(
  * @returns {Number} float
  */
 var getFeatureCoord = function(feature, axis) {
-  //var type = feature.tagName;
   var coord;
   if (axis.coordAttr === 'cx' || axis.coordAttr === 'cy') {
     coord = parseFloat(feature.getAttribute(axis.coordAttr));
@@ -368,7 +367,7 @@ var getMisalignmentCountCaller = function(
     // d3 adds 0.5px to ends of axes, so subtract 0.5 to accurately compare
     // position to feature position.
     tickPxCur = getTickLocationFunc(axis.ticks[i]) - 0.5,
-    tickPxNext = getTickLocationFunc(axis.ticks[i+1]) - 0.5;
+    tickPxNext = getTickLocationFunc(axis.ticks[i + 1]) - 0.5;
   return getMisalignmentCount(
     axis,
     collection,
