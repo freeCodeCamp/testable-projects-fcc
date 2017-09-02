@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { clickButtonsById } from '../assets/elementUtils';
 
 export default function createCalculatorTests() {
 
@@ -20,20 +21,12 @@ export default function createCalculatorTests() {
   const _eq = 'equals';
   const _dec = 'decimal';
 
-  function getElements(elementIds) {
-    return elementIds.map(elementId => document.getElementById(elementId));
-  }
-
-  function clickButtonsById(buttonIds) {
-    const keys = getElements(buttonIds);
-    keys.forEach(key => key.click());
-  }
-
   function clearDisplay() {
     if (document.getElementById('clear')) {
       clickButtonsById([_AC]);
     }
   }
+
   describe('Calculator tests', function() {
     beforeEach(function() {
       clearDisplay();
@@ -47,16 +40,16 @@ export default function createCalculatorTests() {
       let reqNum = 0;
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain a clickable element 
+      it(`${reqNum}. My calculator should contain a clickable element
       containing an = with a corresponding id="equals"`,
       function() {
         assert.isNotNull(document.getElementById(_eq));
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain 10 clickable elements 
-      containing one number each from 0-9, with the following corresponding 
-      IDs: id="zero", id="one", id="two", id="three", id="four", id="five", 
+      it(`${reqNum}. My calculator should contain 10 clickable elements
+      containing one number each from 0-9, with the following corresponding
+      IDs: id="zero", id="one", id="two", id="three", id="four", id="five",
       id="six", id="seven", id="eight", and id="nine"`,
       function() {
         assert.isNotNull(
@@ -102,8 +95,8 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain 4 clickable elements each 
-      containing one of the 4 primary mathematical operators with the following 
+      it(`${reqNum}. My calculator should contain 4 clickable elements each
+      containing one of the 4 primary mathematical operators with the following
       corresponding IDs: id="add", id="subtract", id="multiply",
       id="divide"`,
       function() {
@@ -126,7 +119,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain a clickable element 
+      it(`${reqNum}. My calculator should contain a clickable element
       containing a . symbol with a corresponding id="decimal"`,
       function() {
         assert.isNotNull(
@@ -136,7 +129,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain a clickable element with an 
+      it(`${reqNum}. My calculator should contain a clickable element with an
       id="clear"`,
       function() {
         assert.isNotNull(
@@ -146,7 +139,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should contain an element to display values 
+      it(`${reqNum}. My calculator should contain an element to display values
       with a corresponding id="display"`,
       function() {
         assert.isNotNull(
@@ -156,8 +149,8 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. At any time, pressing the clear button clears the input 
-      and output values, and returns the calculator to its initialized state; 0 
+      it(`${reqNum}. At any time, pressing the clear button clears the input
+      and output values, and returns the calculator to its initialized state; 0
       should be shown in the element with the id of "display"`,
       function() {
         clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
@@ -169,7 +162,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. As I input numbers, I should be able to see my input in 
+      it(`${reqNum}. As I input numbers, I should be able to see my input in
       the element with the id of "display"`,
       function() {
         clickButtonsById([_1, _2, _3]);
@@ -181,8 +174,8 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. In any order, I should be able to add, subtract, multiply 
-      and divide a chain of numbers of any length, and when I hit =, the 
+      it(`${reqNum}. In any order, I should be able to add, subtract, multiply
+      and divide a chain of numbers of any length, and when I hit =, the
       correct result should be shown in the element with the id of "display"`,
       function() {
         clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
@@ -202,7 +195,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When inputting numbers, my calculator should not allow a 
+      it(`${reqNum}. When inputting numbers, my calculator should not allow a
       number to begin with multiple zeros.`,
       function() {
         clickButtonsById([_0, _0, _0]);
@@ -214,8 +207,8 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When the decimal element is clicked, a . should append to 
-      the currently displayed value; two .s in one number should not be 
+      it(`${reqNum}. When the decimal element is clicked, a . should append to
+      the currently displayed value; two .s in one number should not be
       accepted`,
       function() {
         clickButtonsById([_5, _dec, _dec, _0]);
@@ -234,7 +227,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. I should be able to perform any operation (+, -, *, /) on 
+      it(`${reqNum}. I should be able to perform any operation (+, -, *, /) on
       numbers containing decimal points`,
       function() {
         clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
@@ -267,7 +260,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. If 2 or more operators are entered consecutively, the 
+      it(`${reqNum}. If 2 or more operators are entered consecutively, the
       operation performed should be the last operator entered`,
       function() {
         clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
@@ -286,7 +279,7 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. Pressing an operator immediately following = should start 
+      it(`${reqNum}. Pressing an operator immediately following = should start
       a new calculation that operates on the result of the previous evaluation`,
       function() {
         clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
@@ -305,9 +298,9 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. My calculator should have several decimal places of 
-      precision when it comes to rounding (note that there is no exact 
-      standard, but you should be able to handle calculations like 2 / 7 with 
+      it(`${reqNum}. My calculator should have several decimal places of
+      precision when it comes to rounding (note that there is no exact
+      standard, but you should be able to handle calculations like 2 / 7 with
       reasonable precision to at least 4 decimal places)`,
       function() {
         clickButtonsById([_2, _div, _7, _eq]);
