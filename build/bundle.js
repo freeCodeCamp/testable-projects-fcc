@@ -19631,7 +19631,9 @@ var FCC_Global =
 	  function clickButtonsById(buttonIds) {
 	    var keys = getElements(buttonIds);
 	    keys.forEach(function (key) {
-	      return key.click();
+	      if (key && typeof key.click === 'function') {
+	        key.click();
+	      }
 	    });
 	  }
 
@@ -19674,12 +19676,12 @@ var FCC_Global =
 	    return observer;
 	  }
 
-	  // We "Hack" the global setTimeout and setInterval functions so time elapses 
+	  // We "Hack" the global setTimeout and setInterval functions so time elapses
 	  // faster (delay is forced to 30ms)
-	  // Note: we should consider putting these hacks in the beforeEach function 
+	  // Note: we should consider putting these hacks in the beforeEach function
 	  // so every timed test can be done in less time
-	  // The problem is that we still don't know if it's acceptable to use this 
-	  // hack, because it implies forcing the campers to use setTimeout and 
+	  // The problem is that we still don't know if it's acceptable to use this
+	  // hack, because it implies forcing the campers to use setTimeout and
 	  // setInterval functions to measure time in their pomodoro.
 	  var savedSetTimeout = window.setTimeout;
 	  var savedSetInterval = window.setInterval;
@@ -19706,7 +19708,7 @@ var FCC_Global =
 
 	    beforeEach(function () {
 	      resetTimer();
-	      // We "Hack" the global setTimeout and setInterval functions so time 
+	      // We "Hack" the global setTimeout and setInterval functions so time
 	      // elapses faster (delay is forced to 30ms)
 	      hackGlobalTimerFunctions();
 	    });
@@ -19724,25 +19726,25 @@ var FCC_Global =
 	      var reqNum = 0;
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element with id="break-label" that contains a \n      string (e.g. \u201CBreak Length).', function () {
+	      it(reqNum + '. I can see an element with id="break-label" that contains a\n      string (e.g. \u201CBreak Length).', function () {
 	        var breakTitle = document.getElementById('break-label');
 	        _chai.assert.isAbove(breakTitle.innerText.length, 0, 'Element does not contain a string');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element with id="session-label" that contains \n      a string (e.g. "Session Length\u201D).', function () {
+	      it(reqNum + '. I can see an element with id="session-label" that contains\n      a string (e.g. "Session Length\u201D).', function () {
 	        var sessionTitle = document.getElementById('session-label');
 	        _chai.assert.isAbove(sessionTitle.innerText.length, 0, 'Element does not contain a string');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see two clickable elements with corresponding IDs: \n      id="break-decrement" and id="session-decrement".', function () {
+	      it(reqNum + '. I can see two clickable elements with corresponding IDs:\n      id="break-decrement" and id="session-decrement".', function () {
 	        _chai.assert.isNotNull(document.getElementById('break-decrement'));
 	        _chai.assert.isNotNull(document.getElementById('session-decrement'));
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see two clickable elements with corresponding IDs: \n      id="break-increment" and id="session-increment".', function () {
+	      it(reqNum + '. I can see two clickable elements with corresponding IDs:\n      id="break-increment" and id="session-increment".', function () {
 	        _chai.assert.isNotNull(document.getElementById('break-increment'));
 	        _chai.assert.isNotNull(document.getElementById('session-increment'));
 	      });
@@ -19754,34 +19756,34 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element, with corresponding \n      id="session-length", which by default displays a value of 25.', function () {
+	      it(reqNum + '. I can see an element, with corresponding\n      id="session-length", which by default displays a value of 25.', function () {
 	        var sessionLength = document.getElementById('session-length');
 	        _chai.assert.strictEqual(sessionLength.innerHTML, '25', 'A value of 25 is not displayed by default');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element, with corresponding id="timer-label",\n      that contains a string indicating a session is initialized \n      (e.g. "Session").', function () {
+	      it(reqNum + '. I can see an element, with corresponding id="timer-label",\n      that contains a string indicating a session is initialized\n      (e.g. "Session").', function () {
 	        var timerLabel = document.getElementById('timer-label');
 	        _chai.assert.isAbove(timerLabel.innerText.length, 0, 'Element does not contain a string');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element with corresponding id="time-left". \n      NOTE: Paused or running, the value in this field should always be \n      displayed in mm:ss format (i.e. 25:00).', function () {
+	      it(reqNum + '. I can see an element with corresponding id="time-left".\n      NOTE: Paused or running, the value in this field should always be\n      displayed in mm:ss format (i.e. 25:00).', function () {
 	        _chai.assert.isNotNull(document.getElementById('time-left'));
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see a clickable element with corresponding \n      id="start_stop".', function () {
+	      it(reqNum + '. I can see a clickable element with corresponding\n      id="start_stop".', function () {
 	        _chai.assert.isNotNull(document.getElementById('start_stop'));
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see a clickable element with corresponding \n      id="reset".', function () {
+	      it(reqNum + '. I can see a clickable element with corresponding\n      id="reset".', function () {
 	        _chai.assert.isNotNull(document.getElementById('reset'));
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I click the element with the id of "reset", any \n      running timer should be stopped, the value within id="break-length" should\n      return to 5, the value within id="session-length" should return to 25, and\n      the element with id="time-left" should reset to it\'s default state.', function () {
+	      it(reqNum + '. When I click the element with the id of "reset", any\n      running timer should be stopped, the value within id="break-length" should\n      return to 5, the value within id="session-length" should return to 25, and\n      the element with id="time-left" should reset to it\'s default state.', function () {
 	        this.timeout(5000);
 	        // decrement session and break length
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -19792,7 +19794,7 @@ var FCC_Global =
 	          var timeLeft = document.getElementById('time-left');
 	          var observer = observeElement('time-left', function () {
 	            if (timeLeft.innerHTML === '00:00') {
-	              // once timer has reached zero wait 1.5 seconds then reset and 
+	              // once timer has reached zero wait 1.5 seconds then reset and
 	              // see if every default value is reset
 	              setTimeout(function () {
 	                resetTimer();
@@ -19804,7 +19806,7 @@ var FCC_Global =
 	                  reject(new Error('Default timer label was not properly reset'));
 	                }
 
-	                // wait another 1.5 seconds to be sure value has not changed 
+	                // wait another 1.5 seconds to be sure value has not changed
 	                // (pomodoro is stopped)
 	                setTimeout(function () {
 	                  var breakLenAfterResetCorrect = document.getElementById('break-length').innerHTML === '5';
@@ -19828,7 +19830,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I click the element with the id of "break-decrement", \n      the value within id="break-length" decrements by a value of 1, and I can \n      see the updated value.', function () {
+	      it(reqNum + '. When I click the element with the id of "break-decrement",\n      the value within id="break-length" decrements by a value of 1, and I can\n      see the updated value.', function () {
 	        clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '1');
 	        resetTimer();
@@ -19837,7 +19839,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I click the element with the id of "break-increment", \n      the value within id="break-length" increments by a value of 1, and I can \n      see the updated value.', function () {
+	      it(reqNum + '. When I click the element with the id of "break-increment",\n      the value within id="break-length" increments by a value of 1, and I can\n      see the updated value.', function () {
 	        clickButtonsById(Array(4).fill(breakPlus));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '9');
 	        resetTimer();
@@ -19846,7 +19848,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I click the element with the id of \n      "session-decrement", the value within id="session-length" decrements by a \n      value of 1, and I can see the updated value.', function () {
+	      it(reqNum + '. When I click the element with the id of\n      "session-decrement", the value within id="session-length" decrements by a\n      value of 1, and I can see the updated value.', function () {
 	        clickButtonsById(Array(4).fill(seshMin));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '21');
 	        resetTimer();
@@ -19855,7 +19857,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I click the element with the id of \n      "session-increment", the value within id="session-length" increments by a \n      value of 1, and I can see the updated value.', function () {
+	      it(reqNum + '. When I click the element with the id of\n      "session-increment", the value within id="session-length" increments by a\n      value of 1, and I can see the updated value.', function () {
 	        clickButtonsById(Array(4).fill(seshPlus));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '29');
 	        resetTimer();
@@ -19864,7 +19866,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I should not be able to set a session or break length to \n      <= 0.', function () {
+	      it(reqNum + '. I should not be able to set a session or break length to\n      <= 0.', function () {
 	        clickButtonsById(Array(10).fill(breakMin));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '1', 'Value in element with id of "break-length" is less than 1.');
 	        resetTimer();
@@ -19873,7 +19875,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I should not be able to set a session or break length to \n      > 60.', function () {
+	      it(reqNum + '. I should not be able to set a session or break length to\n      > 60.', function () {
 	        clickButtonsById(Array(60).fill(breakPlus));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '60', 'Value in element with id of "break-length" is greater than 60.');
 	        resetTimer();
@@ -19882,19 +19884,19 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When I first click the element with id="start_stop", the \n      timer should begin running from the value currently displayed in \n      id="session-length", even if the value has been incremented or \n      decremented from the original value of 25.', function () {
+	      it(reqNum + '. When I first click the element with id="start_stop", the\n      timer should begin running from the value currently displayed in\n      id="session-length", even if the value has been incremented or\n      decremented from the original value of 25.', function () {
 	        clickButtonsById([startStop]);
 	        _chai.assert.strictEqual(getMinutes(document.getElementById('time-left').innerHTML), document.getElementById('session-length').innerHTML);
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. If the timer is running, the element with the id of \n      "time-left" should display the remaining time in mm:ss format \n      (decrementing by a value of 1 and updating the display every 1000ms).', function () {
+	      it(reqNum + '. If the timer is running, the element with the id of\n      "time-left" should display the remaining time in mm:ss format\n      (decrementing by a value of 1 and updating the display every 1000ms).', function () {
 	        this.timeout(2500);
 	        // start the pomodoro
 	        clickButtonsById([startStop]);
 	        var secondsBefore = getSeconds(document.getElementById('time-left').innerHTML);
 	        return new Promise(function (resolve, reject) {
-	          // wait 1.5 seconds then see if displayed time has changed 
+	          // wait 1.5 seconds then see if displayed time has changed
 	          // (decremented)
 	          setTimeout(function () {
 	            var secondsAfter = getSeconds(document.getElementById('time-left').innerHTML);
@@ -19908,7 +19910,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. If the timer is running and I click the element with \n      id="start_stop", the countdown should pause.', function () {
+	      it(reqNum + '. If the timer is running and I click the element with\n      id="start_stop", the countdown should pause.', function () {
 	        this.timeout(4000);
 	        // start the pomodoro
 	        clickButtonsById([startStop]);
@@ -19937,7 +19939,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. If the timer is paused and I click the element with \n      id="start_stop", the countdown should resume running from the point at \n      which it was paused.', function () {
+	      it(reqNum + '. If the timer is paused and I click the element with\n      id="start_stop", the countdown should resume running from the point at\n      which it was paused.', function () {
 	        this.timeout(5000);
 	        // start the pomodoro
 	        clickButtonsById([startStop]);
@@ -19976,7 +19978,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST \n      reach 00:00), and a new countdown begins, the element with the id of \n      "timer-label" should display a string indicating a break has begun.', function () {
+	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST\n      reach 00:00), and a new countdown begins, the element with the id of\n      "timer-label" should display a string indicating a break has begun.', function () {
 	        this.timeout(5000);
 	        // we decrement session time to the minimum (1 minute)
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -20008,7 +20010,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST \n      reach 00:00), a new break countdown should begin, counting down from the \n      value currently displayed in the id="break-length" element.', function () {
+	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST\n      reach 00:00), a new break countdown should begin, counting down from the\n      value currently displayed in the id="break-length" element.', function () {
 	        this.timeout(5000);
 	        // we decrement session time to the minimum (1 minute)
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -20017,7 +20019,7 @@ var FCC_Global =
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var shouldBeInBreak = false;
-	          // Since not requiring specific labels, save the 'session' label to a 
+	          // Since not requiring specific labels, save the 'session' label to a
 	          // variable, then test within observer function that label has changed
 	          // to know when in break
 	          var sessionLabel = document.getElementById('timer-label').innerHTML;
@@ -20048,7 +20050,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST reach\n      00:00), and a new countdown begins, the element with the id of \n      "timer-label" should display a string indicating a session has begun.', function () {
+	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST reach\n      00:00), and a new countdown begins, the element with the id of\n      "timer-label" should display a string indicating a session has begun.', function () {
 	        this.timeout(5000);
 	        // decrement session length and break length to the minimum (1 minute)
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -20067,7 +20069,7 @@ var FCC_Global =
 	              } else {
 	                shouldBeInSessionAgain = true;
 	                shouldBeInBreak = false;
-	                // when in break, save 'break' label to var, then test below 
+	                // when in break, save 'break' label to var, then test below
 	                // that label has changed
 	                breakLabel = document.getElementById('timer-label').innerHTML;
 	              }
@@ -20085,7 +20087,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST \n      reach 00:00), a new session countdown should begin, counting down from \n      the value currently displayed in the id="session-length" element.', function () {
+	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST\n      reach 00:00), a new session countdown should begin, counting down from\n      the value currently displayed in the id="session-length" element.', function () {
 	        this.timeout(5000);
 	        // decrement session length and break length to the minimum (1 minute)
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -20104,7 +20106,7 @@ var FCC_Global =
 	              } else {
 	                shouldBeInSessionAgain = true;
 	                shouldBeInBreak = false;
-	                // when in break, save 'break' label to var, then test below 
+	                // when in break, save 'break' label to var, then test below
 	                // that label has changed
 	                breakLabel = document.getElementById('timer-label').innerHTML;
 	              }
@@ -20128,7 +20130,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When a countdown reaches zero (NOTE: timer MUST reach \n      00:00), a sound indicating that time is up should play. This should \n      utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
+	      it(reqNum + '. When a countdown reaches zero (NOTE: timer MUST reach\n      00:00), a sound indicating that time is up should play. This should\n      utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
 	        this.timeout(5000);
 	        // decrement session time to the minimum (1 minute)
 	        clickButtonsById(Array(60).fill(seshMin));
@@ -20141,7 +20143,7 @@ var FCC_Global =
 	            if (parseInt(timeLeft.innerHTML.slice(0, 2), 10) > 5) {
 	              reject(new Error('Test timed out because Break time didn\'t start with ' + 'the correct value: ' + (parseInt(getMinutes(timeLeft.innerHTML), 10) + 1) + ' instead of ' + breakLength.innerHTML));
 	            } else if (timeLeft.innerHTML === '00:00') {
-	              // note: sound has to be longer than 200 ms, or the test will 
+	              // note: sound has to be longer than 200 ms, or the test will
 	              // fail if the sound stops before the test actually happens
 	              savedSetTimeout(function () {
 	                var audioElem = document.getElementById('beep');
@@ -20159,12 +20161,12 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. The audio element with id="beep" must be 1 second or \n      longer.', function () {
+	      it(reqNum + '. The audio element with id="beep" must be 1 second or\n      longer.', function () {
 	        _chai.assert.isAbove(document.getElementById('beep').duration, 1, 'Audio element with id="beep" is not at least 1 second long.');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. The audio element with id of "beep" must stop playing and \n      be rewound to the beginning when the element with the id of "reset" is\n      clicked.', function () {
+	      it(reqNum + '. The audio element with id of "beep" must stop playing and\n      be rewound to the beginning when the element with the id of "reset" is\n      clicked.', function () {
 	        var audioElem = document.getElementById('beep');
 
 	        audioElem.play();
