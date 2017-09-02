@@ -21339,6 +21339,8 @@ var FCC_Global =
 	});
 	exports.testToolTip = testToolTip;
 
+	var _chai = __webpack_require__(2);
+
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
@@ -21346,9 +21348,12 @@ var FCC_Global =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function isToolTipHidden(tooltip) {
-	  // jQuery's :hidden selector checks if the element or its parents have a display of none, a type of hidden, or height/width set to 0
-	  // if the element is hidden with opacity=0 or visibility=hidden, jQuery's :hidden will return false because it takes up space in the DOM
-	  // this test combines jQuery's :hidden with tests for opacity and visbility to cover most use cases (z-index and potentially others are not tested)
+	  // jQuery's :hidden selector checks if the element or its parents have a
+	  // display of none, a type of hidden, or height/width set to 0.
+	  // If the element is hidden with opacity=0 or visibility=hidden, jQuery's
+	  // :hidden will return false because it takes up space in the DOM.
+	  // This test combines jQuery's :hidden with tests for opacity and visbility
+	  // to cover most use cases (z-index and potentially others are not tested).
 	  return (0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden';
 	}
 
@@ -21356,15 +21361,17 @@ var FCC_Global =
 	  return Math.floor(Math.random() * max);
 	}
 
-	/**
-	  JQuery's mouseevents don't work for non IE browsers in these tests.  
-	  This is a workaround to handle IE and non IE mouse events
-	**/
+	/*
+	  JQuery's mouseevents don't work for non IE browsers in these tests.
+	  This is a workaround to handle IE and non IE mouse events.
+	*/
 	function triggerMouseEvent(area, mouseEvent) {
 	  var event;
 	  if (document.createEvent) {
-	    // Internet Explorer
-	    event = document.createEvent("MouseEvent");
+	    // Internet Explorer.
+	    event = document.createEvent('MouseEvent');
+	    // TODO: Provide a link where all the parameters for initMouseEvent are
+	    // documented.
 	    event.initMouseEvent(mouseEvent, true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 	  } else {
 	    // Non IE browser
@@ -21373,38 +21380,39 @@ var FCC_Global =
 	  area.dispatchEvent(event);
 	}
 
-	/**
-	  Mouses over random areas to see if a tooltip appears
-	**/
+	/*
+	  Mouses over random areas to see if a tooltip appears.
+	*/
 	function testToolTip(areas, toolTipDataName, areaDataName) {
 
 	  describe('#TooltipTests', function () {
-	    it('1. I can mouse over an area and see a tooltip with a corresponding id="tooltip" which displays more information about the area ', function () {
+	    it('1. I can mouse over an area and see a tooltip with a corresponding\n    id="tooltip" which displays more information about the area ', function () {
 	      var firstRequestTimeout = 500;
 	      var secondRequestTimeout = 2000;
-	      this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	      FCC_Global.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
-
-	      var tooltip = document.getElementById('tooltip');
-
-	      // place mouse on random bar and check if tooltip is visible
 	      var randomIndex = getRandomIndex(areas.length);
-	      var randomArea = areas[randomIndex];
-	      triggerMouseEvent(randomArea, "mouseover");
-	      triggerMouseEvent(randomArea, "mousemove");
-	      triggerMouseEvent(randomArea, "mouseenter");
+	      var tooltip = document.getElementById('tooltip');
+	      var randomArea = void 0;
 
-	      // promise is used to prevent test from ending prematurely
+	      this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	      _chai.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+
+	      // Place mouse on random bar and check if tooltip is visible.
+	      randomArea = areas[randomIndex];
+	      triggerMouseEvent(randomArea, 'mouseover');
+	      triggerMouseEvent(randomArea, 'mousemove');
+	      triggerMouseEvent(randomArea, 'mouseenter');
+
+	      // Promise is used to prevent test from ending prematurely.
 	      return new Promise(function (resolve, reject) {
-	        // timeout is used to accomodate tooltip transitions
-	        setTimeout(function (_) {
+	        // Timeout is used to accomodate tooltip transitions.
+	        setTimeout(function () {
 	          if (isToolTipHidden(tooltip)) {
 	            reject(new Error('Tooltip should be visible when mouse is on an area'));
 	          }
 
-	          // remove mouse from cell and check if tooltip is hidden again  
-	          triggerMouseEvent(randomArea, "mouseout");
-	          setTimeout(function (_) {
+	          // Remove mouse from cell and check if tooltip is hidden again.
+	          triggerMouseEvent(randomArea, 'mouseout');
+	          setTimeout(function () {
 	            if (!isToolTipHidden(tooltip)) {
 	              reject(new Error('Tooltip should be hidden when mouse is not on an area'));
 	            } else {
@@ -21414,24 +21422,27 @@ var FCC_Global =
 	        }, firstRequestTimeout);
 	      });
 	    });
-	    it('2. My tooltip should have a "' + toolTipDataName + '" property that corresponds to the "' + areaDataName + '" of the active area.', function () {
+
+	    it('2. My tooltip should have a "' + toolTipDataName + '" property that\n    corresponds to the "' + areaDataName + '" of the active area.', function () {
 	      var tooltip = document.getElementById('tooltip');
-	      FCC_Global.assert.isNotNull(tooltip.getAttribute(toolTipDataName), 'Could not find property "' + toolTipDataName + '" in tooltip ');
 	      var randomIndex = getRandomIndex(areas.length);
+	      var randomArea = void 0;
 
-	      var randomArea = areas[randomIndex];
+	      _chai.assert.isNotNull(tooltip.getAttribute(toolTipDataName), 'Could not find property "' + toolTipDataName + '" in tooltip ');
 
-	      triggerMouseEvent(randomArea, "mouseover");
-	      triggerMouseEvent(randomArea, "mousemove");
-	      triggerMouseEvent(randomArea, "mouseenter");
+	      randomArea = areas[randomIndex];
 
-	      FCC_Global.assert.equal(tooltip.getAttribute(toolTipDataName), randomArea.getAttribute(areaDataName), 'Tooltip\'s \"' + toolTipDataName + '\" property should be equal to the active area\'s \"' + areaDataName + '\" property');
+	      triggerMouseEvent(randomArea, 'mouseover');
+	      triggerMouseEvent(randomArea, 'mousemove');
+	      triggerMouseEvent(randomArea, 'mouseenter');
 
-	      //clear out tooltip
-	      triggerMouseEvent(randomArea, "mouseout");
+	      _chai.assert.equal(tooltip.getAttribute(toolTipDataName), randomArea.getAttribute(areaDataName), 'Tooltip\'s "' + toolTipDataName + '" property should be equal to the ' + ('active area\'s "' + areaDataName + '" property'));
+
+	      // Clear out tooltip.
+	      triggerMouseEvent(randomArea, 'mouseout');
 	    });
 	  });
-	};
+	}
 
 /***/ }),
 /* 57 */

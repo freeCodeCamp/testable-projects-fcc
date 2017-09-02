@@ -10,7 +10,7 @@ import {
   isAxisAlignedWithDataPoints
 } from '../assets/alignmentD3Tests';
 import { assert } from 'chai';
-import { testToolTip } from '../assets/globalD3Tests';
+import { testToolTip } from '../assets/global-D3-tests';
 
 const months = [
   'january',
