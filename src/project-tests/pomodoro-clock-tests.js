@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { clickButtonsById } from '../assets/elementUtils';
 
 export default function createPomodoroClockTests() {
 
@@ -10,19 +11,6 @@ export default function createPomodoroClockTests() {
   const startStop = 'start_stop';
   const orignalTimerLabel = document.getElementById('timer-label') &&
   document.getElementById('timer-label').innerText;
-
-  function getElements(elementIds) {
-    return elementIds.map(elementId => document.getElementById(elementId));
-  }
-
-  function clickButtonsById(buttonIds) {
-    const keys = getElements(buttonIds);
-    keys.forEach(key => {
-      if (key && (typeof key.click === 'function')) {
-        key.click();
-      }
-    });
-  }
 
   function resetTimer() {
     clickButtonsById([reset]);
@@ -37,6 +25,7 @@ export default function createPomodoroClockTests() {
     const matches = (/^\d{1,4}\s?:\s?(\d{2})/g).exec(str);
     return matches[1];
   }
+
   // TODO: Check all instances of observer.disconnect() to make sure it's used
   // correctly.
   function observeElement(elementId, callback) {

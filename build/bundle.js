@@ -91,47 +91,47 @@ var FCC_Global =
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroClockTests = __webpack_require__(48);
+	var _pomodoroClockTests = __webpack_require__(49);
 
 	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
-	var _tributePageTests = __webpack_require__(49);
+	var _tributePageTests = __webpack_require__(50);
 
 	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
 
-	var _portfolioTests = __webpack_require__(50);
+	var _portfolioTests = __webpack_require__(51);
 
 	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
 
-	var _productLandingPageTests = __webpack_require__(52);
+	var _productLandingPageTests = __webpack_require__(53);
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
-	var _surveyFormTests = __webpack_require__(53);
+	var _surveyFormTests = __webpack_require__(54);
 
 	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
 
-	var _technicalDocsTests = __webpack_require__(54);
+	var _technicalDocsTests = __webpack_require__(55);
 
 	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
 
-	var _barChartTests = __webpack_require__(55);
+	var _barChartTests = __webpack_require__(56);
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(57);
+	var _scatterPlotTests = __webpack_require__(58);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(59);
+	var _choroplethTests = __webpack_require__(60);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(61);
+	var _treeMapTests = __webpack_require__(62);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(62);
+	var _quoteMachineTests = __webpack_require__(63);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
@@ -19441,6 +19441,8 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
+	var _elementUtils = __webpack_require__(48);
+
 	function createCalculatorTests() {
 
 	  var _1 = 'one';
@@ -19461,24 +19463,12 @@ var FCC_Global =
 	  var _eq = 'equals';
 	  var _dec = 'decimal';
 
-	  function getElements(elementIds) {
-	    return elementIds.map(function (elementId) {
-	      return document.getElementById(elementId);
-	    });
-	  }
-
-	  function clickButtonsById(buttonIds) {
-	    var keys = getElements(buttonIds);
-	    keys.forEach(function (key) {
-	      return key.click();
-	    });
-	  }
-
 	  function clearDisplay() {
 	    if (document.getElementById('clear')) {
-	      clickButtonsById([_AC]);
+	      (0, _elementUtils.clickButtonsById)([_AC]);
 	    }
 	  }
+
 	  describe('Calculator tests', function () {
 	    beforeEach(function () {
 	      clearDisplay();
@@ -19492,12 +19482,12 @@ var FCC_Global =
 	      var reqNum = 0;
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain a clickable element \n      containing an = with a corresponding id="equals"', function () {
+	      it(reqNum + '. My calculator should contain a clickable element\n      containing an = with a corresponding id="equals"', function () {
 	        _chai.assert.isNotNull(document.getElementById(_eq));
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain 10 clickable elements \n      containing one number each from 0-9, with the following corresponding \n      IDs: id="zero", id="one", id="two", id="three", id="four", id="five", \n      id="six", id="seven", id="eight", and id="nine"', function () {
+	      it(reqNum + '. My calculator should contain 10 clickable elements\n      containing one number each from 0-9, with the following corresponding\n      IDs: id="zero", id="one", id="two", id="three", id="four", id="five",\n      id="six", id="seven", id="eight", and id="nine"', function () {
 	        _chai.assert.isNotNull(document.getElementById(_0), 'id="zero" is not yet defined ');
 	        _chai.assert.isNotNull(document.getElementById(_1), 'id="one" is not yet defined ');
 	        _chai.assert.isNotNull(document.getElementById(_2), 'id="two" is not yet defined ');
@@ -19511,7 +19501,7 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain 4 clickable elements each \n      containing one of the 4 primary mathematical operators with the following \n      corresponding IDs: id="add", id="subtract", id="multiply",\n      id="divide"', function () {
+	      it(reqNum + '. My calculator should contain 4 clickable elements each\n      containing one of the 4 primary mathematical operators with the following\n      corresponding IDs: id="add", id="subtract", id="multiply",\n      id="divide"', function () {
 	        _chai.assert.isNotNull(document.getElementById(_plus), 'id="add" is not yet defined ');
 	        _chai.assert.isNotNull(document.getElementById(_min), 'id="subtract" is not yet defined ');
 	        _chai.assert.isNotNull(document.getElementById(_x), 'id="multiply" is not yet defined ');
@@ -19519,92 +19509,92 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain a clickable element \n      containing a . symbol with a corresponding id="decimal"', function () {
+	      it(reqNum + '. My calculator should contain a clickable element\n      containing a . symbol with a corresponding id="decimal"', function () {
 	        _chai.assert.isNotNull(document.getElementById(_dec), 'id="decimal" is not yet defined ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain a clickable element with an \n      id="clear"', function () {
+	      it(reqNum + '. My calculator should contain a clickable element with an\n      id="clear"', function () {
 	        _chai.assert.isNotNull(document.getElementById(_AC), 'id="clear" is not yet defined ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should contain an element to display values \n      with a corresponding id="display"', function () {
+	      it(reqNum + '. My calculator should contain an element to display values\n      with a corresponding id="display"', function () {
 	        _chai.assert.isNotNull(document.getElementById('display'), 'id="display" is not yet defined ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. At any time, pressing the clear button clears the input \n      and output values, and returns the calculator to its initialized state; 0 \n      should be shown in the element with the id of "display"', function () {
-	        clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
+	      it(reqNum + '. At any time, pressing the clear button clears the input\n      and output values, and returns the calculator to its initialized state; 0\n      should be shown in the element with the id of "display"', function () {
+	        (0, _elementUtils.clickButtonsById)([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '0', 'Element with with id="display" should show 0 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. As I input numbers, I should be able to see my input in \n      the element with the id of "display"', function () {
-	        clickButtonsById([_1, _2, _3]);
+	      it(reqNum + '. As I input numbers, I should be able to see my input in\n      the element with the id of "display"', function () {
+	        (0, _elementUtils.clickButtonsById)([_1, _2, _3]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '123', 'Numbers do not display correctly within id="display" ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. In any order, I should be able to add, subtract, multiply \n      and divide a chain of numbers of any length, and when I hit =, the \n      correct result should be shown in the element with the id of "display"', function () {
-	        clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
+	      it(reqNum + '. In any order, I should be able to add, subtract, multiply\n      and divide a chain of numbers of any length, and when I hit =, the\n      correct result should be shown in the element with the id of "display"', function () {
+	        (0, _elementUtils.clickButtonsById)([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
 	        (0, _chai.assert)(document.getElementById('display').innerHTML === '32.5' || document.getElementById('display').innerHTML === '11.5', 'The expression 3 + 5 * 6 - 2 / 4 should produce 32.5 or 11.5 as an\n          answer, depending on the logic your calculator uses\n          (formula vs. immediate execution) ');
 	        clearDisplay();
-	        clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_5, _min, _9, _plus, _5, _eq]);
 	        (0, _chai.assert)(document.getElementById('display').innerHTML === '1', 'The expression 5 - 9 + 5 should produce a result of 1 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When inputting numbers, my calculator should not allow a \n      number to begin with multiple zeros.', function () {
-	        clickButtonsById([_0, _0, _0]);
+	      it(reqNum + '. When inputting numbers, my calculator should not allow a\n      number to begin with multiple zeros.', function () {
+	        (0, _elementUtils.clickButtonsById)([_0, _0, _0]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '0', 'An input of 0 0 0 should display 0 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. When the decimal element is clicked, a . should append to \n      the currently displayed value; two .s in one number should not be \n      accepted', function () {
-	        clickButtonsById([_5, _dec, _dec, _0]);
+	      it(reqNum + '. When the decimal element is clicked, a . should append to\n      the currently displayed value; two .s in one number should not be\n      accepted', function () {
+	        (0, _elementUtils.clickButtonsById)([_5, _dec, _dec, _0]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '5.0', 'An input of 5 . . 0 should display 5.0 ');
 	        clearDisplay();
-	        clickButtonsById([_5, _dec, _5, _dec, _5]);
+	        (0, _elementUtils.clickButtonsById)([_5, _dec, _5, _dec, _5]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '5.55', 'An input of 5 . 5 . 5 should display 5.55 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I should be able to perform any operation (+, -, *, /) on \n      numbers containing decimal points', function () {
-	        clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
+	      it(reqNum + '. I should be able to perform any operation (+, -, *, /) on\n      numbers containing decimal points', function () {
+	        (0, _elementUtils.clickButtonsById)([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '5', 'The expression 10.5 - 5.5 should produce an output of 5 ');
 	        clearDisplay();
-	        clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_5, _x, _5, _dec, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '27.5', 'The expression 5 * 5.5 should produce an output of 27.5 ');
 	        clearDisplay();
-	        clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '16', 'The expression 10.5 + 5.5 should produce an output of 16 ');
 	        clearDisplay();
-	        clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_1, _0, _div, _2, _dec, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '4', 'The expression 10 / 2.5 should produce an output of 4 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. If 2 or more operators are entered consecutively, the \n      operation performed should be the last operator entered', function () {
-	        clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
+	      it(reqNum + '. If 2 or more operators are entered consecutively, the\n      operation performed should be the last operator entered', function () {
+	        (0, _elementUtils.clickButtonsById)([_5, _x, _min, _plus, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '10', 'The sequence 5 * - + 5 = should produce an output of 10 ');
 	        clearDisplay();
-	        clickButtonsById([_5, _plus, _plus, _5, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_5, _plus, _plus, _5, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '10', 'The sequence 5 + + 5 = should produce an output of 10 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. Pressing an operator immediately following = should start \n      a new calculation that operates on the result of the previous evaluation', function () {
-	        clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
+	      it(reqNum + '. Pressing an operator immediately following = should start\n      a new calculation that operates on the result of the previous evaluation', function () {
+	        (0, _elementUtils.clickButtonsById)([_5, _min, _2, _eq, _div, _2, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '1.5', 'The sequence 5 - 2 = / 2 = should produce an output of 1.5 ');
 	        clearDisplay();
-	        clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
+	        (0, _elementUtils.clickButtonsById)([_5, _plus, _5, _eq, _plus, _3, _eq]);
 	        _chai.assert.strictEqual(document.getElementById('display').innerHTML, '13', 'The sequence 5 + 3 = + 3 = should produce an output of 13 ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My calculator should have several decimal places of \n      precision when it comes to rounding (note that there is no exact \n      standard, but you should be able to handle calculations like 2 / 7 with \n      reasonable precision to at least 4 decimal places)', function () {
-	        clickButtonsById([_2, _div, _7, _eq]);
+	      it(reqNum + '. My calculator should have several decimal places of\n      precision when it comes to rounding (note that there is no exact\n      standard, but you should be able to handle calculations like 2 / 7 with\n      reasonable precision to at least 4 decimal places)', function () {
+	        (0, _elementUtils.clickButtonsById)([_2, _div, _7, _eq]);
 	        _chai.assert.isOk(/0?\.2857\d*/.test(document.getElementById('display').innerHTML), 'The expression 2 / 7 should produce an output number with at least 4\n          decimal places of precision ');
 	      });
 	      // END #Tests
@@ -19616,6 +19606,41 @@ var FCC_Global =
 
 /***/ }),
 /* 48 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.testHorizontallyCentered = testHorizontallyCentered;
+	exports.clickButtonsById = clickButtonsById;
+	function testHorizontallyCentered(elName, window) {
+	  var centeredElement = window.document.getElementById(elName);
+	  var centeredElementBounds = centeredElement.getBoundingClientRect();
+	  var leftGap = centeredElementBounds.left;
+	  var rightGap = window.innerWidth - centeredElementBounds.right;
+	  // allow for scrollbar width
+	  return Math.abs(leftGap - rightGap) < 20;
+	}
+
+	function getElements(elementIds) {
+	  return elementIds.map(function (elementId) {
+	    return document.getElementById(elementId);
+	  });
+	}
+
+	function clickButtonsById(buttonIds) {
+	  var keys = getElements(buttonIds);
+	  keys.forEach(function (key) {
+	    if (key && typeof key.click === 'function') {
+	      key.click();
+	    }
+	  });
+	}
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19627,6 +19652,8 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
+	var _elementUtils = __webpack_require__(48);
+
 	function createPomodoroClockTests() {
 
 	  var breakMin = 'break-decrement';
@@ -19637,23 +19664,8 @@ var FCC_Global =
 	  var startStop = 'start_stop';
 	  var orignalTimerLabel = document.getElementById('timer-label') && document.getElementById('timer-label').innerText;
 
-	  function getElements(elementIds) {
-	    return elementIds.map(function (elementId) {
-	      return document.getElementById(elementId);
-	    });
-	  }
-
-	  function clickButtonsById(buttonIds) {
-	    var keys = getElements(buttonIds);
-	    keys.forEach(function (key) {
-	      if (key && typeof key.click === 'function') {
-	        key.click();
-	      }
-	    });
-	  }
-
 	  function resetTimer() {
-	    clickButtonsById([reset]);
+	    (0, _elementUtils.clickButtonsById)([reset]);
 	  }
 
 	  function getMinutes(str) {
@@ -19665,6 +19677,7 @@ var FCC_Global =
 	    var matches = /^\d{1,4}\s?:\s?(\d{2})/g.exec(str);
 	    return matches[1];
 	  }
+
 	  // TODO: Check all instances of observer.disconnect() to make sure it's used
 	  // correctly.
 	  function observeElement(elementId, callback) {
@@ -19718,7 +19731,7 @@ var FCC_Global =
 	  // Test suite
 	  describe('#Pomodoro Clock tests', function () {
 	    before(function () {
-	      clickButtonsById([startStop]);
+	      (0, _elementUtils.clickButtonsById)([startStop]);
 	    });
 
 	    beforeEach(function () {
@@ -19801,10 +19814,10 @@ var FCC_Global =
 	      it(reqNum + '. When I click the element with the id of "reset", any\n      running timer should be stopped, the value within id="break-length" should\n      return to 5, the value within id="session-length" should return to 25, and\n      the element with id="time-left" should reset to it\'s default state.', function () {
 	        this.timeout(5000);
 	        // decrement session and break length
-	        clickButtonsById(Array(60).fill(seshMin));
-	        clickButtonsById(Array(60).fill(breakMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(breakMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var observer = observeElement('time-left', function () {
@@ -19846,61 +19859,61 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. When I click the element with the id of "break-decrement",\n      the value within id="break-length" decrements by a value of 1, and I can\n      see the updated value.', function () {
-	        clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
+	        (0, _elementUtils.clickButtonsById)([breakMin, breakMin, breakMin, breakMin]);
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '1');
 	        resetTimer();
-	        clickButtonsById([breakMin]);
+	        (0, _elementUtils.clickButtonsById)([breakMin]);
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '4');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. When I click the element with the id of "break-increment",\n      the value within id="break-length" increments by a value of 1, and I can\n      see the updated value.', function () {
-	        clickButtonsById(Array(4).fill(breakPlus));
+	        (0, _elementUtils.clickButtonsById)(Array(4).fill(breakPlus));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '9');
 	        resetTimer();
-	        clickButtonsById([breakPlus]);
+	        (0, _elementUtils.clickButtonsById)([breakPlus]);
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '6');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. When I click the element with the id of\n      "session-decrement", the value within id="session-length" decrements by a\n      value of 1, and I can see the updated value.', function () {
-	        clickButtonsById(Array(4).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(4).fill(seshMin));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '21');
 	        resetTimer();
-	        clickButtonsById([seshMin]);
+	        (0, _elementUtils.clickButtonsById)([seshMin]);
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '24');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. When I click the element with the id of\n      "session-increment", the value within id="session-length" increments by a\n      value of 1, and I can see the updated value.', function () {
-	        clickButtonsById(Array(4).fill(seshPlus));
+	        (0, _elementUtils.clickButtonsById)(Array(4).fill(seshPlus));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '29');
 	        resetTimer();
-	        clickButtonsById([seshPlus]);
+	        (0, _elementUtils.clickButtonsById)([seshPlus]);
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '26');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. I should not be able to set a session or break length to\n      <= 0.', function () {
-	        clickButtonsById(Array(10).fill(breakMin));
+	        (0, _elementUtils.clickButtonsById)(Array(10).fill(breakMin));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '1', 'Value in element with id of "break-length" is less than 1.');
 	        resetTimer();
-	        clickButtonsById(Array(30).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(30).fill(seshMin));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '1', 'Value in element with id of "session-length" is less than 1.');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. I should not be able to set a session or break length to\n      > 60.', function () {
-	        clickButtonsById(Array(60).fill(breakPlus));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(breakPlus));
 	        _chai.assert.strictEqual(document.getElementById('break-length').innerHTML, '60', 'Value in element with id of "break-length" is greater than 60.');
 	        resetTimer();
-	        clickButtonsById(Array(40).fill(seshPlus));
+	        (0, _elementUtils.clickButtonsById)(Array(40).fill(seshPlus));
 	        _chai.assert.strictEqual(document.getElementById('session-length').innerHTML, '60', 'Value in element with id of "session-length" is greater than 60.');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. When I first click the element with id="start_stop", the\n      timer should begin running from the value currently displayed in\n      id="session-length", even if the value has been incremented or\n      decremented from the original value of 25.', function () {
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        _chai.assert.strictEqual(getMinutes(document.getElementById('time-left').innerHTML), document.getElementById('session-length').innerHTML);
 	      });
 
@@ -19908,7 +19921,7 @@ var FCC_Global =
 	      it(reqNum + '. If the timer is running, the element with the id of\n      "time-left" should display the remaining time in mm:ss format\n      (decrementing by a value of 1 and updating the display every 1000ms).', function () {
 	        this.timeout(2500);
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        var secondsBefore = getSeconds(document.getElementById('time-left').innerHTML);
 	        return new Promise(function (resolve, reject) {
 	          // wait 1.5 seconds then see if displayed time has changed
@@ -19928,7 +19941,7 @@ var FCC_Global =
 	      it(reqNum + '. If the timer is running and I click the element with\n      id="start_stop", the countdown should pause.', function () {
 	        this.timeout(4000);
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        var secondsBefore = getSeconds(document.getElementById('time-left').innerHTML);
 	        return new Promise(function (resolve, reject) {
 	          // wait 1.5 seconds then see if displayed time has changed
@@ -19939,7 +19952,7 @@ var FCC_Global =
 	              return;
 	            }
 	            // Pause the pomodoro
-	            clickButtonsById([startStop]);
+	            (0, _elementUtils.clickButtonsById)([startStop]);
 	            // wait another 1.5 seconds to be sure value has not changed
 	            setTimeout(function () {
 	              var secondsAfterPause = getSeconds(document.getElementById('time-left').innerHTML);
@@ -19957,7 +19970,7 @@ var FCC_Global =
 	      it(reqNum + '. If the timer is paused and I click the element with\n      id="start_stop", the countdown should resume running from the point at\n      which it was paused.', function () {
 	        this.timeout(5000);
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        var secondsBefore = getSeconds(document.getElementById('time-left').innerHTML);
 	        return new Promise(function (resolve, reject) {
 	          // wait 1.5 seconds then see if displayed time has changed
@@ -19968,7 +19981,7 @@ var FCC_Global =
 	              return;
 	            }
 	            // Pause the pomodoro
-	            clickButtonsById([startStop]);
+	            (0, _elementUtils.clickButtonsById)([startStop]);
 	            // wait another 1.5 seconds to be sure value has not changed
 	            setTimeout(function () {
 	              var secondsAfterPause = getSeconds(document.getElementById('time-left').innerHTML);
@@ -19977,7 +19990,7 @@ var FCC_Global =
 	                return;
 	              }
 	              // Resume the pomodoro
-	              clickButtonsById([startStop]);
+	              (0, _elementUtils.clickButtonsById)([startStop]);
 	              // wait another 1.5 seconds to be sure time is decrementing again
 	              setTimeout(function () {
 	                var secondsAfterResume = getSeconds(document.getElementById('time-left').innerHTML);
@@ -19996,9 +20009,9 @@ var FCC_Global =
 	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST\n      reach 00:00), and a new countdown begins, the element with the id of\n      "timer-label" should display a string indicating a break has begun.', function () {
 	        this.timeout(5000);
 	        // we decrement session time to the minimum (1 minute)
-	        clickButtonsById(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var breakLength = document.getElementById('break-length');
@@ -20028,9 +20041,9 @@ var FCC_Global =
 	      it(reqNum + '. When a session countdown reaches zero (NOTE: timer MUST\n      reach 00:00), a new break countdown should begin, counting down from the\n      value currently displayed in the id="break-length" element.', function () {
 	        this.timeout(5000);
 	        // we decrement session time to the minimum (1 minute)
-	        clickButtonsById(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var shouldBeInBreak = false;
@@ -20068,10 +20081,10 @@ var FCC_Global =
 	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST reach\n      00:00), and a new countdown begins, the element with the id of\n      "timer-label" should display a string indicating a session has begun.', function () {
 	        this.timeout(5000);
 	        // decrement session length and break length to the minimum (1 minute)
-	        clickButtonsById(Array(60).fill(seshMin));
-	        clickButtonsById(Array(60).fill(breakMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(breakMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var shouldBeInBreak = false;
@@ -20105,10 +20118,10 @@ var FCC_Global =
 	      it(reqNum + '. When a break countdown reaches zero (NOTE: timer MUST\n      reach 00:00), a new session countdown should begin, counting down from\n      the value currently displayed in the id="session-length" element.', function () {
 	        this.timeout(5000);
 	        // decrement session length and break length to the minimum (1 minute)
-	        clickButtonsById(Array(60).fill(seshMin));
-	        clickButtonsById(Array(60).fill(breakMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(breakMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var shouldBeInBreak = false;
@@ -20148,9 +20161,9 @@ var FCC_Global =
 	      it(reqNum + '. When a countdown reaches zero (NOTE: timer MUST reach\n      00:00), a sound indicating that time is up should play. This should\n      utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
 	        this.timeout(5000);
 	        // decrement session time to the minimum (1 minute)
-	        clickButtonsById(Array(60).fill(seshMin));
+	        (0, _elementUtils.clickButtonsById)(Array(60).fill(seshMin));
 	        // start the pomodoro
-	        clickButtonsById([startStop]);
+	        (0, _elementUtils.clickButtonsById)([startStop]);
 	        return new Promise(function (resolve, reject) {
 	          var timeLeft = document.getElementById('time-left');
 	          var breakLength = document.getElementById('break-length');
@@ -20199,7 +20212,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20330,7 +20343,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20342,7 +20355,7 @@ var FCC_Global =
 
 	var _sharedTestStrings = __webpack_require__(46);
 
-	var _styleSheetUtils = __webpack_require__(51);
+	var _styleSheetUtils = __webpack_require__(52);
 
 	var _chai = __webpack_require__(2);
 
@@ -20512,7 +20525,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20584,7 +20597,7 @@ var FCC_Global =
 	};
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20596,7 +20609,7 @@ var FCC_Global =
 
 	var _sharedTestStrings = __webpack_require__(46);
 
-	var _styleSheetUtils = __webpack_require__(51);
+	var _styleSheetUtils = __webpack_require__(52);
 
 	var _chai = __webpack_require__(2);
 
@@ -20786,7 +20799,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20990,7 +21003,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21004,7 +21017,7 @@ var FCC_Global =
 
 	var _sharedTestStrings = __webpack_require__(46);
 
-	var _styleSheetUtils = __webpack_require__(51);
+	var _styleSheetUtils = __webpack_require__(52);
 
 	function createTechnicalDocsPageTests() {
 
@@ -21224,7 +21237,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21236,7 +21249,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(56);
+	var _globalD3Tests = __webpack_require__(57);
 
 	var _jquery = __webpack_require__(1);
 
@@ -21346,7 +21359,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21462,7 +21475,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21472,11 +21485,11 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _alignmentD3Tests = __webpack_require__(58);
+	var _alignmentD3Tests = __webpack_require__(59);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(56);
+	var _globalD3Tests = __webpack_require__(57);
 
 	function createScatterPlotTests() {
 
@@ -21637,7 +21650,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22074,7 +22087,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22086,11 +22099,11 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _education = __webpack_require__(60);
+	var _education = __webpack_require__(61);
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(56);
+	var _globalD3Tests = __webpack_require__(57);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22223,7 +22236,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -41082,7 +41095,7 @@ var FCC_Global =
 	]
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41094,7 +41107,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(56);
+	var _globalD3Tests = __webpack_require__(57);
 
 	function createTreeMapTests() {
 
@@ -41225,7 +41238,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41237,7 +41250,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(63);
+	var _elementUtils = __webpack_require__(48);
 
 	var _sharedTestStrings = __webpack_require__(46);
 
@@ -41389,25 +41402,6 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 63 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.testHorizontallyCentered = testHorizontallyCentered;
-	function testHorizontallyCentered(elName, window) {
-	  var centeredElement = window.document.getElementById(elName);
-	  var centeredElementBounds = centeredElement.getBoundingClientRect();
-	  var leftGap = centeredElementBounds.left;
-	  var rightGap = window.innerWidth - centeredElementBounds.right;
-	  // allow for scrollbar width
-	  return Math.abs(leftGap - rightGap) < 20;
-	}
-
-/***/ }),
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41418,11 +41412,11 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _alignmentD3Tests = __webpack_require__(58);
+	var _alignmentD3Tests = __webpack_require__(59);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(56);
+	var _globalD3Tests = __webpack_require__(57);
 
 	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
