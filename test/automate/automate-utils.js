@@ -1,8 +1,8 @@
 /* global bundleUrl, browserMaxWidth, browserMaxHeight, screenshotDir,
-   chromeBinaryPath.
- */
-/*
+   chromeBinaryPath
+*/
 
+/*
  * Automates testing of a testable project. In a nutshell, it does everything
  * you would do if you had to test a testable FCC CodePen project manually.
  *

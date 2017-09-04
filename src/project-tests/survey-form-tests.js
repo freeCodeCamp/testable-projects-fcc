@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { responsiveWebDesignStack } from '../assets/sharedTestStrings';
+import { responsiveWebDesignStack } from '../assets/shared-test-strings';
 
 export default function createSurveyFormTests() {
 
