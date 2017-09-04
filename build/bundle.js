@@ -141,11 +141,11 @@ var FCC_Global =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var assert = exports.assert = _chai2.default.assert;
+	var assert = exports.assert = _chai2.default.assert; /* global project_name, projectName */
+
+	var projectNameLocal = false;
 
 	// Load mocha.
-	/* global project_name */
-
 	(function () {
 	  // Write mocha CSS to page head.
 	  document.write('<style>' + _mochaCSS2.default + '</style>');
@@ -184,10 +184,17 @@ var FCC_Global =
 	        // for <option> text and project indicator in top right corner.
 	        // TODO: In order to fix project_name to make it camel case, we need
 	        // to coordinate this change with all the example CodePen projects.
-	        if (typeof project_name === 'undefined' && projectTitleCase === null) {
+	        if (typeof project_name !== 'undefined') {
+	          projectNameLocal = project_name;
+	        }
+	        if (typeof projectName !== 'undefined') {
+	          projectNameLocal = projectName;
+	        }
+
+	        if (!projectNameLocal && projectTitleCase === null) {
 	          document.getElementById('placeholder').innerHTML = '- - -';
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
-	        } else if (typeof project_name !== 'undefined') {
+	        } else if (projectNameLocal) {
 	          document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (localStorage.getItem('example_project') + '</span>');
 	        } else {
@@ -283,8 +290,8 @@ var FCC_Global =
 	// run tests
 	function FCCRerunTests() {
 	  var button = document.getElementById('fcc_test_button');
-	  button.innerHTML = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Load Tests!' : 'Testing';
-	  button.title = typeof project_name === 'undefined' && localStorage.getItem('project_selector') === null ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
+	  button.innerHTML = !projectNameLocal && !localStorage.getItem('project_selector') ? 'Load Tests!' : 'Testing';
+	  button.title = !projectNameLocal && !localStorage.getItem('project_selector') ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
 	  clearClassList(button);
 	  button.classList.add('fcc_foldout_buttons');
 	  button.classList.add('fcc_test_btn-default');
@@ -364,7 +371,7 @@ var FCC_Global =
 	  // Empty the test suite in the mocha object.
 	  mocha.suite.suites = [];
 	  // Check for hard-coded project selector (for our example projects).
-	  var hardCodedProjectName = typeof project_name === 'undefined' ? null : project_name;
+	  var hardCodedProjectName = !projectNameLocal ? null : projectNameLocal;
 	  // create tests
 	  switch (hardCodedProjectName || localStorage.getItem('project_selector')) {
 	    case 'random-quote-machine':
