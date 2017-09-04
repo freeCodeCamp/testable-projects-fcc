@@ -1,4 +1,4 @@
-/* global project_name */
+/* global project_name, projectName */
 
 import $ from 'jquery';
 import chai from 'chai';
@@ -23,6 +23,8 @@ import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 import createHeatMapTests from './project-tests/heat-map-tests';
 
 export const assert = chai.assert;
+
+let projectNameLocal = false;
 
 // Load mocha.
 (function() {
@@ -71,12 +73,19 @@ $(document).ready(function() {
         // for <option> text and project indicator in top right corner.
         // TODO: In order to fix project_name to make it camel case, we need
         // to coordinate this change with all the example CodePen projects.
-        if (typeof project_name === 'undefined' && projectTitleCase === null) {
+        if (typeof project_name !== 'undefined') {
+          projectNameLocal = project_name;
+        }
+        if (typeof projectName !== 'undefined') {
+          projectNameLocal = projectName;
+        }
+
+        if ((!projectNameLocal) && (projectTitleCase === null)) {
           document.getElementById('placeholder').innerHTML = '- - -';
           document.getElementById(
             'fcc_test_suite_indicator_wrapper'
           ).innerHTML = '';
-        } else if (typeof project_name !== 'undefined') {
+        } else if (projectNameLocal) {
           document.getElementById('placeholder').innerHTML =
             `${localStorage.getItem('example_project')}`;
           document.getElementById(
@@ -184,12 +193,12 @@ function clearClassList(elem) {
 // run tests
 export function FCCRerunTests() {
   const button = document.getElementById('fcc_test_button');
-  button.innerHTML = typeof project_name === 'undefined' &&
-    localStorage.getItem('project_selector') === null
+  button.innerHTML = (!projectNameLocal) &&
+    (!localStorage.getItem('project_selector'))
     ? 'Load Tests!'
     : 'Testing';
-  button.title = typeof project_name === 'undefined' &&
-    localStorage.getItem('project_selector') === null
+  button.title = (!projectNameLocal) &&
+    (!localStorage.getItem('project_selector'))
     ? 'Select test suite from dropdown above'
     : 'CTRL + SHIFT + T';
   clearClassList(button);
@@ -288,9 +297,9 @@ export function FCCInitTestRunner() {
   // Empty the test suite in the mocha object.
   mocha.suite.suites = [];
   // Check for hard-coded project selector (for our example projects).
-  const hardCodedProjectName = typeof project_name === 'undefined'
+  const hardCodedProjectName = (!projectNameLocal)
     ? null
-    : project_name;
+    : projectNameLocal;
   // create tests
   switch (hardCodedProjectName || localStorage.getItem('project_selector')) {
     case 'random-quote-machine':
