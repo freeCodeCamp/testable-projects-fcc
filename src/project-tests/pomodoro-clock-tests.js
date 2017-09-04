@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { clickButtonsById } from '../assets/elementUtils';
+import { clickButtonsById } from '../assets/element-utils';
 
 export default function createPomodoroClockTests() {
 

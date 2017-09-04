@@ -1,17 +1,8 @@
 import { assert } from 'chai';
+import { frontEndLibrariesStack } from '../assets/shared-test-strings';
 
 // DRUM MACHINE TESTS:
 export default function createDrumMachineTests() {
-
-  // I'll remove this whole function when I add the tech stack requirements.
-  // So the remaining FCC_Global is ok for now.
-  const isChrome = !!window.chrome && !!window.chrome.webstore;
-  if (isChrome === false) {
-    FCC_Global.alertOnce(
-      'Drum Machine Alert',
-      'Some Drum Machine tests may fail in browsers other than Chrome'
-    );
-  }
 
   describe('#Drum Machine tests', function() {
 
@@ -34,6 +25,13 @@ export default function createDrumMachineTests() {
         ? el.dispatchEvent(eventObj)
         : el.fireEvent('onkeydown', eventObj);
     }
+
+
+    describe('#Technology Stack', function() {
+      it(frontEndLibrariesStack, function() {
+        return true;
+      });
+    });
 
     describe('#Tests', function() {
       let reqNum = 0;

@@ -1,10 +1,13 @@
-const PROJECT_PATH = __dirname + '/local_test'
+const path = require('path');
+
+const PROJECT_PATH = path(__dirname, '/local_test');
+
 module.exports = {
-    entry: "./src/index.js",
+    entry: './src/index.js',
     output: {
         library: 'FCC_Global',
-        path: PROJECT_PATH + '/js',
-        filename: "bundle.js"
+        path: path(PROJECT_PATH, '/js'),
+        filename: 'bundle.js'
     },
     module: {
         loaders: [
@@ -15,7 +18,7 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
-            }       
+            }
         ]
     }
 };

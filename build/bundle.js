@@ -83,7 +83,7 @@ var FCC_Global =
 
 	var _drumMachineTests2 = _interopRequireDefault(_drumMachineTests);
 
-	var _markdownPreviewerTests = __webpack_require__(45);
+	var _markdownPreviewerTests = __webpack_require__(46);
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
@@ -19078,15 +19078,10 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
+	var _sharedTestStrings = __webpack_require__(45);
+
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
-
-	  // I'll remove this whole function when I add the tech stack requirements.
-	  // So the remaining FCC_Global is ok for now.
-	  var isChrome = !!window.chrome && !!window.chrome.webstore;
-	  if (isChrome === false) {
-	    FCC_Global.alertOnce('Drum Machine Alert', 'Some Drum Machine tests may fail in browsers other than Chrome');
-	  }
 
 	  describe('#Drum Machine tests', function () {
 
@@ -19105,6 +19100,12 @@ var FCC_Global =
 	      /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
 	      el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent('onkeydown', eventObj);
 	    }
+
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.frontEndLibrariesStack, function () {
+	        return true;
+	      });
+	    });
 
 	    describe('#Tests', function () {
 	      var reqNum = 0;
@@ -19202,6 +19203,19 @@ var FCC_Global =
 
 /***/ }),
 /* 45 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '1. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
+
+	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
+
+/***/ }),
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19213,7 +19227,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	function createMarkdownPreviewerTests() {
 
@@ -19414,19 +19428,6 @@ var FCC_Global =
 
 	  // END createMarkdownPreviewerTests()
 	}
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var responsiveWebDesignStack = exports.responsiveWebDesignStack = '1. You can use HTML, JavaScript, ' + 'and CSS to complete this project. Plain CSS is recommended because that ' + 'is what the lessons have covered so far and you should get some practice ' + 'with plain CSS. You can use Bootstrap or SASS if you choose. Additional ' + 'technologies (just for example jQuery, React, Angular, or Vue) are not ' + 'recommended for this project, and using them is at your own risk. ' + 'Other projects will give you a chance to work with different technology ' + 'stacks like React. We will accept and try to fix all issue reports that ' + 'use the suggested technology stack for this project. Happy coding!';
-
-	var frontEndLibrariesStack = exports.frontEndLibrariesStack = '1. You can use any mix of HTML, ' + 'JavaScript, CSS, Bootstrap, SASS, React, Redux, and jQuery to complete ' + 'this project. You should use a frontend framework (like React for ' + 'example) because this section is about learning frontend frameworks. ' + 'Additional technoligies not listed above are not recommended and using ' + 'them is at your own risk. We are looking at supporting other frontend ' + 'frameworks like Angular and Vue, but they are not currently supported. ' + 'We will accept and try to fix all issue reports that use the suggested ' + 'technology stack for this project. Happy coding!';
 
 /***/ }),
 /* 47 */
@@ -20228,7 +20229,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20353,7 +20354,7 @@ var FCC_Global =
 	});
 	exports.default = createPortfolioTests;
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	var _styleSheetUtils = __webpack_require__(52);
 
@@ -20607,7 +20608,7 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	var _styleSheetUtils = __webpack_require__(52);
 
@@ -20811,7 +20812,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	function createSurveyFormTests() {
 
@@ -21015,7 +21016,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	var _styleSheetUtils = __webpack_require__(52);
 
@@ -41252,7 +41253,7 @@ var FCC_Global =
 
 	var _elementUtils = __webpack_require__(48);
 
-	var _sharedTestStrings = __webpack_require__(46);
+	var _sharedTestStrings = __webpack_require__(45);
 
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import $ from 'jquery';
-import { responsiveWebDesignStack } from '../assets/sharedTestStrings';
+import { responsiveWebDesignStack } from '../assets/shared-test-strings';
 
 export default function createTributePageTests() {
 
