@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { clickButtonsById } from '../utils/element-utils';
+import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createCalculatorTests() {
 
@@ -28,6 +29,7 @@ export default function createCalculatorTests() {
   }
 
   describe('Calculator tests', function() {
+
     beforeEach(function() {
       clearDisplay();
     });
@@ -36,14 +38,26 @@ export default function createCalculatorTests() {
       clearDisplay();
     });
 
+    describe('#Technology Stack', function() {
+      it(frontEndLibrariesStack, function() {
+        return true;
+      });
+    });
+
     describe('#Tests', function() {
       let reqNum = 0;
 
       reqNum++;
       it(`${reqNum}. My calculator should contain a clickable element
-      containing an = with a corresponding id="equals"`,
+      containing an "=" (equal sign) with a corresponding id="equals"`,
       function() {
         assert.isNotNull(document.getElementById(_eq));
+
+        assert.strictEqual(
+          document.getElementById(_eq).innerHTML,
+          '=',
+          'The element with id="equal" should have an "=" as its content '
+        );
       });
 
       reqNum++;
@@ -120,11 +134,18 @@ export default function createCalculatorTests() {
 
       reqNum++;
       it(`${reqNum}. My calculator should contain a clickable element
-      containing a . symbol with a corresponding id="decimal"`,
+      containing a "." (decimal point) symbol with a corresponding
+      id="decimal"`,
       function() {
         assert.isNotNull(
           document.getElementById(_dec),
           'id="decimal" is not yet defined '
+        );
+
+        assert.strictEqual(
+          document.getElementById(_dec).innerHTML,
+          '.',
+          'The element with id="decimal" should have "." as its content '
         );
       });
 
@@ -175,7 +196,7 @@ export default function createCalculatorTests() {
 
       reqNum++;
       it(`${reqNum}. In any order, I should be able to add, subtract, multiply
-      and divide a chain of numbers of any length, and when I hit =, the
+      and divide a chain of numbers of any length, and when I hit "=", the
       correct result should be shown in the element with the id of "display"`,
       function() {
         clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
@@ -207,22 +228,22 @@ export default function createCalculatorTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. When the decimal element is clicked, a . should append to
-      the currently displayed value; two .s in one number should not be
+      it(`${reqNum}. When the decimal element is clicked, a "." should append to
+      the currently displayed value; two "." in one number should not be
       accepted`,
       function() {
         clickButtonsById([_5, _dec, _dec, _0]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '5.0',
-          'An input of 5 . . 0 should display 5.0 '
+          'An input of "5 . . 0" should display 5.0 '
         );
         clearDisplay();
         clickButtonsById([_5, _dec, _5, _dec, _5]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '5.55',
-          'An input of 5 . 5 . 5 should display 5.55 '
+          'An input of "5 . 5 . 5" should display 5.55 '
         );
       });
 
@@ -234,28 +255,28 @@ export default function createCalculatorTests() {
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '5',
-          'The expression 10.5 - 5.5 should produce an output of 5 '
+          'The expression "10.5 - 5.5" should produce an output of "5" '
         );
         clearDisplay();
         clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '27.5',
-          'The expression 5 * 5.5 should produce an output of 27.5 '
+          'The expression "5 * 5.5" should produce an output of "27.5" '
         );
         clearDisplay();
         clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '16',
-          'The expression 10.5 + 5.5 should produce an output of 16 '
+          'The expression "10.5 + 5.5" should produce an output of "16" '
         );
         clearDisplay();
         clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '4',
-          'The expression 10 / 2.5 should produce an output of 4 '
+          'The expression "10 / 2.5" should produce an output of "4" '
         );
       });
 
@@ -267,52 +288,56 @@ export default function createCalculatorTests() {
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '10',
-          'The sequence 5 * - + 5 = should produce an output of 10 '
+          'The sequence "5 * - + 5" = should produce an output of "10" '
         );
         clearDisplay();
         clickButtonsById([_5, _plus, _plus, _5, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '10',
-          'The sequence 5 + + 5 = should produce an output of 10 '
+          'The sequence "5 + + 5" = should produce an output of "10" '
         );
       });
 
       reqNum++;
-      it(`${reqNum}. Pressing an operator immediately following = should start
-      a new calculation that operates on the result of the previous evaluation`,
+      it(`${reqNum}. Pressing an operator immediately following "=" should
+      start a new calculation that operates on the result of the previous
+      evaluation`,
       function() {
         clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '1.5',
-          'The sequence 5 - 2 = / 2 = should produce an output of 1.5 '
+          'The sequence "5 - 2 = / 2 =" should produce an output of "1.5" '
         );
         clearDisplay();
         clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
         assert.strictEqual(
           document.getElementById('display').innerHTML,
           '13',
-          'The sequence 5 + 3 = + 3 = should produce an output of 13 '
+          'The sequence "5 + 3 = + 3 =" should produce an output of "13" '
         );
       });
 
       reqNum++;
       it(`${reqNum}. My calculator should have several decimal places of
       precision when it comes to rounding (note that there is no exact
-      standard, but you should be able to handle calculations like 2 / 7 with
+      standard, but you should be able to handle calculations like "2 / 7" with
       reasonable precision to at least 4 decimal places)`,
       function() {
         clickButtonsById([_2, _div, _7, _eq]);
         assert.isOk(/0?\.2857\d*/.test(
           document.getElementById('display').innerHTML),
-          `The expression 2 / 7 should produce an output number with at least 4
-          decimal places of precision `
+          'The expression "2 / 7" should produce an output number with at ' +
+          'least 4 decimal places of precision '
         );
       });
+
       // END #Tests
     });
+
     // END Calculator Tests
   });
+
   // END createCalculatorTests()
 }
