@@ -23,6 +23,12 @@ module.exports = {
               // chained loaders: 
               // style-loader injects css imported by css-loader
               loader: 'style-loader!css-loader'
+            },
+            {
+              test: /\.html$/,
+              exclude: /node_modules/,
+              // creates String for importing into JS
+              loader: 'html-loader'
             }
         ]
     }
