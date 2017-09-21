@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import { responsiveWebDesignStack } from '../assets/shared-test-strings';
+import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 import { allCSSRulesAsArray, isTestSuiteRule } from
-  '../assets/style-sheet-utils';
+  '../utils/style-sheet-utils';
 
 export default function createTechnicalDocsPageTests() {
 

@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { clickButtonsById } from '../assets/element-utils';
+import { clickButtonsById } from '../utils/element-utils';
 
 export default function createCalculatorTests() {
 

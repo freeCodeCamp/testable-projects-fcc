@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import { testHorizontallyCentered } from '../assets/element-utils';
-import { frontEndLibrariesStack } from '../assets/shared-test-strings';
+import { testHorizontallyCentered } from '../utils/element-utils';
+import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createRandomQuoteMachineTests() {
   describe('Random Quote Machine tests', function() {

@@ -3,7 +3,7 @@
 import $ from 'jquery';
 import chai from 'chai';
 // Webpack is configured to load those files with the .html extension as Strings
-import testSuiteSkeleton from './assets/test-suite-skeleton.html';
+import testSuiteSkeleton from './utils/test-suite-skeleton.html';
 // the !- prefixes are for process arguments respective of plugins
 // Example: https://stackoverflow.com/a/42440360/3530394
 // style-loader injects css loaded by css-loader through this import statement.

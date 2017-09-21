@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { frontEndLibrariesStack } from '../assets/shared-test-strings';
+import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createMarkdownPreviewerTests() {
 

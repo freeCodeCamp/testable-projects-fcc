@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { testToolTip } from '../assets/global-D3-tests';
+import { testToolTip } from '../utils/global-D3-tests';
 import $ from 'jquery';
 
 export default function createBarChartTests() {
