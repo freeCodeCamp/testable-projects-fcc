@@ -8,9 +8,9 @@ import {
   getTickValueInteger,
   getTickValueMonths,
   isAxisAlignedWithDataPoints
-} from '../assets/alignmentD3Tests';
+} from '../utils/alignmentD3Tests';
 import { assert } from 'chai';
-import { testToolTip } from '../assets/global-D3-tests';
+import { testToolTip } from '../utils/global-D3-tests';
 
 const months = [
   'january',

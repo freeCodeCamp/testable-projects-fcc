@@ -1,6 +1,6 @@
-import { responsiveWebDesignStack } from '../assets/shared-test-strings';
+import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 import { allCSSRulesAsArray, isTestSuiteRule } from
-  '../assets/style-sheet-utils';
+  '../utils/style-sheet-utils';
 import { assert } from 'chai';
 
 export default function createProductLandingPageTests() {
