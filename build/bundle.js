@@ -19779,11 +19779,16 @@ var FCC_Global =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	exports.default = createMarkdownPreviewerTests;
 
 	var _chai = __webpack_require__(2);
 
 	var _sharedTestStrings = __webpack_require__(49);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function createMarkdownPreviewerTests() {
 
@@ -19792,13 +19797,54 @@ var FCC_Global =
 	    // Save the values of the editor and preview.
 	    var editor = document.getElementById('editor');
 	    var preview = document.getElementById('preview');
+
+	    /**
+	     * Using class PreviewDocument to be a proxy for grabing the document
+	     * information. In case this is an iframe, use the contentDocument of
+	     * the iframe.
+	     */
+
+	    var PreviewDocument = function () {
+	      function PreviewDocument() {
+	        _classCallCheck(this, PreviewDocument);
+	      }
+
+	      _createClass(PreviewDocument, null, [{
+	        key: 'querySelectorAll',
+	        value: function querySelectorAll(query) {
+	          return this.document.querySelectorAll(query);
+	        }
+	      }, {
+	        key: 'document',
+	        get: function get() {
+	          if (preview && preview.contentDocument) {
+	            return preview.contentDocument.querySelector('div#root div');
+	          } else {
+	            return preview;
+	          }
+	        }
+	      }, {
+	        key: 'innerHTML',
+	        get: function get() {
+	          return this.document.innerHTML;
+	        }
+	      }, {
+	        key: 'innerText',
+	        get: function get() {
+	          return this.document.innerText;
+	        }
+	      }]);
+
+	      return PreviewDocument;
+	    }();
+
 	    var markdownOnLoad = void 0,
 	        previewOnLoad = void 0;
 	    if (editor) {
 	      markdownOnLoad = editor.value;
 	    }
 	    if (preview) {
-	      previewOnLoad = preview.innerHTML;
+	      previewOnLoad = PreviewDocument.innerHTML;
 	    }
 
 	    // A change in the editor value won't be detected unless the correct event
@@ -19845,22 +19891,23 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. When I enter text into the #editor element, the #preview\n      element is updated as I type to display the content of the textarea', function () {
 	        triggerChange('a');
-	        _chai.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should ' + 'update on every keyup) ');
+
+	        _chai.assert.strictEqual(PreviewDocument.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should ' + 'update on every keyup) ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. When I enter GitHub flavored markdown into the #editor\n      element, the text is rendered as HTML in the #preview element as I type\n      (Hint: You don\'t need to parse Markdown yourself - you can import the\n      Marked library for this: https://cdnjs.com/libraries/marked)', function () {
 	        var error = 'The markdown in #editor is not being interpreted ' + 'correctly and/or rendered into #preview ';
 	        triggerChange('');
-	        _chai.assert.strictEqual(preview.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, '', '#preview\'s only children should be those rendered by marked.js ');
 	        triggerChange('testing');
-	        _chai.assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, '<p>testing</p>\n', error);
 	        triggerChange(editor.value + ' and...');
-	        _chai.assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, '<p>testing and...</p>\n', error);
 	        triggerChange('# h1 \n## h2');
-	        _chai.assert.strictEqual(preview.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', error);
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n', error);
 	        triggerChange('**bold**');
-	        _chai.assert.strictEqual(preview.innerHTML, '<p><strong>bold</strong></p>\n', error);
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, '<p><strong>bold</strong></p>\n', error);
 	      });
 
 	      reqNum++;
@@ -19910,19 +19957,19 @@ var FCC_Global =
 	            h2Match = void 0;
 
 	        triggerChange(markdownOnLoad);
-	        _chai.assert.notStrictEqual(preview.innerHTML, '', '#preview should have inner HTML ');
-	        _chai.assert.strictEqual(preview.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
+	        _chai.assert.notStrictEqual(PreviewDocument.innerHTML, '', '#preview should have inner HTML ');
+	        _chai.assert.strictEqual(PreviewDocument.innerHTML, previewOnLoad, '#editor\'s  markdown does not render correctly on window load ');
 	        // this could be significantly shortened into one test, however
 	        // feedback would not be specific
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview h1').length, 1, '#preview does not contain at least one <h1> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview h2').length, 1, '#preview does not contain at least one <h2> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview a').length, 1, '#preview does not contain at least one <a> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview code').length, 1, '#preview does not contain at least one <code> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview pre').length, 1, '#preview does not contain at least one <pre> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview li').length, 1, '#preview does not contain at least one <li> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview blockquote').length, 1, '#preview does not contain at least one <blockquote> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview img').length, 1, '#preview does not contain at least one <img> ');
-	        _chai.assert.isAtLeast(document.querySelectorAll('#preview strong').length, 1, '#preview does not contain at least one <strong> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('h1').length, 1, '#preview does not contain at least one <h1> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('h2').length, 1, '#preview does not contain at least one <h2> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('a').length, 1, '#preview does not contain at least one <a> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('code').length, 1, '#preview does not contain at least one <code> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('pre').length, 1, '#preview does not contain at least one <pre> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('li').length, 1, '#preview does not contain at least one <li> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('blockquote').length, 1, '#preview does not contain at least one <blockquote> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('img').length, 1, '#preview does not contain at least one <img> ');
+	        _chai.assert.isAtLeast(PreviewDocument.querySelectorAll('strong').length, 1, '#preview does not contain at least one <strong> ');
 
 	        // then check a couple of elements to make sure the present elements
 	        // are actually the ones represented by the markdown:
@@ -19930,7 +19977,7 @@ var FCC_Global =
 	        // find matching H1 element
 	        h1Text = /#\s.*/.exec(markdown)[0].slice(2);
 	        h1Match = [];
-	        document.querySelectorAll('#preview h1').forEach(function (h1) {
+	        PreviewDocument.querySelectorAll('h1').forEach(function (h1) {
 	          if (h1.innerText === h1Text) {
 	            h1Match.push(h1);
 	          }
@@ -19940,7 +19987,7 @@ var FCC_Global =
 	        // find matching H2 element
 	        h2Text = /##\s.*/.exec(markdown)[0].slice(3);
 	        h2Match = [];
-	        document.querySelectorAll('#preview h2').forEach(function (h2) {
+	        PreviewDocument.querySelectorAll('h2').forEach(function (h2) {
 	          if (h2.innerText === h2Text) {
 	            h2Match.push(h2);
 	          }
@@ -19950,12 +19997,10 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. OPTIONAL BONUS (you do not need to make this test pass):\n      When I click a link rendered by my markdown previewer, the link is opened\n      up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
-	        var links = document.querySelectorAll('#preview a');
-	        links.forEach(function (a) {
-	          if (a.hasAttribute('target')) {
-	            _chai.assert.strictEqual(a.target, '_blank');
-	          }
-	        });
+	        var links = PreviewDocument.querySelectorAll('a');
+	        var newWindowLinks = PreviewDocument.querySelectorAll('a[target=_blank]');
+
+	        _chai.assert.strictEqual(links.length, newWindowLinks.length, 'All the links should target _blank');
 	      });
 
 	      reqNum++;
@@ -19966,7 +20011,7 @@ var FCC_Global =
 	        triggerChange('First line.\n           Second line, same paragraph.\n           Third line, same paragraph.');
 
 	        // Count number of <br> elements in the preview area.
-	        brCount = (preview.innerHTML.match(/<br>/g) || []).length;
+	        brCount = (PreviewDocument.innerHTML.match(/<br>/g) || []).length;
 
 	        // Restore the original markdown before the assertion. This is to not
 	        // surprise the Camper who all of a sudden sees something
