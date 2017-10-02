@@ -21214,6 +21214,7 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. When I click a .nav-link button in the nav element, I am\n      taken to the corresponding section of the landing page.\'', function () {
 	        var navLinks = document.querySelectorAll('#nav-bar .nav-link');
+	        _chai.assert.isAtLeast(navLinks.length, 1, 'The #nav-bar contains no .nav-link');
 	        navLinks.forEach(function (link) {
 	          _chai.assert.isNotNull(link);
 	          _chai.assert.strictEqual(link.hasAttribute('href'), true, 'Each .nav-link element should have an href attribute ');

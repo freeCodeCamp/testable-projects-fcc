@@ -90,6 +90,11 @@ export default function createProductLandingPageTests() {
       taken to the corresponding section of the landing page.'`,
       function() {
         const navLinks = document.querySelectorAll('#nav-bar .nav-link');
+        assert.isAtLeast(
+          navLinks.length,
+          1,
+          'The #nav-bar contains no .nav-link'
+        );
         navLinks.forEach(link => {
           assert.isNotNull(link);
           assert.strictEqual(
