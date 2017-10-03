@@ -310,11 +310,21 @@ export default function createMarkdownPreviewerTests() {
       up in a new tab (HINT: read the Marked.js docs for this one!)`,
       function() {
         const links = document.querySelectorAll('#preview a');
-        links.forEach(a => {
-          if (a.hasAttribute('target')) {
-            assert.strictEqual(a.target, '_blank');
-          }
-        });
+        const targetLinks = document.querySelectorAll(
+          '#preview a[target="_blank"]'
+        );
+        
+        assert.isAtLeast(
+          links.length,
+          1,
+          'There should be at least one link'
+        );
+        
+        assert.strictEqual(
+          links.length,
+          targetLinks.length,
+          'All Links should target _blank'
+        );
       });
 
       reqNum++;

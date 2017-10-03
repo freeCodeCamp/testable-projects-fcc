@@ -19951,11 +19951,11 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. OPTIONAL BONUS (you do not need to make this test pass):\n      When I click a link rendered by my markdown previewer, the link is opened\n      up in a new tab (HINT: read the Marked.js docs for this one!)', function () {
 	        var links = document.querySelectorAll('#preview a');
-	        links.forEach(function (a) {
-	          if (a.hasAttribute('target')) {
-	            _chai.assert.strictEqual(a.target, '_blank');
-	          }
-	        });
+	        var targetLinks = document.querySelectorAll('#preview a[target="_blank"]');
+
+	        _chai.assert.isAtLeast(links.length, 1, 'There should be at least one link');
+
+	        _chai.assert.strictEqual(links.length, targetLinks.length, 'All Links should target _blank');
 	      });
 
 	      reqNum++;
