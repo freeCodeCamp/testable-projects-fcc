@@ -8,15 +8,43 @@ export default function createMarkdownPreviewerTests() {
     // Save the values of the editor and preview.
     const editor = document.getElementById('editor');
     const preview = document.getElementById('preview');
+    
+    /**
+     * Using class PreviewDocument to be a proxy for grabing the document
+     * information. In case this is an iframe, use the contentDocument of
+     * the iframe.
+     */
+    class PreviewDocument {
+      static get document() {
+        if (preview && preview.contentDocument) {
+          return preview.contentDocument.querySelector('div#root div');
+        } else {
+          return preview;
+        }
+      }
+      
+      static get innerHTML() {
+        return this.document.innerHTML;
+      }
+      
+      static get innerText() {
+        return this.document.innerText;
+      }
+      
+      static querySelectorAll(query) {
+        return this.document.querySelectorAll(query);
+      }
+    }
+
     let markdownOnLoad,
       previewOnLoad;
     if (editor) {
       markdownOnLoad = editor.value;
     }
     if (preview) {
-      previewOnLoad = preview.innerHTML;
+      previewOnLoad = PreviewDocument.innerHTML;
     }
-
+    
     // A change in the editor value won't be detected unless the correct event
     // is dispatched.
     function triggerChange(str) {
@@ -47,7 +75,7 @@ export default function createMarkdownPreviewerTests() {
 
     describe('#Tests', function() {
       let reqNum = 0;
-
+        
       reqNum++;
       it(`${reqNum}. I can see a <textarea> element with corresponding
       id="editor"`,
@@ -71,8 +99,9 @@ export default function createMarkdownPreviewerTests() {
       element is updated as I type to display the content of the textarea`,
       function() {
         triggerChange('a');
+        
         assert.strictEqual(
-          preview.innerText.slice(0, 1),
+          PreviewDocument.innerText.slice(0, 1),
           'a',
           '#preview is not being updated as I type into #editor (should ' +
           'update on every keyup) '
@@ -89,23 +118,23 @@ export default function createMarkdownPreviewerTests() {
           'correctly and/or rendered into #preview ';
         triggerChange('');
         assert.strictEqual(
-          preview.innerHTML,
+          PreviewDocument.innerHTML,
           '',
           '#preview\'s only children should be those rendered by marked.js '
         );
         triggerChange('testing');
-        assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
+        assert.strictEqual(PreviewDocument.innerHTML, '<p>testing</p>\n', error);
         triggerChange(editor.value + ' and...');
-        assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
+        assert.strictEqual(PreviewDocument.innerHTML, '<p>testing and...</p>\n', error);
         triggerChange('# h1 \n## h2');
         assert.strictEqual(
-          preview.innerHTML,
+          PreviewDocument.innerHTML,
           '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n',
           error
         );
         triggerChange('**bold**');
         assert.strictEqual(
-          preview.innerHTML,
+          PreviewDocument.innerHTML,
           '<p><strong>bold</strong></p>\n',
           error
         );
@@ -212,59 +241,59 @@ export default function createMarkdownPreviewerTests() {
 
         triggerChange(markdownOnLoad);
         assert.notStrictEqual(
-          preview.innerHTML,
+          PreviewDocument.innerHTML,
           '',
           '#preview should have inner HTML '
         );
         assert.strictEqual(
-          preview.innerHTML,
+          PreviewDocument.innerHTML,
           previewOnLoad,
           '#editor\'s  markdown does not render correctly on window load '
         );
         // this could be significantly shortened into one test, however
         // feedback would not be specific
         assert.isAtLeast(
-          document.querySelectorAll('#preview h1').length,
+          PreviewDocument.querySelectorAll('h1').length,
           1,
           '#preview does not contain at least one <h1> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview h2').length,
+          PreviewDocument.querySelectorAll('h2').length,
           1,
           '#preview does not contain at least one <h2> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview a').length,
+          PreviewDocument.querySelectorAll('a').length,
           1,
           '#preview does not contain at least one <a> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview code').length,
+          PreviewDocument.querySelectorAll('code').length,
           1,
           '#preview does not contain at least one <code> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview pre').length,
+          PreviewDocument.querySelectorAll('pre').length,
           1,
           '#preview does not contain at least one <pre> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview li').length,
+          PreviewDocument.querySelectorAll('li').length,
           1,
           '#preview does not contain at least one <li> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview blockquote').length,
+          PreviewDocument.querySelectorAll('blockquote').length,
           1,
           '#preview does not contain at least one <blockquote> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview img').length,
+          PreviewDocument.querySelectorAll('img').length,
           1,
           '#preview does not contain at least one <img> '
         );
         assert.isAtLeast(
-          document.querySelectorAll('#preview strong').length,
+          PreviewDocument.querySelectorAll('strong').length,
           1,
           '#preview does not contain at least one <strong> '
         );
@@ -275,7 +304,7 @@ export default function createMarkdownPreviewerTests() {
         // find matching H1 element
         h1Text = (/#\s.*/).exec(markdown)[0].slice(2);
         h1Match = [];
-        document.querySelectorAll('#preview h1').forEach(h1 => {
+        PreviewDocument.querySelectorAll('h1').forEach(h1 => {
           if (h1.innerText === h1Text) {
             h1Match.push(h1);
           }
@@ -290,7 +319,7 @@ export default function createMarkdownPreviewerTests() {
         // find matching H2 element
         h2Text = (/##\s.*/).exec(markdown)[0].slice(3);
         h2Match = [];
-        document.querySelectorAll('#preview h2').forEach(h2 => {
+        PreviewDocument.querySelectorAll('h2').forEach(h2 => {
           if (h2.innerText === h2Text) {
             h2Match.push(h2);
           }
@@ -332,7 +361,7 @@ export default function createMarkdownPreviewerTests() {
         );
 
         // Count number of <br> elements in the preview area.
-        brCount = (preview.innerHTML.match(/<br>/g) || []).length;
+        brCount = (PreviewDocument.innerHTML.match(/<br>/g) || []).length;
 
         // Restore the original markdown before the assertion. This is to not
         // surprise the Camper who all of a sudden sees something
