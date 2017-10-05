@@ -146,7 +146,7 @@ var FCC_Global =
 	// style-loader injects css loaded by css-loader through this import statement.
 	var assert = exports.assert = _chai2.default.assert;
 	// Webpack is configured to load those files with the .html extension as Strings
-	/* global project_name, projectName */
+	/* global projectName */
 
 	var projectNameLocal = false;
 
@@ -181,14 +181,9 @@ var FCC_Global =
 	        document.body.appendChild(testDiv);
 	        // Once testDiv is loaded:
 	        var projectTitleCase = localStorage.getItem('projectTitleCase');
-	        // project_name variable is defined in our example projects so the
+	        // projectName variable is defined in our example projects so the
 	        // correct test suite is automatically loaded. This sets default text
 	        // for <option> text and project indicator in top right corner.
-	        // TODO: In order to fix project_name to make it camel case, we need
-	        // to coordinate this change with all the example CodePen projects.
-	        if (typeof project_name !== 'undefined') {
-	          projectNameLocal = project_name;
-	        }
 	        if (typeof projectName !== 'undefined') {
 	          projectNameLocal = projectName;
 	        }
