@@ -19792,6 +19792,7 @@ var FCC_Global =
 	    // Save the values of the editor and preview.
 	    var editor = document.getElementById('editor');
 	    var preview = document.getElementById('preview');
+
 	    var markdownOnLoad = void 0,
 	        previewOnLoad = void 0;
 	    if (editor) {
@@ -19801,25 +19802,43 @@ var FCC_Global =
 	      previewOnLoad = preview.innerHTML;
 	    }
 
+	    // As of React 15.6, we need a workaround that allows continued use of 
+	    // el.dispatchEvent()
+	    // SEE: https://github.com/facebook/react/issues/10135
+	    // the main idea is making the value writable and the Object configurable —
+	    // writable so that we can programmatically set the value in these
+	    // tests, and configurable so that the textarea Object can receive these 
+	    // settings each test
+	    function withValue(value) {
+	      var d = withValue.d || (withValue.d = {
+	        enumerable: false,
+	        writable: true,
+	        configurable: true,
+	        value: null
+	      });
+	      d.value = value;
+	      return d;
+	    }
+
 	    // A change in the editor value won't be detected unless the correct event
 	    // is dispatched.
 	    function triggerChange(str) {
-	      // REACT
-	      var eventReact = new Event('input', { bubbles: true });
-	      var eventJS = void 0;
-
 	      editor.value = str;
-	      editor.dispatchEvent(eventReact);
-
-	      // If the React dispatch worked, we can already return.
-	      if (preview.innerHTML === str) {
-	        return;
+	      if (preview.innerHTML !== marked(str) || editor.value !== str) {
+	        // REACT
+	        var eventReact = new Event('input', { bubbles: true });
+	        Object.defineProperty(editor, 'value', withValue(str));
+	        editor.dispatchEvent(eventReact);
+	        // If the React dispatch worked, we can already return.
+	        if (preview.innerHTML === marked(str)) {
+	          return;
+	        }
 	      }
-
 	      // jQUERY OR JAVASCRIPT
 	      // must be keyup to live preview
-	      eventJS = new Event('keyup', { bubbles: true });
+	      var eventJS = new Event('keyup', { bubbles: true });
 	      editor.dispatchEvent(eventJS);
+	      return;
 	    }
 
 	    describe('#Technology Stack', function () {
@@ -19844,6 +19863,9 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. When I enter text into the #editor element, the #preview\n      element is updated as I type to display the content of the textarea', function () {
+	        // initial triggerChange is to enable writability and configurability 
+	        // for the textarea Object.
+	        triggerChange('');
 	        triggerChange('a');
 	        _chai.assert.strictEqual(preview.innerText.slice(0, 1), 'a', '#preview is not being updated as I type into #editor (should ' + 'update on every keyup) ');
 	      });

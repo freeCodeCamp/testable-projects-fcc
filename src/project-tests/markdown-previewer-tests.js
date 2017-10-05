@@ -8,6 +8,7 @@ export default function createMarkdownPreviewerTests() {
     // Save the values of the editor and preview.
     const editor = document.getElementById('editor');
     const preview = document.getElementById('preview');
+
     let markdownOnLoad,
       previewOnLoad;
     if (editor) {
@@ -17,28 +18,48 @@ export default function createMarkdownPreviewerTests() {
       previewOnLoad = preview.innerHTML;
     }
 
+    // As of React 15.6, we need a workaround that allows continued use of 
+    // el.dispatchEvent()
+    // SEE: https://github.com/facebook/react/issues/10135
+    // the main idea is making the value writable and the Object configurable —
+    // writable so that we can programmatically set the value in these
+    // tests, and configurable so that the textarea Object can receive these 
+    // settings each test
+    function withValue(value) {
+      var d = withValue.d || (
+        withValue.d = {
+          enumerable: false,
+          writable: true,
+          configurable: true,
+          value: null
+        }
+      );
+      d.value = value;
+      return d;
+    }
+
     // A change in the editor value won't be detected unless the correct event
     // is dispatched.
     function triggerChange(str) {
-      // REACT
-      const eventReact = new Event('input', {bubbles: true});
-      let eventJS;
-
       editor.value = str;
-      editor.dispatchEvent(eventReact);
-
-      // If the React dispatch worked, we can already return.
-      if (preview.innerHTML === str) {
-        return;
+      if (preview.innerHTML !== marked(str) || editor.value !== str) {
+        // REACT
+        const eventReact = new Event('input', {bubbles: true});
+        Object.defineProperty(editor, 'value', withValue(str));
+        editor.dispatchEvent(eventReact);
+        // If the React dispatch worked, we can already return.
+        if (preview.innerHTML === marked(str)) {
+          return;
+        }
       }
-
       // jQUERY OR JAVASCRIPT
       // must be keyup to live preview
-      eventJS = new Event('keyup', {bubbles: true});
+      const eventJS = new Event('keyup', {bubbles: true});
       editor.dispatchEvent(eventJS);
-
+      return;
+      
     }
-
+        
     describe('#Technology Stack', function() {
       it(frontEndLibrariesStack, function() {
         return true;
@@ -70,6 +91,9 @@ export default function createMarkdownPreviewerTests() {
       it(`${reqNum}. When I enter text into the #editor element, the #preview
       element is updated as I type to display the content of the textarea`,
       function() {
+        // initial triggerChange is to enable writability and configurability 
+        // for the textarea Object.
+        triggerChange('');
         triggerChange('a');
         assert.strictEqual(
           preview.innerText.slice(0, 1),
