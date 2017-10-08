@@ -1,4 +1,4 @@
-/* global project_name, projectName */
+/* global projectName */
 
 import $ from 'jquery';
 import chai from 'chai';
@@ -7,7 +7,7 @@ import testSuiteSkeleton from './utils/test-suite-skeleton.html';
 // the !- prefixes are for process arguments respective of plugins
 // Example: https://stackoverflow.com/a/42440360/3530394
 // style-loader injects css loaded by css-loader through this import statement.
-import testSuiteFCCStyles from 
+import testSuiteFCCStyles from
   '!style-loader!css-loader!./stylesheets/style.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
@@ -70,14 +70,9 @@ $(document).ready(function() {
         document.body.appendChild(testDiv);
         // Once testDiv is loaded:
         let projectTitleCase = localStorage.getItem('projectTitleCase');
-        // project_name variable is defined in our example projects so the
+        // projectName variable is defined in our example projects so the
         // correct test suite is automatically loaded. This sets default text
         // for <option> text and project indicator in top right corner.
-        // TODO: In order to fix project_name to make it camel case, we need
-        // to coordinate this change with all the example CodePen projects.
-        if (typeof project_name !== 'undefined') {
-          projectNameLocal = project_name;
-        }
         if (typeof projectName !== 'undefined') {
           projectNameLocal = projectName;
         }
