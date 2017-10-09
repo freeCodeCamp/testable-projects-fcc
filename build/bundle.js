@@ -144,9 +144,12 @@ var FCC_Global =
 	// the !- prefixes are for process arguments respective of plugins
 	// Example: https://stackoverflow.com/a/42440360/3530394
 	// style-loader injects css loaded by css-loader through this import statement.
+
+	/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
 	var assert = exports.assert = _chai2.default.assert;
 	// Webpack is configured to load those files with the .html extension as Strings
 	/* global projectName */
+	/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
 	var projectNameLocal = false;
 
