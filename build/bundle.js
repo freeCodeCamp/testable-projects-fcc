@@ -22260,7 +22260,8 @@ var FCC_Global =
 	}
 
 	// If the first tick is less than the second tick, and the first tick has
-	// a lower position then the ordering is considered "normal".
+	// a lower position then the ordering is considered "normal". If the order is
+	// normal, we return true. False otherwise.
 	function _getTickOrdering(allTicks, getTickValue, getTickPosition, dimension) {
 	  var returnValue = void 0;
 
