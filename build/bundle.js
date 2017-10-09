@@ -19780,6 +19780,8 @@ var FCC_Global =
 
 	var _sharedTestStrings = __webpack_require__(49);
 
+	/* global marked */
+
 	function createMarkdownPreviewerTests() {
 
 	  describe('Markdown Previewer tests', function () {
@@ -19797,12 +19799,12 @@ var FCC_Global =
 	      previewOnLoad = preview.innerHTML;
 	    }
 
-	    // As of React 15.6, we need a workaround that allows continued use of 
+	    // As of React 15.6, we need a workaround that allows continued use of
 	    // el.dispatchEvent()
 	    // SEE: https://github.com/facebook/react/issues/10135
 	    // the main idea is making the value writable and the Object configurable —
 	    // writable so that we can programmatically set the value in these
-	    // tests, and configurable so that the textarea Object can receive these 
+	    // tests, and configurable so that the textarea Object can receive these
 	    // settings each test
 	    function withValue(value) {
 	      var d = withValue.d || (withValue.d = {
@@ -19858,7 +19860,7 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. When I enter text into the #editor element, the #preview\n      element is updated as I type to display the content of the textarea', function () {
-	        // initial triggerChange is to enable writability and configurability 
+	        // initial triggerChange is to enable writability and configurability
 	        // for the textarea Object.
 	        triggerChange('');
 	        triggerChange('a');

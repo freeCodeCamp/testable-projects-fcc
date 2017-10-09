@@ -1,3 +1,5 @@
+/* global marked */
+
 import { assert } from 'chai';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
@@ -18,12 +20,12 @@ export default function createMarkdownPreviewerTests() {
       previewOnLoad = preview.innerHTML;
     }
 
-    // As of React 15.6, we need a workaround that allows continued use of 
+    // As of React 15.6, we need a workaround that allows continued use of
     // el.dispatchEvent()
     // SEE: https://github.com/facebook/react/issues/10135
     // the main idea is making the value writable and the Object configurable —
     // writable so that we can programmatically set the value in these
-    // tests, and configurable so that the textarea Object can receive these 
+    // tests, and configurable so that the textarea Object can receive these
     // settings each test
     function withValue(value) {
       var d = withValue.d || (
@@ -57,9 +59,9 @@ export default function createMarkdownPreviewerTests() {
       const eventJS = new Event('keyup', {bubbles: true});
       editor.dispatchEvent(eventJS);
       return;
-      
+
     }
-        
+
     describe('#Technology Stack', function() {
       it(frontEndLibrariesStack, function() {
         return true;
@@ -91,7 +93,7 @@ export default function createMarkdownPreviewerTests() {
       it(`${reqNum}. When I enter text into the #editor element, the #preview
       element is updated as I type to display the content of the textarea`,
       function() {
-        // initial triggerChange is to enable writability and configurability 
+        // initial triggerChange is to enable writability and configurability
         // for the textarea Object.
         triggerChange('');
         triggerChange('a');
@@ -337,13 +339,13 @@ export default function createMarkdownPreviewerTests() {
         const targetLinks = document.querySelectorAll(
           '#preview a[target="_blank"]'
         );
-        
+
         assert.isAtLeast(
           links.length,
           1,
           'There should be at least one link'
         );
-        
+
         assert.strictEqual(
           links.length,
           targetLinks.length,
