@@ -423,7 +423,6 @@ describe('D3 Alignment module tests', function() {
           const allTicks = axis.querySelectorAll('.tick');
           const shape = cells[0];
           const dimension = 'y';
-          const tickOrderNormal = true;
 
           assert.isFalse(_isShapeAlignedWithTicks(
             shape,
