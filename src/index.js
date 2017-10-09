@@ -1,4 +1,5 @@
 /* global projectName */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
 import $ from 'jquery';
 import chai from 'chai';
@@ -7,7 +8,9 @@ import testSuiteSkeleton from './utils/test-suite-skeleton.html';
 // the !- prefixes are for process arguments respective of plugins
 // Example: https://stackoverflow.com/a/42440360/3530394
 // style-loader injects css loaded by css-loader through this import statement.
-import testSuiteFCCStyles from
+
+/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
+import testSuiteFCCStylesIgnored from
   '!style-loader!css-loader!./stylesheets/style.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
