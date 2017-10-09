@@ -1,14 +1,16 @@
 import {
-  getXAxisInfo,
-  getYAxisInfo,
-  getXMisalignmentCount,
-  getYMisalignmentCount,
-  getFeatureValueInteger,
-  getFeatureValueMonths,
-  getTickValueInteger,
-  getTickValueMonths,
   isAxisAlignedWithDataPoints
-} from '../utils/alignmentD3Tests';
+} from '../utils/alignment-D3';
+
+import {
+  getShapePositionRect,
+  getShapeValueMonthHeatMap,
+  getShapeValueYearHeatMap,
+  getTickPosition,
+  getTickValueMonth,
+  getTickValueYear
+} from '../utils/alignment-D3-support';
+
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
 
@@ -201,7 +203,6 @@ export default function createHeatMapTests() {
       corresponding month on the y-axis.`,
       function() {
         const cellsCollection = document.querySelectorAll('.cell');
-        const dataAttr = 'data-month';
         const coordAttr = 'y';
 
         assert.isAbove(
@@ -210,24 +211,18 @@ export default function createHeatMapTests() {
           'Could not find any elements with a class="cell" '
         );
 
-        // construct an object with information about axis and data-type
-        // supply hard-coded units for an axis if necessary
-        var yAxisInfo = getYAxisInfo(
+        assert.isTrue(isAxisAlignedWithDataPoints(
           document.querySelector('#y-axis'),
-          dataAttr,
           coordAttr,
-          months
-        );
-        assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            yAxisInfo,
-            cellsCollection,
-            getYMisalignmentCount,
-            getFeatureValueMonths,
-            getTickValueMonths
-          ),
-          'month values don\'t line up with y locations '
-        );
+          cellsCollection,
+          getShapeValueMonthHeatMap,
+          getTickValueMonth,
+          getShapePositionRect,
+          getTickPosition
+        ),
+        'month values don\'t line up with y locations '
+      );
+
       });
 
       reqNum++;
@@ -235,7 +230,6 @@ export default function createHeatMapTests() {
       corresponding year on the x-axis.`,
       function() {
         const cellsCollection = document.querySelectorAll('.cell');
-        const dataAttr = 'data-year';
         const coordAttr = 'x';
 
         assert.isAbove(
@@ -244,23 +238,18 @@ export default function createHeatMapTests() {
           'Could not find any elements with a class="cell" '
         );
 
-        // construct an object with information about axis and data-type
-        var xAxisInfo = getXAxisInfo(
+        assert.isTrue(isAxisAlignedWithDataPoints(
           document.querySelector('#x-axis'),
-          dataAttr,
-          coordAttr
-        );
+          coordAttr,
+          cellsCollection,
+          getShapeValueYearHeatMap,
+          getTickValueYear,
+          getShapePositionRect,
+          getTickPosition
+        ),
+        'year values don\'t line up with x locations '
+      );
 
-        assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            xAxisInfo,
-            cellsCollection,
-            getXMisalignmentCount,
-            getFeatureValueInteger,
-            getTickValueInteger
-          ),
-          'year values don\'t line up with x locations '
-        );
       });
 
       reqNum++;

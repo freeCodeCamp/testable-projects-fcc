@@ -1,14 +1,16 @@
 import {
-  getXAxisInfo,
-  getYAxisInfo,
-  getXMisalignmentCount,
-  getYMisalignmentCount,
-  getFeatureValueInteger,
-  getFeatureValueMinutes,
-  getTickValueInteger,
-  getTickValueMinutes,
   isAxisAlignedWithDataPoints
-} from '../utils/alignmentD3Tests';
+} from '../utils/alignment-D3';
+
+import {
+  getShapePositionCircle,
+  getShapeValueMinutes,
+  getShapeValueYearScatter,
+  getTickPosition,
+  getTickValueMinutes,
+  getTickValueYear
+} from '../utils/alignment-D3-support';
+
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
 
@@ -147,30 +149,27 @@ export default function createScatterPlotTests() {
       with the corresponding point/value on the x-axis.`,
       function() {
         const dotsCollection = document.getElementsByClassName('dot');
+        const coordAttr = 'x';
+
         assert.isAbove(
           dotsCollection.length,
           0,
           'there are no elements with the class of "dot" '
         );
 
-        const dataAttr = 'data-xvalue';
-        const coordAttr = 'cx';
-        // construct an object with information about axis and data-type
-        var xAxisInfo = getXAxisInfo(
-          document.querySelector('#x-axis'),
-          dataAttr,
-          coordAttr
-        );
         assert.isTrue(
           isAxisAlignedWithDataPoints(
-            xAxisInfo,
+            document.querySelector('#x-axis'),
+            coordAttr,
             dotsCollection,
-            getXMisalignmentCount,
-            getFeatureValueInteger,
-            getTickValueInteger
+            getShapeValueYearScatter,
+            getTickValueYear,
+            getShapePositionCircle,
+            getTickPosition
           ),
           'x values don\'t line up with x locations '
         );
+
       });
 
       reqNum++;
@@ -178,31 +177,27 @@ export default function createScatterPlotTests() {
       with the corresponding point/value on the y-axis.`,
       function() {
         const dotsCollection = document.getElementsByClassName('dot');
+        const coordAttr = 'y';
+
         assert.isAbove(
           dotsCollection.length,
           0,
           'there are no elements with the class of "dot" '
         );
 
-        const dataAttr = 'data-yvalue';
-        const coordAttr = 'cy';
-        // construct an object with information about axis and data-type
-        var yAxisInfo = getYAxisInfo(
-          document.querySelector('#y-axis'),
-          dataAttr,
-          coordAttr
-        );
-
         assert.isTrue(
           isAxisAlignedWithDataPoints(
-            yAxisInfo,
+            document.querySelector('#y-axis'),
+            coordAttr,
             dotsCollection,
-            getYMisalignmentCount,
-            getFeatureValueMinutes,
-            getTickValueMinutes
+            getShapeValueMinutes,
+            getTickValueMinutes,
+            getShapePositionCircle,
+            getTickPosition
           ),
           'y values don\'t line up with y locations '
         );
+
       });
 
       reqNum++;
