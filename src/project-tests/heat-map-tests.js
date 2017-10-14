@@ -169,33 +169,19 @@ export default function createHeatMapTests() {
           );
         }
 
-        var cellMonths = [];
-        var cellYears = [];
+        cells.forEach((cell) => {
+          const dataMonth = cell.getAttribute('data-month');
 
-        for (i = 0; i < cells.length; i++) {
-          cell = cells[i];
+          assert.isAtLeast(dataMonth, 0, 'data-month should be at least 0');
+          assert.isAtMost(dataMonth, 11, 'data-month should be at most 11');
+        });
 
-          cellMonths.push(cell.getAttribute('data-month'));
-          cellYears.push(cell.getAttribute('data-year'));
-        }
+        cells.forEach((cell) => {
+          const dataYear = cell.getAttribute('data-year');
 
-        function valuesAreBetween(min, max, data) {
-          for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            if (item < min || item > max) {
-              return false;
-            }
-          }
-          return true;
-        }
-        assert(
-          valuesAreBetween(0, 11, cellMonths),
-          'Month data values should be between 0 and 11 '
-        );
-        assert(
-          valuesAreBetween(1753, 2015, cellYears),
-          'Year data values should be between 1753 and 2015 '
-        );
+          assert.isAtLeast(dataYear, 1753, 'data-year should be at least 1753');
+          assert.isAtMost(dataYear, 2015, 'data-year should be at most 2015');
+        });
       });
 
       reqNum++;
