@@ -41923,27 +41923,19 @@ var FCC_Global =
 	          _chai.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
 	        }
 
-	        var cellMonths = [];
-	        var cellYears = [];
+	        cells.forEach(function (cell) {
+	          var dataMonth = cell.getAttribute('data-month');
 
-	        for (i = 0; i < cells.length; i++) {
-	          cell = cells[i];
+	          _chai.assert.isAtLeast(dataMonth, 0, 'data-month should be at least 0');
+	          _chai.assert.isAtMost(dataMonth, 11, 'data-month should be at most 11');
+	        });
 
-	          cellMonths.push(cell.getAttribute('data-month'));
-	          cellYears.push(cell.getAttribute('data-year'));
-	        }
+	        cells.forEach(function (cell) {
+	          var dataYear = cell.getAttribute('data-year');
 
-	        function valuesAreBetween(min, max, data) {
-	          for (var i = 0; i < data.length; i++) {
-	            var item = data[i];
-	            if (item < min || item > max) {
-	              return false;
-	            }
-	          }
-	          return true;
-	        }
-	        (0, _chai.assert)(valuesAreBetween(0, 11, cellMonths), 'Month data values should be between 0 and 11 ');
-	        (0, _chai.assert)(valuesAreBetween(1753, 2015, cellYears), 'Year data values should be between 1753 and 2015 ');
+	          _chai.assert.isAtLeast(dataYear, 1753, 'data-year should be at least 1753');
+	          _chai.assert.isAtMost(dataYear, 2015, 'data-year should be at most 2015');
+	        });
 	      });
 
 	      reqNum++;
