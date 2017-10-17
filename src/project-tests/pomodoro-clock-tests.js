@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { clickButtonsById } from '../utils/element-utils';
+import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createPomodoroClockTests() {
 
@@ -98,13 +99,20 @@ export default function createPomodoroClockTests() {
       restoreGlobalTimerFunctions();
     });
 
-    describe('#Tests',
+    describe('#Technology Stack',
+    function() {
+      it(frontEndLibrariesStack, function() {
+        return true;
+      });
+    });
+
+    describe('#Content',
     function() {
       let reqNum = 0;
 
       reqNum++;
       it(`${reqNum}. I can see an element with id="break-label" that contains a
-      string (e.g. “Break Length).`, function() {
+      string (e.g. “Break Length”).`, function() {
         const breakTitle = document.getElementById('break-label');
         assert.isAbove(
           breakTitle.innerText.length,
@@ -199,7 +207,11 @@ export default function createPomodoroClockTests() {
       function() {
         assert.isNotNull(document.getElementById('reset'));
       });
+    });
 
+    describe('#Timer',
+    function() {
+      let reqNum = 0;
       reqNum++;
       it(`${reqNum}. When I click the element with the id of "reset", any
       running timer should be stopped, the value within id="break-length" should
@@ -273,7 +285,6 @@ export default function createPomodoroClockTests() {
             }
           });
         });
-
       });
 
       reqNum++;
@@ -744,7 +755,11 @@ export default function createPomodoroClockTests() {
           });
         });
       });
+    });
 
+    describe('#Audio',
+    function() {
+      let reqNum = 0;
       reqNum++;
       it(`${reqNum}. When a countdown reaches zero (NOTE: timer MUST reach
       00:00), a sound indicating that time is up should play. This should
@@ -825,7 +840,7 @@ export default function createPomodoroClockTests() {
           'the currentTime property of the audio element to rewind.'
         );
       });
-      // END #Tests
+      // END #Audio
     });
     // END #PomodoroClockTests
   });

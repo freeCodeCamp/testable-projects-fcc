@@ -20249,6 +20249,8 @@ var FCC_Global =
 
 	var _elementUtils = __webpack_require__(52);
 
+	var _sharedTestStrings = __webpack_require__(49);
+
 	function createPomodoroClockTests() {
 
 	  var breakMin = 'break-decrement';
@@ -20345,11 +20347,17 @@ var FCC_Global =
 	      restoreGlobalTimerFunctions();
 	    });
 
-	    describe('#Tests', function () {
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.frontEndLibrariesStack, function () {
+	        return true;
+	      });
+	    });
+
+	    describe('#Content', function () {
 	      var reqNum = 0;
 
 	      reqNum++;
-	      it(reqNum + '. I can see an element with id="break-label" that contains a\n      string (e.g. \u201CBreak Length).', function () {
+	      it(reqNum + '. I can see an element with id="break-label" that contains a\n      string (e.g. \u201CBreak Length\u201D).', function () {
 	        var breakTitle = document.getElementById('break-label');
 	        _chai.assert.isAbove(breakTitle.innerText.length, 0, 'Element does not contain a string');
 	      });
@@ -20404,7 +20412,10 @@ var FCC_Global =
 	      it(reqNum + '. I can see a clickable element with corresponding\n      id="reset".', function () {
 	        _chai.assert.isNotNull(document.getElementById('reset'));
 	      });
+	    });
 
+	    describe('#Timer', function () {
+	      var reqNum = 0;
 	      reqNum++;
 	      it(reqNum + '. When I click the element with the id of "reset", any\n      running timer should be stopped, the value within id="break-length" should\n      return to 5, the value within id="session-length" should return to 25, and\n      the element with id="time-left" should reset to it\'s default state.', function () {
 	        this.timeout(5000);
@@ -20751,7 +20762,10 @@ var FCC_Global =
 	          });
 	        });
 	      });
+	    });
 
+	    describe('#Audio', function () {
+	      var reqNum = 0;
 	      reqNum++;
 	      it(reqNum + '. When a countdown reaches zero (NOTE: timer MUST reach\n      00:00), a sound indicating that time is up should play. This should\n      utilize an HTML5 <audio> tag and have a corresponding id="beep".', function () {
 	        this.timeout(5000);
@@ -20799,7 +20813,7 @@ var FCC_Global =
 
 	        _chai.assert.equal(0, audioElem.currentTime, 'Audio element was not rewound when reset was clicked. HINT: use ' + 'the currentTime property of the audio element to rewind.');
 	      });
-	      // END #Tests
+	      // END #Audio
 	    });
 	    // END #PomodoroClockTests
 	  });
