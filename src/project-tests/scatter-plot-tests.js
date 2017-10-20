@@ -13,6 +13,7 @@ import {
 
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
+import { d3ProjectStack } from '../utils/shared-test-strings';
 
 export default function createScatterPlotTests() {
 
@@ -21,6 +22,12 @@ export default function createScatterPlotTests() {
     const MAX_YEAR = 2020;
     const MIN_MINUTES = 36;
     const MAX_MINUTES = 40;
+
+    describe('#Technology Stack', function() {
+      it(d3ProjectStack, function() {
+        return true;
+      });
+    });
 
     describe('#Content', function() {
       let reqNum = 0;
