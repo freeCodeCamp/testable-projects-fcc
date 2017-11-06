@@ -1,8 +1,21 @@
-// D3 Alignment test supporting functions. Anything that is chart specific
-// should go here. For example, the getTickValueMonth function is only used for
-// testing the Heatmap D3 Chart, so it belongs here.
-
+// D3 Alignment test supporting functions. These functions fetch values
+// and positions of both axis ticks and chart shapes (bars, dots, rects).
 // TODO: Documentation.
+
+const months = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+];
 
 export function getTickPosition(tick) {
   let x, y;
@@ -17,104 +30,74 @@ export function getTickPosition(tick) {
   return { x: x, y: y};
 }
 
-export function getTickValueMonth(tick) {
-  const months = [
-    'january',
-    'february',
-    'march',
-    'april',
-    'may',
-    'june',
-    'july',
-    'august',
-    'september',
-    'october',
-    'november',
-    'december'
-  ];
-
-  const value = tick.querySelector('text').innerHTML.toLowerCase();
-  return months.indexOf(value);
+export function getTickValue(item, dataType) {
+  let val = item.querySelector('text').innerHTML;
+  switch (dataType) {
+    case null:
+      break;
+    case 'minute':
+      val = parseInt(val.split(':')[0], 10) +
+        (parseInt(val.split(':')[1], 10) / 60);
+      break;
+    case 'month':
+      val = months.indexOf(val.toLowerCase());
+      break;
+    case 'thousand':
+      val = val.split(',').join('');
+      break;
+    default:
+      break;
+  }
+  return parseFloat(val);
 }
 
-export function getTickValueYear(tick) {
-  return parseInt(tick.querySelector('text').innerHTML, 10);
+export function getShapeValue(item, attribute, dataType) {
+  let val;
+  switch (dataType) {
+    case null:
+      val = item.getAttribute(attribute);
+      break;
+    case 'year':
+      val = new Date(item.getAttribute(attribute)).getFullYear();
+      break;
+    case 'minute':
+      val = new Date(item.getAttribute(attribute)).getMinutes() +
+        (new Date(item.getAttribute(attribute)).getSeconds() / 60);
+      break;
+    case 'month':
+      val = ( isNaN(parseInt(item.getAttribute(attribute), 10)) ?
+        months.indexOf(item.getAttribute(attribute).toLowerCase()) :
+        item.getAttribute(attribute)
+      );
+      break;
+    default:
+      val = item.getAttribute(attribute);
+  }
+  return parseFloat(val);
 }
 
-export function getShapeValueMonthHeatMap(shape) {
-  return parseInt(shape.getAttribute('data-month'), 10);
-}
-
-export function getShapeValueYearHeatMap(shape) {
-  return parseInt(shape.getAttribute('data-year'), 10);
-}
-
-export function getShapeValueYearScatter(shape) {
-  return parseInt(shape.getAttribute('data-xvalue'), 10);
-}
-
-export function getShapeValueYearBar(shape) {
-  // Number from String. Example from dataset: '2015-01-01'
-  return parseInt(shape.getAttribute('data-date').split('-')[0], 10);
-}
-
-export function getShapeValueDecimal(shape) {
-  return parseFloat(shape.getAttribute('data-gdp'));
-}
-
-export function getTickValueThousands(tick) {
-  // Number from String. Example from dataset: '2,000'
-  return parseInt(tick.querySelector('text').innerHTML.split(',').join(''), 10);
-}
-
-export function getShapeValueMinutes(shape) {
-  const value = shape.getAttribute('data-yvalue');
-  return new Date(value).getMinutes() +
-    (new Date(value).getSeconds() / 60);
-}
-
-export function getTickValueMinutes(tick) {
-  const value = tick.querySelector('text').innerHTML;
-  return parseInt(value.split(':')[0], 10) +
-    (parseInt(value.split(':')[1], 10) / 60);
-}
-
-export function getShapePositionRect(shape) {
-  // the x, y attributes for each rect are from the top-left of the shape.
-  // compute the mid-value for a coordinate to compare to axis tick
-  let half, x, y;
-
-  half = parseFloat(shape.getAttribute('width')) / 2;
-  x = parseFloat(shape.getAttribute('x')) + half;
-
-  half = parseFloat(shape.getAttribute('height')) / 2;
-  y = parseFloat(shape.getAttribute('y')) + half;
-
-  return { x: x, y: y};
-}
-
-export function getShapePositionRectBar(shape) {
-  // the x, y attributes for each rect are from the top-left of the shape.
-  // compute the mid-value for a coordinate to compare to x-axis tick
-
-  // TODO: rects are computed at y + 6 because
-  // the fCC Bar Chart appears to have misalignment.
-  let x, y, width;
-
-  width = parseFloat(shape.getAttribute('width'));
-  x = parseFloat(shape.getAttribute('x')) + (width / 2);
-  // fCC Bar Chart pen is at most 6px off on the y-axis
-  y = parseFloat(shape.getAttribute('y')) + 5.5;
-
-  return { x: x, y: y, width: width };
-}
-
-export function getShapePositionCircle(shape) {
-  let x, y;
-
-  x = parseFloat(shape.getAttribute('cx'));
-
-  y = parseFloat(shape.getAttribute('cy'));
-
-  return { x: x, y: y};
+export function getShapePosition(item, dimension, positionType) {
+  let half,
+    pos = parseFloat(item.getAttribute(dimension));
+  switch (positionType) {
+    case 'topLeft':
+      // bar
+      half = 0;
+      break;
+    case 'center':
+      // get either 'width' or 'height' if dimension is 'x', 'cx', 'y', or 'cy'
+      let attr = dimension.match(/y/g) ? 'height' : 'width';
+      // circle elements have 'r' attributes instead of 'height' or 'width'.
+      // The half variable is for rect elements we want the midpoint from
+      // so item.getAttribute(attr) will be null for circles.
+      half = ( !item.getAttribute(attr) ?
+        0 :
+        parseFloat(item.getAttribute(attr)) / 2
+      );
+      break;
+    default:
+      half = 0;
+  }
+  pos += half;
+  return pos;
 }

@@ -1,18 +1,6 @@
 import { d3ProjectStackNoAxes } from '../utils/shared-test-strings';
 import { hasUniqueColorsCount } from '../utils/element-utils';
-
-import {
-  isAxisAlignedWithDataPoints
-} from '../utils/alignment-D3';
-
-import {
-  getShapePositionRect,
-  getShapeValueMonthHeatMap,
-  getShapeValueYearHeatMap,
-  getTickPosition,
-  getTickValueMonth,
-  getTickValueYear
-} from '../utils/alignment-D3-support';
+import { areShapesAlignedWithTicks } from '../utils/alignment-D3';
 
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
@@ -160,31 +148,29 @@ export default function createHeatMapTests() {
       it(`${reqNum}. My heat map should have cells that align with the
       corresponding month on the y-axis.`,
       function() {
-        const cellsCollection = document.querySelectorAll('rect.cell');
+
+        const axis = document.querySelector('#y-axis');
         const coordAttr = 'y';
+        const cellsCollection = document.querySelectorAll('.cell');
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-month';
+        // options are 'minute', 'month', 'thousand', and 'year'
+        const dataType = 'month';
+        // what vertex of shape to measure against the axis
+        // options are 'topLeft' and 'center'
+        const shapeAlign = 'center';
 
-        // Protect against a false positive for the alignment test. The
-        // alignment test will return true if there are no cells.
-        // TODO: isAxisAlignedWithDataPoints should probably return false if
-        // the list of cells is empty. That would let us remove this check.
-        assert.isAbove(
-          cellsCollection.length,
-          0,
-          'Could not find any <rect> elements with a class="cell" '
+        assert.isTrue(
+          areShapesAlignedWithTicks(
+            cellsCollection,
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
+          ),
+          'month values don\'t line up with y locations '
         );
-
-        assert.isTrue(isAxisAlignedWithDataPoints(
-          document.querySelector('#y-axis'),
-          coordAttr,
-          cellsCollection,
-          getShapeValueMonthHeatMap,
-          getTickValueMonth,
-          getShapePositionRect,
-          getTickPosition
-        ),
-        'month values don\'t line up with y locations '
-      );
-
       });
 
       reqNum++;
@@ -192,30 +178,27 @@ export default function createHeatMapTests() {
       corresponding year on the x-axis.`,
       function() {
         const cellsCollection = document.querySelectorAll('rect.cell');
+        const axis = document.querySelector('#x-axis');
         const coordAttr = 'x';
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-year';
+        // options are 'minute', 'month', 'thousand', and 'year'
+        const dataType = 'year';
+        // what vertex of shape to measure against the axis
+        // options are 'topLeft' and 'center'
+        const shapeAlign = 'center';
 
-        // Protect against a false positive for the alignment test. The
-        // alignment test will return true if there are no cells.
-        // TODO: isAxisAlignedWithDataPoints should probably return false if
-        // the list of cells is empty. That would let us remove this check.
-        assert.isAbove(
-          cellsCollection.length,
-          0,
-          'Could not find any elements with a class="cell" '
+        assert.isTrue(
+          areShapesAlignedWithTicks(
+            cellsCollection,
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
+          ),
+          'year values don\'t line up with x locations '
         );
-
-        assert.isTrue(isAxisAlignedWithDataPoints(
-          document.querySelector('#x-axis'),
-          coordAttr,
-          cellsCollection,
-          getShapeValueYearHeatMap,
-          getTickValueYear,
-          getShapePositionRect,
-          getTickPosition
-        ),
-        'year values don\'t line up with x locations '
-      );
-
       });
 
       reqNum++;

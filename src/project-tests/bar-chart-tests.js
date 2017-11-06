@@ -1,15 +1,6 @@
 import {
-  isAxisAlignedWithDataPoints
+  areShapesAlignedWithTicks
 } from '../utils/alignment-D3';
-
-import {
-  getShapePositionRectBar,
-  getShapeValueYearBar,
-  getShapeValueDecimal,
-  getTickPosition,
-  getTickValueThousands,
-  getTickValueYear
-} from '../utils/alignment-D3-support';
 
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
@@ -212,8 +203,17 @@ export default function createBarChartTests() {
       it(`${reqNum}. The data-date attribute and its corresponding bar element 
       should align with the corresponding value on the x-axis.`,
       function() {
-        const barsCollection = document.querySelectorAll('rect.bar');
+
+        const axis = document.querySelector('#x-axis');
         const coordAttr = 'x';
+        const barsCollection = document.querySelectorAll('.bar');
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-date';
+        // options are 'minute', 'month', 'thousand', and 'year'
+        const dataType = 'year';
+        // what vertex of shape to measure against the axis
+        // options are 'topLeft' and 'center'
+        const shapeAlign = 'topLeft';
 
         assert.isAbove(
           barsCollection.length,
@@ -222,14 +222,13 @@ export default function createBarChartTests() {
         );
 
         assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            document.querySelector('#x-axis'),
-            coordAttr,
+          areShapesAlignedWithTicks(
             barsCollection,
-            getShapeValueYearBar,
-            getTickValueYear,
-            getShapePositionRectBar,
-            getTickPosition
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
           ),
           'x values don\'t line up with x locations '
         );
@@ -240,24 +239,29 @@ export default function createBarChartTests() {
       it(`${reqNum}. The data-gdp attribute and its corresponding bar element 
       should align with the corresponding value on the y-axis.`,
       function() {
-        const barsCollection = document.querySelectorAll('rect.bar');
+
+        const axis = document.querySelector('#y-axis');
         const coordAttr = 'y';
+        const barsCollection = document.querySelectorAll('.bar');
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-gdp';
+        const dataType = 'thousand';
+        const shapeAlign = 'topLeft';
 
         assert.isAbove(
           barsCollection.length,
           0,
-          'there are <rect> no elements with the class of "bar" '
+          'there are no <rect> elements with the class of "bar" '
         );
 
         assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            document.querySelector('#y-axis'),
-            coordAttr,
+          areShapesAlignedWithTicks(
             barsCollection,
-            getShapeValueDecimal,
-            getTickValueThousands,
-            getShapePositionRectBar,
-            getTickPosition
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
           ),
           'y values don\'t line up with y locations '
         );

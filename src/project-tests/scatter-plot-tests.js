@@ -1,15 +1,6 @@
 import {
-  isAxisAlignedWithDataPoints
+  areShapesAlignedWithTicks
 } from '../utils/alignment-D3';
-
-import {
-  getShapePositionCircle,
-  getShapeValueMinutes,
-  getShapeValueYearScatter,
-  getTickPosition,
-  getTickValueMinutes,
-  getTickValueYear
-} from '../utils/alignment-D3-support';
 
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
@@ -155,24 +146,22 @@ export default function createScatterPlotTests() {
       it(`${reqNum}. The data-xvalue and its corresponding dot should align
       with the corresponding point/value on the x-axis.`,
       function() {
-        const dotsCollection = document.getElementsByClassName('dot');
-        const coordAttr = 'x';
-
-        assert.isAbove(
-          dotsCollection.length,
-          0,
-          'there are no elements with the class of "dot" '
-        );
+        const axis = document.querySelector('#x-axis');
+        const coordAttr = 'cx';
+        const dotsCollection = document.querySelectorAll('.dot');
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-xvalue';
+        const dataType = 'year';
+        const shapeAlign = 'center';
 
         assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            document.querySelector('#x-axis'),
-            coordAttr,
+          areShapesAlignedWithTicks(
             dotsCollection,
-            getShapeValueYearScatter,
-            getTickValueYear,
-            getShapePositionCircle,
-            getTickPosition
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
           ),
           'x values don\'t line up with x locations '
         );
@@ -183,24 +172,22 @@ export default function createScatterPlotTests() {
       it(`${reqNum}. The data-yvalue and its corresponding dot should align
       with the corresponding point/value on the y-axis.`,
       function() {
-        const dotsCollection = document.getElementsByClassName('dot');
-        const coordAttr = 'y';
-
-        assert.isAbove(
-          dotsCollection.length,
-          0,
-          'there are no elements with the class of "dot" '
-        );
+        const axis = document.querySelector('#y-axis');
+        const coordAttr = 'cy';
+        const dotsCollection = document.querySelectorAll('.dot');
+        const ticksCollection = axis.querySelectorAll('.tick');
+        const shapeAttr = 'data-yvalue';
+        const dataType = 'minute';
+        const shapeAlign = 'center';
 
         assert.isTrue(
-          isAxisAlignedWithDataPoints(
-            document.querySelector('#y-axis'),
-            coordAttr,
+          areShapesAlignedWithTicks(
             dotsCollection,
-            getShapeValueMinutes,
-            getTickValueMinutes,
-            getShapePositionCircle,
-            getTickPosition
+            ticksCollection,
+            coordAttr,
+            shapeAttr,
+            dataType,
+            shapeAlign
           ),
           'y values don\'t line up with y locations '
         );

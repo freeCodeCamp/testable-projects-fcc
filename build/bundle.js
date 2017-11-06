@@ -21889,8 +21889,6 @@ var FCC_Global =
 
 	var _alignmentD = __webpack_require__(61);
 
-	var _alignmentD3Support = __webpack_require__(62);
-
 	var _chai = __webpack_require__(2);
 
 	var _globalD3Tests = __webpack_require__(63);
@@ -22010,22 +22008,37 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. The data-date attribute and its corresponding bar element \n      should align with the corresponding value on the x-axis.', function () {
-	        var barsCollection = document.querySelectorAll('rect.bar');
+
+	        var axis = document.querySelector('#x-axis');
 	        var coordAttr = 'x';
+	        var barsCollection = document.querySelectorAll('.bar');
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-date';
+	        // options are 'minute', 'month', 'thousand', and 'year'
+	        var dataType = 'year';
+	        // what vertex of shape to measure against the axis
+	        // options are 'topLeft' and 'center'
+	        var shapeAlign = 'topLeft';
 
 	        _chai.assert.isAbove(barsCollection.length, 0, 'there are no <rect> elements with the class of "bar" ');
 
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, barsCollection, _alignmentD3Support.getShapeValueYearBar, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionRectBar, _alignmentD3Support.getTickPosition), 'x values don\'t line up with x locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(barsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'x values don\'t line up with x locations ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. The data-gdp attribute and its corresponding bar element \n      should align with the corresponding value on the y-axis.', function () {
-	        var barsCollection = document.querySelectorAll('rect.bar');
+
+	        var axis = document.querySelector('#y-axis');
 	        var coordAttr = 'y';
+	        var barsCollection = document.querySelectorAll('.bar');
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-gdp';
+	        var dataType = 'thousand';
+	        var shapeAlign = 'topLeft';
 
-	        _chai.assert.isAbove(barsCollection.length, 0, 'there are <rect> no elements with the class of "bar" ');
+	        _chai.assert.isAbove(barsCollection.length, 0, 'there are no <rect> elements with the class of "bar" ');
 
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, barsCollection, _alignmentD3Support.getShapeValueDecimal, _alignmentD3Support.getTickValueThousands, _alignmentD3Support.getShapePositionRectBar, _alignmentD3Support.getTickPosition), 'y values don\'t line up with y locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(barsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'y values don\'t line up with y locations ');
 	      });
 	    });
 
@@ -22036,187 +22049,123 @@ var FCC_Global =
 
 /***/ }),
 /* 61 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.isAxisAlignedWithDataPoints = isAxisAlignedWithDataPoints;
-	exports._isShapeAlignedWithTicks = _isShapeAlignedWithTicks;
 	exports._getSurroundingTicks = _getSurroundingTicks;
-	exports._isShapeValueWithinTickValues = _isShapeValueWithinTickValues;
-	// D3 Alignment testing.
-	// Used to determine if all the shapes on a chart are correctly aligned with
-	// the ticks on an axis.
+	exports.areShapesAlignedWithTicks = areShapesAlignedWithTicks;
 
-	// This is the main function you should be using in tests.
-	// Given an axis that has ticks, and a list of data shapes, it determines if
-	// each shape is aligned with the correct ticks on the axis.
-	function isAxisAlignedWithDataPoints(axis, dimension, dataShapes, getShapeValue, getTickValue, getShapePosition, getTickPosition) {
-	  var dataShapesArray = [].slice.call(dataShapes);
-	  var allTicks = axis.querySelectorAll('.tick');
+	var _alignmentD3Support = __webpack_require__(62);
 
-	  var tickOrderNormal = _getTickOrdering(allTicks, getTickValue, getTickPosition, dimension);
+	function _getSurroundingTicks(shape, val, ticks, tickIndex, increment, dataType, normalTickOrder) {
+	  var surroundingTicks = [],
+	      returnValue = null,
+	      nextIndex = void 0;
+	  do {
+	    // nextIndex is either one greater- or less-than according to sort order
+	    nextIndex = normalTickOrder ? tickIndex + 1 : tickIndex - 1;
 
-	  var outside = dataShapesArray.every(function (shape) {
-	    return _isShapeAlignedWithTicks(shape, allTicks, dimension, tickOrderNormal, getShapeValue, getTickValue, getShapePosition, getTickPosition);
-	  });
+	    var tickVal0 = !ticks[tickIndex] ?
+	    // ticks[tickIndex] may be undefined. If so, calc mock tick value
+	    (0, _alignmentD3Support.getTickValue)(ticks[nextIndex], dataType) - increment : (0, _alignmentD3Support.getTickValue)(ticks[tickIndex], dataType);
 
-	  return outside;
-	}
+	    var tickVal1 = !ticks[nextIndex] ? (0, _alignmentD3Support.getTickValue)(ticks[tickIndex], dataType) + increment : (0, _alignmentD3Support.getTickValue)(ticks[nextIndex], dataType);
 
-	// If the first tick is less than the second tick, and the first tick has
-	// a lower position then the ordering is considered "normal". If the order is
-	// normal, we return true. False otherwise.
-	function _getTickOrdering(allTicks, getTickValue, getTickPosition, dimension) {
-	  var returnValue = void 0;
+	    // In order to run a single comparison (if), ensure prevTickVal is smaller
+	    // than nextTickVal
+	    var prevTickVal = Math.min(tickVal0, tickVal1);
+	    var nextTickVal = Math.max(tickVal1, tickVal0);
 
-	  // Compare the first and second tick to see which is greater in value.
-	  if (getTickValue(allTicks[0]) < getTickValue(allTicks[1])) {
-	    returnValue = true;
-	  } else {
-	    returnValue = false;
+	    // each shape should only compare with one set (2) ticks and the shape's
+	    // value may equal one of the tick's value
+	    if (val >= prevTickVal && val < nextTickVal) {
+	      var nextTick = !ticks[nextIndex] ? null : ticks[nextIndex];
+	      var prevTick = !ticks[tickIndex] ? null : ticks[tickIndex];
+	      surroundingTicks = [prevTick, nextTick];
+	    }
+
+	    if (normalTickOrder) {
+	      tickIndex++;
+	    } else {
+	      tickIndex--;
+	    }
+	  } while (surroundingTicks.length < 2
+	  // stop when two surroundingTicks are captured and tick NodeList iterated
+	  && (normalTickOrder ? tickIndex < ticks.length : tickIndex >= 0));
+	  if (surroundingTicks.length === 2) {
+	    returnValue = surroundingTicks;
 	  }
-
-	  // Now look at the position of the ticks to understand the order.
-	  if (getTickPosition(allTicks[0])[dimension] > getTickPosition(allTicks[1])[dimension]) {
-	    return !returnValue;
-	  }
-
+	  // null if surroundingTicks is []
 	  return returnValue;
 	}
 
-	// TODO: Only exported so we can test it.
-	// Given an axis and one shape, it will find the surrounding ticks based on
-	// the position of the shape, and then it will determine if the value of the
-	// shape is between the tick values
-	function _isShapeAlignedWithTicks(shape, allTicks, dimension, tickOrderNormal, getShapeValue, getTickValue, getShapePosition, getTickPosition) {
+	function areShapesAlignedWithTicks(
+	// NodeList
+	shapeCollection,
+	// NodeList
+	ticksCollection,
+	// String: 'x', 'y', 'cx', or 'cy'
+	dimension,
+	// String: 'data-year', 'data-gdp', 'data-date', 'data-xvalue', 'data-yvalue'
+	dataAttribute,
+	// String: 'year', 'minute', 'thousand', 'month'
+	dataType,
+	// Shape vertex to compare to axis: String: 'topLeft' or 'center'
+	positionType) {
+	  // return early if no shapes
+	  if (shapeCollection.length === 0) {
+	    return false;
+	  }
+	  var aligned = 0;
 
-	  var position = getShapePosition(shape);
+	  // get either 'x' or 'y' in case of 'cx' or 'cy'
+	  var coord = dimension.match(/c/g) ? dimension.split('c')[1] : dimension;
 
-	  var enclosingTicks = _getSurroundingTicks(allTicks, dimension, position, getTickPosition);
+	  var normalTickOrder = (0, _alignmentD3Support.getTickValue)(ticksCollection[ticksCollection.length - 1], dataType) > (0, _alignmentD3Support.getTickValue)(ticksCollection[0], dataType);
 
-	  var within = _isShapeValueWithinTickValues(shape, enclosingTicks, tickOrderNormal, getShapeValue, getTickValue);
+	  // increment may be positive or negative based on axis sort order
+	  var increment = (0, _alignmentD3Support.getTickValue)(ticksCollection[1], dataType) - (0, _alignmentD3Support.getTickValue)(ticksCollection[0], dataType);
 
-	  return within;
-	}
+	  // positionIncrement may be positive or negative based on axis sort order
+	  var positionIncrement = (0, _alignmentD3Support.getTickPosition)(ticksCollection[1])[coord] - (0, _alignmentD3Support.getTickPosition)(ticksCollection[0])[coord];
 
-	// Gets the nearest tick to a given position.
-	// The way it does this is not obvious. First it filters all the ticks to only
-	// get the ticks before or after the given position. The filtering is based
-	// on the "filterCompare" function parameter. Then it performs a reduce on the
-	// filtered ticks to find which one is closest to the given postion. The reduce
-	// function uses the "compare" parameter which is a function to compare ticks.
-	// See the "_getSurroundingTicks" function for an example of how this is used.
-	function getNearestTick(allTicks, filterCompare, dimension, position, getTickPosition, compare) {
+	  shapeCollection.forEach(function (shape) {
+	    var pos = (0, _alignmentD3Support.getShapePosition)(shape, dimension, positionType);
+	    var val = (0, _alignmentD3Support.getShapeValue)(shape, dataAttribute, dataType);
+	    // index is initially off (either -1 or ticksCollection.length), then
+	    // _getSurroundingTicks increments or decrements according to sort order
+	    var tickIndex = !normalTickOrder ? ticksCollection.length : -1;
 
-	  // Function to finds the tick that is closest to the given position, based on
-	  // the compare function.
-	  var reduceFunction = function reduceFunction(result, tick) {
-	    var position = getTickPosition(tick)[dimension];
-	    if (result && compare(getTickPosition(result)[dimension], position)) {
-	      return result;
+	    var surroundingTicks = _getSurroundingTicks(shape, val, ticksCollection, tickIndex, increment, dataType, normalTickOrder);
+
+	    if (surroundingTicks.length > 0) {
+	      var tickPos0 = !surroundingTicks[0] ?
+	      // surroundingTicks[0] may be null. if so, calc mock begin position
+	      (0, _alignmentD3Support.getTickPosition)(surroundingTicks[1])[coord] - positionIncrement :
+	      // actual begin position
+	      (0, _alignmentD3Support.getTickPosition)(surroundingTicks[0])[coord];
+
+	      var tickPos1 = !surroundingTicks[1] ?
+	      // calc mock end position
+	      (0, _alignmentD3Support.getTickPosition)(surroundingTicks[0])[coord] + positionIncrement :
+	      // actual position
+	      (0, _alignmentD3Support.getTickPosition)(surroundingTicks[1])[coord];
+	      var beforeTickPos = Math.min(tickPos0, tickPos1),
+	          afterTickPos = Math.max(tickPos0, tickPos1);
+
+	      // if shape is positioned between the two ticks plus or minus 11px
+	      // TODO reduce to 2px after Bar Chart is fixed. A leeway is necessary
+	      // for this code to work on all chart types.
+	      if (pos >= beforeTickPos - 11 && pos <= afterTickPos + 11) {
+	        aligned++;
+	      }
 	    }
-	    return tick;
-	  };
-
-	  // First filter the ticks to get only the ticks that are before or after
-	  // the given position.
-	  var ticks = allTicks.filter(function (tick) {
-	    var tickPosition = getTickPosition(tick)[dimension];
-	    return filterCompare(tickPosition, position[dimension]);
 	  });
-
-	  // Finally, run the reduce operation to get the closest tick.
-	  var closestTick = ticks.reduce(reduceFunction, null);
-
-	  return closestTick;
-	}
-
-	// TODO: Only exported so we can test it.
-	// Given a list of ticks it will find the ticks closest to the given position.
-	// This also works when there is no beforeTick or afterTick. I.e. sometimes some
-	// of the small values appear before the first tick, or the largest values
-	// appear after the last tick. In those cases it will return null for the
-	// tick in question.
-	function _getSurroundingTicks(ticksList, dimension, position, getTickPosition) {
-
-	  var ticks = void 0;
-	  var afterTick = void 0;
-	  var beforeTick = void 0;
-	  var lessThanFilter = function lessThanFilter(tickPosition, position) {
-	    return tickPosition <= position;
-	  };
-	  var greaterThanCompare = function greaterThanCompare(prevPosition, position) {
-	    return prevPosition > position;
-	  };
-	  var greaterThanFilter = function greaterThanFilter(tickPosition, position) {
-	    return tickPosition > position;
-	  };
-	  var lessThanCompare = function lessThanCompare(prevPosition, position) {
-	    return prevPosition < position;
-	  };
-
-	  if (!ticksList) {
-	    throw new Error('The list of ticks must not be empty.');
-	  }
-
-	  ticks = [].slice.call(ticksList);
-
-	  // The filter function finds all ticks less than or equal to the position.
-	  // The compare function then finds the largest of the filtered ticks.
-	  beforeTick = getNearestTick(ticks, lessThanFilter, dimension, position, getTickPosition, greaterThanCompare);
-
-	  // The filter function finds all ticks greater than the position.
-	  // The compare function then finds the smallest of the filtered ticks.
-	  afterTick = getNearestTick(ticks, greaterThanFilter, dimension, position, getTickPosition, lessThanCompare);
-
-	  return [beforeTick, afterTick];
-	}
-
-	// TODO: Only exported so we can test it.
-	// Given an array of two ticks, it determines the values of the ticks and
-	// whether or not the value of the given shape is within the tick values.
-	function _isShapeValueWithinTickValues(shape, ticks, tickOrderNormal, getShapeValue, getTickValue) {
-
-	  var shapeValue = getShapeValue(shape);
-
-	  // beforeTick and afterTick have only to do with the position of the ticks
-	  // in relation to the position of the shape.
-	  var beforeTickValue = void 0;
-	  var afterTickValue = void 0;
-	  var returnValue = void 0;
-
-	  // The beforeTick could be null.
-	  if (!ticks[0]) {
-	    afterTickValue = getTickValue(ticks[1]);
-	    if (tickOrderNormal) {
-	      returnValue = shapeValue <= afterTickValue;
-	    } else {
-	      returnValue = shapeValue >= afterTickValue;
-	    }
-	    // The afterTick could be null.
-	  } else if (!ticks[1]) {
-	    beforeTickValue = getTickValue(ticks[0]);
-	    if (tickOrderNormal) {
-	      returnValue = beforeTickValue <= shapeValue;
-	    } else {
-	      returnValue = beforeTickValue >= shapeValue;
-	    }
-	    // Neither the beforeTick or afterTick are null, so we use both to compare.
-	  } else {
-	    beforeTickValue = getTickValue(ticks[0]);
-	    afterTickValue = getTickValue(ticks[1]);
-	    if (tickOrderNormal) {
-	      returnValue = beforeTickValue <= shapeValue && shapeValue <= afterTickValue;
-	    } else {
-	      returnValue = beforeTickValue >= shapeValue && shapeValue >= afterTickValue;
-	    }
-	  }
-
-	  return returnValue;
+	  return aligned === shapeCollection.length;
 	}
 
 /***/ }),
@@ -22229,24 +22178,14 @@ var FCC_Global =
 	  value: true
 	});
 	exports.getTickPosition = getTickPosition;
-	exports.getTickValueMonth = getTickValueMonth;
-	exports.getTickValueYear = getTickValueYear;
-	exports.getShapeValueMonthHeatMap = getShapeValueMonthHeatMap;
-	exports.getShapeValueYearHeatMap = getShapeValueYearHeatMap;
-	exports.getShapeValueYearScatter = getShapeValueYearScatter;
-	exports.getShapeValueYearBar = getShapeValueYearBar;
-	exports.getShapeValueDecimal = getShapeValueDecimal;
-	exports.getTickValueThousands = getTickValueThousands;
-	exports.getShapeValueMinutes = getShapeValueMinutes;
-	exports.getTickValueMinutes = getTickValueMinutes;
-	exports.getShapePositionRect = getShapePositionRect;
-	exports.getShapePositionRectBar = getShapePositionRectBar;
-	exports.getShapePositionCircle = getShapePositionCircle;
-	// D3 Alignment test supporting functions. Anything that is chart specific
-	// should go here. For example, the getTickValueMonth function is only used for
-	// testing the Heatmap D3 Chart, so it belongs here.
-
+	exports.getTickValue = getTickValue;
+	exports.getShapeValue = getShapeValue;
+	exports.getShapePosition = getShapePosition;
+	// D3 Alignment test supporting functions. These functions fetch values
+	// and positions of both axis ticks and chart shapes (bars, dots, rects).
 	// TODO: Documentation.
+
+	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 	function getTickPosition(tick) {
 	  var x = void 0,
@@ -22262,96 +22201,68 @@ var FCC_Global =
 	  return { x: x, y: y };
 	}
 
-	function getTickValueMonth(tick) {
-	  var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
-	  var value = tick.querySelector('text').innerHTML.toLowerCase();
-	  return months.indexOf(value);
+	function getTickValue(item, dataType) {
+	  var val = item.querySelector('text').innerHTML;
+	  switch (dataType) {
+	    case null:
+	      break;
+	    case 'minute':
+	      val = parseInt(val.split(':')[0], 10) + parseInt(val.split(':')[1], 10) / 60;
+	      break;
+	    case 'month':
+	      val = months.indexOf(val.toLowerCase());
+	      break;
+	    case 'thousand':
+	      val = val.split(',').join('');
+	      break;
+	    default:
+	      break;
+	  }
+	  return parseFloat(val);
 	}
 
-	function getTickValueYear(tick) {
-	  return parseInt(tick.querySelector('text').innerHTML, 10);
+	function getShapeValue(item, attribute, dataType) {
+	  var val = void 0;
+	  switch (dataType) {
+	    case null:
+	      val = item.getAttribute(attribute);
+	      break;
+	    case 'year':
+	      val = new Date(item.getAttribute(attribute)).getFullYear();
+	      break;
+	    case 'minute':
+	      val = new Date(item.getAttribute(attribute)).getMinutes() + new Date(item.getAttribute(attribute)).getSeconds() / 60;
+	      break;
+	    case 'month':
+	      val = isNaN(parseInt(item.getAttribute(attribute), 10)) ? months.indexOf(item.getAttribute(attribute).toLowerCase()) : item.getAttribute(attribute);
+	      break;
+	    default:
+	      val = item.getAttribute(attribute);
+	  }
+	  return parseFloat(val);
 	}
 
-	function getShapeValueMonthHeatMap(shape) {
-	  return parseInt(shape.getAttribute('data-month'), 10);
-	}
-
-	function getShapeValueYearHeatMap(shape) {
-	  return parseInt(shape.getAttribute('data-year'), 10);
-	}
-
-	function getShapeValueYearScatter(shape) {
-	  return parseInt(shape.getAttribute('data-xvalue'), 10);
-	}
-
-	function getShapeValueYearBar(shape) {
-	  // Number from String. Example from dataset: '2015-01-01'
-	  return parseInt(shape.getAttribute('data-date').split('-')[0], 10);
-	}
-
-	function getShapeValueDecimal(shape) {
-	  return parseFloat(shape.getAttribute('data-gdp'));
-	}
-
-	function getTickValueThousands(tick) {
-	  // Number from String. Example from dataset: '2,000'
-	  return parseInt(tick.querySelector('text').innerHTML.split(',').join(''), 10);
-	}
-
-	function getShapeValueMinutes(shape) {
-	  var value = shape.getAttribute('data-yvalue');
-	  return new Date(value).getMinutes() + new Date(value).getSeconds() / 60;
-	}
-
-	function getTickValueMinutes(tick) {
-	  var value = tick.querySelector('text').innerHTML;
-	  return parseInt(value.split(':')[0], 10) + parseInt(value.split(':')[1], 10) / 60;
-	}
-
-	function getShapePositionRect(shape) {
-	  // the x, y attributes for each rect are from the top-left of the shape.
-	  // compute the mid-value for a coordinate to compare to axis tick
+	function getShapePosition(item, dimension, positionType) {
 	  var half = void 0,
-	      x = void 0,
-	      y = void 0;
-
-	  half = parseFloat(shape.getAttribute('width')) / 2;
-	  x = parseFloat(shape.getAttribute('x')) + half;
-
-	  half = parseFloat(shape.getAttribute('height')) / 2;
-	  y = parseFloat(shape.getAttribute('y')) + half;
-
-	  return { x: x, y: y };
-	}
-
-	function getShapePositionRectBar(shape) {
-	  // the x, y attributes for each rect are from the top-left of the shape.
-	  // compute the mid-value for a coordinate to compare to x-axis tick
-
-	  // TODO: rects are computed at y + 6 because
-	  // the fCC Bar Chart appears to have misalignment.
-	  var x = void 0,
-	      y = void 0,
-	      width = void 0;
-
-	  width = parseFloat(shape.getAttribute('width'));
-	  x = parseFloat(shape.getAttribute('x')) + width / 2;
-	  // fCC Bar Chart pen is at most 6px off on the y-axis
-	  y = parseFloat(shape.getAttribute('y')) + 5.5;
-
-	  return { x: x, y: y, width: width };
-	}
-
-	function getShapePositionCircle(shape) {
-	  var x = void 0,
-	      y = void 0;
-
-	  x = parseFloat(shape.getAttribute('cx'));
-
-	  y = parseFloat(shape.getAttribute('cy'));
-
-	  return { x: x, y: y };
+	      pos = parseFloat(item.getAttribute(dimension));
+	  switch (positionType) {
+	    case 'topLeft':
+	      // bar
+	      half = 0;
+	      break;
+	    case 'center':
+	      // get either 'width' or 'height' if dimension is 'x', 'cx', 'y', or 'cy'
+	      var attr = dimension.match(/y/g) ? 'height' : 'width';
+	      // circle elements have 'r' attributes instead of 'height' or 'width'.
+	      // The half variable is for rect elements we want the midpoint from
+	      // so item.getAttribute(attr) will be null for circles.
+	      half = !item.getAttribute(attr) ? 0 : parseFloat(item.getAttribute(attr)) / 2;
+	      break;
+	    default:
+	      half = 0;
+	  }
+	  pos += half;
+	  return pos;
 	}
 
 /***/ }),
@@ -22483,8 +22394,6 @@ var FCC_Global =
 
 	var _alignmentD = __webpack_require__(61);
 
-	var _alignmentD3Support = __webpack_require__(62);
-
 	var _chai = __webpack_require__(2);
 
 	var _globalD3Tests = __webpack_require__(63);
@@ -22565,22 +22474,28 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. The data-xvalue and its corresponding dot should align\n      with the corresponding point/value on the x-axis.', function () {
-	        var dotsCollection = document.getElementsByClassName('dot');
-	        var coordAttr = 'x';
+	        var axis = document.querySelector('#x-axis');
+	        var coordAttr = 'cx';
+	        var dotsCollection = document.querySelectorAll('.dot');
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-xvalue';
+	        var dataType = 'year';
+	        var shapeAlign = 'center';
 
-	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
-
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueYearScatter, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'x values don\'t line up with x locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(dotsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'x values don\'t line up with x locations ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. The data-yvalue and its corresponding dot should align\n      with the corresponding point/value on the y-axis.', function () {
-	        var dotsCollection = document.getElementsByClassName('dot');
-	        var coordAttr = 'y';
+	        var axis = document.querySelector('#y-axis');
+	        var coordAttr = 'cy';
+	        var dotsCollection = document.querySelectorAll('.dot');
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-yvalue';
+	        var dataType = 'minute';
+	        var shapeAlign = 'center';
 
-	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
-
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueMinutes, _alignmentD3Support.getTickValueMinutes, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'y values don\'t line up with y locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(dotsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'y values don\'t line up with y locations ');
 	      });
 
 	      reqNum++;
@@ -41973,8 +41888,6 @@ var FCC_Global =
 
 	var _alignmentD = __webpack_require__(61);
 
-	var _alignmentD3Support = __webpack_require__(62);
-
 	var _chai = __webpack_require__(2);
 
 	var _globalD3Tests = __webpack_require__(63);
@@ -42067,30 +41980,35 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding month on the y-axis.', function () {
-	        var cellsCollection = document.querySelectorAll('rect.cell');
+
+	        var axis = document.querySelector('#y-axis');
 	        var coordAttr = 'y';
+	        var cellsCollection = document.querySelectorAll('.cell');
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-month';
+	        // options are 'minute', 'month', 'thousand', and 'year'
+	        var dataType = 'month';
+	        // what vertex of shape to measure against the axis
+	        // options are 'topLeft' and 'center'
+	        var shapeAlign = 'center';
 
-	        // Protect against a false positive for the alignment test. The
-	        // alignment test will return true if there are no cells.
-	        // TODO: isAxisAlignedWithDataPoints should probably return false if
-	        // the list of cells is empty. That would let us remove this check.
-	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any <rect> elements with a class="cell" ');
-
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, cellsCollection, _alignmentD3Support.getShapeValueMonthHeatMap, _alignmentD3Support.getTickValueMonth, _alignmentD3Support.getShapePositionRect, _alignmentD3Support.getTickPosition), 'month values don\'t line up with y locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(cellsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'month values don\'t line up with y locations ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding year on the x-axis.', function () {
 	        var cellsCollection = document.querySelectorAll('rect.cell');
+	        var axis = document.querySelector('#x-axis');
 	        var coordAttr = 'x';
+	        var ticksCollection = axis.querySelectorAll('.tick');
+	        var shapeAttr = 'data-year';
+	        // options are 'minute', 'month', 'thousand', and 'year'
+	        var dataType = 'year';
+	        // what vertex of shape to measure against the axis
+	        // options are 'topLeft' and 'center'
+	        var shapeAlign = 'center';
 
-	        // Protect against a false positive for the alignment test. The
-	        // alignment test will return true if there are no cells.
-	        // TODO: isAxisAlignedWithDataPoints should probably return false if
-	        // the list of cells is empty. That would let us remove this check.
-	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class="cell" ');
-
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, cellsCollection, _alignmentD3Support.getShapeValueYearHeatMap, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionRect, _alignmentD3Support.getTickPosition), 'year values don\'t line up with x locations ');
+	        _chai.assert.isTrue((0, _alignmentD.areShapesAlignedWithTicks)(cellsCollection, ticksCollection, coordAttr, shapeAttr, dataType, shapeAlign), 'year values don\'t line up with x locations ');
 	      });
 
 	      reqNum++;
