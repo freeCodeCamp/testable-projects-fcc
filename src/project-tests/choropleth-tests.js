@@ -1,10 +1,17 @@
 import { assert } from 'chai';
 import educationData from '../data/choropleth_map/education.json';
 import { testToolTip } from '../utils/global-D3-tests';
+import { d3ProjectStackNoAxes } from '../utils/shared-test-strings';
 
 export default function createChoroplethTests() {
 
   describe('#ChoroplethTests', function() {
+
+    describe('#Technology Stack', function() {
+      it(d3ProjectStackNoAxes, function() {
+        return true;
+      });
+    });
 
     describe('#Content', function() {
       let reqNum = 0;
