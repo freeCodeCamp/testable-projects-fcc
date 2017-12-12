@@ -19,3 +19,30 @@ export function clickButtonsById(buttonIds) {
     }
   });
 }
+
+// Determines if a collection of HTML elements has at least the specified number
+// of unique colors.
+export function hasUniqueColorsCount(elements, numberOfColors) {
+
+  let uniqueColors = [];
+
+  // Use a loop instead of 'foreach' so we can return early.
+  for (let i = 0; i < elements.length; i++) {
+    let color = elements[i].style.fill || elements[i].getAttribute('fill');
+
+    // Make sure the color contains an actual value instead of something like
+    // null or undefined.
+    // If the current color isn't in the uniqueColors arr, push it.
+    // TODO: Isn't this logic in another D3 test too? Maybe Choropleth?
+    if (color && (uniqueColors.indexOf(color) === -1)) {
+      uniqueColors.push(color);
+    }
+
+    if (uniqueColors.length >= numberOfColors) {
+      return true;
+    }
+
+  }
+
+  return false;
+}
