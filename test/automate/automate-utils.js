@@ -228,7 +228,7 @@ exports.doesProjectPassTests = function(name, URL) {
     // Find the bundle.js input row and set it to blank.
     // TODO: Put the var declaration elsewhere.
     var javascriptRows = driver.findElements(
-      By.className('js-resource external-resource tt-input')
+      By.className('js-resource external-resource')
     );
 
     javascriptRows.then(function(webElems) {
@@ -273,6 +273,15 @@ exports.doesProjectPassTests = function(name, URL) {
     until.ableToSwitchToFrame(By.className('result-iframe')),
     elementTimeout
   );
+
+  // Wait for the page to finish loading. In some cases, just for example the
+  // D3 projects, projects are loading remote data, so we have to be generous
+  // here.
+  // TODO: A better way to do this is to change all of the example projects to
+  // set a varialbe such as 'fccTestableProjectsdataLoaded', and then we can
+  // wait for that variable to be true. But that will require changing every
+  // example project.
+  driver.sleep(2000);
 
   // Run the tests by clicking our test button after the element appears.
   clickElement(By.id('fcc_test_message-box-rerun-button'));
