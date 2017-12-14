@@ -41895,6 +41895,10 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
+	var _sharedTestStrings = __webpack_require__(49);
+
+	var _elementUtils = __webpack_require__(52);
+
 	var _alignmentD = __webpack_require__(63);
 
 	var _alignmentD3Support = __webpack_require__(64);
@@ -41903,11 +41907,16 @@ var FCC_Global =
 
 	var _globalD3Tests = __webpack_require__(61);
 
-	var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
 	function createHeatMapTests() {
 
 	  describe('#HeatMapTests', function () {
+
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.d3ProjectStackNoAxes, function () {
+	        return true;
+	      });
+	    });
+
 	    describe('#Content', function () {
 	      var reqNum = 0;
 
@@ -41932,55 +41941,42 @@ var FCC_Global =
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. My heat map should have cells with a corresponding\n      class="cell" that represent the data.', function () {
-	        _chai.assert.isAbove(document.querySelectorAll('.cell').length, 0, 'Could not find any elements with a class="cell" ');
+	      it(reqNum + '. My heat map should have <rect> elements with a class="cell"\n      that represent the data.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('rect.cell').length, 0, 'Could not find any <rect> elements with a class="cell" ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the cells.', function () {
-	        var cells = document.querySelectorAll('.cell');
-	        var uniqueColors = [];
+	        var cells = document.querySelectorAll('rect.cell');
 
-	        for (var i = 0; i < cells.length; i++) {
-	          var cellColor = cells[i].style.fill || cells[i].getAttribute('fill');
-
-	          // if the current color isn't in the uniqueColors arr, push it
-	          if (uniqueColors.indexOf(cellColor) === -1) {
-	            uniqueColors.push(cellColor);
-	          }
-	        }
-	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be more than four fill colors used for the cells ');
+	        _chai.assert.isTrue((0, _elementUtils.hasUniqueColorsCount)(cells, 4), 'There should be four or more fill colors used for the cells ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. Each cell will have the properties "data-month",\n      "data-year", "data-temp" containing their corresponding month, year, and\n      temperature values.', function () {
-	        var cells = document.querySelectorAll('.cell');
+	        var cells = document.querySelectorAll('rect.cell');
 
-	        _chai.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        // Without this assertion, the other assertions will never be reached
+	        // (forEach loop below is never entered) and we would get a false
+	        // positive for the overall test.
+	        _chai.assert.isAbove(cells.length, 0, 'Could not find any <rect> elements with a class="cell" ');
 
-	        for (var i = 0; i < cells.length; i++) {
-	          var cell = cells[i];
+	        cells.forEach(function (cell) {
 	          _chai.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
 	          _chai.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
 	          _chai.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
-	        }
+	        });
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. The "data-month", "data-year" of each cell should be\n      within the range of the data.', function () {
 
-	        // NOTE:  This test contains the same exact tests from 6 and 7.
-	        // Is there a way to only run test 8 if test 6 and 7 pass?
-	        // Should we be putting this code in a utility function?
-	        var cells = document.querySelectorAll('.cell');
-	        _chai.assert.isAbove(cells.length, 0, 'Could not find any elements with a class="cell" ');
+	        var cells = document.querySelectorAll('rect.cell');
 
-	        for (var i = 0; i < cells.length; i++) {
-	          var cell = cells[i];
-	          _chai.assert.isNotNull(cell.getAttribute('data-month'), 'Could not find property "data-month" in cell ');
-	          _chai.assert.isNotNull(cell.getAttribute('data-year'), 'Could not find property "data-year" in cell ');
-	          _chai.assert.isNotNull(cell.getAttribute('data-temp'), 'Could not find property "data-temp" in cell ');
-	        }
+	        // Without this assertion, the other assertions will never be reached
+	        // (forEach loop below is never entered) and the test would falsely
+	        // pass.
+	        _chai.assert.isAbove(cells.length, 0, 'Could not find any <rect> elements with a class="cell" ');
 
 	        cells.forEach(function (cell) {
 	          var dataMonth = cell.getAttribute('data-month');
@@ -41999,19 +41995,27 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding month on the y-axis.', function () {
-	        var cellsCollection = document.querySelectorAll('.cell');
+	        var cellsCollection = document.querySelectorAll('rect.cell');
 	        var coordAttr = 'y';
 
-	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class="cell" ');
+	        // Protect against a false positive for the alignment test. The
+	        // alignment test will return true if there are no cells.
+	        // TODO: isAxisAlignedWithDataPoints should probably return false if
+	        // the list of cells is empty. That would let us remove this check.
+	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any <rect> elements with a class="cell" ');
 
 	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, cellsCollection, _alignmentD3Support.getShapeValueMonthHeatMap, _alignmentD3Support.getTickValueMonth, _alignmentD3Support.getShapePositionRect, _alignmentD3Support.getTickPosition), 'month values don\'t line up with y locations ');
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have cells that align with the\n      corresponding year on the x-axis.', function () {
-	        var cellsCollection = document.querySelectorAll('.cell');
+	        var cellsCollection = document.querySelectorAll('rect.cell');
 	        var coordAttr = 'x';
 
+	        // Protect against a false positive for the alignment test. The
+	        // alignment test will return true if there are no cells.
+	        // TODO: isAxisAlignedWithDataPoints should probably return false if
+	        // the list of cells is empty. That would let us remove this check.
 	        _chai.assert.isAbove(cellsCollection.length, 0, 'Could not find any elements with a class="cell" ');
 
 	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, cellsCollection, _alignmentD3Support.getShapeValueYearHeatMap, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionRect, _alignmentD3Support.getTickPosition), 'year values don\'t line up with x locations ');
@@ -42020,35 +42024,51 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. My heat map should have multiple tick labels on the y-axis\n      with the full month name.', function () {
 	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+	        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
+	        // Prevent a false pass of this test by making sure there are at least
+	        // some labels.
 	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis');
 
-	        for (var i = 0; i < yAxisTickLabels.length; i++) {
-	          _chai.assert.include(months, yAxisTickLabels[i].textContent.toLowerCase(), 'Y axis labels should contain month names ');
-	        }
+	        yAxisTickLabels.forEach(function (tickLabel) {
+	          _chai.assert.include(months, tickLabel.textContent.toLowerCase(), 'Y axis labels should contain full month names (example: January)');
+	        });
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have multiple tick labels on the x-axis\n      with the years between 1754 and 2015.', function () {
 	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
+	        // Without this assertion, the test would pass when there are no
+	        // tick labels.
 	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis');
 
-	        for (var i = 0; i < xAxisTickLabels.length; i++) {
+	        xAxisTickLabels.forEach(function (tickLabel) {
+	          _chai.assert.isAtLeast(tickLabel.textContent, 1754, 'X axis labels should contain a year that\'s at least 1754 ');
 
-	          _chai.assert.isAtLeast(xAxisTickLabels[i].textContent, 1754, 'X axis labels should contain a year that\'s at least 1754 ');
-
-	          _chai.assert.isAtMost(xAxisTickLabels[i].textContent, 2015, 'X axis labels should contain a year that\'s at most 2015 ');
-	        }
+	          _chai.assert.isAtMost(tickLabel.textContent, 2015, 'X axis labels should contain a year that\'s at most 2015 ');
+	        });
 	      });
 
 	      reqNum++;
 	      it(reqNum + '. My heat map should have a legend with corresponding\n      id="legend".', function () {
 	        _chai.assert.isNotNull(document.getElementById('legend'), 'Could not find an element with id="legend" ');
 	      });
+
+	      reqNum++;
+	      it(reqNum + '. My legend should contain <rect> elements.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('#legend rect').length, 0, 'Could not find <rect> elements contained by the legend element ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The <rect> elements in the legend should use at least 4 \n      different fill colors', function () {
+	        var legendItems = document.querySelectorAll('#legend rect');
+
+	        _chai.assert.isTrue((0, _elementUtils.hasUniqueColorsCount)(legendItems, 4), 'There should be four or more fill colors used for the legend ');
+	      });
 	    });
 
-	    // Addtional tests.
+	    // Tooltip tests.
 	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.cell'), 'data-year', 'data-year');
 	  });
 	}
