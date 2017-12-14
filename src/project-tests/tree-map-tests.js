@@ -1,9 +1,19 @@
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
 
+import { d3ProjectStack } from '../utils/shared-test-strings';
+import { hasUniqueColorsCount } from '../utils/element-utils';
+
 export default function createTreeMapTests() {
 
   describe('#TreeMapTests', function() {
+
+    describe('#Technology Stack', function() {
+      it(d3ProjectStack, function() {
+        return true;
+      });
+    });
+
     describe('#Content', function() {
       let reqNum = 0;
 
@@ -32,9 +42,9 @@ export default function createTreeMapTests() {
       corresponding class="tile" that represent the data`,
       function() {
         assert.isAbove(
-          document.querySelectorAll('.tile').length,
+          document.querySelectorAll('rect.tile').length,
           0,
-          'Could not find elements with class="tile" '
+          'Could not find <rect> elements with class="tile" '
         );
       });
 
@@ -42,23 +52,11 @@ export default function createTreeMapTests() {
       it(`${reqNum}. There should be at least 2 different fill colors used for
       the tiles`,
       function() {
-        const tiles = document.querySelectorAll('.tile');
-        var uniqueColors = [];
+        const tiles = document.querySelectorAll('rect.tile');
 
-        for (var i = 0; i < tiles.length; i++) {
-          var tileColor = tiles[i].style.fill || tiles[i].getAttribute('fill');
-
-          // If the current color isn't in the uniqueColors arr, push it.
-          // TODO: Isn't this logic in another D3 test too? Maybe Choropleth?
-          // We should put it in an external module if so.
-          if (uniqueColors.indexOf(tileColor) === -1) {
-            uniqueColors.push(tileColor);
-          }
-        }
-        assert.isAtLeast(
-          uniqueColors.length,
-          2,
-          'There should be more than two fill colors used for the tiles'
+        assert.isTrue(
+          hasUniqueColorsCount(tiles, 2),
+          'There should be two or more fill colors used for the tiles'
         );
       });
 
@@ -67,15 +65,14 @@ export default function createTreeMapTests() {
       "data-category",  and "data-value" containing their corresponding name,
       category, and value`,
       function() {
-        const tiles = document.querySelectorAll('.tile');
+        const tiles = document.querySelectorAll('rect.tile');
         assert.isAbove(
           tiles.length,
           0,
           'Could not find any elements with a class="tile"'
         );
 
-        for (var i = 0; i < tiles.length; i++) {
-          var tile = tiles[i];
+        tiles.forEach(tile => {
           assert.isNotNull(
             tile.getAttribute('data-name'),
             'Could not find property \'data-name\' in tile'
@@ -88,57 +85,72 @@ export default function createTreeMapTests() {
             tile.getAttribute('data-value'),
             'Could not find property \'data-value\' in tile'
           );
-        }
+        });
+
       });
 
       reqNum++;
       it(`${reqNum}.  The area of each tile should correspond to the data-value
-      amount`,
+      amount: tiles with a larger data-value should have a bigger area.`,
       function() {
-        const tilesCollection = document.querySelectorAll('.tile');
+        const tilesCollection = document.querySelectorAll('rect.tile');
         let category;
+        let tilesByCategory = {};
 
+        // Early error to prevent trying to iterate an empty list of tiles.
         assert.isAbove(tilesCollection.length,
           0,
-          'Could not find any elements with a class="tile"'
+          'Could not find any <rect> elements with a class="tile"'
         );
 
+        // Convert to an array.
         const tiles = [].slice.call(tilesCollection);
 
         // Group tiles by category.
-        var tilesByCategory = {};
-        for (var j = 1; j < tiles.length; j++) {
-          category = tiles[j].getAttribute('data-category');
+        tiles.forEach(tile => {
+          category = tile.getAttribute('data-category');
           if (!tilesByCategory[category]) {
             tilesByCategory[category] = [];
           }
-          tilesByCategory[category].push(tiles[j]);
+          tilesByCategory[category].push(tile);
+        });
+
+        // Sort the tiles within each category by data-value. Smaller values
+        // will be first.
+        for (let key in tilesByCategory) {
+          // Skip inherited properties.
+          if (Object.prototype.hasOwnProperty.call(tilesByCategory, key)) {
+            category = tilesByCategory[key];
+
+            category.sort(function(tile1, tile2) {
+              var tile1Value = tile1.getAttribute('data-value');
+              var tile2Value = tile2.getAttribute('data-value');
+              return tile1Value - tile2Value;
+            });
+          }
         }
 
-        // Sort tile values in each category.
-        for (var i = 0; i < tilesByCategory.length; i++) {
-          category = tilesByCategory[i];
-          category.sort(function(tile1, tile2) {
-            var tile1Value = tile1.getAttribute('data-value');
-            var tile2Value = tile2.getAttribute('data-value');
-            return tile1Value - tile2Value;
-          });
-        }
+        // Now that tiles are sorted by value, make sure that every tile is
+        // smaller in area than the one after it.
+        for (let key in tilesByCategory) {
+          if (Object.prototype.hasOwnProperty.call(tilesByCategory, key)) {
+            // Cannot compare if there is only one tile.
+            if (tilesByCategory[key].length > 1) {
+              for (var m = 0; m < tilesByCategory[key].length - 1; m++) {
+                let firstArea =
+                  +tilesByCategory[key][m].getAttribute('width') *
+                  +tilesByCategory[key][m].getAttribute('height');
 
-        // Outer loop loops through array category arrays.
-        for (var k = 0; k < tilesByCategory.length; k++) {
-          if (tilesByCategory[k].length > 1) {
-            // Loops through each item in playfrom array.
-            for (var m = 0; m < tilesByCategory[k].length - 1; m++) {
-              var firstTile = +tilesByCategory[k][m].getAttribute('data-value');
-              var secondTile =
-                +tilesByCategory[k][m + 1].getAttribute('data-value');
+                let secondArea =
+                  +tilesByCategory[key][m + 1].getAttribute('width') *
+                  +tilesByCategory[key][m + 1].getAttribute('height');
 
-              assert.isAtMost(
-                firstTile,
-                secondTile,
-                'data-value property does not match tile area'
-              );
+                assert.isAtMost(
+                  firstArea,
+                  secondArea,
+                  'the relative data-value property does not match tile area'
+                );
+              }
             }
           }
         }
@@ -155,40 +167,31 @@ export default function createTreeMapTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. The legend should have items which use at least 2 different
-      fill colors`,
+      it(`${reqNum}. My legend should have <rect> elements with a
+      corresponding class="legend-item"`,
       function() {
-        assert.isNotNull(
-          document.getElementById('legend'),
-          'Could not find element with id="legend" '
+        assert.isAbove(
+          document.querySelectorAll('#legend rect.legend-item').length,
+          0,
+          'Could not find <rect> elements with class="legend-item" '
         );
+      });
 
-        // TODO: Isn't this logic in another D3 test too? Maybe Choropleth?
-        // We should put it in an external module if so.
-        // Get all children of the legend to gather their color data.
+      reqNum++;
+      it(`${reqNum}. The <rect> elements in the legend should use at least 2 
+      different fill colors`,
+      function() {
         const legendItems =
-          document.querySelector('#legend').querySelectorAll('*');
-        var uniqueColors = [];
+          document.querySelectorAll('#legend rect.legend-item');
 
-        for (var i = 0; i < legendItems.length; i++) {
-          var legendItemColors =
-            legendItems[i].style.fill || legendItems[i].getAttribute('fill');
-
-          // If the current color isn't in the uniqueColors arr, push it.
-          if (uniqueColors.indexOf(legendItemColors) === -1) {
-            uniqueColors.push(legendItemColors);
-          }
-        }
-
-        assert.isAtLeast(
-          uniqueColors.length,
-          2,
-          'There should be at least two fill colors used for the legend '
+        assert.isTrue(
+          hasUniqueColorsCount(legendItems, 2),
+          'There should be two or more fill colors used for the legend '
         );
       });
     });
 
-    // Additional tests.
+    // Tooltip tests.
     testToolTip(document.querySelectorAll('.tile'), 'data-value', 'data-value');
 
   });
