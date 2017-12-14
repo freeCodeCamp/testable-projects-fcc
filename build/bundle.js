@@ -20252,7 +20252,6 @@ var FCC_Global =
 	    // Make sure the color contains an actual value instead of something like
 	    // null or undefined.
 	    // If the current color isn't in the uniqueColors arr, push it.
-	    // TODO: Isn't this logic in another D3 test too? Maybe Choropleth?
 	    if (color && uniqueColors.indexOf(color) === -1) {
 	      uniqueColors.push(color);
 	    }
@@ -22600,6 +22599,8 @@ var FCC_Global =
 
 	var _sharedTestStrings = __webpack_require__(49);
 
+	var _elementUtils = __webpack_require__(52);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createChoroplethTests() {
@@ -22633,18 +22634,8 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the counties', function () {
 	        var counties = document.querySelectorAll('.county');
-	        var uniqueColors = [];
 
-	        for (var i = 0; i < counties.length; i++) {
-	          var countyColor = counties[i].style.fill || counties[i].getAttribute('fill');
-
-	          // If the current color isn't in the uniqueColors arr, push it.
-	          if (uniqueColors.indexOf(countyColor) === -1) {
-	            uniqueColors.push(countyColor);
-	          }
-	        }
-
-	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the counties ');
+	        _chai.assert.isTrue((0, _elementUtils.hasUniqueColorsCount)(counties, 4), 'There should be at least four fill colors used for the counties ');
 	      });
 
 	      reqNum++;
@@ -22717,17 +22708,8 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. There should be at least 4 different fill colors used for\n      the legend', function () {
 	        var rects = document.querySelectorAll('#legend rect');
-	        var uniqueColors = [];
 
-	        for (var i = 0; i < rects.length; i++) {
-	          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
-
-	          // if the current color isn't in the uniqueColors arr, push it
-	          if (uniqueColors.indexOf(rectColor) === -1) {
-	            uniqueColors.push(rectColor);
-	          }
-	        }
-	        _chai.assert.isAtLeast(uniqueColors.length, 4, 'There should be at least four fill colors used for the legend ');
+	        _chai.assert.isTrue((0, _elementUtils.hasUniqueColorsCount)(rects, 4), 'There should be at least four fill colors used for the legend ');
 	      });
 	    });
 

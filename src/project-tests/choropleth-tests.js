@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import educationData from '../data/choropleth_map/education.json';
 import { testToolTip } from '../utils/global-D3-tests';
 import { d3ProjectStackNoAxes } from '../utils/shared-test-strings';
+import { hasUniqueColorsCount } from '../utils/element-utils';
 
 export default function createChoroplethTests() {
 
@@ -52,21 +53,9 @@ export default function createChoroplethTests() {
       the counties`,
       function() {
         const counties = document.querySelectorAll('.county');
-        var uniqueColors = [];
 
-        for (var i = 0; i < counties.length; i++) {
-          var countyColor =
-            counties[i].style.fill || counties[i].getAttribute('fill');
-
-          // If the current color isn't in the uniqueColors arr, push it.
-          if (uniqueColors.indexOf(countyColor) === -1) {
-            uniqueColors.push(countyColor);
-          }
-        }
-
-        assert.isAtLeast(
-          uniqueColors.length,
-          4,
+        assert.isTrue(
+          hasUniqueColorsCount(counties, 4),
           'There should be at least four fill colors used for the counties '
         );
       });
@@ -184,19 +173,9 @@ export default function createChoroplethTests() {
       the legend`,
       function() {
         const rects = document.querySelectorAll('#legend rect');
-        var uniqueColors = [];
 
-        for (var i = 0; i < rects.length; i++) {
-          var rectColor = rects[i].style.fill || rects[i].getAttribute('fill');
-
-          // if the current color isn't in the uniqueColors arr, push it
-          if (uniqueColors.indexOf(rectColor) === -1) {
-            uniqueColors.push(rectColor);
-          }
-        }
-        assert.isAtLeast(
-          uniqueColors.length,
-          4,
+        assert.isTrue(
+          hasUniqueColorsCount(rects, 4),
           'There should be at least four fill colors used for the legend '
         );
       });
