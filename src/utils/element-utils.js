@@ -33,7 +33,6 @@ export function hasUniqueColorsCount(elements, numberOfColors) {
     // Make sure the color contains an actual value instead of something like
     // null or undefined.
     // If the current color isn't in the uniqueColors arr, push it.
-    // TODO: Isn't this logic in another D3 test too? Maybe Choropleth?
     if (color && (uniqueColors.indexOf(color) === -1)) {
       uniqueColors.push(color);
     }
