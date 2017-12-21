@@ -20,3 +20,12 @@ cache:
   directories:
     - node_modules
 sudo: false
+deploy:
+  provider: pages
+  local_dir: travis-screenshots
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  all_branches: true
+  target-branch: travis-screenshots
+  on:
+    all_branches: true
