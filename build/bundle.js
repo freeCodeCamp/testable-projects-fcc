@@ -119,7 +119,7 @@ var FCC_Global =
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(62);
+	var _scatterPlotTests = __webpack_require__(64);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
@@ -21887,261 +21887,25 @@ var FCC_Global =
 	});
 	exports.default = createBarChartTests;
 
+	var _alignmentD = __webpack_require__(61);
+
+	var _alignmentD3Support = __webpack_require__(62);
+
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(61);
+	var _globalD3Tests = __webpack_require__(63);
 
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _sharedTestStrings = __webpack_require__(49);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function createBarChartTests() {
 
 	  describe('#BarChartTests', function () {
-	    var reqNum = 0;
-
-	    reqNum++;
-	    it(reqNum + '. My chart should have a title with a corresponding\n    id="title"', function () {
-	      _chai.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. My Chart should have an x-axis with a corresponding\n    id="x-axis"', function () {
-	      _chai.assert.isNotNull(document.getElementById('x-axis'), 'Could not find element with id="x-axis" ');
-	      _chai.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. My Chart should have a y-axis with a corresponding\n    id="y-axis"', function () {
-	      _chai.assert.isNotNull(document.getElementById('y-axis'), 'Could not find element with id="y-axis" ');
-
-	      _chai.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element ');
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. Both axes should contain multiple tick labels', function () {
-	      _chai.assert.isAbove((0, _jquery2.default)('#x-axis .tick').length, 1, 'There are not enough tick labels on the x-axis ');
-	      _chai.assert.isAbove((0, _jquery2.default)('#y-axis .tick').length, 1, 'There are not enough tick labels on the y-axis ');
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. My Chart should have a bar for each data point with a\n    corresponding class="bar" displaying the data', function () {
-	      _chai.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any elements with class="bar" ');
-	      _chai.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ');
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. Each bar should have the properties "data-date" and\n    "data-gdp" containing date and GDP values', function () {
-	      var bars = document.getElementsByClassName('bar');
-	      _chai.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	      for (var i = 0; i < bars.length; i++) {
-	        var bar = bars[i];
-	        _chai.assert.isNotNull(bar.getAttribute('data-date'), 'Could not find property "data-date" in bar ');
-	        _chai.assert.isNotNull(bar.getAttribute('data-gdp'), 'Could not find property "data-gdp" in bar ');
-	      }
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. The "data-date" properties should match the order of the\n    provided data', function (done) {
-	      _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/' + 'master/GDP-data.json', function (res) {
-	        try {
-	          var bars = document.getElementsByClassName('bar');
-	          _chai.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	          for (var i = 0; i < bars.length; i++) {
-	            var currentBarDate = bars[i].getAttribute('data-date');
-	            _chai.assert.equal(currentBarDate, res.data[i][0], 'Bars should have date data in the same order as the ' + 'provided data ');
-	          }
-	          done();
-	        } catch (e) {
-	          done(e);
-	        }
-	      });
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. The "data-gdp" properties should match the order of the\n    provided data', function (done) {
-	      _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/' + 'master/GDP-data.json', function (res) {
-	        try {
-	          var bars = document.getElementsByClassName('bar');
-	          _chai.assert.isAtLeast(bars.length, 1, 'no elements with the class of "bar" are detected ');
-	          for (var i = 0; i < bars.length; i++) {
-	            var currentBarGdp = bars[i].getAttribute('data-gdp');
-	            _chai.assert.equal(currentBarGdp, res.data[i][1], 'Bars should have gdp data in the same order as the ' + 'provided data ');
-	          }
-	          done();
-	        } catch (e) {
-	          done(e);
-	        }
-	      });
-	    });
-
-	    reqNum++;
-	    it(reqNum + '. Each bar\'s height should accurately represent the data\'s\n    corresponding GDP', function () {
-	      var bars = document.querySelectorAll('rect.bar');
-	      // get the ratio of the first data point to the height of the first bar
-	      var firstRatio = bars[0].getAttribute('data-gdp') / bars[0].getAttribute('height');
-	      /* iterate through each bar and make sure that its height is consistent
-	      with its corresponding data point using the first ratio */
-	      /* this test completely validates the bars, but isn\'t very useful to the
-	      user, so data-date and data-gdp tests were added for clarity */
-	      for (var i = 0; i < bars.length; i++) {
-	        var dataValue = bars[i].getAttribute('data-gdp');
-	        var barHeight = bars[i].getAttribute('height');
-	        var ratio = dataValue / barHeight;
-	        _chai.assert.equal(firstRatio.toFixed(3), ratio.toFixed(3), 'The heights of the bars should correspond to the data values ');
-	      }
-	    });
-	  });
-
-	  (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.bar'), 'data-date', 'data-date');
-	}
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.testToolTip = testToolTip;
-
-	var _chai = __webpack_require__(2);
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function isToolTipHidden(tooltip) {
-	  // jQuery's :hidden selector checks if the element or its parents have a
-	  // display of none, a type of hidden, or height/width set to 0.
-	  // If the element is hidden with opacity=0 or visibility=hidden, jQuery's
-	  // :hidden will return false because it takes up space in the DOM.
-	  // This test combines jQuery's :hidden with tests for opacity and visbility
-	  // to cover most use cases (z-index and potentially others are not tested).
-	  return (0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden';
-	}
-
-	function getRandomIndex(max) {
-	  return Math.floor(Math.random() * max);
-	}
-
-	/*
-	  JQuery's mouseevents don't work for non IE browsers in these tests.
-	  This is a workaround to handle IE and non IE mouse events.
-	*/
-	function triggerMouseEvent(area, mouseEvent) {
-	  var event;
-	  if (document.createEvent) {
-	    // Internet Explorer.
-	    event = document.createEvent('MouseEvent');
-	    // TODO: Provide a link where all the parameters for initMouseEvent are
-	    // documented.
-	    event.initMouseEvent(mouseEvent, true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	  } else {
-	    // Non IE browser
-	    event = new MouseEvent(mouseEvent);
-	  }
-	  area.dispatchEvent(event);
-	}
-
-	/*
-	  Mouses over random areas to see if a tooltip appears.
-	*/
-	function testToolTip(areas, toolTipDataName, areaDataName) {
-
-	  describe('#TooltipTests', function () {
-	    it('1. I can mouse over an area and see a tooltip with a corresponding\n    id="tooltip" which displays more information about the area ', function () {
-	      var firstRequestTimeout = 500;
-	      var secondRequestTimeout = 2000;
-	      var randomIndex = getRandomIndex(areas.length);
-	      var tooltip = document.getElementById('tooltip');
-	      var randomArea = void 0;
-
-	      this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
-	      _chai.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
-
-	      // Place mouse on random bar and check if tooltip is visible.
-	      randomArea = areas[randomIndex];
-	      triggerMouseEvent(randomArea, 'mouseover');
-	      triggerMouseEvent(randomArea, 'mousemove');
-	      triggerMouseEvent(randomArea, 'mouseenter');
-
-	      // Promise is used to prevent test from ending prematurely.
-	      return new Promise(function (resolve, reject) {
-	        // Timeout is used to accomodate tooltip transitions.
-	        setTimeout(function () {
-	          if (isToolTipHidden(tooltip)) {
-	            reject(new Error('Tooltip should be visible when mouse is on an area'));
-	          }
-
-	          // Remove mouse from cell and check if tooltip is hidden again.
-	          triggerMouseEvent(randomArea, 'mouseout');
-	          setTimeout(function () {
-	            if (!isToolTipHidden(tooltip)) {
-	              reject(new Error('Tooltip should be hidden when mouse is not on an area'));
-	            } else {
-	              resolve();
-	            }
-	          }, secondRequestTimeout);
-	        }, firstRequestTimeout);
-	      });
-	    });
-
-	    it('2. My tooltip should have a "' + toolTipDataName + '" property that\n    corresponds to the "' + areaDataName + '" of the active area.', function () {
-	      var tooltip = document.getElementById('tooltip');
-	      var randomIndex = getRandomIndex(areas.length);
-	      var randomArea = void 0;
-
-	      _chai.assert.isNotNull(tooltip.getAttribute(toolTipDataName), 'Could not find property "' + toolTipDataName + '" in tooltip ');
-
-	      randomArea = areas[randomIndex];
-
-	      triggerMouseEvent(randomArea, 'mouseover');
-	      triggerMouseEvent(randomArea, 'mousemove');
-	      triggerMouseEvent(randomArea, 'mouseenter');
-
-	      _chai.assert.equal(tooltip.getAttribute(toolTipDataName), randomArea.getAttribute(areaDataName), 'Tooltip\'s "' + toolTipDataName + '" property should be equal to the ' + ('active area\'s "' + areaDataName + '" property'));
-
-	      // Clear out tooltip.
-	      triggerMouseEvent(randomArea, 'mouseout');
-	    });
-	  });
-	}
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = createScatterPlotTests;
-
-	var _alignmentD = __webpack_require__(63);
-
-	var _alignmentD3Support = __webpack_require__(64);
-
-	var _chai = __webpack_require__(2);
-
-	var _globalD3Tests = __webpack_require__(61);
-
-	var _sharedTestStrings = __webpack_require__(49);
-
-	function createScatterPlotTests() {
-
-	  describe('#ScatterPlotTests', function () {
-	    var MIN_YEAR = 1990;
-	    var MAX_YEAR = 2020;
-	    var MIN_MINUTES = 36;
-	    var MAX_MINUTES = 40;
 
 	    describe('#Technology Stack', function () {
 	      it(_sharedTestStrings.d3ProjectStack, function () {
@@ -22153,149 +21917,125 @@ var FCC_Global =
 	      var reqNum = 0;
 
 	      reqNum++;
-	      it(reqNum + '. I can see a title element that has a corresponding\n      id="title".', function () {
+	      it(reqNum + '. My chart should have a title with a corresponding\n      id="title"', function () {
 	        _chai.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see an x-axis that has a corresponding id="x-axis".', function () {
-	        _chai.assert.isNotNull(document.getElementById('x-axis'), 'There should be an element with id="x-axis" ');
-	        _chai.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
+	      it(reqNum + '. My Chart should have a <g> element x-axis with a \n      corresponding id="x-axis"', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'Could not find a <g> SVG element with id="x-axis" ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see a y-axis that has a corresponding id="y-axis".', function () {
-	        _chai.assert.isNotNull(document.getElementById('y-axis'), 'There should be an element with id="y-axis" ');
-	        _chai.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element');
+	      it(reqNum + '. My Chart should have a <g> element y-axis with a \n      corresponding id="y-axis"', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'Could not find a <g> SVG element with id="y-axis" ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. I can see dots, that each have a class of "dot", which\n      represent the data being plotted.', function () {
-	        _chai.assert.isAbove(document.querySelectorAll('circle.dot').length, 0, 'Could not find any <circle> SVG elements with class="dot" ');
+	      it(reqNum + '. Both axes should contain multiple tick labels, each with \n      the corresponding class="tick" ', function () {
+
+	        _chai.assert.isAbove((0, _jquery2.default)('#x-axis .tick').length, 1, 'There are not enough tick labels on the x-axis ');
+	        _chai.assert.isAbove((0, _jquery2.default)('#y-axis .tick').length, 1, 'There are not enough tick labels on the y-axis ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. Each dot should have the properties "data-xvalue" and\n      "data-yvalue" containing their corresponding x and y values.', function () {
-	        var dots = document.getElementsByClassName('dot');
-	        _chai.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
-	        for (var i = 0; i < dots.length; i++) {
-	          var dot = dots[i];
-	          _chai.assert.isNotNull(dot.getAttribute('data-xvalue'), 'Could not find property "data-xvalue" in dot ');
-	          _chai.assert.isNotNull(dot.getAttribute('data-yvalue'), 'Could not find property "data-yvalue" in dot ');
-	        }
+	      it(reqNum + '. My Chart should have a <rect> element for each data point \n      with a corresponding class="bar" displaying the data', function () {
+
+	        _chai.assert.isAbove(document.querySelectorAll('rect.bar').length, 0, 'Could not find any <rect> elements with class="bar" ');
+	        _chai.assert.equal(document.querySelectorAll('rect.bar').length, 275, 'The number of bars is not equal to the number of data points ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. The data-xvalue and data-yvalue of each dot should be\n      within the range of the actual data and in the correct data format. For\n      data-xvalue, integers (full years) or Date objects are acceptable for test\n      evaluation. For data-yvalue (minutes), use Date objects. ', function () {
-	        var MIN_X_VALUE = MIN_YEAR;
-	        var MAX_X_VALUE = MAX_YEAR;
+	      it(reqNum + '. Each bar should have the properties "data-date" and\n      "data-gdp" containing date and GDP values', function () {
+	        var bars = document.querySelectorAll('rect.bar');
 
-	        var dotsCollection = document.getElementsByClassName('dot');
-	        // convert to array
-	        var dots = [].slice.call(dotsCollection);
-	        _chai.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        _chai.assert.isAtLeast(bars.length, 1, 'no <rect> elements with the class of "bar" are detected ');
 
-	        dots.forEach(function (dot) {
-	          var xYear = new Date(dot.getAttribute('data-xvalue'));
-	          _chai.assert.isAtLeast(xYear.getFullYear(), MIN_X_VALUE, 'The data-xvalue of a dot is below the range of the actual data ');
-	          _chai.assert.isAtMost(xYear.getFullYear(), MAX_X_VALUE, 'The data-xvalue of a dot is above the range of the actual data ');
-
-	          // compare just the minutes for a good approximation
-	          var yDate = new Date(dot.getAttribute('data-yvalue'));
-	          _chai.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, 'The minutes data-yvalue of a dot is below the range of the actual\n            minutes data ');
-	          _chai.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, 'The minutes data-yvalue of a dot is above the range of the actual\n            minutes data ');
+	        bars.forEach(function (bar) {
+	          _chai.assert.isNotNull(bar.getAttribute('data-date'), 'Could not find property "data-date" in bar ');
+	          _chai.assert.isNotNull(bar.getAttribute('data-gdp'), 'Could not find property "data-gdp" in bar ');
 	        });
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. The data-xvalue and its corresponding dot should align\n      with the corresponding point/value on the x-axis.', function () {
-	        var dotsCollection = document.getElementsByClassName('dot');
+	      it(reqNum + '. The bar elements\' "data-date" properties should match the \n      order of the provided data', function (done) {
+	        _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/' + 'ProjectReferenceData/master/GDP-data.json', function (res) {
+	          try {
+	            var bars = document.querySelectorAll('rect.bar');
+	            _chai.assert.isAtLeast(bars.length, 1, 'no <rect> elements with the class of "bar" are detected ');
+	            bars.forEach(function (bar, i) {
+	              var currentBarDate = bar.getAttribute('data-date');
+	              _chai.assert.equal(currentBarDate, res.data[i][0], 'Bars should have date data in the same order as the ' + 'provided data ');
+	            });
+	            done();
+	          } catch (e) {
+	            done(e);
+	          }
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The bar elements\' "data-gdp" properties should match the \n      order of the provided data', function (done) {
+	        _jquery2.default.getJSON('https://raw.githubusercontent.com/FreeCodeCamp/' + 'ProjectReferenceData/master/GDP-data.json', function (res) {
+	          try {
+	            var bars = document.querySelectorAll('rect.bar');
+	            _chai.assert.isAtLeast(bars.length, 1, 'no <rect> elements with the class of "bar" are detected ');
+	            bars.forEach(function (bar, i) {
+	              var currentBarGdp = bar.getAttribute('data-gdp');
+	              _chai.assert.equal(currentBarGdp, res.data[i][1], 'Bars should have gdp data in the same order as the ' + 'provided data ');
+	            });
+	            done();
+	          } catch (e) {
+	            done(e);
+	          }
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. Each bar element\'s height should accurately represent the \n      data\'s corresponding GDP', function () {
+	        var bars = document.querySelectorAll('rect.bar');
+	        // get the ratio of the first data point to the height of the first bar
+	        var firstRatio = parseFloat(bars[0].getAttribute('data-gdp')) / parseFloat(bars[0].getAttribute('height'));
+	        /* iterate through each bar and make sure that its height is consistent
+	        with its corresponding data point using the first ratio */
+	        /* this test completely validates the bars, but isn\'t very useful to
+	        the user, so data-date and data-gdp tests were added for clarity */
+	        bars.forEach(function (bar) {
+	          var dataValue = bar.getAttribute('data-gdp');
+	          var barHeight = bar.getAttribute('height');
+	          var ratio = parseFloat(dataValue) / parseFloat(barHeight);
+	          _chai.assert.equal(firstRatio.toFixed(3), ratio.toFixed(3), 'The heights of the bars should correspond to the data values ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The data-date attribute and its corresponding bar element \n      should align with the corresponding value on the x-axis.', function () {
+	        var barsCollection = document.querySelectorAll('rect.bar');
 	        var coordAttr = 'x';
 
-	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
+	        _chai.assert.isAbove(barsCollection.length, 0, 'there are no <rect> elements with the class of "bar" ');
 
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueYearScatter, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'x values don\'t line up with x locations ');
+	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, barsCollection, _alignmentD3Support.getShapeValueYearBar, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionRectBar, _alignmentD3Support.getTickPosition), 'x values don\'t line up with x locations ');
 	      });
 
 	      reqNum++;
-	      it(reqNum + '. The data-yvalue and its corresponding dot should align\n      with the corresponding point/value on the y-axis.', function () {
-	        var dotsCollection = document.getElementsByClassName('dot');
+	      it(reqNum + '. The data-gdp attribute and its corresponding bar element \n      should align with the corresponding value on the y-axis.', function () {
+	        var barsCollection = document.querySelectorAll('rect.bar');
 	        var coordAttr = 'y';
 
-	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
+	        _chai.assert.isAbove(barsCollection.length, 0, 'there are <rect> no elements with the class of "bar" ');
 
-	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueMinutes, _alignmentD3Support.getTickValueMinutes, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'y values don\'t line up with y locations ');
-	      });
-
-	      reqNum++;
-	      it(reqNum + '. I can see multiple tick labels on the y-axis with "%M:%S"\n      time format.', function () {
-	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
-	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
-	        yAxisTickLabels.forEach(function (label) {
-	          // match "%M:%S" d3 time format
-	          _chai.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
-	        });
-	      });
-
-	      reqNum++;
-	      it(reqNum + '. I can see multiple tick labels on the x-axis that show the\n      year.', function () {
-	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
-	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
-	        xAxisTickLabels.forEach(function (label) {
-	          // match check if this is a year
-	          _chai.assert.match(label.textContent, /[1-2][0-9][0-9][0-9]/, 'X-axis tick labels do not show the year ');
-	        });
-	      });
-
-	      reqNum++;
-	      it(reqNum + '. I can see that the range of the x-axis labels are within\n      the range of the actual x-axis data.', function () {
-	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
-	        var MIN_YEAR = 1994;
-	        var MAX_YEAR = 2016;
-	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
-
-	        xAxisTickLabels.forEach(function (label) {
-	          _chai.assert.isAtLeast(label.textContent, MIN_YEAR, 'x axis labels are below the range of the actual data ');
-	          _chai.assert.isAtMost(label.textContent, MAX_YEAR, 'x axis labels are above the range of the actual data ');
-	        });
-	      });
-
-	      reqNum++;
-	      it(reqNum + '. I can see that the range of the y-axis labels are within\n      the range of the actual y-axis data.', function () {
-	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
-	        var MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
-	        var MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
-	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
-	        yAxisTickLabels.forEach(function (label) {
-	          var timeArr = label.textContent.split(':');
-	          var mins = timeArr[0];
-	          var secs = timeArr[1];
-	          var date = new Date(0, 0, 0, 0, mins, secs, 0);
-	          _chai.assert.isAtLeast(date, MIN_TIME, 'y axis labels are below the range of the actual data ');
-	          _chai.assert.isAtMost(date, MAX_TIME, 'y axis labels are above the range of the actual data ');
-	        });
-	      });
-
-	      reqNum++;
-	      it(reqNum + '. I can see a legend containing descriptive text that has\n      id="legend".', function () {
-	        _chai.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
-	        // A legend may be built with D3 svg <text> elements or with plain html
-	        var legendText;
-	        if (document.querySelector('#legend text') !== null) {
-	          legendText = document.querySelector('#legend text').innerHTML;
-	        } else {
-	          legendText = document.getElementById('legend').innerText;
-	        }
-	        _chai.assert.isNotNull(legendText, 'The legend should contain text ');
+	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, barsCollection, _alignmentD3Support.getShapeValueDecimal, _alignmentD3Support.getTickValueThousands, _alignmentD3Support.getShapePositionRectBar, _alignmentD3Support.getTickPosition), 'y values don\'t line up with y locations ');
 	      });
 	    });
 
-	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), 'data-year', 'data-xvalue');
+	    // Tooltip tests.
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.bar'), 'data-date', 'data-date');
 	  });
 	}
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22480,7 +22220,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22494,9 +22234,13 @@ var FCC_Global =
 	exports.getShapeValueMonthHeatMap = getShapeValueMonthHeatMap;
 	exports.getShapeValueYearHeatMap = getShapeValueYearHeatMap;
 	exports.getShapeValueYearScatter = getShapeValueYearScatter;
+	exports.getShapeValueYearBar = getShapeValueYearBar;
+	exports.getShapeValueDecimal = getShapeValueDecimal;
+	exports.getTickValueThousands = getTickValueThousands;
 	exports.getShapeValueMinutes = getShapeValueMinutes;
 	exports.getTickValueMinutes = getTickValueMinutes;
 	exports.getShapePositionRect = getShapePositionRect;
+	exports.getShapePositionRectBar = getShapePositionRectBar;
 	exports.getShapePositionCircle = getShapePositionCircle;
 	// D3 Alignment test supporting functions. Anything that is chart specific
 	// should go here. For example, the getTickValueMonth function is only used for
@@ -22541,6 +22285,20 @@ var FCC_Global =
 	  return parseInt(shape.getAttribute('data-xvalue'), 10);
 	}
 
+	function getShapeValueYearBar(shape) {
+	  // Number from String. Example from dataset: '2015-01-01'
+	  return parseInt(shape.getAttribute('data-date').split('-')[0], 10);
+	}
+
+	function getShapeValueDecimal(shape) {
+	  return parseFloat(shape.getAttribute('data-gdp'));
+	}
+
+	function getTickValueThousands(tick) {
+	  // Number from String. Example from dataset: '2,000'
+	  return parseInt(tick.querySelector('text').innerHTML.split(',').join(''), 10);
+	}
+
 	function getShapeValueMinutes(shape) {
 	  var value = shape.getAttribute('data-yvalue');
 	  return new Date(value).getMinutes() + new Date(value).getSeconds() / 60;
@@ -22567,6 +22325,24 @@ var FCC_Global =
 	  return { x: x, y: y };
 	}
 
+	function getShapePositionRectBar(shape) {
+	  // the x, y attributes for each rect are from the top-left of the shape.
+	  // compute the mid-value for a coordinate to compare to x-axis tick
+
+	  // TODO: rects are computed at y + 6 because
+	  // the fCC Bar Chart appears to have misalignment.
+	  var x = void 0,
+	      y = void 0,
+	      width = void 0;
+
+	  width = parseFloat(shape.getAttribute('width'));
+	  x = parseFloat(shape.getAttribute('x')) + width / 2;
+	  // fCC Bar Chart pen is at most 6px off on the y-axis
+	  y = parseFloat(shape.getAttribute('y')) + 5.5;
+
+	  return { x: x, y: y, width: width };
+	}
+
 	function getShapePositionCircle(shape) {
 	  var x = void 0,
 	      y = void 0;
@@ -22576,6 +22352,302 @@ var FCC_Global =
 	  y = parseFloat(shape.getAttribute('cy'));
 
 	  return { x: x, y: y };
+	}
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.testToolTip = testToolTip;
+
+	var _chai = __webpack_require__(2);
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function isToolTipHidden(tooltip) {
+	  // jQuery's :hidden selector checks if the element or its parents have a
+	  // display of none, a type of hidden, or height/width set to 0.
+	  // If the element is hidden with opacity=0 or visibility=hidden, jQuery's
+	  // :hidden will return false because it takes up space in the DOM.
+	  // This test combines jQuery's :hidden with tests for opacity and visbility
+	  // to cover most use cases (z-index and potentially others are not tested).
+	  return (0, _jquery2.default)(tooltip).is(':hidden') || tooltip.style.opacity === '0' || tooltip.style.visibility === 'hidden';
+	}
+
+	function getRandomIndex(max) {
+	  return Math.floor(Math.random() * max);
+	}
+
+	/*
+	  JQuery's mouseevents don't work for non IE browsers in these tests.
+	  This is a workaround to handle IE and non IE mouse events.
+	*/
+	function triggerMouseEvent(area, mouseEvent) {
+	  var event;
+	  if (document.createEvent) {
+	    // Internet Explorer.
+	    event = document.createEvent('MouseEvent');
+	    // TODO: Provide a link where all the parameters for initMouseEvent are
+	    // documented.
+	    event.initMouseEvent(mouseEvent, true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	  } else {
+	    // Non IE browser
+	    event = new MouseEvent(mouseEvent);
+	  }
+	  area.dispatchEvent(event);
+	}
+
+	/*
+	  Mouses over random areas to see if a tooltip appears.
+	*/
+	function testToolTip(areas, toolTipDataName, areaDataName) {
+
+	  describe('#TooltipTests', function () {
+	    it('1. I can mouse over an area and see a tooltip with a corresponding\n    id="tooltip" which displays more information about the area ', function () {
+	      var firstRequestTimeout = 500;
+	      var secondRequestTimeout = 2000;
+	      var randomIndex = getRandomIndex(areas.length);
+	      var tooltip = document.getElementById('tooltip');
+	      var randomArea = void 0;
+
+	      this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+	      _chai.assert.isNotNull(document.getElementById('tooltip'), 'There should be an element with id="tooltip"');
+
+	      // Place mouse on random bar and check if tooltip is visible.
+	      randomArea = areas[randomIndex];
+	      triggerMouseEvent(randomArea, 'mouseover');
+	      triggerMouseEvent(randomArea, 'mousemove');
+	      triggerMouseEvent(randomArea, 'mouseenter');
+
+	      // Promise is used to prevent test from ending prematurely.
+	      return new Promise(function (resolve, reject) {
+	        // Timeout is used to accomodate tooltip transitions.
+	        setTimeout(function () {
+	          if (isToolTipHidden(tooltip)) {
+	            reject(new Error('Tooltip should be visible when mouse is on an area'));
+	          }
+
+	          // Remove mouse from cell and check if tooltip is hidden again.
+	          triggerMouseEvent(randomArea, 'mouseout');
+	          setTimeout(function () {
+	            if (!isToolTipHidden(tooltip)) {
+	              reject(new Error('Tooltip should be hidden when mouse is not on an area'));
+	            } else {
+	              resolve();
+	            }
+	          }, secondRequestTimeout);
+	        }, firstRequestTimeout);
+	      });
+	    });
+
+	    it('2. My tooltip should have a "' + toolTipDataName + '" property that\n    corresponds to the "' + areaDataName + '" of the active area.', function () {
+	      var tooltip = document.getElementById('tooltip');
+	      var randomIndex = getRandomIndex(areas.length);
+	      var randomArea = void 0;
+
+	      _chai.assert.isNotNull(tooltip.getAttribute(toolTipDataName), 'Could not find property "' + toolTipDataName + '" in tooltip ');
+
+	      randomArea = areas[randomIndex];
+
+	      triggerMouseEvent(randomArea, 'mouseover');
+	      triggerMouseEvent(randomArea, 'mousemove');
+	      triggerMouseEvent(randomArea, 'mouseenter');
+
+	      _chai.assert.equal(tooltip.getAttribute(toolTipDataName), randomArea.getAttribute(areaDataName), 'Tooltip\'s "' + toolTipDataName + '" property should be equal to the ' + ('active area\'s "' + areaDataName + '" property'));
+
+	      // Clear out tooltip.
+	      triggerMouseEvent(randomArea, 'mouseout');
+	    });
+	  });
+	}
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createScatterPlotTests;
+
+	var _alignmentD = __webpack_require__(61);
+
+	var _alignmentD3Support = __webpack_require__(62);
+
+	var _chai = __webpack_require__(2);
+
+	var _globalD3Tests = __webpack_require__(63);
+
+	var _sharedTestStrings = __webpack_require__(49);
+
+	function createScatterPlotTests() {
+
+	  describe('#ScatterPlotTests', function () {
+	    var MIN_YEAR = 1990;
+	    var MAX_YEAR = 2020;
+	    var MIN_MINUTES = 36;
+	    var MAX_MINUTES = 40;
+
+	    describe('#Technology Stack', function () {
+	      it(_sharedTestStrings.d3ProjectStack, function () {
+	        return true;
+	      });
+	    });
+
+	    describe('#Content', function () {
+	      var reqNum = 0;
+
+	      reqNum++;
+	      it(reqNum + '. I can see a title element that has a corresponding\n      id="title".', function () {
+	        _chai.assert.isNotNull(document.getElementById('title'), 'Could not find element with id="title" ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see an x-axis that has a corresponding id="x-axis".', function () {
+	        _chai.assert.isNotNull(document.getElementById('x-axis'), 'There should be an element with id="x-axis" ');
+	        _chai.assert.isAbove(document.querySelectorAll('g#x-axis').length, 0, 'x-axis should be a <g> SVG element ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see a y-axis that has a corresponding id="y-axis".', function () {
+	        _chai.assert.isNotNull(document.getElementById('y-axis'), 'There should be an element with id="y-axis" ');
+	        _chai.assert.isAbove(document.querySelectorAll('g#y-axis').length, 0, 'y-axis should be a <g> SVG element');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see dots, that each have a class of "dot", which\n      represent the data being plotted.', function () {
+	        _chai.assert.isAbove(document.querySelectorAll('circle.dot').length, 0, 'Could not find any <circle> SVG elements with class="dot" ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. Each dot should have the properties "data-xvalue" and\n      "data-yvalue" containing their corresponding x and y values.', function () {
+	        var dots = document.getElementsByClassName('dot');
+	        _chai.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+	        for (var i = 0; i < dots.length; i++) {
+	          var dot = dots[i];
+	          _chai.assert.isNotNull(dot.getAttribute('data-xvalue'), 'Could not find property "data-xvalue" in dot ');
+	          _chai.assert.isNotNull(dot.getAttribute('data-yvalue'), 'Could not find property "data-yvalue" in dot ');
+	        }
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The data-xvalue and data-yvalue of each dot should be\n      within the range of the actual data and in the correct data format. For\n      data-xvalue, integers (full years) or Date objects are acceptable for test\n      evaluation. For data-yvalue (minutes), use Date objects. ', function () {
+	        var MIN_X_VALUE = MIN_YEAR;
+	        var MAX_X_VALUE = MAX_YEAR;
+
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        // convert to array
+	        var dots = [].slice.call(dotsCollection);
+	        _chai.assert.isAbove(dots.length, 0, 'there are no elements with the class of "dot" ');
+
+	        dots.forEach(function (dot) {
+	          var xYear = new Date(dot.getAttribute('data-xvalue'));
+	          _chai.assert.isAtLeast(xYear.getFullYear(), MIN_X_VALUE, 'The data-xvalue of a dot is below the range of the actual data ');
+	          _chai.assert.isAtMost(xYear.getFullYear(), MAX_X_VALUE, 'The data-xvalue of a dot is above the range of the actual data ');
+
+	          // compare just the minutes for a good approximation
+	          var yDate = new Date(dot.getAttribute('data-yvalue'));
+	          _chai.assert.isAtLeast(yDate.getMinutes(), MIN_MINUTES, 'The minutes data-yvalue of a dot is below the range of the actual\n            minutes data ');
+	          _chai.assert.isAtMost(yDate.getMinutes(), MAX_MINUTES, 'The minutes data-yvalue of a dot is above the range of the actual\n            minutes data ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The data-xvalue and its corresponding dot should align\n      with the corresponding point/value on the x-axis.', function () {
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        var coordAttr = 'x';
+
+	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
+
+	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#x-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueYearScatter, _alignmentD3Support.getTickValueYear, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'x values don\'t line up with x locations ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. The data-yvalue and its corresponding dot should align\n      with the corresponding point/value on the y-axis.', function () {
+	        var dotsCollection = document.getElementsByClassName('dot');
+	        var coordAttr = 'y';
+
+	        _chai.assert.isAbove(dotsCollection.length, 0, 'there are no elements with the class of "dot" ');
+
+	        _chai.assert.isTrue((0, _alignmentD.isAxisAlignedWithDataPoints)(document.querySelector('#y-axis'), coordAttr, dotsCollection, _alignmentD3Support.getShapeValueMinutes, _alignmentD3Support.getTickValueMinutes, _alignmentD3Support.getShapePositionCircle, _alignmentD3Support.getTickPosition), 'y values don\'t line up with y locations ');
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see multiple tick labels on the y-axis with "%M:%S"\n      time format.', function () {
+	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
+	        yAxisTickLabels.forEach(function (label) {
+	          // match "%M:%S" d3 time format
+	          _chai.assert.match(label.textContent, /[0-5][0-9]:[0-5][0-9]/, 'Y-axis tick labels aren\'t in the "%M:%S" d3 time format ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see multiple tick labels on the x-axis that show the\n      year.', function () {
+	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
+	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
+	        xAxisTickLabels.forEach(function (label) {
+	          // match check if this is a year
+	          _chai.assert.match(label.textContent, /[1-2][0-9][0-9][0-9]/, 'X-axis tick labels do not show the year ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see that the range of the x-axis labels are within\n      the range of the actual x-axis data.', function () {
+	        var xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
+	        var MIN_YEAR = 1994;
+	        var MAX_YEAR = 2016;
+	        _chai.assert.isAbove(xAxisTickLabels.length, 0, 'Could not find tick labels on the x axis ');
+
+	        xAxisTickLabels.forEach(function (label) {
+	          _chai.assert.isAtLeast(label.textContent, MIN_YEAR, 'x axis labels are below the range of the actual data ');
+	          _chai.assert.isAtMost(label.textContent, MAX_YEAR, 'x axis labels are above the range of the actual data ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see that the range of the y-axis labels are within\n      the range of the actual y-axis data.', function () {
+	        var yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
+	        var MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
+	        var MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
+	        _chai.assert.isAbove(yAxisTickLabels.length, 0, 'Could not find tick labels on the y axis ');
+	        yAxisTickLabels.forEach(function (label) {
+	          var timeArr = label.textContent.split(':');
+	          var mins = timeArr[0];
+	          var secs = timeArr[1];
+	          var date = new Date(0, 0, 0, 0, mins, secs, 0);
+	          _chai.assert.isAtLeast(date, MIN_TIME, 'y axis labels are below the range of the actual data ');
+	          _chai.assert.isAtMost(date, MAX_TIME, 'y axis labels are above the range of the actual data ');
+	        });
+	      });
+
+	      reqNum++;
+	      it(reqNum + '. I can see a legend containing descriptive text that has\n      id="legend".', function () {
+	        _chai.assert.isNotNull(document.getElementById('legend'), 'There should be an element with id="legend" ');
+	        // A legend may be built with D3 svg <text> elements or with plain html
+	        var legendText;
+	        if (document.querySelector('#legend text') !== null) {
+	          legendText = document.querySelector('#legend text').innerHTML;
+	        } else {
+	          legendText = document.getElementById('legend').innerText;
+	        }
+	        _chai.assert.isNotNull(legendText, 'The legend should contain text ');
+	      });
+	    });
+
+	    (0, _globalD3Tests.testToolTip)(document.querySelectorAll('.dot'), 'data-year', 'data-xvalue');
+	  });
 	}
 
 /***/ }),
@@ -22595,7 +22667,7 @@ var FCC_Global =
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(61);
+	var _globalD3Tests = __webpack_require__(63);
 
 	var _sharedTestStrings = __webpack_require__(49);
 
@@ -41590,7 +41662,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(61);
+	var _globalD3Tests = __webpack_require__(63);
 
 	var _sharedTestStrings = __webpack_require__(49);
 
@@ -41899,13 +41971,13 @@ var FCC_Global =
 
 	var _elementUtils = __webpack_require__(52);
 
-	var _alignmentD = __webpack_require__(63);
+	var _alignmentD = __webpack_require__(61);
 
-	var _alignmentD3Support = __webpack_require__(64);
+	var _alignmentD3Support = __webpack_require__(62);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(61);
+	var _globalD3Tests = __webpack_require__(63);
 
 	function createHeatMapTests() {
 

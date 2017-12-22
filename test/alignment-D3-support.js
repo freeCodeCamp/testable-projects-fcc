@@ -12,6 +12,7 @@
 
 import {
   getShapePositionRect,
+  getShapePositionRectBar,
   getTickPosition
 } from '../src/utils/alignment-D3-support';
 
@@ -77,4 +78,22 @@ describe('D3 Alignment support tests', function() {
     });
   });
 
+  // TODO Subtract 6px from rect y attr after Bar Chart pen fixed
+  describe('getShapePositionRectBar', function() {
+    it('should return the top-left position of a rectangle ' +
+    'plus 6px on y axis', function() {
+      const dom = new JSDOM(`
+        <rect data-date="1947-01-01" data-gdp="243.1" class="bar" 
+          x="0" y="394.6171262185367" width="2.909090909090909" 
+          height="5.382873781463295" transform="translate(60, 0)">
+        </rect>`
+      );
+      const shape = dom.window.document.querySelector('.bar');
+      const position = getShapePositionRectBar(shape);
+
+      assert.strictEqual(position.x, 0 + position.width / 2);
+      // adding 6px passes this test
+      assert.strictEqual(position.y, 394.6171262185367 + 5.5);
+    });
+  });
 });

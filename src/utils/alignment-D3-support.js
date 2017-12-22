@@ -53,6 +53,20 @@ export function getShapeValueYearScatter(shape) {
   return parseInt(shape.getAttribute('data-xvalue'), 10);
 }
 
+export function getShapeValueYearBar(shape) {
+  // Number from String. Example from dataset: '2015-01-01'
+  return parseInt(shape.getAttribute('data-date').split('-')[0], 10);
+}
+
+export function getShapeValueDecimal(shape) {
+  return parseFloat(shape.getAttribute('data-gdp'));
+}
+
+export function getTickValueThousands(tick) {
+  // Number from String. Example from dataset: '2,000'
+  return parseInt(tick.querySelector('text').innerHTML.split(',').join(''), 10);
+}
+
 export function getShapeValueMinutes(shape) {
   const value = shape.getAttribute('data-yvalue');
   return new Date(value).getMinutes() +
@@ -77,6 +91,22 @@ export function getShapePositionRect(shape) {
   y = parseFloat(shape.getAttribute('y')) + half;
 
   return { x: x, y: y};
+}
+
+export function getShapePositionRectBar(shape) {
+  // the x, y attributes for each rect are from the top-left of the shape.
+  // compute the mid-value for a coordinate to compare to x-axis tick
+
+  // TODO: rects are computed at y + 6 because
+  // the fCC Bar Chart appears to have misalignment.
+  let x, y, width;
+
+  width = parseFloat(shape.getAttribute('width'));
+  x = parseFloat(shape.getAttribute('x')) + (width / 2);
+  // fCC Bar Chart pen is at most 6px off on the y-axis
+  y = parseFloat(shape.getAttribute('y')) + 5.5;
+
+  return { x: x, y: y, width: width };
 }
 
 export function getShapePositionCircle(shape) {

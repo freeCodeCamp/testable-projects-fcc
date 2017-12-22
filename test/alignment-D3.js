@@ -10,11 +10,15 @@ import {
 import {
   getShapePositionCircle,
   getShapePositionRect,
+  getShapePositionRectBar,
+  getShapeValueDecimal,
   getShapeValueMinutes,
   getShapeValueMonthHeatMap,
   getShapeValueYearHeatMap,
   getShapeValueYearScatter,
+  getShapeValueYearBar,
   getTickPosition,
+  getTickValueThousands,
   getTickValueMinutes,
   getTickValueMonth,
   getTickValueYear
@@ -142,6 +146,41 @@ describe('D3 Alignment module tests', function() {
   </circle>
   `);
 
+  const barChartDom = new JSDOM(`
+    <g id="y-axis">
+      <path class="domain" stroke="#000" d="M-6,400.5H0.5V5.882873781463295H-6">
+      </path>
+      <g class="tick" opacity="1" transform="translate(0,317.31234673147077)">
+        <text fill="#000" x="-9" dy="0.32em">4,000</text>
+      </g>
+      <g class="tick" opacity="1" transform="translate(0,361.597610256467)">
+        <text fill="#000" x="-9" dy="0.32em">2,000</text>
+      </g>
+    </g>
+    
+    <g fill="none" id="x-axis">
+      <path class="domain" stroke="#000" d="M0.5,6V0.5H800.5V6"></path>
+      <g class="tick" opacity="1" transform="translate(329.9117647058823,0)">
+        <text fill="#000" y="9" dy="0.71em">1975</text>
+      </g>
+      <g class="tick" opacity="1" transform="translate(388.7352941176471,0)">
+        <text fill="#000" y="9" dy="0.71em">1980</text>
+      </g>
+      <g class="tick" opacity="1" transform="translate(447.55882352941177,0)">
+        <text fill="#000" y="9" dy="0.71em">1985</text>
+      </g>
+      <g class="tick" opacity="1" transform="translate(506.38235294117646,0)">
+        <text fill="#000" y="9" dy="0.71em">1990</text>
+      </g>
+    </g>
+    
+    <rect data-date="1978-01-01" data-gdp="2208.7" class="bar" 
+      x="360.72727272727275" y="351.09356922617036" 
+      width="2.909090909090909" height="48.90643077382962"></rect>
+    <rect data-date="2015-04-01" data-gdp="0" class="bar-misaligned" 
+      x="0" y="350" width="2.909090909090909" 
+      height="6.436863053358206"></rect>
+  `);
   // Some of the tests will be performed on all the sets of data above.
   const tests = [
     {
@@ -176,55 +215,66 @@ describe('D3 Alignment module tests', function() {
       getXTickValueFunction: getTickValueYear,
       getShapePositionFunction: getShapePositionCircle,
       tickOrderNormalYAxis: false
+    },
+    {
+      name: 'Bar Chart',
+      dom: barChartDom,
+      shapeClassName: '.bar',
+      getYShapeValueFunction: getShapeValueDecimal,
+      getXShapeValueFunction: getShapeValueYearBar,
+      getYTickValueFunction: getTickValueThousands,
+      getXTickValueFunction: getTickValueYear,
+      getShapePositionFunction: getShapePositionRectBar,
+      tickOrderNormalYAxis: false
     }
   ];
 
   describe('_getSurroundingTicks function', function() {
     it('should return before and after ticks from a position',
     function() {
-      const ticks = heatMapDom.window.document.querySelectorAll(
+      const ticks = barChartDom.window.document.querySelectorAll(
         '#y-axis .tick'
       );
 
       const alignedTicks = _getSurroundingTicks(
         ticks,
         'y',
-        { x: 2.5, y: 16.5 },
+        { x: 361, y: 351 },
         getTickPosition
       );
 
       assert.strictEqual(
         alignedTicks[0].getAttribute('transform'),
-        'translate(0,16.5)'
+        'translate(0,317.31234673147077)'
       );
 
       assert.strictEqual(
         alignedTicks[1].getAttribute('transform'),
-        'translate(0,49.5)'
+        'translate(0,361.597610256467)'
       );
     });
 
     it('should return before and after ticks from a middle position',
     function() {
-      const ticks = heatMapDom.window.document.querySelectorAll(
+      const ticks = barChartDom.window.document.querySelectorAll(
         '#y-axis .tick'
       );
 
       const alignedTicks = _getSurroundingTicks(
         ticks,
         'y',
-        { x: 2.5, y: 50 },
+        { x: 361, y: 351 },
         getTickPosition
       );
 
       assert.strictEqual(
         alignedTicks[0].getAttribute('transform'),
-        'translate(0,49.5)'
+        'translate(0,317.31234673147077)'
       );
 
       assert.strictEqual(
         alignedTicks[1].getAttribute('transform'),
-        'translate(0,79.5)'
+        'translate(0,361.597610256467)'
       );
     });
 
@@ -232,12 +282,12 @@ describe('D3 Alignment module tests', function() {
     'the first tick',
     function() {
       const allTicks =
-        heatMapDom.window.document.querySelectorAll('#x-axis .tick');
+        barChartDom.window.document.querySelectorAll('#x-axis .tick');
 
       const alignedTicks = _getSurroundingTicks(
         allTicks,
         'x',
-        { x: 0, y: 0 },
+        { x: 0, y: 395 },
         getTickPosition
       );
 
@@ -252,18 +302,18 @@ describe('D3 Alignment module tests', function() {
     'before the first tick',
     function() {
       const ticks =
-        heatMapDom.window.document.querySelectorAll('#x-axis .tick');
+        barChartDom.window.document.querySelectorAll('#x-axis .tick');
 
       const alignedTicks = _getSurroundingTicks(
         ticks,
         'x',
-        { x: 0, y: 0 },
+        { x: 0, y: 395 },
         getTickPosition
       );
 
       assert.strictEqual(
         alignedTicks[1].getAttribute('transform'),
-        'translate(37.5,0)'
+        'translate(329.9117647058823,0)'
       );
     });
 
@@ -271,12 +321,12 @@ describe('D3 Alignment module tests', function() {
     'the last tick',
     function() {
       const ticks =
-        heatMapDom.window.document.querySelectorAll('#x-axis .tick');
+        barChartDom.window.document.querySelectorAll('#x-axis .tick');
 
       const alignedTicks = _getSurroundingTicks(
         ticks,
         'x',
-        { x: 138, y: 0 },
+        { x: 558, y: 232 },
         getTickPosition
       );
 
@@ -290,18 +340,18 @@ describe('D3 Alignment module tests', function() {
     'is after the last tick',
     function() {
       const ticks =
-        heatMapDom.window.document.querySelectorAll('#x-axis .tick');
+        barChartDom.window.document.querySelectorAll('#x-axis .tick');
 
       const alignedTicks = _getSurroundingTicks(
         ticks,
         'x',
-        { x: 138, y: 0 },
+        { x: 558, y: 232 },
         getTickPosition
       );
 
       assert.strictEqual(
         alignedTicks[0].getAttribute('transform'),
-        'translate(137.5,0)'
+        'translate(506.38235294117646,0)'
       );
     });
 
@@ -313,7 +363,7 @@ describe('D3 Alignment module tests', function() {
         null,
         ticks,
         'x',
-        { x: 138, y: 0 },
+        { x: 558, y: 232 },
         getTickPosition
       );
 
@@ -481,9 +531,7 @@ describe('D3 Alignment module tests', function() {
             test.getYTickValueFunction
           ));
         });
-
       });
-
     });
   });
 });
