@@ -20,12 +20,16 @@ cache:
   directories:
     - node_modules
 sudo: false
-deploy:
-  provider: pages
-  local_dir: travis-screenshots
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  all_branches: true
-  target-branch: travis-screenshots
-  on:
-    all_branches: true
+# When the test script fails, push screen shots to a git branch.
+after_failure: |
+  if [ -n "$GITHUB_API_KEY" ]; then
+    cd "$TRAVIS_BUILD_DIR/travis-screenshots"
+    git init
+    git checkout -b travis-screenshots
+    git add .
+    git -c user.name="$GITHUB_USER" -c user.email='travis' commit -m 'Travis CI screenshots'
+    # Make sure to make the output quiet, or else the API token will leak!
+    # This works because the API key can replace your password.
+    git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG travis-screenshots &2>/dev/null
+    cd "$TRAVIS_BUILD_DIR"
+  fi
