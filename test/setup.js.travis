@@ -9,7 +9,7 @@
 global.chromeBinaryPath = '/usr/bin/google-chrome-stable';
 
 // Where to save screenshots.
-global.screenshotDir = 'test/screenshots';
+global.screenshotDir = 'travis-screenshots';
 
 // URL for local bundle.js
 global.bundleUrl = 'https://localhost.daplie.me:8080/build/bundle.js';
