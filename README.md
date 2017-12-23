@@ -64,9 +64,7 @@ create a PR. A PR that has not passed the Travis CI tests should not be merged.
 For all the details about automatically testing this project, please see the
 [CONTRIBUTING guide](CONTRIBUTING.md).
 
-### This repo did not originally live here. There are several important contributors who contributed code before this project took its current form. So credit where credit is due:
-First and foremost is @Weezlo, thanks for getting us started! And to @no-stack-dub-sack for seeing it through the rest of the way! Also @Christian-Paul & @paycoguy for coming up with reliable ways to test D3, and @bonham000 for helping to get this all bundled up nicely in one sweet little package.
-
 ### Credits:
-- credits for individual example projects coming soon...
-- All tests developed by @Weezlo & @no-stack-dub-sack except for the D3 projects developed by @Christian-Paul & @paycoguy
+__This repo did not originally live here. There are several important contributors who contributed code before this project took its current form. So credit where credit is due, to those contributors, and to the other key contributors for this project:__
+- First and foremost is [@Weezlo](https://github.com/Weezlo), thanks for getting us started! And to [@no-stack-dub-sack](https://github.com/no-stack-dub-sack), [@tchaffee](https://github.com/tchaffee) & [@tbushman](https://github.com/tbushman) for seeing it through the rest of the way! Also [@Christian-Paul](https://github.com/Christian-Paul) & [@paycoguy](https://github.com/paycoguy) for coming up with reliable ways to test D3, and [@bonham000](https://github.com/bonham000) for helping us to get this all bundled up nicely in one sweet little package. 
+- All tests developed by [@Weezlo](https://github.com/Weezlo) & [@no-stack-dub-sack](https://github.com/no-stack-dub-sack) except for the D3 projects developed by [@Christian-Paul](https://github.com/Christian-Paul) & [@paycoguy](https://github.com/paycoguy), with countless refinements to all projects by [@tbushman](https://github.com/tbushman) & [@tchaffee](https://github.com/tchaffee).
