@@ -19915,7 +19915,7 @@ var FCC_Global =
 	        _chai.assert.notStrictEqual(markdown.search(/```[^]+```/), -1, 'write some markdown representing a codeblock, i.e. <pre><code>...' + '</code></pre> ');
 
 	        // ol or ul list item
-	        _chai.assert.notStrictEqual(markdown.search(/(?:-|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item ');
+	        _chai.assert.notStrictEqual(markdown.search(/(?:[-+*]|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item ');
 
 	        // blockquote
 	        _chai.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing a <blockquote> ');
