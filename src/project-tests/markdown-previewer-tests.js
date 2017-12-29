@@ -198,7 +198,7 @@ export default function createMarkdownPreviewerTests() {
 
         // ol or ul list item
         assert.notStrictEqual(
-          markdown.search(/(?:-|\d\.)\s[^|\s-*].+/),
+          markdown.search(/(?:[-+*]|\d\.)\s[^|\s-*].+/),
           -1,
           'write some markdown representing an <li> item '
         );
