@@ -1,17 +1,39 @@
 /* global projectName */
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+/*
+ This file dynamically generates the user interface for the freeCodeCamp
+ testable-projects application. The user interface consists of three main parts:
+ 1. fCCTestTogglerSkeleton
+    A user interface for hiding / showing the test controls:
+    a. A toggler for hiding / showing the test controller iframe
+       (#fcc_foldout_toggler)
+    b. A small read-only indicator in the top-right corner of the viewport that
+       shows the pending test project (#fcc_test_suite_indicator_wrapper)
+ 2. fCCTestSuiteSkeleton
+    A <div> situated in the top-left corner of the viewport with controls
+    for running the tests
+ 3. mochaModalSkeleton
+    A modal <div id="mocha"> automatically inserted into the document via Mocha
+
+ We can use Webpack to inject loaded css into the document. We maintain three
+ css files: one for the test control window (fcc-test-ui.css), one for the
+ toggler (fcc-test-toggler.css), and one for the Mocha modal (mocha-modal.css)
+*/
 
 import $ from 'jquery';
 import chai from 'chai';
 // Webpack is configured to load those files with the .html extension as Strings
-import testSuiteSkeleton from './utils/test-suite-skeleton.html';
-// the !- prefixes are for process arguments respective of plugins
-// Example: https://stackoverflow.com/a/42440360/3530394
-// style-loader injects css loaded by css-loader through this import statement.
-
+import fCCTestSuiteSkeleton from './utils/fcc-test-suite-skeleton.html';
+import fCCTestTogglerSkeleton from './utils/fcc-test-toggler-skeleton.html';
+import mochaModalSkeleton from './utils/mocha-modal-skeleton.html';
+// style-loader injects css from css-loader into document
 /* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
-import testSuiteFCCStylesIgnored from
-  '!style-loader!css-loader!./stylesheets/style.css';
+import fCCTestUIStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/fcc-test-ui.css';
+import mochaModalStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/mocha-modal.css';
+import fCCTestTogglerStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/fcc-test-toggler.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
   './project-tests/markdown-previewer-tests';
@@ -67,11 +89,8 @@ $(document).ready(function() {
       if (mocha) {
         clearInterval(mochaCheck);
         mocha.setup('bdd');
-        const testDiv = document.createElement('div');
-        testDiv.style.position = 'inherit';
-        testDiv.innerHTML = testSuiteSkeleton;
-        document.body.appendChild(testDiv);
-        // Once testDiv is loaded:
+
+        // Once testFrame is loaded:
         let projectTitleCase = localStorage.getItem('projectTitleCase');
         // projectName variable is defined in our example projects so the
         // correct test suite is automatically loaded. This sets default text
@@ -79,6 +98,16 @@ $(document).ready(function() {
         if (typeof projectName !== 'undefined') {
           projectNameLocal = projectName;
         }
+        const fCCToggle = document.createElement('div');
+        fCCToggle.innerHTML = fCCTestTogglerSkeleton;
+        document.body.appendChild(fCCToggle);
+        const testFrameBody = document.createElement('div');
+        testFrameBody.setAttribute('id', 'fcc_foldout_menu');
+        testFrameBody.innerHTML = fCCTestSuiteSkeleton;
+        fCCToggle.appendChild(testFrameBody);
+        const mochaModal = document.createElement('div');
+        mochaModal.innerHTML = mochaModalSkeleton;
+        document.body.appendChild(mochaModal);
 
         if ((!projectNameLocal) && (projectTitleCase === null)) {
           document.getElementById('placeholder').innerHTML = '- - -';
@@ -246,7 +275,7 @@ onkeydown = onkeyup = function(e) {
     }
   // Open/close foldout menu: Ctrl + Shift + O.
   } else if (map[17] && map[16] && map[79]) {
-    document.getElementById('toggle').click();
+    document.getElementById('fcc_toggle').click();
   }
 };
 
