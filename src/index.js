@@ -1,17 +1,16 @@
 /* global projectName */
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
-
 import $ from 'jquery';
 import chai from 'chai';
 // Webpack is configured to load those files with the .html extension as Strings
 import testSuiteSkeleton from './utils/test-suite-skeleton.html';
-// the !- prefixes are for process arguments respective of plugins
-// Example: https://stackoverflow.com/a/42440360/3530394
-// style-loader injects css loaded by css-loader through this import statement.
-
+import modalSkeleton from './utils/modal-skeleton.html';
+// css loaded by css-loader through webpack config only.
+import testSuiteFCCStyles from './stylesheets/test-suite.css';
+// style-loader injects css from css-loader into document
+// Using inline loading of style-loader in order to only inject modal css
 /* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
-import testSuiteFCCStylesIgnored from
-  '!style-loader!css-loader!./stylesheets/style.css';
+import modalFCCStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/modal.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
   './project-tests/markdown-previewer-tests';
@@ -33,6 +32,20 @@ import createHeatMapTests from './project-tests/heat-map-tests';
 export const assert = chai.assert;
 
 let projectNameLocal = false;
+
+const testDiv = document.createElement('div');
+testDiv.setAttribute('id', 'fcc_test_suite_wrapper');
+document.body.appendChild(testDiv);
+// Using a shadow DOM, the fCC css won't interfere with student css
+// Not supported in Firefox, so a fallback div is provided.
+const supportsShadowDOMV1 = !!HTMLElement.prototype.attachShadow;
+let shadow;
+if (supportsShadowDOMV1) {
+  shadow = document.querySelector('#fcc_test_suite_wrapper')
+   .attachShadow({ mode: 'open' });
+} else {
+  shadow = document.querySelector('#fcc_test_suite_wrapper');
+}
 
 // Load mocha.
 (function() {
@@ -67,10 +80,20 @@ $(document).ready(function() {
       if (mocha) {
         clearInterval(mochaCheck);
         mocha.setup('bdd');
-        const testDiv = document.createElement('div');
-        testDiv.style.position = 'inherit';
-        testDiv.innerHTML = testSuiteSkeleton;
-        document.body.appendChild(testDiv);
+
+        // Mocha can't access shadow DOM (?), so append to document body
+        const mochaModal = document.createElement('div');
+        mochaModal.style.position = 'inherit';
+        mochaModal.innerHTML = modalSkeleton;
+        document.body.appendChild(mochaModal);
+
+        const styles = document.createElement('style');
+        styles.innerHTML = testSuiteFCCStyles;
+
+        shadow.innerHTML = testSuiteSkeleton;
+
+        shadow.appendChild(styles);
+
         // Once testDiv is loaded:
         let projectTitleCase = localStorage.getItem('projectTitleCase');
         // projectName variable is defined in our example projects so the
@@ -81,22 +104,22 @@ $(document).ready(function() {
         }
 
         if ((!projectNameLocal) && (projectTitleCase === null)) {
-          document.getElementById('placeholder').innerHTML = '- - -';
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
+          shadow.querySelector('#placeholder').innerHTML = '- - -';
+          shadow.querySelector(
+            '#fcc_test_suite_indicator_wrapper'
           ).innerHTML = '';
         } else if (projectNameLocal) {
-          document.getElementById('placeholder').innerHTML =
+          shadow.querySelector('#placeholder').innerHTML =
             `${localStorage.getItem('example_project')}`;
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
+          shadow.querySelector(
+            '#fcc_test_suite_indicator_wrapper'
           ).innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
             `${localStorage.getItem('example_project')}</span>`;
         } else {
-          document.getElementById('placeholder').innerHTML = projectTitleCase;
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
+          shadow.querySelector('#placeholder').innerHTML = projectTitleCase;
+          shadow.querySelector(
+            '#fcc_test_suite_indicator_wrapper'
           ).innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
             `${projectTitleCase}</span>`;
@@ -118,8 +141,8 @@ export function selectProject(project) {
   // Create & store pretty-print project name for display in indicator div.
   let projectTitleCase = project.replace(/-/g, ' ').split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
-  document.getElementById(
-    'fcc_test_suite_indicator_wrapper'
+  shadow.querySelector(
+    '#fcc_test_suite_indicator_wrapper'
   ).innerHTML =
     '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
     `${projectTitleCase}</span>`;
@@ -129,7 +152,7 @@ export function selectProject(project) {
 // Updates the button color and text on the target project, to show how many
 // tests passed and how many failed.
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-  const button = document.getElementById('fcc_test_button');
+  const button = shadow.querySelector('#fcc_test_button');
   button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
   if (nbFailed) {
     button.classList.add('fcc_test_btn-error');
@@ -141,7 +164,7 @@ export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
 // Updates the button text on the target project, to show how many tests were
 // executed so far.
 export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-  const button = document.getElementById('fcc_test_button');
+  const button = shadow.querySelector('#fcc_test_button');
   button.classList.add('fcc_test_btn-executing');
   button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
 }
@@ -192,7 +215,7 @@ function clearClassList(elem) {
 
 // run tests
 export function FCCRerunTests() {
-  const button = document.getElementById('fcc_test_button');
+  const button = shadow.querySelector('#fcc_test_button');
   button.innerHTML = (!projectNameLocal) &&
     (!localStorage.getItem('project_selector'))
     ? 'Load Tests!'
@@ -246,7 +269,7 @@ onkeydown = onkeyup = function(e) {
     }
   // Open/close foldout menu: Ctrl + Shift + O.
   } else if (map[17] && map[16] && map[79]) {
-    document.getElementById('toggle').click();
+    shadow.querySelector('#toggle').click();
   }
 };
 
@@ -264,26 +287,26 @@ export function alertOnce(item, message) {
 
 // Hamburger menu transformation
 export function hamburgerTransform() {
-  if (document.getElementById('hamburger_top').classList.contains(
+  if (shadow.querySelector('#hamburger_top').classList.contains(
     'transform_top')
   ) {
-    document.getElementById('hamburger_top').classList.remove(
+    shadow.querySelector('#hamburger_top').classList.remove(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.remove(
+    shadow.querySelector('#hamburger_middle').classList.remove(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.remove(
+    shadow.querySelector('#hamburger_bottom').classList.remove(
       'transform_bottom'
     );
   } else {
-    document.getElementById('hamburger_top').classList.add(
+    shadow.querySelector('#hamburger_top').classList.add(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.add(
+    shadow.querySelector('#hamburger_middle').classList.add(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.add(
+    shadow.querySelector('#hamburger_bottom').classList.add(
       'transform_bottom'
     );
   }
