@@ -1,17 +1,50 @@
 /* global projectName */
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+/*
+ This file dynamically generates the user interface for the freeCodeCamp
+ testable-projects application. The user interface consists of three main parts:
+ 1. fCCTestTogglerSkeleton
+    A user interface for hiding / showing the test controls:
+    a. A toggler for hiding / showing the test controller iframe
+       (#fcc_foldout_toggler)
+    b. A small read-only indicator in the top-right corner of the viewport that
+       shows the pending test project (#fcc_test_suite_indicator_wrapper)
+ 2. fCCTestSuiteSkeleton
+    An <iframe> situated in the top-left corner of the viewport with controls
+    for running the tests (loaded into document at
+    fCCTestTogglerSkeleton > iframe#fcc_foldout_menu)
+ 3. mochaModalSkeleton
+    A modal <div id="mocha"> automatically inserted into the document via Mocha
+
+ The test controller window runs in an iframe in order to encapsulate the DOM
+ elements and avoid interfering with student project code.
+ Since Mocha cannot automatically insert its <div id="mocha"> into the iframe,
+ we need to append it and load its styles separately.
+ The toggler is appended separately from the iframe since the whole iframe
+ slides out of view on toggle.
+
+ We can use Webpack to inject loaded css into the document, but we append a
+ <style> element with a string of css loaded (not injected) by Webpack via
+ jQuery in the iframe. Therefore, we maintain three css files:
+ one for the test control window (fcc-test-ui.css), one for the toggler
+ (fcc-test-toggler.css), and one for the Mocha modal (mocha-modal.css)
+*/
 
 import $ from 'jquery';
 import chai from 'chai';
 // Webpack is configured to load those files with the .html extension as Strings
-import testSuiteSkeleton from './utils/test-suite-skeleton.html';
-// the !- prefixes are for process arguments respective of plugins
-// Example: https://stackoverflow.com/a/42440360/3530394
-// style-loader injects css loaded by css-loader through this import statement.
-
+import fCCTestSuiteSkeleton from './utils/fcc-test-suite-skeleton.html';
+import fCCTestTogglerSkeleton from './utils/fcc-test-toggler-skeleton.html';
+import mochaModalSkeleton from './utils/mocha-modal-skeleton.html';
+// Test window-specific css loaded by css-loader through webpack config only.
+import fCCTestUIStyles from './stylesheets/fcc-test-ui.css';
+// style-loader injects css from css-loader into document
+// Using inline loading of style-loader in order to only inject modal css
 /* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
-import testSuiteFCCStylesIgnored from
-  '!style-loader!css-loader!./stylesheets/style.css';
+import mochaModalStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/mocha-modal.css';
+import fCCTestTogglerStyles from // eslint-disable-line no-unused-vars
+  '!style-loader!css-loader!./stylesheets/fcc-test-toggler.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
   './project-tests/markdown-previewer-tests';
@@ -33,6 +66,21 @@ import createHeatMapTests from './project-tests/heat-map-tests';
 export const assert = chai.assert;
 
 let projectNameLocal = false;
+
+// Prepare iframe with test window html and styles
+const fCCToggle = document.createElement('div');
+fCCToggle.innerHTML = fCCTestTogglerSkeleton;
+document.body.appendChild(fCCToggle);
+const testStyles = document.createElement('style');
+testStyles.innerHTML = fCCTestUIStyles;
+const testFrame = document.getElementById('fcc_foldout_menu');
+const testFrameBody = testFrame.contentWindow.document;
+testFrameBody.open();
+testFrameBody.write(fCCTestSuiteSkeleton);
+testFrameBody.close();
+// Simplest way to append styles to iframe <head> is with jQuery
+// https://stackoverflow.com/questions/217776/how-to-apply-css-to-iframe
+$(testFrame).contents().find('head').append(testStyles);
 
 // Load mocha.
 (function() {
@@ -67,11 +115,8 @@ $(document).ready(function() {
       if (mocha) {
         clearInterval(mochaCheck);
         mocha.setup('bdd');
-        const testDiv = document.createElement('div');
-        testDiv.style.position = 'inherit';
-        testDiv.innerHTML = testSuiteSkeleton;
-        document.body.appendChild(testDiv);
-        // Once testDiv is loaded:
+
+        // Once testFrame is loaded:
         let projectTitleCase = localStorage.getItem('projectTitleCase');
         // projectName variable is defined in our example projects so the
         // correct test suite is automatically loaded. This sets default text
@@ -79,22 +124,27 @@ $(document).ready(function() {
         if (typeof projectName !== 'undefined') {
           projectNameLocal = projectName;
         }
+        // #mocha <div> won't work within iframe so append separately
+        const mochaModal = document.createElement('div');
+        mochaModal.innerHTML = mochaModalSkeleton;
+        document.body.appendChild(mochaModal);
 
         if ((!projectNameLocal) && (projectTitleCase === null)) {
-          document.getElementById('placeholder').innerHTML = '- - -';
-          document.getElementById(
+          testFrameBody.getElementById('placeholder').innerHTML = '- - -';
+          testFrameBody.getElementById(
             'fcc_test_suite_indicator_wrapper'
           ).innerHTML = '';
         } else if (projectNameLocal) {
-          document.getElementById('placeholder').innerHTML =
+          testFrameBody.getElementById('placeholder').innerHTML =
             `${localStorage.getItem('example_project')}`;
-          document.getElementById(
+          testFrameBody.getElementById(
             'fcc_test_suite_indicator_wrapper'
           ).innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
             `${localStorage.getItem('example_project')}</span>`;
         } else {
-          document.getElementById('placeholder').innerHTML = projectTitleCase;
+          testFrameBody.getElementById('placeholder')
+          .innerHTML = projectTitleCase;
           document.getElementById(
             'fcc_test_suite_indicator_wrapper'
           ).innerHTML =
@@ -129,7 +179,7 @@ export function selectProject(project) {
 // Updates the button color and text on the target project, to show how many
 // tests passed and how many failed.
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-  const button = document.getElementById('fcc_test_button');
+  const button = testFrameBody.getElementById('fcc_test_button');
   button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
   if (nbFailed) {
     button.classList.add('fcc_test_btn-error');
@@ -141,7 +191,7 @@ export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
 // Updates the button text on the target project, to show how many tests were
 // executed so far.
 export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-  const button = document.getElementById('fcc_test_button');
+  const button = testFrameBody.getElementById('fcc_test_button');
   button.classList.add('fcc_test_btn-executing');
   button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
 }
@@ -192,7 +242,7 @@ function clearClassList(elem) {
 
 // run tests
 export function FCCRerunTests() {
-  const button = document.getElementById('fcc_test_button');
+  const button = testFrameBody.getElementById('fcc_test_button');
   button.innerHTML = (!projectNameLocal) &&
     (!localStorage.getItem('project_selector'))
     ? 'Load Tests!'
@@ -246,7 +296,8 @@ onkeydown = onkeyup = function(e) {
     }
   // Open/close foldout menu: Ctrl + Shift + O.
   } else if (map[17] && map[16] && map[79]) {
-    document.getElementById('toggle').click();
+    // TODO: Fix css selector namespaces (suggest BEM)
+    testFrameBody.getElementById('fcc_toggle').click();
   }
 };
 
@@ -264,28 +315,29 @@ export function alertOnce(item, message) {
 
 // Hamburger menu transformation
 export function hamburgerTransform() {
-  if (document.getElementById('hamburger_top').classList.contains(
+  if (testFrameBody.getElementById('hamburger_top').classList.contains(
     'transform_top')
   ) {
-    document.getElementById('hamburger_top').classList.remove(
+    testFrameBody.getElementById('hamburger_top').classList.remove(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.remove(
+    testFrameBody.getElementById('hamburger_middle').classList.remove(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.remove(
+    testFrameBody.getElementById('hamburger_bottom').classList.remove(
       'transform_bottom'
     );
   } else {
-    document.getElementById('hamburger_top').classList.add(
+    testFrameBody.getElementById('hamburger_top').classList.add(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.add(
+    testFrameBody.getElementById('hamburger_middle').classList.add(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.add(
+    testFrameBody.getElementById('hamburger_bottom').classList.add(
       'transform_bottom'
     );
+    testFrame.style.width = '320px';
   }
 }
 

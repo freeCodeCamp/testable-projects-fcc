@@ -71,87 +71,147 @@ var FCC_Global =
 
 	var _chai2 = _interopRequireDefault(_chai);
 
-	var _testSuiteSkeleton = __webpack_require__(42);
+	var _fccTestSuiteSkeleton = __webpack_require__(42);
 
-	var _testSuiteSkeleton2 = _interopRequireDefault(_testSuiteSkeleton);
+	var _fccTestSuiteSkeleton2 = _interopRequireDefault(_fccTestSuiteSkeleton);
 
-	var _style = __webpack_require__(43);
+	var _fccTestTogglerSkeleton = __webpack_require__(43);
 
-	var _style2 = _interopRequireDefault(_style);
+	var _fccTestTogglerSkeleton2 = _interopRequireDefault(_fccTestTogglerSkeleton);
 
-	var _drumMachineTests = __webpack_require__(48);
+	var _mochaModalSkeleton = __webpack_require__(44);
+
+	var _mochaModalSkeleton2 = _interopRequireDefault(_mochaModalSkeleton);
+
+	var _fccTestUi = __webpack_require__(45);
+
+	var _fccTestUi2 = _interopRequireDefault(_fccTestUi);
+
+	var _mochaModal = __webpack_require__(47);
+
+	var _mochaModal2 = _interopRequireDefault(_mochaModal);
+
+	var _fccTestToggler = __webpack_require__(51);
+
+	var _fccTestToggler2 = _interopRequireDefault(_fccTestToggler);
+
+	var _drumMachineTests = __webpack_require__(53);
 
 	var _drumMachineTests2 = _interopRequireDefault(_drumMachineTests);
 
-	var _markdownPreviewerTests = __webpack_require__(50);
+	var _markdownPreviewerTests = __webpack_require__(55);
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
-	var _calculatorTests = __webpack_require__(51);
+	var _calculatorTests = __webpack_require__(56);
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroClockTests = __webpack_require__(53);
+	var _pomodoroClockTests = __webpack_require__(58);
 
 	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
-	var _tributePageTests = __webpack_require__(54);
+	var _tributePageTests = __webpack_require__(59);
 
 	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
 
-	var _portfolioTests = __webpack_require__(55);
+	var _portfolioTests = __webpack_require__(60);
 
 	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
 
-	var _productLandingPageTests = __webpack_require__(57);
+	var _productLandingPageTests = __webpack_require__(62);
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
-	var _surveyFormTests = __webpack_require__(58);
+	var _surveyFormTests = __webpack_require__(63);
 
 	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
 
-	var _technicalDocsTests = __webpack_require__(59);
+	var _technicalDocsTests = __webpack_require__(64);
 
 	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
 
-	var _barChartTests = __webpack_require__(60);
+	var _barChartTests = __webpack_require__(65);
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(64);
+	var _scatterPlotTests = __webpack_require__(69);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(65);
+	var _choroplethTests = __webpack_require__(70);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(67);
+	var _treeMapTests = __webpack_require__(72);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(68);
+	var _quoteMachineTests = __webpack_require__(73);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(69);
+	var _heatMapTests = __webpack_require__(74);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// the !- prefixes are for process arguments respective of plugins
-	// Example: https://stackoverflow.com/a/42440360/3530394
-	// style-loader injects css loaded by css-loader through this import statement.
-
-	/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
+	// Test window-specific css loaded by css-loader through webpack config only.
 	var assert = exports.assert = _chai2.default.assert;
+	// style-loader injects css from css-loader into document
+	// Using inline loading of style-loader in order to only inject modal css
+	/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
+
 	// Webpack is configured to load those files with the .html extension as Strings
 	/* global projectName */
-	/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+	/*
+	 This file dynamically generates the user interface for the freeCodeCamp
+	 testable-projects application. The user interface consists of three main parts:
+	 1. fCCTestTogglerSkeleton
+	    A user interface for hiding / showing the test controls:
+	    a. A toggler for hiding / showing the test controller iframe
+	       (#fcc_foldout_toggler)
+	    b. A small read-only indicator in the top-right corner of the viewport that
+	       shows the pending test project (#fcc_test_suite_indicator_wrapper)
+	 2. fCCTestSuiteSkeleton
+	    An <iframe> situated in the top-left corner of the viewport with controls
+	    for running the tests (loaded into document at
+	    fCCTestTogglerSkeleton > iframe#fcc_foldout_menu)
+	 3. mochaModalSkeleton
+	    A modal <div id="mocha"> automatically inserted into the document via Mocha
+
+	 The test controller window runs in an iframe in order to encapsulate the DOM
+	 elements and avoid interfering with student project code.
+	 Since Mocha cannot automatically insert its <div id="mocha"> into the iframe,
+	 we need to append it and load its styles separately.
+	 The toggler is appended separately from the iframe since the whole iframe
+	 slides out of view on toggle.
+
+	 We can use Webpack to inject loaded css into the document, but we append a
+	 <style> element with a string of css loaded (not injected) by Webpack via
+	 jQuery in the iframe. Therefore, we maintain three css files:
+	 one for the test control window (fcc-test-ui.css), one for the toggler
+	 (fcc-test-toggler.css), and one for the Mocha modal (mocha-modal.css)
+	*/
 
 	var projectNameLocal = false;
+
+	// Prepare iframe with test window html and styles
+	var fCCToggle = document.createElement('div');
+	fCCToggle.innerHTML = _fccTestTogglerSkeleton2.default;
+	document.body.appendChild(fCCToggle);
+	var testStyles = document.createElement('style');
+	testStyles.innerHTML = _fccTestUi2.default;
+	var testFrame = document.getElementById('fcc_foldout_menu');
+	var testFrameBody = testFrame.contentWindow.document;
+	testFrameBody.open();
+	testFrameBody.write(_fccTestSuiteSkeleton2.default);
+	testFrameBody.close();
+	// Simplest way to append styles to iframe <head> is with jQuery
+	// https://stackoverflow.com/questions/217776/how-to-apply-css-to-iframe
+	(0, _jquery2.default)(testFrame).contents().find('head').append(testStyles);
 
 	// Load mocha.
 	(function () {
@@ -178,11 +238,8 @@ var FCC_Global =
 	      if (mocha) {
 	        clearInterval(mochaCheck);
 	        mocha.setup('bdd');
-	        var testDiv = document.createElement('div');
-	        testDiv.style.position = 'inherit';
-	        testDiv.innerHTML = _testSuiteSkeleton2.default;
-	        document.body.appendChild(testDiv);
-	        // Once testDiv is loaded:
+
+	        // Once testFrame is loaded:
 	        var projectTitleCase = localStorage.getItem('projectTitleCase');
 	        // projectName variable is defined in our example projects so the
 	        // correct test suite is automatically loaded. This sets default text
@@ -190,15 +247,19 @@ var FCC_Global =
 	        if (typeof projectName !== 'undefined') {
 	          projectNameLocal = projectName;
 	        }
+	        // #mocha <div> won't work within iframe so append separately
+	        var mochaModal = document.createElement('div');
+	        mochaModal.innerHTML = _mochaModalSkeleton2.default;
+	        document.body.appendChild(mochaModal);
 
 	        if (!projectNameLocal && projectTitleCase === null) {
-	          document.getElementById('placeholder').innerHTML = '- - -';
-	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
+	          testFrameBody.getElementById('placeholder').innerHTML = '- - -';
+	          testFrameBody.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '';
 	        } else if (projectNameLocal) {
-	          document.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
-	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (localStorage.getItem('example_project') + '</span>');
+	          testFrameBody.getElementById('placeholder').innerHTML = '' + localStorage.getItem('example_project');
+	          testFrameBody.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (localStorage.getItem('example_project') + '</span>');
 	        } else {
-	          document.getElementById('placeholder').innerHTML = projectTitleCase;
+	          testFrameBody.getElementById('placeholder').innerHTML = projectTitleCase;
 	          document.getElementById('fcc_test_suite_indicator_wrapper').innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (projectTitleCase + '</span>');
 	        }
 	      }
@@ -226,7 +287,7 @@ var FCC_Global =
 	// Updates the button color and text on the target project, to show how many
 	// tests passed and how many failed.
 	function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-	  var button = document.getElementById('fcc_test_button');
+	  var button = testFrameBody.getElementById('fcc_test_button');
 	  button.innerHTML = 'Tests ' + nbPassed + '/' + nbTests;
 	  if (nbFailed) {
 	    button.classList.add('fcc_test_btn-error');
@@ -238,7 +299,7 @@ var FCC_Global =
 	// Updates the button text on the target project, to show how many tests were
 	// executed so far.
 	function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-	  var button = document.getElementById('fcc_test_button');
+	  var button = testFrameBody.getElementById('fcc_test_button');
 	  button.classList.add('fcc_test_btn-executing');
 	  button.innerHTML = 'Testing ' + nbTestsExecuted + '/' + nbTests;
 	}
@@ -289,7 +350,7 @@ var FCC_Global =
 
 	// run tests
 	function FCCRerunTests() {
-	  var button = document.getElementById('fcc_test_button');
+	  var button = testFrameBody.getElementById('fcc_test_button');
 	  button.innerHTML = !projectNameLocal && !localStorage.getItem('project_selector') ? 'Load Tests!' : 'Testing';
 	  button.title = !projectNameLocal && !localStorage.getItem('project_selector') ? 'Select test suite from dropdown above' : 'CTRL + SHIFT + T';
 	  clearClassList(button);
@@ -334,7 +395,8 @@ var FCC_Global =
 	    }
 	    // Open/close foldout menu: Ctrl + Shift + O.
 	  } else if (map[17] && map[16] && map[79]) {
-	    document.getElementById('toggle').click();
+	    // TODO: Fix css selector namespaces (suggest BEM)
+	    testFrameBody.getElementById('fcc_toggle').click();
 	  }
 	};
 
@@ -352,14 +414,15 @@ var FCC_Global =
 
 	// Hamburger menu transformation
 	function hamburgerTransform() {
-	  if (document.getElementById('hamburger_top').classList.contains('transform_top')) {
-	    document.getElementById('hamburger_top').classList.remove('transform_top');
-	    document.getElementById('hamburger_middle').classList.remove('transform_middle');
-	    document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
+	  if (testFrameBody.getElementById('hamburger_top').classList.contains('transform_top')) {
+	    testFrameBody.getElementById('hamburger_top').classList.remove('transform_top');
+	    testFrameBody.getElementById('hamburger_middle').classList.remove('transform_middle');
+	    testFrameBody.getElementById('hamburger_bottom').classList.remove('transform_bottom');
 	  } else {
-	    document.getElementById('hamburger_top').classList.add('transform_top');
-	    document.getElementById('hamburger_middle').classList.add('transform_middle');
-	    document.getElementById('hamburger_bottom').classList.add('transform_bottom');
+	    testFrameBody.getElementById('hamburger_top').classList.add('transform_top');
+	    testFrameBody.getElementById('hamburger_middle').classList.add('transform_middle');
+	    testFrameBody.getElementById('hamburger_bottom').classList.add('transform_bottom');
+	    testFrame.style.width = '320px';
 	  }
 	}
 
@@ -19036,55 +19099,36 @@ var FCC_Global =
 /* 42 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div id=\"fcc_test_suite_indicator_wrapper\"></div>\n<div id=\"fcc_foldout_toggler\">\n\t<span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n\t<span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n\t<span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n</div>\n<input id=\"toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n\ttitle=\"CTRL + SHIFT + O\">\n<div id=\"fcc_foldout_menu\">\n\t<div id=\"fcc_foldout_menu_inner\">\n\t\t<label for=\"test-suite-selector\">Select Test Suite: </label>\n\t\t<select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n\t\t\tonchange=\"FCC_Global.selectProject(this.value)\">\n\t\t\t<option id=\"placeholder\" value=\"\">- - -</option>\n\t\t\t<option value=\"tribute-page\">Tribute Page</option>\n\t\t\t<option value=\"portfolio\">Personal Portfolio</option>\n\t\t\t<option value=\"survey-form\">Survey Form</option>\n\t\t\t<option value=\"product-landing-page\">Product Landing Page</option>\n\t\t\t<option value=\"technical-docs-page\">Technical Documentation Page\n\t\t\t</option>\n\t\t\t<option value=\"random-quote-machine\">Random Quote Machine</option>\n\t\t\t<option value=\"markdown-previewer\">Markdown Previewer</option>\n\t\t\t<option value=\"drum-machine\">Drum Machine</option>\n\t\t\t<option value=\"pomodoro-clock\">Pomodoro Clock</option>\n\t\t\t<option value=\"javascript-calculator\">Javascript Calculator</option>\n\t\t\t<option value=\"bar-chart\">D3: Bar Chart</option>\n\t\t\t<option value=\"scatter-plot\">D3: Scatter Plot</option>\n\t\t\t<option value=\"heat-map\">D3: Heat Map</option>\n\t\t\t<option value=\"choropleth\">D3: Choropleth</option>\n\t\t\t<option value=\"tree-map\">D3: Tree Map</option>\n\t\t</select>\n\t\t<button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n\t\t\tclass=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n\t\t\tonclick=\"FCC_Global.FCCRerunTests()\">\n\t\t\tRun Tests\n\t\t</button>\n\t\t<button id=\"fcc_test_button\" type=\"button\"\n\t\t\tclass=\"fcc_foldout_buttons fcc_test_btn-default\"\n\t\t\ttitle=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n\t\t\tTests\n\t\t</button>\n\t\t<div id=\"fcc_legend_wrapper\">\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Test(s) Failed</span>\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Tests Passed</span>\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Tests Executing</span>\n\t\t</div>\n\t\t<span id=\"fcc_report-bug\"><a\n\t\t\thref=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n\t\t\ttarget=\"_blank\">Report Bug</a>\n\t\t</span>\n\t</div>\n</div>\n<div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n\tonclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n\t<div class=\"fcc_test_message-box-content\">\n\t\t<div class=\"fcc_test_message-box-header\">\n\t\t\t<div class=\"title\">Unit tests</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-body\">\n\t\t\t<div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-footer\">\n\t\t\t<div class=\"fcc_test_message-box-close-btn\"\n\t\t\t\tonclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div id=\"fcc_foldout_menu_inner\">\n\t<label for=\"test-suite-selector\">Select Test Suite: </label>\n\t<select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n\t\tonchange=\"parent.FCC_Global.selectProject(this.value)\">\n\t\t<option id=\"placeholder\" value=\"\">- - -</option>\n\t\t<option value=\"tribute-page\">Tribute Page</option>\n\t\t<option value=\"portfolio\">Personal Portfolio</option>\n\t\t<option value=\"survey-form\">Survey Form</option>\n\t\t<option value=\"product-landing-page\">Product Landing Page</option>\n\t\t<option value=\"technical-docs-page\">Technical Documentation Page\n\t\t</option>\n\t\t<option value=\"random-quote-machine\">Random Quote Machine</option>\n\t\t<option value=\"markdown-previewer\">Markdown Previewer</option>\n\t\t<option value=\"drum-machine\">Drum Machine</option>\n\t\t<option value=\"pomodoro-clock\">Pomodoro Clock</option>\n\t\t<option value=\"javascript-calculator\">Javascript Calculator</option>\n\t\t<option value=\"bar-chart\">D3: Bar Chart</option>\n\t\t<option value=\"scatter-plot\">D3: Scatter Plot</option>\n\t\t<option value=\"heat-map\">D3: Heat Map</option>\n\t\t<option value=\"choropleth\">D3: Choropleth</option>\n\t\t<option value=\"tree-map\">D3: Tree Map</option>\n\t</select>\n\t<button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n\t\tclass=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n\t\tonclick=\"parent.FCC_Global.FCCRerunTests()\">\n\t\tRun Tests\n\t</button>\n\t<button id=\"fcc_test_button\" type=\"button\"\n\t\tclass=\"fcc_foldout_buttons fcc_test_btn-default\"\n\t\ttitle=\"CTRL + SHIFT + T\" onclick=\"parent.FCC_Global.FCCOpenTestModal()\">\n\t\tTests\n\t</button>\n\t<div id=\"fcc_legend_wrapper\">\n\t\t<div class=\"fcc_legend key\"></div>\n\t\t<span class=\"fcc_legend\">Test(s) Failed</span>\n\t\t<div class=\"fcc_legend key\"></div>\n\t\t<span class=\"fcc_legend\">Tests Passed</span>\n\t\t<div class=\"fcc_legend key\"></div>\n\t\t<span class=\"fcc_legend\">Tests Executing</span>\n\t</div>\n\t<span id=\"fcc_report-bug\"><a\n\t\thref=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n\t\ttarget=\"_blank\">Report Bug</a>\n\t</span>\n</div>\n\n";
 
 /***/ }),
 /* 43 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(44);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// Prepare cssTransformation
-	var transform;
-
-	var options = {}
-	options.transform = transform
-	// add the styles to the DOM
-	var update = __webpack_require__(46)(content, options);
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
+	module.exports = "<div id=\"fcc_foldout_toggler\">\n\t<span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n\t<span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n\t<span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n</div>\n<input id=\"fcc_toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n\ttitle=\"CTRL + SHIFT + O\">\n<div id=\"fcc_test_suite_indicator_wrapper\"></div>\n<iframe id=\"fcc_foldout_menu\"></iframe>";
 
 /***/ }),
 /* 44 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n\tonclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n\t<div class=\"fcc_test_message-box-content\">\n\t\t<div class=\"fcc_test_message-box-header\">\n\t\t\t<div class=\"title\">Unit tests</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-body\">\n\t\t\t<div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-footer\">\n\t\t\t<div class=\"fcc_test_message-box-close-btn\"\n\t\t\t\tonclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n\t\t</div>\n\t</div>\n</div>";
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(45)(false);
+	exports = module.exports = __webpack_require__(46)(false);
 	// imports
-	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
+
 
 	// module
-	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n#mocha h1,#mocha h2{\n  margin:0;\n}\n#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:15px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\n#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\n.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n}\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n}\n\n.fcc_test_message-box-body {\n  flex: 1;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\n#mocha {\n  margin: 10px !important;\n}\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n#mocha-stats {\n  position: absolute;\n}\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n/* FOLDOUT MENU CSS */\n\n#fcc_foldout_menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 320px;\n  height: 210px;\n  border-radius: 0 !important;\n  border-bottom-right-radius: 5px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  z-index: 99997;\n  font-family: Noto Sans, arial, sans-serif !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  transition: .5s;\n}\n#toggle:checked ~ #fcc_foldout_menu {\n  left: -320px;\n  transition: .5s ease-in-out;\n}\n#fcc_foldout_menu_inner {\n  position: relative;\n}\n#toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n}\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  z-index: 99998;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 3px;\n  display: block;\n  background: black !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n}\n#hamburger_top {\n  position: absolute;\n  top: -6px;\n  transform-origin: 0% 80%;\n}\n#hamburger_bottom {\n  position: absolute;\n  bottom: -6px;\n  transform-origin: 20% 80%;\n}\n\n#fcc_foldout_menu label {\n  top: 38px;\n  left: 20px;\n  position: absolute;\n  font-size: 15px !important;\n  color: black !important;\n}\n#fcc_foldout_menu select {\n  display: block;\n  padding: 0;\n  height: auto;\n  width: auto;\n  top: 61px;\n  left: 18px;\n  position: absolute;\n  font-size: 12px !important;\n  font-family: Noto Sans, Arial, sans-serif !important;\n}\n\n.fcc_foldout_buttons {\n  position: absolute;\n  left: 20px;\n  height: 20px;\n  width: 110px;\n  padding: 10px !important;\n  display: block;\n  font-size: 15px !important;\n  line-height: 15px !important;\n  text-align: center;\n  border: none !important;\n  outline: none !important;\n  color: white;\n  background-color: rgba(128, 128, 128, 0.7);\n  border-radius: 4px;\n  box-sizing: content-box !important;\n  z-index: 0;\n  cursor: pointer;\n  box-shadow: 1px 1px 4px black;\n  font-family: Noto Sans, arial, sans-serif !important;\n}\n#fcc_test_message-box-rerun-button {\n  top: 90px;\n  transition: all .3s;\n}\n#fcc_test_message-box-rerun-button:hover {\n  color: white;\n  background-color: black;\n}\n#fcc_test_button {\n  top: 140px;\n}\n.fcc_test_btn-default {\n  background-color: rgba(128, 128, 128, 0.7);\n}\n.fcc_test_btn-executing {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_test_btn-error {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.fcc_test_btn-success {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n#fcc_report-bug {\n  position: absolute;\n  top: 186px;\n  left: 20px;\n  width: 110px;\n  padding: 0 10px !important;\n  font-size: 12px !important;\n  text-align: center;\n}\n\n#fcc_legend_wrapper {\n  position: absolute;\n  top: 95px;\n  left: 160px;\n  width: 125px;\n  vertical-align: top;\n  text-align: left !important;\n  font-size: 15px !important;\n  background: none !important;\n}\n#fcc_legend_wrapper span {\n  height: 15px;\n  margin-top: 6px !important;\n  font-size: 12px  !important;\n  color: black !important;\n  background: none !important;\n}\n.key {\n  height: 15px;\n  width: 15px;\n  margin: 5px !important;\n  vertical-align: top;\n  border-radius: 0 !important;\n}\n.key:first-of-type {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.key:nth-of-type(2) {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n.key:nth-of-type(3) {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_legend {\n  position: relative;\n  display: inline-block;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n}\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  color: black !important;\n  padding: 3px 5px !important;\n  border-radius: 5px !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n}", ""]);
+	exports.push([module.id, "\n#fcc_foldout_menu_inner {\n  position: relative;\n  font-family: Noto Sans, arial, sans-serif;\n}\n#fcc_foldout_menu_inner label {\n  top: 38px;\n  left: 20px;\n  position: absolute;\n  font-size: 15px;\n  color: black;\n}\n#fcc_foldout_menu_inner select {\n  display: block;\n  padding: 0;\n  height: auto;\n  width: auto;\n  top: 61px;\n  left: 18px;\n  position: absolute;\n  font-size: 12px;\n  font-family: Noto Sans, Arial, sans-serif;\n}\n\n.fcc_foldout_buttons {\n  position: absolute;\n  left: 20px;\n  height: 20px;\n  width: 110px;\n  padding: 10px;\n  display: block;\n  font-size: 15px;\n  line-height: 15px;\n  text-align: center;\n  border: none;\n  outline: none;\n  color: white;\n  background-color: rgba(128, 128, 128, 0.7);\n  border-radius: 4px;\n  box-sizing: content-box;\n  z-index: 0;\n  cursor: pointer;\n  box-shadow: 1px 1px 4px black;\n  font-family: Noto Sans, arial, sans-serif;\n}\n#fcc_test_message-box-rerun-button {\n  top: 90px;\n  transition: all .3s;\n}\n#fcc_test_message-box-rerun-button:hover {\n  color: white;\n  background-color: black;\n}\n#fcc_test_button {\n  top: 140px;\n}\n.fcc_test_btn-default {\n  background-color: rgba(128, 128, 128, 0.7);\n}\n.fcc_test_btn-executing {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_test_btn-error {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.fcc_test_btn-success {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n#fcc_report-bug {\n  position: absolute;\n  top: 186px;\n  left: 20px;\n  width: 110px;\n  padding: 0 10px;\n  font-size: 12px;\n  text-align: center;\n}\n\n#fcc_legend_wrapper {\n  position: absolute;\n  top: 95px;\n  left: 160px;\n  width: 125px;\n  vertical-align: top;\n  text-align: left;\n  font-size: 15px;\n  background: none;\n}\n#fcc_legend_wrapper span {\n  height: 15px;\n  margin-top: 6px;\n  font-size: 12px ;\n  color: black;\n  background: none;\n}\n.key {\n  height: 15px;\n  width: 15px;\n  margin: 5px;\n  vertical-align: top;\n  border-radius: 0;\n}\n.key:first-of-type {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.key:nth-of-type(2) {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n.key:nth-of-type(3) {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_legend {\n  position: relative;\n  display: inline-block;\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	/*
@@ -19166,7 +19210,52 @@ var FCC_Global =
 
 
 /***/ }),
-/* 46 */
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(48);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(49)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./mocha-modal.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./mocha-modal.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(46)(false);
+	// imports
+	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
+
+	// module
+	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n#mocha h1,#mocha h2{\n  margin:0;\n}\n#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:15px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\n#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\n.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n}\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n}\n\n.fcc_test_message-box-body {\n  flex: 1;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\n#mocha {\n  margin: 10px !important;\n}\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n#mocha-stats {\n  position: absolute;\n}\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -19212,7 +19301,7 @@ var FCC_Global =
 	var	singletonCounter = 0;
 	var	stylesInsertedAtTop = [];
 
-	var	fixUrls = __webpack_require__(47);
+	var	fixUrls = __webpack_require__(50);
 
 	module.exports = function(list, options) {
 		if (false) {
@@ -19525,7 +19614,7 @@ var FCC_Global =
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports) {
 
 	
@@ -19620,7 +19709,52 @@ var FCC_Global =
 
 
 /***/ }),
-/* 48 */
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(52);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(49)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./fcc-test-toggler.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./fcc-test-toggler.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(46)(false);
+	// imports
+
+
+	// module
+	exports.push([module.id, "#fcc_foldout_menu {\n\tposition: absolute;\n  top: 0;\n  left: 0;\n  width: 320px;\n  height: 210px;\n\tborder: 0px solid #fff;\n\tborder-radius: 0 !important;\n  border-bottom-right-radius: 5px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  z-index: 99997;\n  font-family: Noto Sans, arial, sans-serif !important;\n\tbox-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  transition: .5s;\n  pointer-events: all;\n}\n#fcc_toggle:checked ~ #fcc_foldout_menu {\n  left: -320px;\n  transition: .5s ease-in-out;\n}\n#fcc_toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n  pointer-events: auto;\n}\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  z-index: 99998;\n  pointer-events: auto;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 3px;\n  display: block;\n\tbackground: black !important;\n\tborder-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n}\n#hamburger_top {\n  position: absolute;\n  top: -6px;\n  transform-origin: 0% 80%;\n}\n#hamburger_bottom {\n  position: absolute;\n  bottom: -6px;\n  transform-origin: 20% 80%;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n}\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px;\n  background-color: rgba(255, 255, 204, 0.9);\n  color: black;\n  padding: 3px 5px;\n  border-radius: 5px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19632,7 +19766,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
@@ -19756,7 +19890,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 49 */
+/* 54 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -19773,7 +19907,7 @@ var FCC_Global =
 	var d3ProjectStackNoAxes = exports.d3ProjectStackNoAxes = '1. You can use HTML, JavaScript, CSS, ' + 'and the D3 svg-based visualization library. Required (non-virtual) ' + 'DOM elements are queried on the moment of each test. If you use a ' + 'frontend framework (like Vue for example), the test results may be ' + 'inaccurate for dynamic content. We hope to accommodate them eventually, ' + 'but these frameworks are not currently supported for D3 projects.';
 
 /***/ }),
-/* 50 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19785,7 +19919,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	/* global marked */
 
@@ -20022,7 +20156,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 51 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20034,9 +20168,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function createCalculatorTests() {
 
@@ -20214,7 +20348,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 52 */
+/* 57 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20275,7 +20409,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 53 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20287,9 +20421,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function createPomodoroClockTests() {
 
@@ -20861,7 +20995,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 54 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20877,7 +21011,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20992,7 +21126,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 55 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21002,9 +21136,9 @@ var FCC_Global =
 	});
 	exports.default = createPortfolioTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(61);
 
 	var _chai = __webpack_require__(2);
 
@@ -21174,7 +21308,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 56 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -21254,7 +21388,7 @@ var FCC_Global =
 	};
 
 /***/ }),
-/* 57 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21264,9 +21398,9 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(61);
 
 	var _chai = __webpack_require__(2);
 
@@ -21457,7 +21591,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 58 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21469,7 +21603,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function createSurveyFormTests() {
 
@@ -21661,7 +21795,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 59 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21673,9 +21807,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(61);
 
 	function createTechnicalDocsPageTests() {
 
@@ -21895,7 +22029,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 60 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21905,17 +22039,17 @@ var FCC_Global =
 	});
 	exports.default = createBarChartTests;
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(66);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(68);
 
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22066,7 +22200,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 61 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22077,7 +22211,7 @@ var FCC_Global =
 	exports._getSurroundingTicks = _getSurroundingTicks;
 	exports.areShapesAlignedWithTicks = areShapesAlignedWithTicks;
 
-	var _alignmentD3Support = __webpack_require__(62);
+	var _alignmentD3Support = __webpack_require__(67);
 
 	function _getSurroundingTicks(shape, val, ticks, tickIndex, increment, dataType, normalTickOrder) {
 	  var surroundingTicks = [],
@@ -22187,7 +22321,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 62 */
+/* 67 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22284,7 +22418,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 63 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22400,7 +22534,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 64 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22410,13 +22544,13 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(66);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(68);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function createScatterPlotTests() {
 
@@ -22584,7 +22718,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 65 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22596,15 +22730,15 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _education = __webpack_require__(66);
+	var _education = __webpack_require__(71);
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(68);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22724,7 +22858,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 66 */
+/* 71 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -41583,7 +41717,7 @@ var FCC_Global =
 	]
 
 /***/ }),
-/* 67 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41595,11 +41729,11 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(68);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
 	function createTreeMapTests() {
 
@@ -41726,7 +41860,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 68 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41738,9 +41872,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {
@@ -41890,7 +42024,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 69 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41900,15 +42034,15 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(54);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(57);
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(66);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(68);
 
 	function createHeatMapTests() {
 
