@@ -22,9 +22,8 @@ module.exports = {
             {
               test: /\.css$/,
               exclude: /node_modules/,
-              // chained loaders: 
-              // style-loader injects css imported by css-loader
-              loader: 'style-loader!css-loader'
+              // css imported by css-loader
+              loader: 'css-loader'
             },
             {
               test: /\.html$/,
