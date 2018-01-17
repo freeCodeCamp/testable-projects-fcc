@@ -55,6 +55,11 @@ import createHeatMapTests from './project-tests/heat-map-tests';
 export const assert = chai.assert;
 
 let projectNameLocal = false;
+let localStorageByProject = function() {
+  const placeholder = document.getElementById('placeholder');
+  const visibleProjectName = placeholder.innerHTML.split(' ').join('');
+  return 'fCC_' + visibleProjectName + '_hide';
+};
 
 // Load mocha.
 (function() {
@@ -109,26 +114,34 @@ $(document).ready(function() {
         mochaModal.innerHTML = mochaModalSkeleton;
         document.body.appendChild(mochaModal);
 
+        let toggleElement = document.getElementById('fcc_toggle');
+        let indicatorWrapper = document.getElementById(
+          'fcc_test_suite_indicator_wrapper'
+        );
+        let placeholder = document.getElementById('placeholder');
+
         if ((!projectNameLocal) && (projectTitleCase === null)) {
-          document.getElementById('placeholder').innerHTML = '- - -';
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
-          ).innerHTML = '';
+          placeholder.innerHTML = '- - -';
+          indicatorWrapper.innerHTML = '';
         } else if (projectNameLocal) {
-          document.getElementById('placeholder').innerHTML =
+          placeholder.innerHTML =
             `${localStorage.getItem('example_project')}`;
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
-          ).innerHTML =
+          indicatorWrapper.innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
             `${localStorage.getItem('example_project')}</span>`;
         } else {
-          document.getElementById('placeholder').innerHTML = projectTitleCase;
-          document.getElementById(
-            'fcc_test_suite_indicator_wrapper'
-          ).innerHTML =
+          placeholder.innerHTML = projectTitleCase;
+          indicatorWrapper.innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
             `${projectTitleCase}</span>`;
+        }
+        // If this is the first time loading this project, show test window
+        if (!localStorage.getItem(localStorageByProject)) {
+          toggleElement.checked = false;
+        } else {
+          // If student has hidden the test window once, keep it hidden.
+          hamburgerTransform();
+          toggleElement.checked = true;
         }
       }
     } catch (err) {
@@ -142,6 +155,7 @@ $(document).ready(function() {
 
 // Select project dropdown.
 export function selectProject(project) {
+  localStorage.removeItem(localStorageByProject);
   // Store project_selector for initTestRunner function.
   localStorage.setItem('project_selector', project);
   // Create & store pretty-print project name for display in indicator div.
@@ -305,6 +319,9 @@ export function hamburgerTransform() {
     document.getElementById('hamburger_bottom').classList.remove(
       'transform_bottom'
     );
+    // Once the student has hidden the test window, this localStorage variable
+    // keeps it hidden until manually toggled.
+    localStorage.setItem(localStorageByProject, true);
   } else {
     document.getElementById('hamburger_top').classList.add(
       'transform_top'
