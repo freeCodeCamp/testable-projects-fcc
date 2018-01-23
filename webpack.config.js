@@ -20,7 +20,7 @@ module.exports = {
             {
               test: /\.css$/,
               exclude: /node_modules/,
-              // chained loaders: 
+              // chained loaders:
               // style-loader injects css imported by css-loader
               loader: 'style-loader!css-loader'
             },

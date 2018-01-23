@@ -1,238 +1,142 @@
-// D3 Alignment testing.
-// Used to determine if all the shapes on a chart are correctly aligned with
-// the ticks on an axis.
-
-// This is the main function you should be using in tests.
-// Given an axis that has ticks, and a list of data shapes, it determines if
-// each shape is aligned with the correct ticks on the axis.
-export function isAxisAlignedWithDataPoints(
-  axis,
-  dimension,
-  dataShapes,
-  getShapeValue,
+import {
   getTickValue,
-  getShapePosition,
-  getTickPosition
-) {
-  const dataShapesArray = [].slice.call(dataShapes);
-  const allTicks = axis.querySelectorAll('.tick');
-
-  const tickOrderNormal =
-    _getTickOrdering(allTicks, getTickValue, getTickPosition, dimension);
-
-  const outside = dataShapesArray.every(shape =>
-    _isShapeAlignedWithTicks(
-      shape,
-      allTicks,
-      dimension,
-      tickOrderNormal,
-      getShapeValue,
-      getTickValue,
-      getShapePosition,
-      getTickPosition
-    )
-  );
-
-  return outside;
-}
-
-// If the first tick is less than the second tick, and the first tick has
-// a lower position then the ordering is considered "normal". If the order is
-// normal, we return true. False otherwise.
-function _getTickOrdering(allTicks, getTickValue, getTickPosition, dimension) {
-  let returnValue;
-
-  // Compare the first and second tick to see which is greater in value.
-  if (getTickValue(allTicks[0]) < getTickValue(allTicks[1])) {
-    returnValue = true;
-  } else {
-    returnValue = false;
-  }
-
-  // Now look at the position of the ticks to understand the order.
-  if (getTickPosition(allTicks[0])[dimension] >
-    getTickPosition(allTicks[1])[dimension]
-  ) {
-    return !returnValue;
-  }
-
-  return returnValue;
-}
-
-
-// TODO: Only exported so we can test it.
-// Given an axis and one shape, it will find the surrounding ticks based on
-// the position of the shape, and then it will determine if the value of the
-// shape is between the tick values
-export function _isShapeAlignedWithTicks(
-  shape,
-  allTicks,
-  dimension,
-  tickOrderNormal,
-  getShapeValue,
-  getTickValue,
-  getShapePosition,
-  getTickPosition
-) {
-
-  const position = getShapePosition(shape);
-
-  const enclosingTicks = _getSurroundingTicks(
-    allTicks,
-    dimension,
-    position,
-    getTickPosition
-  );
-
-  let within = _isShapeValueWithinTickValues(
-    shape,
-    enclosingTicks,
-    tickOrderNormal,
-    getShapeValue,
-    getTickValue
-  );
-
-  return within;
-}
-
-// Gets the nearest tick to a given position.
-// The way it does this is not obvious. First it filters all the ticks to only
-// get the ticks before or after the given position. The filtering is based
-// on the "filterCompare" function parameter. Then it performs a reduce on the
-// filtered ticks to find which one is closest to the given postion. The reduce
-// function uses the "compare" parameter which is a function to compare ticks.
-// See the "_getSurroundingTicks" function for an example of how this is used.
-function getNearestTick(
-  allTicks,
-  filterCompare,
-  dimension,
-  position,
   getTickPosition,
-  compare
-) {
+  getShapeValue,
+  getShapePosition
+} from '../utils/alignment-D3-support';
 
-  // Function to finds the tick that is closest to the given position, based on
-  // the compare function.
-  const reduceFunction = function(result, tick) {
-    const position = getTickPosition(tick)[dimension];
-    if (result && compare(getTickPosition(result)[dimension], position)) {
-      return result;
-    }
-    return tick;
-  };
-
-  // First filter the ticks to get only the ticks that are before or after
-  // the given position.
-  let ticks = allTicks.filter(tick => {
-    let tickPosition = getTickPosition(tick)[dimension];
-    return filterCompare(tickPosition, position[dimension]);
-  });
-
-  // Finally, run the reduce operation to get the closest tick.
-  let closestTick = ticks.reduce(reduceFunction, null);
-
-  return closestTick;
-}
-
-// TODO: Only exported so we can test it.
-// Given a list of ticks it will find the ticks closest to the given position.
-// This also works when there is no beforeTick or afterTick. I.e. sometimes some
-// of the small values appear before the first tick, or the largest values
-// appear after the last tick. In those cases it will return null for the
-// tick in question.
 export function _getSurroundingTicks(
-  ticksList,
-  dimension,
-  position,
-  getTickPosition,
+  shape,
+  val,
+  ticks,
+  tickIndex,
+  increment,
+  dataType,
+  normalTickOrder
 ) {
+  let surroundingTicks = [],
+    returnValue = null,
+    nextIndex;
+  do {
+    // nextIndex is either one greater- or less-than according to sort order
+    nextIndex = ( normalTickOrder ? (tickIndex + 1) : (tickIndex - 1) );
 
-  let ticks;
-  let afterTick;
-  let beforeTick;
-  let lessThanFilter = (tickPosition, position) => tickPosition <= position;
-  let greaterThanCompare = (prevPosition, position) => prevPosition > position;
-  let greaterThanFilter = (tickPosition, position) => tickPosition > position;
-  let lessThanCompare = (prevPosition, position) => prevPosition < position;
+    let tickVal0 = (
+      !ticks[tickIndex] ?
+      // ticks[tickIndex] may be undefined. If so, calc mock tick value
+      ( getTickValue(ticks[nextIndex], dataType) - increment ) :
+      getTickValue(ticks[tickIndex], dataType) );
 
-  if (!ticksList) {
-    throw new Error('The list of ticks must not be empty.');
+    let tickVal1 = (
+      !ticks[nextIndex] ?
+      ( getTickValue(ticks[tickIndex], dataType) + increment ) :
+      getTickValue(ticks[nextIndex], dataType) );
+
+    // In order to run a single comparison (if), ensure prevTickVal is smaller
+    // than nextTickVal
+    var prevTickVal = Math.min(tickVal0, tickVal1);
+    var nextTickVal = Math.max(tickVal1, tickVal0);
+
+    // each shape should only compare with one set (2) ticks and the shape's
+    // value may equal one of the tick's value
+    if (val >= prevTickVal && val < nextTickVal ) {
+      let nextTick = (!ticks[nextIndex] ? null : ticks[nextIndex]);
+      let prevTick = (!ticks[tickIndex] ? null : ticks[tickIndex]);
+      surroundingTicks = [ prevTick, nextTick ];
+    }
+
+    if (normalTickOrder) {
+      tickIndex++;
+    } else {
+      tickIndex--;
+    }
+  } while ( surroundingTicks.length < 2
+    // stop when two surroundingTicks are captured and tick NodeList iterated
+    && ( normalTickOrder ? tickIndex < ticks.length : tickIndex >= 0 )
+  );
+  if (surroundingTicks.length === 2) {
+    returnValue = surroundingTicks;
   }
-
-  ticks = [].slice.call(ticksList);
-
-  // The filter function finds all ticks less than or equal to the position.
-  // The compare function then finds the largest of the filtered ticks.
-  beforeTick = getNearestTick(
-    ticks,
-    lessThanFilter,
-    dimension,
-    position,
-    getTickPosition,
-    greaterThanCompare
-  );
-
-  // The filter function finds all ticks greater than the position.
-  // The compare function then finds the smallest of the filtered ticks.
-  afterTick = getNearestTick(
-    ticks,
-    greaterThanFilter,
-    dimension,
-    position,
-    getTickPosition,
-    lessThanCompare
-  );
-
-  return [ beforeTick, afterTick ];
+  // null if surroundingTicks is []
+  return returnValue;
 }
 
-// TODO: Only exported so we can test it.
-// Given an array of two ticks, it determines the values of the ticks and
-// whether or not the value of the given shape is within the tick values.
-export function _isShapeValueWithinTickValues(
-  shape,
-  ticks,
-  tickOrderNormal,
-  getShapeValue,
-  getTickValue
+export function areShapesAlignedWithTicks(
+  // NodeList
+  shapeCollection,
+  // NodeList
+  ticksCollection,
+  // String: 'x', 'y', 'cx', or 'cy'
+  dimension,
+  // String: 'data-year', 'data-gdp', 'data-date', 'data-xvalue', 'data-yvalue'
+  dataAttribute,
+  // String: 'year', 'minute', 'thousand', 'month'
+  dataType,
+  // Shape vertex to compare to axis: String: 'topLeft' or 'center'
+  positionType
 ) {
-
-  const shapeValue = getShapeValue(shape);
-
-  // beforeTick and afterTick have only to do with the position of the ticks
-  // in relation to the position of the shape.
-  let beforeTickValue;
-  let afterTickValue;
-  let returnValue;
-
-  // The beforeTick could be null.
-  if (!ticks[0]) {
-    afterTickValue = getTickValue(ticks[1]);
-    if (tickOrderNormal) {
-      returnValue = shapeValue <= afterTickValue;
-    } else {
-      returnValue = shapeValue >= afterTickValue;
-    }
-  // The afterTick could be null.
-  } else if (!ticks[1]) {
-    beforeTickValue = getTickValue(ticks[0]);
-    if (tickOrderNormal) {
-      returnValue = beforeTickValue <= shapeValue;
-    } else {
-      returnValue = beforeTickValue >= shapeValue;
-    }
-  // Neither the beforeTick or afterTick are null, so we use both to compare.
-  } else {
-    beforeTickValue = getTickValue(ticks[0]);
-    afterTickValue = getTickValue(ticks[1]);
-    if (tickOrderNormal) {
-      returnValue = (beforeTickValue <= shapeValue) &&
-        (shapeValue <= afterTickValue);
-    } else {
-      returnValue = (beforeTickValue >= shapeValue) &&
-        (shapeValue >= afterTickValue);
-    }
+  // return early if no shapes
+  if (shapeCollection.length === 0) {
+    return false;
   }
+  let aligned = 0;
 
-  return returnValue;
+  // get either 'x' or 'y' in case of 'cx' or 'cy'
+  const coord = dimension.match(/c/g) ? dimension.split('c')[1] : dimension;
+
+  const normalTickOrder =
+    getTickValue(ticksCollection[ticksCollection.length - 1], dataType) >
+    getTickValue(ticksCollection[0], dataType);
+
+  // increment may be positive or negative based on axis sort order
+  const increment = getTickValue(ticksCollection[1], dataType) -
+    getTickValue(ticksCollection[0], dataType);
+
+  // positionIncrement may be positive or negative based on axis sort order
+  const positionIncrement = getTickPosition( ticksCollection[1] )[coord] -
+    getTickPosition( ticksCollection[0] )[coord];
+
+  shapeCollection.forEach(function(shape) {
+    let pos = getShapePosition(shape, dimension, positionType);
+    let val = getShapeValue(shape, dataAttribute, dataType);
+    // index is initially off (either -1 or ticksCollection.length), then
+    // _getSurroundingTicks increments or decrements according to sort order
+    let tickIndex = ( !normalTickOrder ? ticksCollection.length : -1 );
+
+    let surroundingTicks = _getSurroundingTicks(
+      shape,
+      val,
+      ticksCollection,
+      tickIndex,
+      increment,
+      dataType,
+      normalTickOrder
+    );
+
+    if (surroundingTicks.length > 0) {
+      let tickPos0 = ( !surroundingTicks[0] ?
+        // surroundingTicks[0] may be null. if so, calc mock begin position
+        ( getTickPosition( surroundingTicks[1] )[coord] - positionIncrement ) :
+        // actual begin position
+        getTickPosition( surroundingTicks[0] )[coord]
+      );
+
+      let tickPos1 = ( !surroundingTicks[1] ?
+        // calc mock end position
+        ( getTickPosition( surroundingTicks[0] )[coord] + positionIncrement ) :
+        // actual position
+        getTickPosition( surroundingTicks[1] )[coord]
+      );
+      let beforeTickPos = Math.min(tickPos0, tickPos1),
+        afterTickPos = Math.max(tickPos0, tickPos1);
+
+      // if shape is positioned between the two ticks plus or minus 11px
+      // TODO reduce to 2px after Bar Chart is fixed. A leeway is necessary
+      // for this code to work on all chart types.
+      if ( (pos >= beforeTickPos - 11 ) && ( pos <= afterTickPos + 11 ) ) {
+        aligned++;
+      }
+    }
+  });
+  return aligned === shapeCollection.length;
 }
