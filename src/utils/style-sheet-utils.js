@@ -28,12 +28,20 @@ export const allCSSRulesAsArray = function(styleSheets) {
     .reduce(function(prev, styleSheet) {
 
       // The styleSheet might not contain any rules.
-      if (styleSheet.cssRules) {
-        // Convert the list of rules into an array.
-        const rulesAsArray = [].slice.call(styleSheet.cssRules);
-        // Use the spread operator to push each individual element onto the
-        // return array.
-        prev.push(...rulesAsArray);
+      try {
+        if (styleSheet.cssRules) {
+          // Convert the list of rules into an array.
+          const rulesAsArray = [].slice.call(styleSheet.cssRules);
+          // Use the spread operator to push each individual element onto the
+          // return array.
+          prev.push(...rulesAsArray);
+        }
+      } catch (error) {
+        // Skip DOMException error due to Chrome complaining about CSSRules
+        // attribute security error.
+        if (!(error instanceof DOMException)) {
+          throw (error);
+        }
       }
 
       return prev;

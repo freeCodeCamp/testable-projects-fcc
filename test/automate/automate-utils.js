@@ -75,7 +75,8 @@ exports.doesProjectPassTests = function(name, URL) {
   let options = new chrome.Options();
   options.addArguments([
     'start-maximized',
-    `window-size=${browserMaxWidth}x${browserMaxHeight}`
+    `window-size=${browserMaxWidth}x${browserMaxHeight}`,
+    'no-sandbox'
   ]);
   options.setChromeBinaryPath(chromeBinaryPath);
 
@@ -269,6 +270,11 @@ exports.doesProjectPassTests = function(name, URL) {
 
   // Switch to the CodePen output frame. This is the frame where the
   // newly refreshed project web page is displayed.
+  // For some reason immediately switching to the new iframe is no longer
+  // working. It could be due to a change in the way CodePen manages its iframes
+  // or a bug in Selenium or something else. Unfortunately that means we have
+  // to do a short sleep before switching to the new iframe.
+  driver.sleep(1000);
   driver.wait(
     until.ableToSwitchToFrame(By.className('result-iframe')),
     elementTimeout
