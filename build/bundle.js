@@ -19073,7 +19073,7 @@ var FCC_Global =
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(45)(undefined);
+	exports = module.exports = __webpack_require__(45)(false);
 	// imports
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
 
@@ -19844,6 +19844,16 @@ var FCC_Global =
 	      editor.dispatchEvent(eventJS);
 	      return;
 	    }
+	    // We need to undo the configuration set in triggerChange after running
+	    // tests. The configuration was added to allow dispatchEvent for
+	    // programmatic value change in React 15.6
+	    // See https://stackoverflow.com/a/7144252/3530394
+	    after(function () {
+	      // remove the value attribute in order to remove the configuration
+	      delete editor.value;
+	      // restore default markdown text
+	      editor.value = markdownOnLoad;
+	    });
 
 	    describe('#Technology Stack', function () {
 	      it(_sharedTestStrings.frontEndLibrariesStack, function () {
