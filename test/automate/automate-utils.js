@@ -289,6 +289,12 @@ exports.doesProjectPassTests = function(name, URL) {
   // example project.
   driver.sleep(2000);
 
+  // switch to nested iframe (test window)
+  driver.wait(
+    until.ableToSwitchToFrame(By.id('fcc_foldout_menu')),
+    elementTimeout
+  );
+
   // Run the tests by clicking our test button after the element appears.
   clickElement(By.id('fcc_test_message-box-rerun-button'));
 
@@ -301,6 +307,15 @@ exports.doesProjectPassTests = function(name, URL) {
     success = classes.includes('fcc_test_btn-success', 0);
   },
   errorFunc);
+
+  // switch out of nested iframe first
+  driver.switchTo().defaultContent();
+
+  // then switch back to parent iframe (Codepen result window)
+  driver.wait(
+    until.ableToSwitchToFrame(By.className('result-iframe')),
+    elementTimeout
+  );
 
   // Wait for the test results modal. The message box fades in, so we wait for
   // opacity of 1 before grabbing the screenshot.

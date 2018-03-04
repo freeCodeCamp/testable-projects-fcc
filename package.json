@@ -23,6 +23,7 @@
     "html-loader": "^0.5.1",
     "jquery": "^3.1.1",
     "mocha": "^3.4.2",
+    "node-uuid": "^1.4.8",
     "selenium-webdriver": "^3.4.0",
     "serve-https": "git+https://github.com/Daplie/serve-https.git",
     "style-loader": "^0.18.2"
