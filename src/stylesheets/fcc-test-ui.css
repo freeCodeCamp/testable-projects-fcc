@@ -1,0 +1,115 @@
+
+#fcc_foldout_menu_inner {
+  position: relative;
+  font-family: Noto Sans, arial, sans-serif;
+}
+#fcc_foldout_menu_inner label {
+  top: 38px;
+  left: 20px;
+  position: absolute;
+  font-size: 15px;
+  color: black;
+}
+#fcc_foldout_menu_inner select {
+  display: block;
+  padding: 0;
+  height: auto;
+  width: auto;
+  top: 61px;
+  left: 18px;
+  position: absolute;
+  font-size: 12px;
+  font-family: Noto Sans, Arial, sans-serif;
+}
+
+.fcc_foldout_buttons {
+  position: absolute;
+  left: 20px;
+  height: 20px;
+  width: 110px;
+  padding: 10px;
+  display: block;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: rgba(128, 128, 128, 0.7);
+  border-radius: 4px;
+  box-sizing: content-box;
+  z-index: 0;
+  cursor: pointer;
+  box-shadow: 1px 1px 4px black;
+  font-family: Noto Sans, arial, sans-serif;
+}
+#fcc_test_message-box-rerun-button {
+  top: 90px;
+  transition: all .3s;
+}
+#fcc_test_message-box-rerun-button:hover {
+  color: white;
+  background-color: black;
+}
+#fcc_test_button {
+  top: 140px;
+}
+.fcc_test_btn-default {
+  background-color: rgba(128, 128, 128, 0.7);
+}
+.fcc_test_btn-executing {
+  background-color: rgba(255, 153, 0, 0.9);
+}
+.fcc_test_btn-error {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+.fcc_test_btn-success {
+  background-color: rgba(81, 211, 81, 0.9);
+}
+#fcc_report-bug {
+  position: absolute;
+  top: 186px;
+  left: 20px;
+  width: 110px;
+  padding: 0 10px;
+  font-size: 12px;
+  text-align: center;
+}
+
+#fcc_legend_wrapper {
+  position: absolute;
+  top: 95px;
+  left: 160px;
+  width: 125px;
+  vertical-align: top;
+  text-align: left;
+  font-size: 15px;
+  background: none;
+}
+#fcc_legend_wrapper span {
+  height: 15px;
+  margin-top: 6px;
+  font-size: 12px ;
+  color: black;
+  background: none;
+}
+.key {
+  height: 15px;
+  width: 15px;
+  margin: 5px;
+  vertical-align: top;
+  border-radius: 0;
+}
+.key:first-of-type {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+.key:nth-of-type(2) {
+  background-color: rgba(81, 211, 81, 0.9);
+}
+.key:nth-of-type(3) {
+  background-color: rgba(255, 153, 0, 0.9);
+}
+.fcc_legend {
+  position: relative;
+  display: inline-block;
+}

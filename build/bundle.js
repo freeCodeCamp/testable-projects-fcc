@@ -71,85 +71,117 @@ var FCC_Global =
 
 	var _chai2 = _interopRequireDefault(_chai);
 
-	var _testSuiteSkeleton = __webpack_require__(42);
+	var _fccTestSuiteSkeleton = __webpack_require__(42);
 
-	var _testSuiteSkeleton2 = _interopRequireDefault(_testSuiteSkeleton);
+	var _fccTestSuiteSkeleton2 = _interopRequireDefault(_fccTestSuiteSkeleton);
 
-	var _style = __webpack_require__(43);
+	var _fccTestTogglerSkeleton = __webpack_require__(43);
 
-	var _style2 = _interopRequireDefault(_style);
+	var _fccTestTogglerSkeleton2 = _interopRequireDefault(_fccTestTogglerSkeleton);
 
-	var _drumMachineTests = __webpack_require__(48);
+	var _mochaModalSkeleton = __webpack_require__(44);
+
+	var _mochaModalSkeleton2 = _interopRequireDefault(_mochaModalSkeleton);
+
+	var _fccTestUi = __webpack_require__(45);
+
+	var _fccTestUi2 = _interopRequireDefault(_fccTestUi);
+
+	var _mochaModal = __webpack_require__(50);
+
+	var _mochaModal2 = _interopRequireDefault(_mochaModal);
+
+	var _fccTestToggler = __webpack_require__(52);
+
+	var _fccTestToggler2 = _interopRequireDefault(_fccTestToggler);
+
+	var _drumMachineTests = __webpack_require__(54);
 
 	var _drumMachineTests2 = _interopRequireDefault(_drumMachineTests);
 
-	var _markdownPreviewerTests = __webpack_require__(50);
+	var _markdownPreviewerTests = __webpack_require__(56);
 
 	var _markdownPreviewerTests2 = _interopRequireDefault(_markdownPreviewerTests);
 
-	var _calculatorTests = __webpack_require__(51);
+	var _calculatorTests = __webpack_require__(57);
 
 	var _calculatorTests2 = _interopRequireDefault(_calculatorTests);
 
-	var _pomodoroClockTests = __webpack_require__(53);
+	var _pomodoroClockTests = __webpack_require__(59);
 
 	var _pomodoroClockTests2 = _interopRequireDefault(_pomodoroClockTests);
 
-	var _tributePageTests = __webpack_require__(54);
+	var _tributePageTests = __webpack_require__(60);
 
 	var _tributePageTests2 = _interopRequireDefault(_tributePageTests);
 
-	var _portfolioTests = __webpack_require__(55);
+	var _portfolioTests = __webpack_require__(61);
 
 	var _portfolioTests2 = _interopRequireDefault(_portfolioTests);
 
-	var _productLandingPageTests = __webpack_require__(57);
+	var _productLandingPageTests = __webpack_require__(63);
 
 	var _productLandingPageTests2 = _interopRequireDefault(_productLandingPageTests);
 
-	var _surveyFormTests = __webpack_require__(58);
+	var _surveyFormTests = __webpack_require__(64);
 
 	var _surveyFormTests2 = _interopRequireDefault(_surveyFormTests);
 
-	var _technicalDocsTests = __webpack_require__(59);
+	var _technicalDocsTests = __webpack_require__(65);
 
 	var _technicalDocsTests2 = _interopRequireDefault(_technicalDocsTests);
 
-	var _barChartTests = __webpack_require__(60);
+	var _barChartTests = __webpack_require__(66);
 
 	var _barChartTests2 = _interopRequireDefault(_barChartTests);
 
-	var _scatterPlotTests = __webpack_require__(64);
+	var _scatterPlotTests = __webpack_require__(70);
 
 	var _scatterPlotTests2 = _interopRequireDefault(_scatterPlotTests);
 
-	var _choroplethTests = __webpack_require__(65);
+	var _choroplethTests = __webpack_require__(71);
 
 	var _choroplethTests2 = _interopRequireDefault(_choroplethTests);
 
-	var _treeMapTests = __webpack_require__(67);
+	var _treeMapTests = __webpack_require__(73);
 
 	var _treeMapTests2 = _interopRequireDefault(_treeMapTests);
 
-	var _quoteMachineTests = __webpack_require__(68);
+	var _quoteMachineTests = __webpack_require__(74);
 
 	var _quoteMachineTests2 = _interopRequireDefault(_quoteMachineTests);
 
-	var _heatMapTests = __webpack_require__(69);
+	var _heatMapTests = __webpack_require__(75);
 
 	var _heatMapTests2 = _interopRequireDefault(_heatMapTests);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// the !- prefixes are for process arguments respective of plugins
-	// Example: https://stackoverflow.com/a/42440360/3530394
-	// style-loader injects css loaded by css-loader through this import statement.
-
+	// style-loader injects css from css-loader into document
 	/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
 	var assert = exports.assert = _chai2.default.assert;
 	// Webpack is configured to load those files with the .html extension as Strings
 	/* global projectName */
-	/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+	/*
+	 This file dynamically generates the user interface for the freeCodeCamp
+	 testable-projects application. The user interface consists of three main parts:
+	 1. fCCTestTogglerSkeleton
+	    A user interface for hiding / showing the test controls:
+	    a. A toggler for hiding / showing the test controller iframe
+	       (#fcc_foldout_toggler)
+	    b. A small read-only indicator in the top-right corner of the viewport that
+	       shows the pending test project (#fcc_test_suite_indicator_wrapper)
+	 2. fCCTestSuiteSkeleton
+	    A <div> situated in the top-left corner of the viewport with controls
+	    for running the tests
+	 3. mochaModalSkeleton
+	    A modal <div id="mocha"> automatically inserted into the document via Mocha
+
+	 We can use Webpack to inject loaded css into the document. We maintain three
+	 css files: one for the test control window (fcc-test-ui.css), one for the
+	 toggler (fcc-test-toggler.css), and one for the Mocha modal (mocha-modal.css)
+	*/
 
 	var projectNameLocal = false;
 
@@ -178,11 +210,8 @@ var FCC_Global =
 	      if (mocha) {
 	        clearInterval(mochaCheck);
 	        mocha.setup('bdd');
-	        var testDiv = document.createElement('div');
-	        testDiv.style.position = 'inherit';
-	        testDiv.innerHTML = _testSuiteSkeleton2.default;
-	        document.body.appendChild(testDiv);
-	        // Once testDiv is loaded:
+
+	        // Once testFrame is loaded:
 	        var projectTitleCase = localStorage.getItem('projectTitleCase');
 	        // projectName variable is defined in our example projects so the
 	        // correct test suite is automatically loaded. This sets default text
@@ -190,6 +219,16 @@ var FCC_Global =
 	        if (typeof projectName !== 'undefined') {
 	          projectNameLocal = projectName;
 	        }
+	        var fCCToggle = document.createElement('div');
+	        fCCToggle.innerHTML = _fccTestTogglerSkeleton2.default;
+	        document.body.appendChild(fCCToggle);
+	        var testFrameBody = document.createElement('div');
+	        testFrameBody.setAttribute('id', 'fcc_foldout_menu');
+	        testFrameBody.innerHTML = _fccTestSuiteSkeleton2.default;
+	        fCCToggle.appendChild(testFrameBody);
+	        var mochaModal = document.createElement('div');
+	        mochaModal.innerHTML = _mochaModalSkeleton2.default;
+	        document.body.appendChild(mochaModal);
 
 	        if (!projectNameLocal && projectTitleCase === null) {
 	          document.getElementById('placeholder').innerHTML = '- - -';
@@ -334,7 +373,7 @@ var FCC_Global =
 	    }
 	    // Open/close foldout menu: Ctrl + Shift + O.
 	  } else if (map[17] && map[16] && map[79]) {
-	    document.getElementById('toggle').click();
+	    document.getElementById('fcc_toggle').click();
 	  }
 	};
 
@@ -472,7 +511,7 @@ var FCC_Global =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v3.2.1
+	 * jQuery JavaScript Library v3.3.1
 	 * https://jquery.com/
 	 *
 	 * Includes Sizzle.js
@@ -482,7 +521,7 @@ var FCC_Global =
 	 * Released under the MIT license
 	 * https://jquery.org/license
 	 *
-	 * Date: 2017-03-20T18:59Z
+	 * Date: 2018-01-20T17:24Z
 	 */
 	( function( global, factory ) {
 
@@ -544,16 +583,57 @@ var FCC_Global =
 
 	var support = {};
 
+	var isFunction = function isFunction( obj ) {
+
+	      // Support: Chrome <=57, Firefox <=52
+	      // In some browsers, typeof returns "function" for HTML <object> elements
+	      // (i.e., `typeof document.createElement( "object" ) === "function"`).
+	      // We don't want to classify *any* DOM node as a function.
+	      return typeof obj === "function" && typeof obj.nodeType !== "number";
+	  };
 
 
-		function DOMEval( code, doc ) {
+	var isWindow = function isWindow( obj ) {
+			return obj != null && obj === obj.window;
+		};
+
+
+
+
+		var preservedScriptAttributes = {
+			type: true,
+			src: true,
+			noModule: true
+		};
+
+		function DOMEval( code, doc, node ) {
 			doc = doc || document;
 
-			var script = doc.createElement( "script" );
+			var i,
+				script = doc.createElement( "script" );
 
 			script.text = code;
+			if ( node ) {
+				for ( i in preservedScriptAttributes ) {
+					if ( node[ i ] ) {
+						script[ i ] = node[ i ];
+					}
+				}
+			}
 			doc.head.appendChild( script ).parentNode.removeChild( script );
 		}
+
+
+	function toType( obj ) {
+		if ( obj == null ) {
+			return obj + "";
+		}
+
+		// Support: Android <=2.3 only (functionish RegExp)
+		return typeof obj === "object" || typeof obj === "function" ?
+			class2type[ toString.call( obj ) ] || "object" :
+			typeof obj;
+	}
 	/* global Symbol */
 	// Defining this global in .eslintrc.json would create a danger of using the global
 	// unguarded in another place, it seems safer to define global only for this module
@@ -561,7 +641,7 @@ var FCC_Global =
 
 
 	var
-		version = "3.2.1",
+		version = "3.3.1",
 
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
@@ -573,16 +653,7 @@ var FCC_Global =
 
 		// Support: Android <=4.0 only
 		// Make sure we trim BOM and NBSP
-		rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-
-		// Matches dashed string for camelizing
-		rmsPrefix = /^-ms-/,
-		rdashAlpha = /-([a-z])/g,
-
-		// Used by jQuery.camelCase as callback to replace()
-		fcamelCase = function( all, letter ) {
-			return letter.toUpperCase();
-		};
+		rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
 	jQuery.fn = jQuery.prototype = {
 
@@ -682,7 +753,7 @@ var FCC_Global =
 		}
 
 		// Handle case when target is a string or something (possible in deep copy)
-		if ( typeof target !== "object" && !jQuery.isFunction( target ) ) {
+		if ( typeof target !== "object" && !isFunction( target ) ) {
 			target = {};
 		}
 
@@ -748,28 +819,6 @@ var FCC_Global =
 
 		noop: function() {},
 
-		isFunction: function( obj ) {
-			return jQuery.type( obj ) === "function";
-		},
-
-		isWindow: function( obj ) {
-			return obj != null && obj === obj.window;
-		},
-
-		isNumeric: function( obj ) {
-
-			// As of jQuery 3.0, isNumeric is limited to
-			// strings and numbers (primitives or objects)
-			// that can be coerced to finite numbers (gh-2662)
-			var type = jQuery.type( obj );
-			return ( type === "number" || type === "string" ) &&
-
-				// parseFloat NaNs numeric-cast false positives ("")
-				// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-				// subtraction forces infinities to NaN
-				!isNaN( obj - parseFloat( obj ) );
-		},
-
 		isPlainObject: function( obj ) {
 			var proto, Ctor;
 
@@ -803,27 +852,9 @@ var FCC_Global =
 			return true;
 		},
 
-		type: function( obj ) {
-			if ( obj == null ) {
-				return obj + "";
-			}
-
-			// Support: Android <=2.3 only (functionish RegExp)
-			return typeof obj === "object" || typeof obj === "function" ?
-				class2type[ toString.call( obj ) ] || "object" :
-				typeof obj;
-		},
-
 		// Evaluates a script in a global context
 		globalEval: function( code ) {
 			DOMEval( code );
-		},
-
-		// Convert dashed to camelCase; used by the css and data modules
-		// Support: IE <=9 - 11, Edge 12 - 13
-		// Microsoft forgot to hump their vendor prefix (#9572)
-		camelCase: function( string ) {
-			return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 		},
 
 		each: function( obj, callback ) {
@@ -946,37 +977,6 @@ var FCC_Global =
 		// A global GUID counter for objects
 		guid: 1,
 
-		// Bind a function to a context, optionally partially applying any
-		// arguments.
-		proxy: function( fn, context ) {
-			var tmp, args, proxy;
-
-			if ( typeof context === "string" ) {
-				tmp = fn[ context ];
-				context = fn;
-				fn = tmp;
-			}
-
-			// Quick check to determine if target is callable, in the spec
-			// this throws a TypeError, but we will just return undefined.
-			if ( !jQuery.isFunction( fn ) ) {
-				return undefined;
-			}
-
-			// Simulated bind
-			args = slice.call( arguments, 2 );
-			proxy = function() {
-				return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
-			};
-
-			// Set the guid of unique handler to the same of original handler, so it can be removed
-			proxy.guid = fn.guid = fn.guid || jQuery.guid++;
-
-			return proxy;
-		},
-
-		now: Date.now,
-
 		// jQuery.support is not used in Core but other projects attach their
 		// properties to it so it needs to exist.
 		support: support
@@ -999,9 +999,9 @@ var FCC_Global =
 		// hasOwn isn't used here due to false negatives
 		// regarding Nodelist length in IE
 		var length = !!obj && "length" in obj && obj.length,
-			type = jQuery.type( obj );
+			type = toType( obj );
 
-		if ( type === "function" || jQuery.isWindow( obj ) ) {
+		if ( isFunction( obj ) || isWindow( obj ) ) {
 			return false;
 		}
 
@@ -3321,11 +3321,9 @@ var FCC_Global =
 
 
 
-	var risSimple = /^.[^:#\[\.,]*$/;
-
 	// Implement the identical functionality for filter and not
 	function winnow( elements, qualifier, not ) {
-		if ( jQuery.isFunction( qualifier ) ) {
+		if ( isFunction( qualifier ) ) {
 			return jQuery.grep( elements, function( elem, i ) {
 				return !!qualifier.call( elem, i, elem ) !== not;
 			} );
@@ -3345,16 +3343,8 @@ var FCC_Global =
 			} );
 		}
 
-		// Simple selector that can be filtered directly, removing non-Elements
-		if ( risSimple.test( qualifier ) ) {
-			return jQuery.filter( qualifier, elements, not );
-		}
-
-		// Complex selector, compare the two sets, removing non-Elements
-		qualifier = jQuery.filter( qualifier, elements );
-		return jQuery.grep( elements, function( elem ) {
-			return ( indexOf.call( qualifier, elem ) > -1 ) !== not && elem.nodeType === 1;
-		} );
+		// Filtered directly for both simple and complex selectors
+		return jQuery.filter( qualifier, elements, not );
 	}
 
 	jQuery.filter = function( expr, elems, not ) {
@@ -3475,7 +3465,7 @@ var FCC_Global =
 							for ( match in context ) {
 
 								// Properties of context are called as methods if possible
-								if ( jQuery.isFunction( this[ match ] ) ) {
+								if ( isFunction( this[ match ] ) ) {
 									this[ match ]( context[ match ] );
 
 								// ...and otherwise set as attributes
@@ -3518,7 +3508,7 @@ var FCC_Global =
 
 			// HANDLE: $(function)
 			// Shortcut for document ready
-			} else if ( jQuery.isFunction( selector ) ) {
+			} else if ( isFunction( selector ) ) {
 				return root.ready !== undefined ?
 					root.ready( selector ) :
 
@@ -3833,11 +3823,11 @@ var FCC_Global =
 
 						( function add( args ) {
 							jQuery.each( args, function( _, arg ) {
-								if ( jQuery.isFunction( arg ) ) {
+								if ( isFunction( arg ) ) {
 									if ( !options.unique || !self.has( arg ) ) {
 										list.push( arg );
 									}
-								} else if ( arg && arg.length && jQuery.type( arg ) !== "string" ) {
+								} else if ( arg && arg.length && toType( arg ) !== "string" ) {
 
 									// Inspect recursively
 									add( arg );
@@ -3952,11 +3942,11 @@ var FCC_Global =
 		try {
 
 			// Check for promise aspect first to privilege synchronous behavior
-			if ( value && jQuery.isFunction( ( method = value.promise ) ) ) {
+			if ( value && isFunction( ( method = value.promise ) ) ) {
 				method.call( value ).done( resolve ).fail( reject );
 
 			// Other thenables
-			} else if ( value && jQuery.isFunction( ( method = value.then ) ) ) {
+			} else if ( value && isFunction( ( method = value.then ) ) ) {
 				method.call( value, resolve, reject );
 
 			// Other non-thenables
@@ -4014,14 +4004,14 @@ var FCC_Global =
 							jQuery.each( tuples, function( i, tuple ) {
 
 								// Map tuples (progress, done, fail) to arguments (done, fail, progress)
-								var fn = jQuery.isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
+								var fn = isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
 
 								// deferred.progress(function() { bind to newDefer or newDefer.notify })
 								// deferred.done(function() { bind to newDefer or newDefer.resolve })
 								// deferred.fail(function() { bind to newDefer or newDefer.reject })
 								deferred[ tuple[ 1 ] ]( function() {
 									var returned = fn && fn.apply( this, arguments );
-									if ( returned && jQuery.isFunction( returned.promise ) ) {
+									if ( returned && isFunction( returned.promise ) ) {
 										returned.promise()
 											.progress( newDefer.notify )
 											.done( newDefer.resolve )
@@ -4075,7 +4065,7 @@ var FCC_Global =
 											returned.then;
 
 										// Handle a returned thenable
-										if ( jQuery.isFunction( then ) ) {
+										if ( isFunction( then ) ) {
 
 											// Special processors (notify) just wait for resolution
 											if ( special ) {
@@ -4171,7 +4161,7 @@ var FCC_Global =
 								resolve(
 									0,
 									newDefer,
-									jQuery.isFunction( onProgress ) ?
+									isFunction( onProgress ) ?
 										onProgress :
 										Identity,
 									newDefer.notifyWith
@@ -4183,7 +4173,7 @@ var FCC_Global =
 								resolve(
 									0,
 									newDefer,
-									jQuery.isFunction( onFulfilled ) ?
+									isFunction( onFulfilled ) ?
 										onFulfilled :
 										Identity
 								)
@@ -4194,7 +4184,7 @@ var FCC_Global =
 								resolve(
 									0,
 									newDefer,
-									jQuery.isFunction( onRejected ) ?
+									isFunction( onRejected ) ?
 										onRejected :
 										Thrower
 								)
@@ -4234,8 +4224,15 @@ var FCC_Global =
 						// fulfilled_callbacks.disable
 						tuples[ 3 - i ][ 2 ].disable,
 
+						// rejected_handlers.disable
+						// fulfilled_handlers.disable
+						tuples[ 3 - i ][ 3 ].disable,
+
 						// progress_callbacks.lock
-						tuples[ 0 ][ 2 ].lock
+						tuples[ 0 ][ 2 ].lock,
+
+						// progress_handlers.lock
+						tuples[ 0 ][ 3 ].lock
 					);
 				}
 
@@ -4305,7 +4302,7 @@ var FCC_Global =
 
 				// Use .then() to unwrap secondary thenables (cf. gh-3000)
 				if ( master.state() === "pending" ||
-					jQuery.isFunction( resolveValues[ i ] && resolveValues[ i ].then ) ) {
+					isFunction( resolveValues[ i ] && resolveValues[ i ].then ) ) {
 
 					return master.then();
 				}
@@ -4433,7 +4430,7 @@ var FCC_Global =
 			bulk = key == null;
 
 		// Sets many values
-		if ( jQuery.type( key ) === "object" ) {
+		if ( toType( key ) === "object" ) {
 			chainable = true;
 			for ( i in key ) {
 				access( elems, fn, i, key[ i ], true, emptyGet, raw );
@@ -4443,7 +4440,7 @@ var FCC_Global =
 		} else if ( value !== undefined ) {
 			chainable = true;
 
-			if ( !jQuery.isFunction( value ) ) {
+			if ( !isFunction( value ) ) {
 				raw = true;
 			}
 
@@ -4485,6 +4482,23 @@ var FCC_Global =
 
 		return len ? fn( elems[ 0 ], key ) : emptyGet;
 	};
+
+
+	// Matches dashed string for camelizing
+	var rmsPrefix = /^-ms-/,
+		rdashAlpha = /-([a-z])/g;
+
+	// Used by camelCase as callback to replace()
+	function fcamelCase( all, letter ) {
+		return letter.toUpperCase();
+	}
+
+	// Convert dashed to camelCase; used by the css and data modules
+	// Support: IE <=9 - 11, Edge 12 - 15
+	// Microsoft forgot to hump their vendor prefix (#9572)
+	function camelCase( string ) {
+		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+	}
 	var acceptData = function( owner ) {
 
 		// Accepts only:
@@ -4547,14 +4561,14 @@ var FCC_Global =
 			// Handle: [ owner, key, value ] args
 			// Always use camelCase key (gh-2257)
 			if ( typeof data === "string" ) {
-				cache[ jQuery.camelCase( data ) ] = value;
+				cache[ camelCase( data ) ] = value;
 
 			// Handle: [ owner, { properties } ] args
 			} else {
 
 				// Copy the properties one-by-one to the cache object
 				for ( prop in data ) {
-					cache[ jQuery.camelCase( prop ) ] = data[ prop ];
+					cache[ camelCase( prop ) ] = data[ prop ];
 				}
 			}
 			return cache;
@@ -4564,7 +4578,7 @@ var FCC_Global =
 				this.cache( owner ) :
 
 				// Always use camelCase key (gh-2257)
-				owner[ this.expando ] && owner[ this.expando ][ jQuery.camelCase( key ) ];
+				owner[ this.expando ] && owner[ this.expando ][ camelCase( key ) ];
 		},
 		access: function( owner, key, value ) {
 
@@ -4612,9 +4626,9 @@ var FCC_Global =
 
 					// If key is an array of keys...
 					// We always set camelCase keys, so remove that.
-					key = key.map( jQuery.camelCase );
+					key = key.map( camelCase );
 				} else {
-					key = jQuery.camelCase( key );
+					key = camelCase( key );
 
 					// If a key with the spaces exists, use it.
 					// Otherwise, create an array by matching non-whitespace
@@ -4760,7 +4774,7 @@ var FCC_Global =
 							if ( attrs[ i ] ) {
 								name = attrs[ i ].name;
 								if ( name.indexOf( "data-" ) === 0 ) {
-									name = jQuery.camelCase( name.slice( 5 ) );
+									name = camelCase( name.slice( 5 ) );
 									dataAttr( elem, name, data[ name ] );
 								}
 							}
@@ -5007,8 +5021,7 @@ var FCC_Global =
 
 
 	function adjustCSS( elem, prop, valueParts, tween ) {
-		var adjusted,
-			scale = 1,
+		var adjusted, scale,
 			maxIterations = 20,
 			currentValue = tween ?
 				function() {
@@ -5026,30 +5039,33 @@ var FCC_Global =
 
 		if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
 
+			// Support: Firefox <=54
+			// Halve the iteration target value to prevent interference from CSS upper bounds (gh-2144)
+			initial = initial / 2;
+
 			// Trust units reported by jQuery.css
 			unit = unit || initialInUnit[ 3 ];
-
-			// Make sure we update the tween properties later on
-			valueParts = valueParts || [];
 
 			// Iteratively approximate from a nonzero starting point
 			initialInUnit = +initial || 1;
 
-			do {
+			while ( maxIterations-- ) {
 
-				// If previous iteration zeroed out, double until we get *something*.
-				// Use string for doubling so we don't accidentally see scale as unchanged below
-				scale = scale || ".5";
-
-				// Adjust and apply
-				initialInUnit = initialInUnit / scale;
+				// Evaluate and update our best guess (doubling guesses that zero out).
+				// Finish if the scale equals or crosses 1 (making the old*new product non-positive).
 				jQuery.style( elem, prop, initialInUnit + unit );
+				if ( ( 1 - scale ) * ( 1 - ( scale = currentValue() / initial || 0.5 ) ) <= 0 ) {
+					maxIterations = 0;
+				}
+				initialInUnit = initialInUnit / scale;
 
-			// Update scale, tolerating zero or NaN from tween.cur()
-			// Break the loop if scale is unchanged or perfect, or if we've just had enough.
-			} while (
-				scale !== ( scale = currentValue() / initial ) && scale !== 1 && --maxIterations
-			);
+			}
+
+			initialInUnit = initialInUnit * 2;
+			jQuery.style( elem, prop, initialInUnit + unit );
+
+			// Make sure we update the tween properties later on
+			valueParts = valueParts || [];
 		}
 
 		if ( valueParts ) {
@@ -5167,7 +5183,7 @@ var FCC_Global =
 
 	var rtagName = ( /<([a-z][^\/\0>\x20\t\r\n\f]+)/i );
 
-	var rscriptType = ( /^$|\/(?:java|ecma)script/i );
+	var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
 
 
@@ -5249,7 +5265,7 @@ var FCC_Global =
 			if ( elem || elem === 0 ) {
 
 				// Add nodes directly
-				if ( jQuery.type( elem ) === "object" ) {
+				if ( toType( elem ) === "object" ) {
 
 					// Support: Android <=4.0 only, PhantomJS 1 only
 					// push.apply(_, arraylike) throws on ancient WebKit
@@ -5759,7 +5775,7 @@ var FCC_Global =
 				enumerable: true,
 				configurable: true,
 
-				get: jQuery.isFunction( hook ) ?
+				get: isFunction( hook ) ?
 					function() {
 						if ( this.originalEvent ) {
 								return hook( this.originalEvent );
@@ -5894,7 +5910,7 @@ var FCC_Global =
 		}
 
 		// Create a timestamp if incoming event doesn't have one
-		this.timeStamp = src && src.timeStamp || jQuery.now();
+		this.timeStamp = src && src.timeStamp || Date.now();
 
 		// Mark it as fixed
 		this[ jQuery.expando ] = true;
@@ -6093,14 +6109,13 @@ var FCC_Global =
 
 		/* eslint-enable */
 
-		// Support: IE <=10 - 11, Edge 12 - 13
+		// Support: IE <=10 - 11, Edge 12 - 13 only
 		// In IE/Edge using regex groups here causes severe slowdowns.
 		// See https://connect.microsoft.com/IE/feedback/details/1736512/
 		rnoInnerhtml = /<script|<style|<link/i,
 
 		// checked="checked" or checked
 		rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-		rscriptTypeMasked = /^true\/(.*)/,
 		rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;
 
 	// Prefer a tbody over its parent table for containing new rows
@@ -6108,7 +6123,7 @@ var FCC_Global =
 		if ( nodeName( elem, "table" ) &&
 			nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ) {
 
-			return jQuery( ">tbody", elem )[ 0 ] || elem;
+			return jQuery( elem ).children( "tbody" )[ 0 ] || elem;
 		}
 
 		return elem;
@@ -6120,10 +6135,8 @@ var FCC_Global =
 		return elem;
 	}
 	function restoreScript( elem ) {
-		var match = rscriptTypeMasked.exec( elem.type );
-
-		if ( match ) {
-			elem.type = match[ 1 ];
+		if ( ( elem.type || "" ).slice( 0, 5 ) === "true/" ) {
+			elem.type = elem.type.slice( 5 );
 		} else {
 			elem.removeAttribute( "type" );
 		}
@@ -6189,15 +6202,15 @@ var FCC_Global =
 			l = collection.length,
 			iNoClone = l - 1,
 			value = args[ 0 ],
-			isFunction = jQuery.isFunction( value );
+			valueIsFunction = isFunction( value );
 
 		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( isFunction ||
+		if ( valueIsFunction ||
 				( l > 1 && typeof value === "string" &&
 					!support.checkClone && rchecked.test( value ) ) ) {
 			return collection.each( function( index ) {
 				var self = collection.eq( index );
-				if ( isFunction ) {
+				if ( valueIsFunction ) {
 					args[ 0 ] = value.call( this, index, self.html() );
 				}
 				domManip( self, args, callback, ignored );
@@ -6251,14 +6264,14 @@ var FCC_Global =
 							!dataPriv.access( node, "globalEval" ) &&
 							jQuery.contains( doc, node ) ) {
 
-							if ( node.src ) {
+							if ( node.src && ( node.type || "" ).toLowerCase()  !== "module" ) {
 
 								// Optional AJAX dependency, but won't run scripts if not present
 								if ( jQuery._evalUrl ) {
 									jQuery._evalUrl( node.src );
 								}
 							} else {
-								DOMEval( node.textContent.replace( rcleanScript, "" ), doc );
+								DOMEval( node.textContent.replace( rcleanScript, "" ), doc, node );
 							}
 						}
 					}
@@ -6538,8 +6551,6 @@ var FCC_Global =
 			return this.pushStack( ret );
 		};
 	} );
-	var rmargin = ( /^margin/ );
-
 	var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
 
 	var getStyles = function( elem ) {
@@ -6556,6 +6567,8 @@ var FCC_Global =
 			return view.getComputedStyle( elem );
 		};
 
+	var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
+
 
 
 	( function() {
@@ -6569,25 +6582,33 @@ var FCC_Global =
 				return;
 			}
 
+			container.style.cssText = "position:absolute;left:-11111px;width:60px;" +
+				"margin-top:1px;padding:0;border:0";
 			div.style.cssText =
-				"box-sizing:border-box;" +
-				"position:relative;display:block;" +
+				"position:relative;display:block;box-sizing:border-box;overflow:scroll;" +
 				"margin:auto;border:1px;padding:1px;" +
-				"top:1%;width:50%";
-			div.innerHTML = "";
-			documentElement.appendChild( container );
+				"width:60%;top:1%";
+			documentElement.appendChild( container ).appendChild( div );
 
 			var divStyle = window.getComputedStyle( div );
 			pixelPositionVal = divStyle.top !== "1%";
 
 			// Support: Android 4.0 - 4.3 only, Firefox <=3 - 44
-			reliableMarginLeftVal = divStyle.marginLeft === "2px";
-			boxSizingReliableVal = divStyle.width === "4px";
+			reliableMarginLeftVal = roundPixelMeasures( divStyle.marginLeft ) === 12;
 
-			// Support: Android 4.0 - 4.3 only
+			// Support: Android 4.0 - 4.3 only, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
 			// Some styles come back with percentage values, even though they shouldn't
-			div.style.marginRight = "50%";
-			pixelMarginRightVal = divStyle.marginRight === "4px";
+			div.style.right = "60%";
+			pixelBoxStylesVal = roundPixelMeasures( divStyle.right ) === 36;
+
+			// Support: IE 9 - 11 only
+			// Detect misreporting of content dimensions for box-sizing:border-box elements
+			boxSizingReliableVal = roundPixelMeasures( divStyle.width ) === 36;
+
+			// Support: IE 9 only
+			// Detect overflow:scroll screwiness (gh-3699)
+			div.style.position = "absolute";
+			scrollboxSizeVal = div.offsetWidth === 36 || "absolute";
 
 			documentElement.removeChild( container );
 
@@ -6596,7 +6617,12 @@ var FCC_Global =
 			div = null;
 		}
 
-		var pixelPositionVal, boxSizingReliableVal, pixelMarginRightVal, reliableMarginLeftVal,
+		function roundPixelMeasures( measure ) {
+			return Math.round( parseFloat( measure ) );
+		}
+
+		var pixelPositionVal, boxSizingReliableVal, scrollboxSizeVal, pixelBoxStylesVal,
+			reliableMarginLeftVal,
 			container = document.createElement( "div" ),
 			div = document.createElement( "div" );
 
@@ -6611,26 +6637,26 @@ var FCC_Global =
 		div.cloneNode( true ).style.backgroundClip = "";
 		support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
-		container.style.cssText = "border:0;width:8px;height:0;top:0;left:-9999px;" +
-			"padding:0;margin-top:1px;position:absolute";
-		container.appendChild( div );
-
 		jQuery.extend( support, {
-			pixelPosition: function() {
-				computeStyleTests();
-				return pixelPositionVal;
-			},
 			boxSizingReliable: function() {
 				computeStyleTests();
 				return boxSizingReliableVal;
 			},
-			pixelMarginRight: function() {
+			pixelBoxStyles: function() {
 				computeStyleTests();
-				return pixelMarginRightVal;
+				return pixelBoxStylesVal;
+			},
+			pixelPosition: function() {
+				computeStyleTests();
+				return pixelPositionVal;
 			},
 			reliableMarginLeft: function() {
 				computeStyleTests();
 				return reliableMarginLeftVal;
+			},
+			scrollboxSize: function() {
+				computeStyleTests();
+				return scrollboxSizeVal;
 			}
 		} );
 	} )();
@@ -6662,7 +6688,7 @@ var FCC_Global =
 			// but width seems to be reliably pixels.
 			// This is against the CSSOM draft spec:
 			// https://drafts.csswg.org/cssom/#resolved-values
-			if ( !support.pixelMarginRight() && rnumnonpx.test( ret ) && rmargin.test( name ) ) {
+			if ( !support.pixelBoxStyles() && rnumnonpx.test( ret ) && rboxStyle.test( name ) ) {
 
 				// Remember the original values
 				width = style.width;
@@ -6767,87 +6793,120 @@ var FCC_Global =
 			value;
 	}
 
-	function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
-		var i,
-			val = 0;
+	function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computedVal ) {
+		var i = dimension === "width" ? 1 : 0,
+			extra = 0,
+			delta = 0;
 
-		// If we already have the right measurement, avoid augmentation
-		if ( extra === ( isBorderBox ? "border" : "content" ) ) {
-			i = 4;
-
-		// Otherwise initialize for horizontal or vertical properties
-		} else {
-			i = name === "width" ? 1 : 0;
+		// Adjustment may not be necessary
+		if ( box === ( isBorderBox ? "border" : "content" ) ) {
+			return 0;
 		}
 
 		for ( ; i < 4; i += 2 ) {
 
-			// Both box models exclude margin, so add it if we want it
-			if ( extra === "margin" ) {
-				val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
+			// Both box models exclude margin
+			if ( box === "margin" ) {
+				delta += jQuery.css( elem, box + cssExpand[ i ], true, styles );
 			}
 
-			if ( isBorderBox ) {
+			// If we get here with a content-box, we're seeking "padding" or "border" or "margin"
+			if ( !isBorderBox ) {
 
-				// border-box includes padding, so remove it if we want content
-				if ( extra === "content" ) {
-					val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+				// Add padding
+				delta += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+
+				// For "border" or "margin", add border
+				if ( box !== "padding" ) {
+					delta += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
+
+				// But still keep track of it otherwise
+				} else {
+					extra += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 				}
 
-				// At this point, extra isn't border nor margin, so remove border
-				if ( extra !== "margin" ) {
-					val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
-				}
+			// If we get here with a border-box (content + padding + border), we're seeking "content" or
+			// "padding" or "margin"
 			} else {
 
-				// At this point, extra isn't content, so add padding
-				val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+				// For "content", subtract padding
+				if ( box === "content" ) {
+					delta -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+				}
 
-				// At this point, extra isn't content nor padding, so add border
-				if ( extra !== "padding" ) {
-					val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
+				// For "content" or "padding", subtract border
+				if ( box !== "margin" ) {
+					delta -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 				}
 			}
 		}
 
-		return val;
+		// Account for positive content-box scroll gutter when requested by providing computedVal
+		if ( !isBorderBox && computedVal >= 0 ) {
+
+			// offsetWidth/offsetHeight is a rounded sum of content, padding, scroll gutter, and border
+			// Assuming integer scroll gutter, subtract the rest and round down
+			delta += Math.max( 0, Math.ceil(
+				elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
+				computedVal -
+				delta -
+				extra -
+				0.5
+			) );
+		}
+
+		return delta;
 	}
 
-	function getWidthOrHeight( elem, name, extra ) {
+	function getWidthOrHeight( elem, dimension, extra ) {
 
 		// Start with computed style
-		var valueIsBorderBox,
-			styles = getStyles( elem ),
-			val = curCSS( elem, name, styles ),
-			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
+		var styles = getStyles( elem ),
+			val = curCSS( elem, dimension, styles ),
+			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+			valueIsBorderBox = isBorderBox;
 
-		// Computed unit is not pixels. Stop here and return.
+		// Support: Firefox <=54
+		// Return a confounding non-pixel value or feign ignorance, as appropriate.
 		if ( rnumnonpx.test( val ) ) {
-			return val;
+			if ( !extra ) {
+				return val;
+			}
+			val = "auto";
 		}
 
 		// Check for style in case a browser which returns unreliable values
 		// for getComputedStyle silently falls back to the reliable elem.style
-		valueIsBorderBox = isBorderBox &&
-			( support.boxSizingReliable() || val === elem.style[ name ] );
+		valueIsBorderBox = valueIsBorderBox &&
+			( support.boxSizingReliable() || val === elem.style[ dimension ] );
 
-		// Fall back to offsetWidth/Height when value is "auto"
+		// Fall back to offsetWidth/offsetHeight when value is "auto"
 		// This happens for inline elements with no explicit setting (gh-3571)
-		if ( val === "auto" ) {
-			val = elem[ "offset" + name[ 0 ].toUpperCase() + name.slice( 1 ) ];
+		// Support: Android <=4.1 - 4.3 only
+		// Also use offsetWidth/offsetHeight for misreported inline dimensions (gh-3602)
+		if ( val === "auto" ||
+			!parseFloat( val ) && jQuery.css( elem, "display", false, styles ) === "inline" ) {
+
+			val = elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ];
+
+			// offsetWidth/offsetHeight provide border-box values
+			valueIsBorderBox = true;
 		}
 
-		// Normalize "", auto, and prepare for extra
+		// Normalize "" and auto
 		val = parseFloat( val ) || 0;
 
-		// Use the active box-sizing model to add/subtract irrelevant styles
+		// Adjust for the element's box model
 		return ( val +
-			augmentWidthOrHeight(
+			boxModelAdjustment(
 				elem,
-				name,
+				dimension,
 				extra || ( isBorderBox ? "border" : "content" ),
 				valueIsBorderBox,
-				styles
+				styles,
+
+				// Provide the current computed size to request scroll gutter calculation (gh-3589)
+				val
 			)
 		) + "px";
 	}
@@ -6888,9 +6947,7 @@ var FCC_Global =
 
 		// Add in properties whose names you wish to fix before
 		// setting or getting the value
-		cssProps: {
-			"float": "cssFloat"
-		},
+		cssProps: {},
 
 		// Get and set the style property on a DOM Node
 		style: function( elem, name, value, extra ) {
@@ -6902,7 +6959,7 @@ var FCC_Global =
 
 			// Make sure that we're working with the right name
 			var ret, type, hooks,
-				origName = jQuery.camelCase( name ),
+				origName = camelCase( name ),
 				isCustomProp = rcustomProp.test( name ),
 				style = elem.style;
 
@@ -6970,7 +7027,7 @@ var FCC_Global =
 
 		css: function( elem, name, extra, styles ) {
 			var val, num, hooks,
-				origName = jQuery.camelCase( name ),
+				origName = camelCase( name ),
 				isCustomProp = rcustomProp.test( name );
 
 			// Make sure that we're working with the right name. We don't
@@ -7008,8 +7065,8 @@ var FCC_Global =
 		}
 	} );
 
-	jQuery.each( [ "height", "width" ], function( i, name ) {
-		jQuery.cssHooks[ name ] = {
+	jQuery.each( [ "height", "width" ], function( i, dimension ) {
+		jQuery.cssHooks[ dimension ] = {
 			get: function( elem, computed, extra ) {
 				if ( computed ) {
 
@@ -7025,29 +7082,41 @@ var FCC_Global =
 						// in IE throws an error.
 						( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ?
 							swap( elem, cssShow, function() {
-								return getWidthOrHeight( elem, name, extra );
+								return getWidthOrHeight( elem, dimension, extra );
 							} ) :
-							getWidthOrHeight( elem, name, extra );
+							getWidthOrHeight( elem, dimension, extra );
 				}
 			},
 
 			set: function( elem, value, extra ) {
 				var matches,
-					styles = extra && getStyles( elem ),
-					subtract = extra && augmentWidthOrHeight(
+					styles = getStyles( elem ),
+					isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+					subtract = extra && boxModelAdjustment(
 						elem,
-						name,
+						dimension,
 						extra,
-						jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+						isBorderBox,
 						styles
 					);
+
+				// Account for unreliable border-box dimensions by comparing offset* to computed and
+				// faking a content-box to get border and padding (gh-3699)
+				if ( isBorderBox && support.scrollboxSize() === styles.position ) {
+					subtract -= Math.ceil(
+						elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
+						parseFloat( styles[ dimension ] ) -
+						boxModelAdjustment( elem, dimension, "border", false, styles ) -
+						0.5
+					);
+				}
 
 				// Convert to pixels if value adjustment is needed
 				if ( subtract && ( matches = rcssNum.exec( value ) ) &&
 					( matches[ 3 ] || "px" ) !== "px" ) {
 
-					elem.style[ name ] = value;
-					value = jQuery.css( elem, name );
+					elem.style[ dimension ] = value;
+					value = jQuery.css( elem, dimension );
 				}
 
 				return setPositiveNumber( elem, value, subtract );
@@ -7091,7 +7160,7 @@ var FCC_Global =
 			}
 		};
 
-		if ( !rmargin.test( prefix ) ) {
+		if ( prefix !== "margin" ) {
 			jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
 		}
 	} );
@@ -7262,7 +7331,7 @@ var FCC_Global =
 		window.setTimeout( function() {
 			fxNow = undefined;
 		} );
-		return ( fxNow = jQuery.now() );
+		return ( fxNow = Date.now() );
 	}
 
 	// Generate parameters to create a standard animation
@@ -7366,9 +7435,10 @@ var FCC_Global =
 		// Restrict "overflow" and "display" styles during box animations
 		if ( isBox && elem.nodeType === 1 ) {
 
-			// Support: IE <=9 - 11, Edge 12 - 13
+			// Support: IE <=9 - 11, Edge 12 - 15
 			// Record all 3 overflow attributes because IE does not infer the shorthand
-			// from identically-valued overflowX and overflowY
+			// from identically-valued overflowX and overflowY and Edge just mirrors
+			// the overflowX value there.
 			opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
 			// Identify a display type, preferring old show/hide data over the CSS cascade
@@ -7476,7 +7546,7 @@ var FCC_Global =
 
 		// camelCase, specialEasing and expand cssHook pass
 		for ( index in props ) {
-			name = jQuery.camelCase( index );
+			name = camelCase( index );
 			easing = specialEasing[ name ];
 			value = props[ index ];
 			if ( Array.isArray( value ) ) {
@@ -7601,9 +7671,9 @@ var FCC_Global =
 		for ( ; index < length; index++ ) {
 			result = Animation.prefilters[ index ].call( animation, elem, props, animation.opts );
 			if ( result ) {
-				if ( jQuery.isFunction( result.stop ) ) {
+				if ( isFunction( result.stop ) ) {
 					jQuery._queueHooks( animation.elem, animation.opts.queue ).stop =
-						jQuery.proxy( result.stop, result );
+						result.stop.bind( result );
 				}
 				return result;
 			}
@@ -7611,7 +7681,7 @@ var FCC_Global =
 
 		jQuery.map( props, createTween, animation );
 
-		if ( jQuery.isFunction( animation.opts.start ) ) {
+		if ( isFunction( animation.opts.start ) ) {
 			animation.opts.start.call( elem, animation );
 		}
 
@@ -7644,7 +7714,7 @@ var FCC_Global =
 		},
 
 		tweener: function( props, callback ) {
-			if ( jQuery.isFunction( props ) ) {
+			if ( isFunction( props ) ) {
 				callback = props;
 				props = [ "*" ];
 			} else {
@@ -7676,9 +7746,9 @@ var FCC_Global =
 	jQuery.speed = function( speed, easing, fn ) {
 		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
 			complete: fn || !fn && easing ||
-				jQuery.isFunction( speed ) && speed,
+				isFunction( speed ) && speed,
 			duration: speed,
-			easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
+			easing: fn && easing || easing && !isFunction( easing ) && easing
 		};
 
 		// Go to the end state if fx are off
@@ -7705,7 +7775,7 @@ var FCC_Global =
 		opt.old = opt.complete;
 
 		opt.complete = function() {
-			if ( jQuery.isFunction( opt.old ) ) {
+			if ( isFunction( opt.old ) ) {
 				opt.old.call( this );
 			}
 
@@ -7869,7 +7939,7 @@ var FCC_Global =
 			i = 0,
 			timers = jQuery.timers;
 
-		fxNow = jQuery.now();
+		fxNow = Date.now();
 
 		for ( ; i < timers.length; i++ ) {
 			timer = timers[ i ];
@@ -8222,7 +8292,7 @@ var FCC_Global =
 
 
 		// Strip and collapse whitespace according to HTML spec
-		// https://html.spec.whatwg.org/multipage/infrastructure.html#strip-and-collapse-whitespace
+		// https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
 		function stripAndCollapse( value ) {
 			var tokens = value.match( rnothtmlwhite ) || [];
 			return tokens.join( " " );
@@ -8233,20 +8303,30 @@ var FCC_Global =
 		return elem.getAttribute && elem.getAttribute( "class" ) || "";
 	}
 
+	function classesToArray( value ) {
+		if ( Array.isArray( value ) ) {
+			return value;
+		}
+		if ( typeof value === "string" ) {
+			return value.match( rnothtmlwhite ) || [];
+		}
+		return [];
+	}
+
 	jQuery.fn.extend( {
 		addClass: function( value ) {
 			var classes, elem, cur, curValue, clazz, j, finalValue,
 				i = 0;
 
-			if ( jQuery.isFunction( value ) ) {
+			if ( isFunction( value ) ) {
 				return this.each( function( j ) {
 					jQuery( this ).addClass( value.call( this, j, getClass( this ) ) );
 				} );
 			}
 
-			if ( typeof value === "string" && value ) {
-				classes = value.match( rnothtmlwhite ) || [];
+			classes = classesToArray( value );
 
+			if ( classes.length ) {
 				while ( ( elem = this[ i++ ] ) ) {
 					curValue = getClass( elem );
 					cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
@@ -8275,7 +8355,7 @@ var FCC_Global =
 			var classes, elem, cur, curValue, clazz, j, finalValue,
 				i = 0;
 
-			if ( jQuery.isFunction( value ) ) {
+			if ( isFunction( value ) ) {
 				return this.each( function( j ) {
 					jQuery( this ).removeClass( value.call( this, j, getClass( this ) ) );
 				} );
@@ -8285,9 +8365,9 @@ var FCC_Global =
 				return this.attr( "class", "" );
 			}
 
-			if ( typeof value === "string" && value ) {
-				classes = value.match( rnothtmlwhite ) || [];
+			classes = classesToArray( value );
 
+			if ( classes.length ) {
 				while ( ( elem = this[ i++ ] ) ) {
 					curValue = getClass( elem );
 
@@ -8317,13 +8397,14 @@ var FCC_Global =
 		},
 
 		toggleClass: function( value, stateVal ) {
-			var type = typeof value;
+			var type = typeof value,
+				isValidValue = type === "string" || Array.isArray( value );
 
-			if ( typeof stateVal === "boolean" && type === "string" ) {
+			if ( typeof stateVal === "boolean" && isValidValue ) {
 				return stateVal ? this.addClass( value ) : this.removeClass( value );
 			}
 
-			if ( jQuery.isFunction( value ) ) {
+			if ( isFunction( value ) ) {
 				return this.each( function( i ) {
 					jQuery( this ).toggleClass(
 						value.call( this, i, getClass( this ), stateVal ),
@@ -8335,12 +8416,12 @@ var FCC_Global =
 			return this.each( function() {
 				var className, i, self, classNames;
 
-				if ( type === "string" ) {
+				if ( isValidValue ) {
 
 					// Toggle individual class names
 					i = 0;
 					self = jQuery( this );
-					classNames = value.match( rnothtmlwhite ) || [];
+					classNames = classesToArray( value );
 
 					while ( ( className = classNames[ i++ ] ) ) {
 
@@ -8399,7 +8480,7 @@ var FCC_Global =
 
 	jQuery.fn.extend( {
 		val: function( value ) {
-			var hooks, ret, isFunction,
+			var hooks, ret, valueIsFunction,
 				elem = this[ 0 ];
 
 			if ( !arguments.length ) {
@@ -8428,7 +8509,7 @@ var FCC_Global =
 				return;
 			}
 
-			isFunction = jQuery.isFunction( value );
+			valueIsFunction = isFunction( value );
 
 			return this.each( function( i ) {
 				var val;
@@ -8437,7 +8518,7 @@ var FCC_Global =
 					return;
 				}
 
-				if ( isFunction ) {
+				if ( valueIsFunction ) {
 					val = value.call( this, i, jQuery( this ).val() );
 				} else {
 					val = value;
@@ -8579,18 +8660,24 @@ var FCC_Global =
 	// Return jQuery for attributes-only inclusion
 
 
-	var rfocusMorph = /^(?:focusinfocus|focusoutblur)$/;
+	support.focusin = "onfocusin" in window;
+
+
+	var rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
+		stopPropagationCallback = function( e ) {
+			e.stopPropagation();
+		};
 
 	jQuery.extend( jQuery.event, {
 
 		trigger: function( event, data, elem, onlyHandlers ) {
 
-			var i, cur, tmp, bubbleType, ontype, handle, special,
+			var i, cur, tmp, bubbleType, ontype, handle, special, lastElement,
 				eventPath = [ elem || document ],
 				type = hasOwn.call( event, "type" ) ? event.type : event,
 				namespaces = hasOwn.call( event, "namespace" ) ? event.namespace.split( "." ) : [];
 
-			cur = tmp = elem = elem || document;
+			cur = lastElement = tmp = elem = elem || document;
 
 			// Don't do events on text and comment nodes
 			if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
@@ -8642,7 +8729,7 @@ var FCC_Global =
 
 			// Determine event propagation path in advance, per W3C events spec (#9951)
 			// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
-			if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
+			if ( !onlyHandlers && !special.noBubble && !isWindow( elem ) ) {
 
 				bubbleType = special.delegateType || type;
 				if ( !rfocusMorph.test( bubbleType + type ) ) {
@@ -8662,7 +8749,7 @@ var FCC_Global =
 			// Fire handlers on the event path
 			i = 0;
 			while ( ( cur = eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
-
+				lastElement = cur;
 				event.type = i > 1 ?
 					bubbleType :
 					special.bindType || type;
@@ -8694,7 +8781,7 @@ var FCC_Global =
 
 					// Call a native DOM method on the target with the same name as the event.
 					// Don't do default actions on window, that's where global variables be (#6170)
-					if ( ontype && jQuery.isFunction( elem[ type ] ) && !jQuery.isWindow( elem ) ) {
+					if ( ontype && isFunction( elem[ type ] ) && !isWindow( elem ) ) {
 
 						// Don't re-trigger an onFOO event when we call its FOO() method
 						tmp = elem[ ontype ];
@@ -8705,7 +8792,17 @@ var FCC_Global =
 
 						// Prevent re-triggering of the same event, since we already bubbled it above
 						jQuery.event.triggered = type;
+
+						if ( event.isPropagationStopped() ) {
+							lastElement.addEventListener( type, stopPropagationCallback );
+						}
+
 						elem[ type ]();
+
+						if ( event.isPropagationStopped() ) {
+							lastElement.removeEventListener( type, stopPropagationCallback );
+						}
+
 						jQuery.event.triggered = undefined;
 
 						if ( tmp ) {
@@ -8751,31 +8848,6 @@ var FCC_Global =
 	} );
 
 
-	jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
-		"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-		"change select submit keydown keypress keyup contextmenu" ).split( " " ),
-		function( i, name ) {
-
-		// Handle event binding
-		jQuery.fn[ name ] = function( data, fn ) {
-			return arguments.length > 0 ?
-				this.on( name, null, data, fn ) :
-				this.trigger( name );
-		};
-	} );
-
-	jQuery.fn.extend( {
-		hover: function( fnOver, fnOut ) {
-			return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
-		}
-	} );
-
-
-
-
-	support.focusin = "onfocusin" in window;
-
-
 	// Support: Firefox <=44
 	// Firefox doesn't have focus(in | out) events
 	// Related ticket - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
@@ -8819,7 +8891,7 @@ var FCC_Global =
 	}
 	var location = window.location;
 
-	var nonce = jQuery.now();
+	var nonce = Date.now();
 
 	var rquery = ( /\?/ );
 
@@ -8877,7 +8949,7 @@ var FCC_Global =
 				}
 			} );
 
-		} else if ( !traditional && jQuery.type( obj ) === "object" ) {
+		} else if ( !traditional && toType( obj ) === "object" ) {
 
 			// Serialize object item.
 			for ( name in obj ) {
@@ -8899,7 +8971,7 @@ var FCC_Global =
 			add = function( key, valueOrFunction ) {
 
 				// If value is a function, invoke it and use its return value
-				var value = jQuery.isFunction( valueOrFunction ) ?
+				var value = isFunction( valueOrFunction ) ?
 					valueOrFunction() :
 					valueOrFunction;
 
@@ -9017,7 +9089,7 @@ var FCC_Global =
 				i = 0,
 				dataTypes = dataTypeExpression.toLowerCase().match( rnothtmlwhite ) || [];
 
-			if ( jQuery.isFunction( func ) ) {
+			if ( isFunction( func ) ) {
 
 				// For each dataType in the dataTypeExpression
 				while ( ( dataType = dataTypes[ i++ ] ) ) {
@@ -9489,7 +9561,7 @@ var FCC_Global =
 			if ( s.crossDomain == null ) {
 				urlAnchor = document.createElement( "a" );
 
-				// Support: IE <=8 - 11, Edge 12 - 13
+				// Support: IE <=8 - 11, Edge 12 - 15
 				// IE throws exception on accessing the href property if url is malformed,
 				// e.g. http://example.com:80x/
 				try {
@@ -9547,8 +9619,8 @@ var FCC_Global =
 				// Remember the hash so we can put it back
 				uncached = s.url.slice( cacheURL.length );
 
-				// If data is available, append data to url
-				if ( s.data ) {
+				// If data is available and should be processed, append data to url
+				if ( s.data && ( s.processData || typeof s.data === "string" ) ) {
 					cacheURL += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data;
 
 					// #9682: remove data so that it's not used in an eventual retry
@@ -9785,7 +9857,7 @@ var FCC_Global =
 		jQuery[ method ] = function( url, data, callback, type ) {
 
 			// Shift arguments if data argument was omitted
-			if ( jQuery.isFunction( data ) ) {
+			if ( isFunction( data ) ) {
 				type = type || callback;
 				callback = data;
 				data = undefined;
@@ -9823,7 +9895,7 @@ var FCC_Global =
 			var wrap;
 
 			if ( this[ 0 ] ) {
-				if ( jQuery.isFunction( html ) ) {
+				if ( isFunction( html ) ) {
 					html = html.call( this[ 0 ] );
 				}
 
@@ -9849,7 +9921,7 @@ var FCC_Global =
 		},
 
 		wrapInner: function( html ) {
-			if ( jQuery.isFunction( html ) ) {
+			if ( isFunction( html ) ) {
 				return this.each( function( i ) {
 					jQuery( this ).wrapInner( html.call( this, i ) );
 				} );
@@ -9869,10 +9941,10 @@ var FCC_Global =
 		},
 
 		wrap: function( html ) {
-			var isFunction = jQuery.isFunction( html );
+			var htmlIsFunction = isFunction( html );
 
 			return this.each( function( i ) {
-				jQuery( this ).wrapAll( isFunction ? html.call( this, i ) : html );
+				jQuery( this ).wrapAll( htmlIsFunction ? html.call( this, i ) : html );
 			} );
 		},
 
@@ -9964,7 +10036,8 @@ var FCC_Global =
 						return function() {
 							if ( callback ) {
 								callback = errorCallback = xhr.onload =
-									xhr.onerror = xhr.onabort = xhr.onreadystatechange = null;
+									xhr.onerror = xhr.onabort = xhr.ontimeout =
+										xhr.onreadystatechange = null;
 
 								if ( type === "abort" ) {
 									xhr.abort();
@@ -10004,7 +10077,7 @@ var FCC_Global =
 
 					// Listen to events
 					xhr.onload = callback();
-					errorCallback = xhr.onerror = callback( "error" );
+					errorCallback = xhr.onerror = xhr.ontimeout = callback( "error" );
 
 					// Support: IE 9 only
 					// Use onreadystatechange to replace onabort
@@ -10158,7 +10231,7 @@ var FCC_Global =
 		if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
 
 			// Get callback name, remembering preexisting value associated with it
-			callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
+			callbackName = s.jsonpCallback = isFunction( s.jsonpCallback ) ?
 				s.jsonpCallback() :
 				s.jsonpCallback;
 
@@ -10209,7 +10282,7 @@ var FCC_Global =
 				}
 
 				// Call if it was a function and we have a response
-				if ( responseContainer && jQuery.isFunction( overwritten ) ) {
+				if ( responseContainer && isFunction( overwritten ) ) {
 					overwritten( responseContainer[ 0 ] );
 				}
 
@@ -10301,7 +10374,7 @@ var FCC_Global =
 		}
 
 		// If it's a function
-		if ( jQuery.isFunction( params ) ) {
+		if ( isFunction( params ) ) {
 
 			// We assume that it's the callback
 			callback = params;
@@ -10409,7 +10482,7 @@ var FCC_Global =
 				curLeft = parseFloat( curCSSLeft ) || 0;
 			}
 
-			if ( jQuery.isFunction( options ) ) {
+			if ( isFunction( options ) ) {
 
 				// Use jQuery.extend here to allow modification of coordinates argument (gh-1848)
 				options = options.call( elem, i, jQuery.extend( {}, curOffset ) );
@@ -10432,6 +10505,8 @@ var FCC_Global =
 	};
 
 	jQuery.fn.extend( {
+
+		// offset() relates an element's border box to the document origin
 		offset: function( options ) {
 
 			// Preserve chaining for setter
@@ -10443,7 +10518,7 @@ var FCC_Global =
 					} );
 			}
 
-			var doc, docElem, rect, win,
+			var rect, win,
 				elem = this[ 0 ];
 
 			if ( !elem ) {
@@ -10458,50 +10533,52 @@ var FCC_Global =
 				return { top: 0, left: 0 };
 			}
 
+			// Get document-relative position by adding viewport scroll to viewport-relative gBCR
 			rect = elem.getBoundingClientRect();
-
-			doc = elem.ownerDocument;
-			docElem = doc.documentElement;
-			win = doc.defaultView;
-
+			win = elem.ownerDocument.defaultView;
 			return {
-				top: rect.top + win.pageYOffset - docElem.clientTop,
-				left: rect.left + win.pageXOffset - docElem.clientLeft
+				top: rect.top + win.pageYOffset,
+				left: rect.left + win.pageXOffset
 			};
 		},
 
+		// position() relates an element's margin box to its offset parent's padding box
+		// This corresponds to the behavior of CSS absolute positioning
 		position: function() {
 			if ( !this[ 0 ] ) {
 				return;
 			}
 
-			var offsetParent, offset,
+			var offsetParent, offset, doc,
 				elem = this[ 0 ],
 				parentOffset = { top: 0, left: 0 };
 
-			// Fixed elements are offset from window (parentOffset = {top:0, left: 0},
-			// because it is its only offset parent
+			// position:fixed elements are offset from the viewport, which itself always has zero offset
 			if ( jQuery.css( elem, "position" ) === "fixed" ) {
 
-				// Assume getBoundingClientRect is there when computed position is fixed
+				// Assume position:fixed implies availability of getBoundingClientRect
 				offset = elem.getBoundingClientRect();
 
 			} else {
-
-				// Get *real* offsetParent
-				offsetParent = this.offsetParent();
-
-				// Get correct offsets
 				offset = this.offset();
-				if ( !nodeName( offsetParent[ 0 ], "html" ) ) {
-					parentOffset = offsetParent.offset();
-				}
 
-				// Add offsetParent borders
-				parentOffset = {
-					top: parentOffset.top + jQuery.css( offsetParent[ 0 ], "borderTopWidth", true ),
-					left: parentOffset.left + jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true )
-				};
+				// Account for the *real* offset parent, which can be the document or its root element
+				// when a statically positioned element is identified
+				doc = elem.ownerDocument;
+				offsetParent = elem.offsetParent || doc.documentElement;
+				while ( offsetParent &&
+					( offsetParent === doc.body || offsetParent === doc.documentElement ) &&
+					jQuery.css( offsetParent, "position" ) === "static" ) {
+
+					offsetParent = offsetParent.parentNode;
+				}
+				if ( offsetParent && offsetParent !== elem && offsetParent.nodeType === 1 ) {
+
+					// Incorporate borders into its offset, since they are outside its content origin
+					parentOffset = jQuery( offsetParent ).offset();
+					parentOffset.top += jQuery.css( offsetParent, "borderTopWidth", true );
+					parentOffset.left += jQuery.css( offsetParent, "borderLeftWidth", true );
+				}
 			}
 
 			// Subtract parent offsets and element margins
@@ -10543,7 +10620,7 @@ var FCC_Global =
 
 				// Coalesce documents and windows
 				var win;
-				if ( jQuery.isWindow( elem ) ) {
+				if ( isWindow( elem ) ) {
 					win = elem;
 				} else if ( elem.nodeType === 9 ) {
 					win = elem.defaultView;
@@ -10601,7 +10678,7 @@ var FCC_Global =
 				return access( this, function( elem, type, value ) {
 					var doc;
 
-					if ( jQuery.isWindow( elem ) ) {
+					if ( isWindow( elem ) ) {
 
 						// $( window ).outerWidth/Height return w/h including scrollbars (gh-1729)
 						return funcName.indexOf( "outer" ) === 0 ?
@@ -10635,6 +10712,28 @@ var FCC_Global =
 	} );
 
 
+	jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
+		"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+		"change select submit keydown keypress keyup contextmenu" ).split( " " ),
+		function( i, name ) {
+
+		// Handle event binding
+		jQuery.fn[ name ] = function( data, fn ) {
+			return arguments.length > 0 ?
+				this.on( name, null, data, fn ) :
+				this.trigger( name );
+		};
+	} );
+
+	jQuery.fn.extend( {
+		hover: function( fnOver, fnOut ) {
+			return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
+		}
+	} );
+
+
+
+
 	jQuery.fn.extend( {
 
 		bind: function( types, data, fn ) {
@@ -10656,6 +10755,37 @@ var FCC_Global =
 		}
 	} );
 
+	// Bind a function to a context, optionally partially applying any
+	// arguments.
+	// jQuery.proxy is deprecated to promote standards (specifically Function#bind)
+	// However, it is not slated for removal any time soon
+	jQuery.proxy = function( fn, context ) {
+		var tmp, args, proxy;
+
+		if ( typeof context === "string" ) {
+			tmp = fn[ context ];
+			context = fn;
+			fn = tmp;
+		}
+
+		// Quick check to determine if target is callable, in the spec
+		// this throws a TypeError, but we will just return undefined.
+		if ( !isFunction( fn ) ) {
+			return undefined;
+		}
+
+		// Simulated bind
+		args = slice.call( arguments, 2 );
+		proxy = function() {
+			return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
+		};
+
+		// Set the guid of unique handler to the same of original handler, so it can be removed
+		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+
+		return proxy;
+	};
+
 	jQuery.holdReady = function( hold ) {
 		if ( hold ) {
 			jQuery.readyWait++;
@@ -10666,6 +10796,26 @@ var FCC_Global =
 	jQuery.isArray = Array.isArray;
 	jQuery.parseJSON = JSON.parse;
 	jQuery.nodeName = nodeName;
+	jQuery.isFunction = isFunction;
+	jQuery.isWindow = isWindow;
+	jQuery.camelCase = camelCase;
+	jQuery.type = toType;
+
+	jQuery.now = Date.now;
+
+	jQuery.isNumeric = function( obj ) {
+
+		// As of jQuery 3.0, isNumeric is limited to
+		// strings and numbers (primitives or objects)
+		// that can be coerced to finite numbers (gh-2662)
+		var type = jQuery.type( obj );
+		return ( type === "number" || type === "string" ) &&
+
+			// parseFloat NaNs numeric-cast false positives ("")
+			// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+			// subtraction forces infinities to NaN
+			!isNaN( obj - parseFloat( obj ) );
+	};
 
 
 
@@ -10904,8 +11054,8 @@ var FCC_Global =
 	  }
 
 	  // capture stack trace
-	  ssf = ssf || arguments.callee;
-	  if (ssf && Error.captureStackTrace) {
+	  ssf = ssf || AssertionError;
+	  if (Error.captureStackTrace) {
 	    Error.captureStackTrace(this, ssf);
 	  } else {
 	    try {
@@ -14293,6 +14443,8 @@ var FCC_Global =
 	  revLookup[code.charCodeAt(i)] = i
 	}
 
+	// Support decoding URL-safe base64 strings, as Node.js does.
+	// See: https://en.wikipedia.org/wiki/Base64#URL_applications
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
@@ -14354,7 +14506,7 @@ var FCC_Global =
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -19036,16 +19188,28 @@ var FCC_Global =
 /* 42 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div id=\"fcc_test_suite_indicator_wrapper\"></div>\n<div id=\"fcc_foldout_toggler\">\n\t<span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n\t<span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n\t<span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n</div>\n<input id=\"toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n\ttitle=\"CTRL + SHIFT + O\">\n<div id=\"fcc_foldout_menu\">\n\t<div id=\"fcc_foldout_menu_inner\">\n\t\t<label for=\"test-suite-selector\">Select Test Suite: </label>\n\t\t<select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n\t\t\tonchange=\"FCC_Global.selectProject(this.value)\">\n\t\t\t<option id=\"placeholder\" value=\"\">- - -</option>\n\t\t\t<option value=\"tribute-page\">Tribute Page</option>\n\t\t\t<option value=\"portfolio\">Personal Portfolio</option>\n\t\t\t<option value=\"survey-form\">Survey Form</option>\n\t\t\t<option value=\"product-landing-page\">Product Landing Page</option>\n\t\t\t<option value=\"technical-docs-page\">Technical Documentation Page\n\t\t\t</option>\n\t\t\t<option value=\"random-quote-machine\">Random Quote Machine</option>\n\t\t\t<option value=\"markdown-previewer\">Markdown Previewer</option>\n\t\t\t<option value=\"drum-machine\">Drum Machine</option>\n\t\t\t<option value=\"pomodoro-clock\">Pomodoro Clock</option>\n\t\t\t<option value=\"javascript-calculator\">Javascript Calculator</option>\n\t\t\t<option value=\"bar-chart\">D3: Bar Chart</option>\n\t\t\t<option value=\"scatter-plot\">D3: Scatter Plot</option>\n\t\t\t<option value=\"heat-map\">D3: Heat Map</option>\n\t\t\t<option value=\"choropleth\">D3: Choropleth</option>\n\t\t\t<option value=\"tree-map\">D3: Tree Map</option>\n\t\t</select>\n\t\t<button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n\t\t\tclass=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n\t\t\tonclick=\"FCC_Global.FCCRerunTests()\">\n\t\t\tRun Tests\n\t\t</button>\n\t\t<button id=\"fcc_test_button\" type=\"button\"\n\t\t\tclass=\"fcc_foldout_buttons fcc_test_btn-default\"\n\t\t\ttitle=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n\t\t\tTests\n\t\t</button>\n\t\t<div id=\"fcc_legend_wrapper\">\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Test(s) Failed</span>\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Tests Passed</span>\n\t\t\t<div class=\"fcc_legend key\"></div>\n\t\t\t<span class=\"fcc_legend\">Tests Executing</span>\n\t\t</div>\n\t\t<span id=\"fcc_report-bug\"><a\n\t\t\thref=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n\t\t\ttarget=\"_blank\">Report Bug</a>\n\t\t</span>\n\t</div>\n</div>\n<div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n\tonclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n\t<div class=\"fcc_test_message-box-content\">\n\t\t<div class=\"fcc_test_message-box-header\">\n\t\t\t<div class=\"title\">Unit tests</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-body\">\n\t\t\t<div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n\t\t</div>\n\t\t<div class=\"fcc_test_message-box-footer\">\n\t\t\t<div class=\"fcc_test_message-box-close-btn\"\n\t\t\t\tonclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div id=\"fcc_foldout_menu_inner\">\n  <label for=\"test-suite-selector\">Select Test Suite: </label>\n  <select name=\"Test Suite Selector\" id=\"test-suite-selector\"\n    onchange=\"FCC_Global.selectProject(this.value)\">\n    <option id=\"placeholder\" value=\"\">- - -</option>\n    <option value=\"tribute-page\">Tribute Page</option>\n    <option value=\"portfolio\">Personal Portfolio</option>\n    <option value=\"survey-form\">Survey Form</option>\n    <option value=\"product-landing-page\">Product Landing Page</option>\n    <option value=\"technical-docs-page\">Technical Documentation Page\n    </option>\n    <option value=\"random-quote-machine\">Random Quote Machine</option>\n    <option value=\"markdown-previewer\">Markdown Previewer</option>\n    <option value=\"drum-machine\">Drum Machine</option>\n    <option value=\"pomodoro-clock\">Pomodoro Clock</option>\n    <option value=\"javascript-calculator\">Javascript Calculator</option>\n    <option value=\"bar-chart\">D3: Bar Chart</option>\n    <option value=\"scatter-plot\">D3: Scatter Plot</option>\n    <option value=\"heat-map\">D3: Heat Map</option>\n    <option value=\"choropleth\">D3: Choropleth</option>\n    <option value=\"tree-map\">D3: Tree Map</option>\n  </select>\n  <button id=\"fcc_test_message-box-rerun-button\" type=\"button\"\n    class=\"fcc_foldout_buttons\" title=\"CTRL + SHIFT + ENTER\"\n    onclick=\"FCC_Global.FCCRerunTests()\">\n    Run Tests\n  </button>\n  <button id=\"fcc_test_button\" type=\"button\"\n    class=\"fcc_foldout_buttons fcc_test_btn-default\"\n    title=\"CTRL + SHIFT + T\" onclick=\"FCC_Global.FCCOpenTestModal()\">\n    Tests\n  </button>\n  <div id=\"fcc_legend_wrapper\">\n    <div class=\"fcc_legend key\"></div>\n    <span class=\"fcc_legend\">Test(s) Failed</span>\n    <div class=\"fcc_legend key\"></div>\n    <span class=\"fcc_legend\">Tests Passed</span>\n    <div class=\"fcc_legend key\"></div>\n    <span class=\"fcc_legend\">Tests Executing</span>\n  </div>\n  <span id=\"fcc_report-bug\"><a\n    href=\"https://github.com/freeCodeCamp/testable-projects-fcc/issues/new\"\n    target=\"_blank\">Report Bug</a>\n  </span>\n</div>\n\n";
 
 /***/ }),
 /* 43 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div id=\"fcc_foldout_toggler\">\n  <span id=\"hamburger_top\" class=\"fcc_hamburger transform_top\"></span>\n  <span id=\"hamburger_middle\" class=\"fcc_hamburger transform_middle\"></span>\n  <span id=\"hamburger_bottom\" class=\"fcc_hamburger transform_bottom\"></span>\n</div>\n<input id=\"fcc_toggle\" onclick=\"FCC_Global.hamburgerTransform()\" type=\"checkbox\"\n  title=\"CTRL + SHIFT + O\">\n<div id=\"fcc_test_suite_indicator_wrapper\"></div>";
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div id=\"fcc_test_message-box\" class=\"fcc_test_message-box-hidden\"\n  onclick=\"FCC_Global.FCCclickOutsideToCloseModal(event)\">\n  <div class=\"fcc_test_message-box-content\">\n    <div class=\"fcc_test_message-box-header\">\n      <div class=\"title\">Unit tests</div>\n    </div>\n    <div class=\"fcc_test_message-box-body\">\n      <div id=\"mocha\">Run Test Suite to See Unit Tests!</div>\n    </div>\n    <div class=\"fcc_test_message-box-footer\">\n      <div class=\"fcc_test_message-box-close-btn\"\n        onclick=\"FCC_Global.FCCCloseTestModal()\">Close</div>\n    </div>\n  </div>\n</div>";
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(44);
+	var content = __webpack_require__(46);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// Prepare cssTransformation
 	var transform;
@@ -19053,14 +19217,14 @@ var FCC_Global =
 	var options = {}
 	options.transform = transform
 	// add the styles to the DOM
-	var update = __webpack_require__(46)(content, options);
+	var update = __webpack_require__(48)(content, options);
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./style.css");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./fcc-test-ui.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./fcc-test-ui.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -19070,21 +19234,21 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(45)(false);
+	exports = module.exports = __webpack_require__(47)(false);
 	// imports
-	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
+
 
 	// module
-	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n#mocha h1,#mocha h2{\n  margin:0;\n}\n#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:15px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\n#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\n.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n}\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n}\n\n.fcc_test_message-box-body {\n  flex: 1;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\n#mocha {\n  margin: 10px !important;\n}\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n#mocha-stats {\n  position: absolute;\n}\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n/* FOLDOUT MENU CSS */\n\n#fcc_foldout_menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 320px;\n  height: 210px;\n  border-radius: 0 !important;\n  border-bottom-right-radius: 5px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  z-index: 99997;\n  font-family: Noto Sans, arial, sans-serif !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  transition: .5s;\n}\n#toggle:checked ~ #fcc_foldout_menu {\n  left: -320px;\n  transition: .5s ease-in-out;\n}\n#fcc_foldout_menu_inner {\n  position: relative;\n}\n#toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n}\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  z-index: 99998;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 3px;\n  display: block;\n  background: black !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n}\n#hamburger_top {\n  position: absolute;\n  top: -6px;\n  transform-origin: 0% 80%;\n}\n#hamburger_bottom {\n  position: absolute;\n  bottom: -6px;\n  transform-origin: 20% 80%;\n}\n\n#fcc_foldout_menu label {\n  top: 38px;\n  left: 20px;\n  position: absolute;\n  font-size: 15px !important;\n  color: black !important;\n}\n#fcc_foldout_menu select {\n  display: block;\n  padding: 0;\n  height: auto;\n  width: auto;\n  top: 61px;\n  left: 18px;\n  position: absolute;\n  font-size: 12px !important;\n  font-family: Noto Sans, Arial, sans-serif !important;\n}\n\n.fcc_foldout_buttons {\n  position: absolute;\n  left: 20px;\n  height: 20px;\n  width: 110px;\n  padding: 10px !important;\n  display: block;\n  font-size: 15px !important;\n  line-height: 15px !important;\n  text-align: center;\n  border: none !important;\n  outline: none !important;\n  color: white;\n  background-color: rgba(128, 128, 128, 0.7);\n  border-radius: 4px;\n  box-sizing: content-box !important;\n  z-index: 0;\n  cursor: pointer;\n  box-shadow: 1px 1px 4px black;\n  font-family: Noto Sans, arial, sans-serif !important;\n}\n#fcc_test_message-box-rerun-button {\n  top: 90px;\n  transition: all .3s;\n}\n#fcc_test_message-box-rerun-button:hover {\n  color: white;\n  background-color: black;\n}\n#fcc_test_button {\n  top: 140px;\n}\n.fcc_test_btn-default {\n  background-color: rgba(128, 128, 128, 0.7);\n}\n.fcc_test_btn-executing {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_test_btn-error {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.fcc_test_btn-success {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n#fcc_report-bug {\n  position: absolute;\n  top: 186px;\n  left: 20px;\n  width: 110px;\n  padding: 0 10px !important;\n  font-size: 12px !important;\n  text-align: center;\n}\n\n#fcc_legend_wrapper {\n  position: absolute;\n  top: 95px;\n  left: 160px;\n  width: 125px;\n  vertical-align: top;\n  text-align: left !important;\n  font-size: 15px !important;\n  background: none !important;\n}\n#fcc_legend_wrapper span {\n  height: 15px;\n  margin-top: 6px !important;\n  font-size: 12px  !important;\n  color: black !important;\n  background: none !important;\n}\n.key {\n  height: 15px;\n  width: 15px;\n  margin: 5px !important;\n  vertical-align: top;\n  border-radius: 0 !important;\n}\n.key:first-of-type {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.key:nth-of-type(2) {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n.key:nth-of-type(3) {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_legend {\n  position: relative;\n  display: inline-block;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n}\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  color: black !important;\n  padding: 3px 5px !important;\n  border-radius: 5px !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n}", ""]);
+	exports.push([module.id, "\n#fcc_foldout_menu_inner {\n  position: relative;\n  font-family: Noto Sans, arial, sans-serif;\n}\n#fcc_foldout_menu_inner label {\n  top: 38px;\n  left: 20px;\n  position: absolute;\n  font-size: 15px;\n  color: black;\n}\n#fcc_foldout_menu_inner select {\n  display: block;\n  padding: 0;\n  height: auto;\n  width: auto;\n  top: 61px;\n  left: 18px;\n  position: absolute;\n  font-size: 12px;\n  font-family: Noto Sans, Arial, sans-serif;\n}\n\n.fcc_foldout_buttons {\n  position: absolute;\n  left: 20px;\n  height: 20px;\n  width: 110px;\n  padding: 10px;\n  display: block;\n  font-size: 15px;\n  line-height: 15px;\n  text-align: center;\n  border: none;\n  outline: none;\n  color: white;\n  background-color: rgba(128, 128, 128, 0.7);\n  border-radius: 4px;\n  box-sizing: content-box;\n  z-index: 0;\n  cursor: pointer;\n  box-shadow: 1px 1px 4px black;\n  font-family: Noto Sans, arial, sans-serif;\n}\n#fcc_test_message-box-rerun-button {\n  top: 90px;\n  transition: all .3s;\n}\n#fcc_test_message-box-rerun-button:hover {\n  color: white;\n  background-color: black;\n}\n#fcc_test_button {\n  top: 140px;\n}\n.fcc_test_btn-default {\n  background-color: rgba(128, 128, 128, 0.7);\n}\n.fcc_test_btn-executing {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_test_btn-error {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.fcc_test_btn-success {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n#fcc_report-bug {\n  position: absolute;\n  top: 186px;\n  left: 20px;\n  width: 110px;\n  padding: 0 10px;\n  font-size: 12px;\n  text-align: center;\n}\n\n#fcc_legend_wrapper {\n  position: absolute;\n  top: 95px;\n  left: 160px;\n  width: 125px;\n  vertical-align: top;\n  text-align: left;\n  font-size: 15px;\n  background: none;\n}\n#fcc_legend_wrapper span {\n  height: 15px;\n  margin-top: 6px;\n  font-size: 12px ;\n  color: black;\n  background: none;\n}\n.key {\n  height: 15px;\n  width: 15px;\n  margin: 5px;\n  vertical-align: top;\n  border-radius: 0;\n}\n.key:first-of-type {\n  background-color: rgba(255, 0, 0, 0.7);\n}\n.key:nth-of-type(2) {\n  background-color: rgba(81, 211, 81, 0.9);\n}\n.key:nth-of-type(3) {\n  background-color: rgba(255, 153, 0, 0.9);\n}\n.fcc_legend {\n  position: relative;\n  display: inline-block;\n}\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	/*
@@ -19166,7 +19330,7 @@ var FCC_Global =
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -19212,7 +19376,7 @@ var FCC_Global =
 	var	singletonCounter = 0;
 	var	stylesInsertedAtTop = [];
 
-	var	fixUrls = __webpack_require__(47);
+	var	fixUrls = __webpack_require__(49);
 
 	module.exports = function(list, options) {
 		if (false) {
@@ -19525,7 +19689,7 @@ var FCC_Global =
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	
@@ -19620,7 +19784,97 @@ var FCC_Global =
 
 
 /***/ }),
-/* 48 */
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(51);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(48)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./mocha-modal.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./mocha-modal.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(47)(false);
+	// imports
+	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
+
+	// module
+	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n#mocha h1,#mocha h2{\n  margin:0;\n}\n#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:15px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\n#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\n.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n}\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n}\n\n.fcc_test_message-box-body {\n  flex: 1;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\n#mocha {\n  margin: 10px !important;\n}\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n#mocha-stats {\n  position: absolute;\n}\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(53);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(48)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./fcc-test-toggler.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./fcc-test-toggler.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(47)(false);
+	// imports
+
+
+	// module
+	exports.push([module.id, "#fcc_foldout_menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 320px;\n  height: 210px;\n  border: 0px solid #fff;\n  border-radius: 0 !important;\n  border-bottom-right-radius: 5px !important;\n  background-color: rgba(255, 255, 204, 0.9) !important;\n  z-index: 99997;\n  font-family: Noto Sans, arial, sans-serif !important;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;\n  transition: .5s;\n  pointer-events: all;\n}\n#fcc_toggle:checked ~ #fcc_foldout_menu {\n  left: -320px;\n  transition: .5s ease-in-out;\n}\n#fcc_toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n  pointer-events: auto;\n}\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  z-index: 99998;\n  pointer-events: auto;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 3px;\n  display: block;\n  background: black !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n}\n#hamburger_top {\n  position: absolute;\n  top: -6px;\n  transform-origin: 0% 80%;\n}\n#hamburger_bottom {\n  position: absolute;\n  bottom: -6px;\n  transform-origin: 20% 80%;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n}\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px;\n  background-color: rgba(255, 255, 204, 0.9);\n  color: black;\n  padding: 3px 5px;\n  border-radius: 5px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19632,7 +19886,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	// DRUM MACHINE TESTS:
 	function createDrumMachineTests() {
@@ -19756,7 +20010,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 49 */
+/* 55 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -19773,7 +20027,7 @@ var FCC_Global =
 	var d3ProjectStackNoAxes = exports.d3ProjectStackNoAxes = '1. You can use HTML, JavaScript, CSS, ' + 'and the D3 svg-based visualization library. Required (non-virtual) ' + 'DOM elements are queried on the moment of each test. If you use a ' + 'frontend framework (like Vue for example), the test results may be ' + 'inaccurate for dynamic content. We hope to accommodate them eventually, ' + 'but these frameworks are not currently supported for D3 projects.';
 
 /***/ }),
-/* 50 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19785,7 +20039,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	/* global marked */
 
@@ -20022,7 +20276,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 51 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20034,9 +20288,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function createCalculatorTests() {
 
@@ -20214,7 +20468,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 52 */
+/* 58 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20275,7 +20529,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 53 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20287,9 +20541,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function createPomodoroClockTests() {
 
@@ -20861,7 +21115,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 54 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20877,7 +21131,7 @@ var FCC_Global =
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20992,7 +21246,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 55 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21002,9 +21256,9 @@ var FCC_Global =
 	});
 	exports.default = createPortfolioTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(62);
 
 	var _chai = __webpack_require__(2);
 
@@ -21174,7 +21428,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 56 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -21254,7 +21508,7 @@ var FCC_Global =
 	};
 
 /***/ }),
-/* 57 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21264,9 +21518,9 @@ var FCC_Global =
 	});
 	exports.default = createProductLandingPageTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(62);
 
 	var _chai = __webpack_require__(2);
 
@@ -21457,7 +21711,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 58 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21469,7 +21723,7 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function createSurveyFormTests() {
 
@@ -21661,7 +21915,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 59 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21673,9 +21927,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _styleSheetUtils = __webpack_require__(56);
+	var _styleSheetUtils = __webpack_require__(62);
 
 	function createTechnicalDocsPageTests() {
 
@@ -21895,7 +22149,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 60 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21905,17 +22159,17 @@ var FCC_Global =
 	});
 	exports.default = createBarChartTests;
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(67);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(69);
 
 	var _jquery = __webpack_require__(1);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22066,7 +22320,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 61 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22077,7 +22331,7 @@ var FCC_Global =
 	exports._getSurroundingTicks = _getSurroundingTicks;
 	exports.areShapesAlignedWithTicks = areShapesAlignedWithTicks;
 
-	var _alignmentD3Support = __webpack_require__(62);
+	var _alignmentD3Support = __webpack_require__(68);
 
 	function _getSurroundingTicks(shape, val, ticks, tickIndex, increment, dataType, normalTickOrder) {
 	  var surroundingTicks = [],
@@ -22187,7 +22441,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 62 */
+/* 68 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -22284,7 +22538,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 63 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22400,7 +22654,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 64 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22410,13 +22664,13 @@ var FCC_Global =
 	});
 	exports.default = createScatterPlotTests;
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(67);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(69);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function createScatterPlotTests() {
 
@@ -22584,7 +22838,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 65 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22596,15 +22850,15 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _education = __webpack_require__(66);
+	var _education = __webpack_require__(72);
 
 	var _education2 = _interopRequireDefault(_education);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(69);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22724,7 +22978,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 66 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	module.exports = [
@@ -41583,7 +41837,7 @@ var FCC_Global =
 	]
 
 /***/ }),
-/* 67 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41595,11 +41849,11 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(69);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
 	function createTreeMapTests() {
 
@@ -41726,7 +41980,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 68 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41738,9 +41992,9 @@ var FCC_Global =
 
 	var _chai = __webpack_require__(2);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
 	function createRandomQuoteMachineTests() {
 	  describe('Random Quote Machine tests', function () {
@@ -41890,7 +42144,7 @@ var FCC_Global =
 	}
 
 /***/ }),
-/* 69 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41900,15 +42154,15 @@ var FCC_Global =
 	});
 	exports.default = createHeatMapTests;
 
-	var _sharedTestStrings = __webpack_require__(49);
+	var _sharedTestStrings = __webpack_require__(55);
 
-	var _elementUtils = __webpack_require__(52);
+	var _elementUtils = __webpack_require__(58);
 
-	var _alignmentD = __webpack_require__(61);
+	var _alignmentD = __webpack_require__(67);
 
 	var _chai = __webpack_require__(2);
 
-	var _globalD3Tests = __webpack_require__(63);
+	var _globalD3Tests = __webpack_require__(69);
 
 	function createHeatMapTests() {
 
