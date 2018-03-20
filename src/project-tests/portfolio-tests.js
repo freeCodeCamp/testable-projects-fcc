@@ -80,9 +80,72 @@ export default function createPortfolioTests() {
       reqNum++;
       it(`${reqNum}. The navbar should contain at least one link that I can
       click on to navigate to different sections of the page.`,
-      function() {
+      function(done) {
         const links = Array.from(document.querySelectorAll('#navbar a'));
-        let didScroll = false;
+        let linksIndex = 0;
+        let bottomScroll = false;
+        let bottomPositionY;
+
+        // If the window has been scrolled then the nav link worked.
+        let testTopCondition = () => {
+          return window.scrollY !== 0;
+        };
+
+        // Similar to above, but we are testing if the window scrolled from the
+        // bottom.
+        let testBottomCondition = () => {
+          let distanceFromBottom = bottomPositionY - window.scrollY;
+          // if distance from bottom is not 0, clicking a link made it move,
+          // so we end the loop.
+          return distanceFromBottom !== 0;
+        };
+
+        // Tests if the window scrolled, and if not it clicks the next link
+        // and calls itself to see if that link scrolled. We need the timeout
+        // in case the CSS uses "scroll-behavior: smooth;" which takes some
+        // time to finish scrolling.
+        // NOTE: This function is not easy to understand. Some well placed
+        // console.log statements will help understand what is happening.
+        let testScroll = (testCondition) => {
+          setTimeout(() => {
+            // If the test condition passes, we are done. Scroll the window
+            // back to the top before successfully ending the tests.
+            if (testCondition()) {
+              window.scroll(0, 0);
+              done();
+            } else {
+              // Test condition did not pass, so try the next link and then
+              // call this function to test to see if it scrolled the window.
+              linksIndex++;
+              if (linksIndex < links.length) {
+                links[linksIndex].click();
+                testScroll(testCondition);
+              } else if (!bottomScroll) {
+                // We are out of the links. If we have not yet tested with
+                // scrolling from the bottom, then run the tests again after
+                // first scrolling to the bottom.
+                bottomScroll = true;
+                window.scroll(0, document.body.scrollHeight);
+                // Before running the new set of tests, give it some time to
+                // finish scrolling to the bottom.
+                setTimeout(() => testBottomScroll(), 500);
+              }
+            }
+          }, 500);
+        };
+
+        // Kicks off the tests that will check if the nav links scroll the
+        // window from the bottom.
+        let testBottomScroll = () => {
+          bottomPositionY = window.scrollY;
+          linksIndex = 0;
+          links[linksIndex].click();
+          testScroll(testBottomCondition);
+        };
+
+        // Tests start here. We need a longer timeout for this test. 10 seconds
+        // is enough to test about 10 nav links.
+        this.timeout(10000);
 
         assert.isAbove(
           document.querySelectorAll('#navbar a').length,
@@ -90,49 +153,12 @@ export default function createPortfolioTests() {
           'Navbar should contain a link '
         );
 
+        // Scroll the window to the top and then try the nav links to make sure
+        // they scroll the window. We delay the starting of the tests because
+        // it could take some time to scroll the window to the top.
         window.scroll(0, 0);
-        didScroll = links.some(link => {
-          link.click();
-          // Returning a true value ends the loop, so we continue until the
-          // window Y position is other than 0.
-          return window.scrollY !== 0;
-        });
-
-        // Test passes succesfully if the window scrolled, so we end the test.
-        if (didScroll) {
-          assert.ok(true);
-          window.scroll(0, 0);
-          return;
-        }
-
-        // No scroll yet, so move window to bottom and try again.
-        window.scroll(0, document.body.scrollHeight);
-        const bottomPositionY = window.scrollY;
-
-        didScroll = links.some(link => {
-          link.click();
-          let distanceFromBottom = bottomPositionY - window.scrollY;
-          // if distance from bottom is not 0, clicking a link made it move,
-          // so we end the loop.
-          return distanceFromBottom !== 0;
-        });
-
-        // Test passes succesfully if the window scrolled, so we end the test.
-        if (didScroll) {
-          assert.ok(true);
-          window.scroll(0, 0);
-          return;
-        }
-
-        // If we got here, none of the links changed the scroll position.
-        window.scroll(0, 0);
-        assert.ok(
-          false,
-          'At least one navbar link should move the page position when clicked '
-        );
-
-        return;
-
+        links[linksIndex].click();
+        setTimeout(() => testScroll(testTopCondition), 500);
       });
 
       reqNum++;
