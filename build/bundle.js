@@ -20238,8 +20238,35 @@ var FCC_Global =
 	        // then check a couple of elements to make sure the present elements
 	        // are actually the ones represented by the markdown:
 
-	        // find matching H1 element
-	        h1Text = /#\s.*/.exec(markdown)[0].slice(2);
+	        /* Two ways of creating H(n) elements:
+	          1. ATX
+	            `# Example Heading`
+	            `## Example Subheading`
+	          2. setext
+	            `Example Heading
+	            ===`
+	            `Example Subheading
+	            ---`
+	        https://github.github.com/gfm/#setext-heading-underline
+	         // ATX
+	        /* Added the m modifier to match hashes at the beginning of a paragraph
+	        so that people using Setext headers to pass these tests can use
+	        ATX headings elsewhere in the document additionally.
+	        From regex101: 'm modifier: multi line. Causes ^ and $ to match the
+	        begin/end of each line (not only begin/end of string)' */
+	        var h1regexHash = RegExp(/^#\s.*/m);
+	        var h2regexHash = RegExp(/^##\s.*/m);
+
+	        // Setext
+	        /* the (.*) matches everything excluding line terminators, so the
+	        m modifier is not needed for matching Setext headings. */
+	        var h1regexEq = RegExp(/.*[\n\r]=+/);
+	        var h2regexDash = RegExp(/.*[\n\r]--+/);
+
+	        // if ATX, trim hash + space from string h1 text
+	        // if setext, isolate text from the rest of the string at line
+	        // terminator
+	        h1Text = h1regexHash.test(markdown) ? h1regexHash.exec(markdown)[0].slice(2) : h1regexEq.exec(markdown)[0].split(/[\n\r]/)[0];
 	        h1Match = [];
 	        document.querySelectorAll('#preview h1').forEach(function (h1) {
 	          if (h1.innerText === h1Text) {
@@ -20249,7 +20276,7 @@ var FCC_Global =
 	        _chai.assert.isAtLeast(h1Match.length, 1, '#preview does not contain the H1 element represented by the ' + 'markdown in the #editor field with the inner text ' + h1Text + ' ');
 
 	        // find matching H2 element
-	        h2Text = /##\s.*/.exec(markdown)[0].slice(3);
+	        h2Text = h2regexHash.test(markdown) ? h2regexHash.exec(markdown)[0].slice(3) : h2regexDash.exec(markdown)[0].split(/[\n\r]/)[0];
 	        h2Match = [];
 	        document.querySelectorAll('#preview h2').forEach(function (h2) {
 	          if (h2.innerText === h2Text) {
