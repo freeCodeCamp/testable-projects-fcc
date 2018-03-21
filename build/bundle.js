@@ -22123,10 +22123,10 @@ var FCC_Global =
 	      it(reqNum + '. Each element with the class of "nav-link" should contain\n      text that corresponds to the <header> text within each <section> (e.g. if\n      you have a "Hello world" section/header, your navbar should have an\n      element which contains the text "Hello world").', function () {
 	        _chai.assert.isAbove(classArray('nav-link').length, 0, 'No elements with the class "nav-link" have been defined ');
 	        var headerText = classArray('main-section').map(function (el) {
-	          return el.firstElementChild.innerText.trim();
+	          return el.firstElementChild.innerText.trim().toUpperCase();
 	        });
 	        var linkText = classArray('nav-link').map(function (el) {
-	          return (/[^\n\t\f\r\v]+/.exec(el.innerText)[0]
+	          return (/[^\n\t\f\r\v]+/.exec(el.innerText)[0].toUpperCase()
 	          );
 	        });
 	        // use indexOf instead of matching index for index, in case for some

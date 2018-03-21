@@ -284,10 +284,10 @@ export default function createTechnicalDocsPageTests() {
           'No elements with the class "nav-link" have been defined '
         );
         const headerText = classArray('main-section').map((el) =>
-          el.firstElementChild.innerText.trim()
+          el.firstElementChild.innerText.trim().toUpperCase()
         );
         const linkText = classArray('nav-link').map((el) =>
-          (/[^\n\t\f\r\v]+/).exec(el.innerText)[0]
+          (/[^\n\t\f\r\v]+/).exec(el.innerText)[0].toUpperCase()
         );
         // use indexOf instead of matching index for index, in case for some
         // reason they have them out of order
