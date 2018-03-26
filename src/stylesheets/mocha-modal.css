@@ -19,13 +19,20 @@ please add them to the list:
 #mocha ul,#mocha-stats li{
   list-style:none;
 }
+
 #mocha h1,#mocha h2{
   margin:0;
 }
-#mocha{
+
+div#mocha{
   font:20px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
   margin:60px 50px;
 }
+
+#mocha li {
+  display: list-item;
+}
+
 #mocha li,#mocha ul{
   margin:0;
   padding:0;
@@ -59,6 +66,7 @@ please add them to the list:
 }
 #mocha .test{
   overflow:hidden;
+  background-color: unset;
 }
 #mocha .test.pending:hover h2::after{
   content:'(pending)';
@@ -175,6 +183,7 @@ please add them to the list:
 }
 #mocha .test h2{
   position:relative;
+  display: block;
 }
 #mocha .test a.replay{
   display:none;
@@ -193,7 +202,7 @@ please add them to the list:
 }
 #mocha-stats{
   position:fixed;
-  top:15px;
+  top:12px;
   right:10px;
   font-size:12px;
   margin:0;
@@ -211,10 +220,15 @@ please add them to the list:
 }
 #mocha-stats em{
   color:#000;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
 }
 #mocha-stats a{
   text-decoration:none;
   color:inherit;
+  padding: 0;
+  margin: 0;
 }
 #mocha-stats a:hover{
   border-bottom:1px solid #eee;
@@ -223,6 +237,7 @@ please add them to the list:
   display:inline-block;
   margin:0 5px;
   padding-top:11px;
+  position: unset;
 }
 #mocha-stats canvas{
   width:40px;
@@ -256,7 +271,7 @@ please add them to the list:
 
 /* TEST/MESSAGE CENTER CSS */
 
-#fcc_test_message-box {
+div#fcc_test_message-box {
   font-size: 20px !important;
   font-family: Noto Sans, arial, sans-serif !important;
   position: fixed;
@@ -282,7 +297,7 @@ please add them to the list:
   top: 0;
 }
 
-.fcc_test_message-box-content {
+div.fcc_test_message-box-content {
   position: relative;
   color: black !important;
   background-color: white !important;
@@ -294,13 +309,16 @@ please add them to the list:
   display: flex;
   flex-direction: column;
 }
+
 .fcc_test_message-box-header,
 .fcc_test_message-box-footer{
   position: relative;
   flex: none;
   box-sizing: border-box !important;
   padding: 10px !important;
+  margin: 0;
 }
+
 .fcc_test_message-box-header {
   border-bottom: 1px solid rgb(229,229,229);
   height: 60px;
@@ -311,10 +329,14 @@ please add them to the list:
   font-size: 30px !important;
   line-height: 40px !important;
   margin-left: 10px !important;
+  padding: 0;
+  height: auto;
+  border: unset;
 }
 
-.fcc_test_message-box-body {
+div.fcc_test_message-box-body {
   flex: 1;
+  position: static;
 }
 
 .fcc_test_message-box-footer {
@@ -331,21 +353,28 @@ please add them to the list:
   padding: 10px 20px !important;
   margin-bottom: 10px;
   transition: all .3s;
+  line-height: 30px;
+  height: auto;
 }
 .fcc_test_message-box-close-btn:hover {
   color: white;
   background-color: black;
 }
 
-#mocha {
+div#mocha {
   margin: 10px !important;
+  position: static;
 }
+
 #mocha .test pre {
   background-color: rgb(245, 245, 245) !important;
 }
+
 #mocha-stats {
   position: absolute;
+  left: unset;
 }
+
 #mocha ul {
   max-width: initial;
   margin: initial !important;

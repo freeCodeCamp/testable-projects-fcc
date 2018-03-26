@@ -1,71 +1,94 @@
-
 #fcc_foldout_menu_inner {
+  height: 0px;
   position: relative;
-  font-family: Noto Sans, arial, sans-serif;
-}
-#fcc_foldout_menu_inner label {
-  top: 38px;
-  left: 20px;
-  position: absolute;
-  font-size: 15px;
-  color: black;
-}
-#fcc_foldout_menu_inner select {
-  display: block;
-  padding: 0;
-  height: auto;
-  width: auto;
-  top: 61px;
-  left: 18px;
-  position: absolute;
-  font-size: 12px;
-  font-family: Noto Sans, Arial, sans-serif;
+  background-color: transparent;
 }
 
-.fcc_foldout_buttons {
-  position: absolute;
-  left: 20px;
+#fcc_foldout_menu_inner label {
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  color: black;
+  cursor: default;
+  font-size: 15px;
   height: 20px;
-  width: 110px;
-  padding: 10px;
+  left: 20px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  top: 38px;
+  width: fit-content;
+  z-index: 0;
+}
+
+#fcc_foldout_menu_inner select {
+  background-color: buttonface;
+  border: 1px solid;
+  border-color: rgb(169, 169, 169);
+  border-radius: 0px;
+  box-shadow: none;
+  color: black;
+  display: inherit;
+  font-size: 12px;
+  height: auto;
+  left: 18px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  top: 61px;
+  width: auto;
+}
+
+button.fcc_foldout_buttons {
+  background-color: rgba(128, 128, 128, 0.7);
+  border: none;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px black;
+  box-sizing: content-box;
+  color: white;
+  cursor: pointer;
   display: block;
   font-size: 15px;
-  line-height: 15px;
+  height: 20px;
+  left: 20px;
+  margin: 0px;
+  padding: 10px;
+  position: absolute;
   text-align: center;
-  border: none;
-  outline: none;
-  color: white;
-  background-color: rgba(128, 128, 128, 0.7);
-  border-radius: 4px;
-  box-sizing: content-box;
+  width: 110px;
   z-index: 0;
-  cursor: pointer;
-  box-shadow: 1px 1px 4px black;
-  font-family: Noto Sans, arial, sans-serif;
 }
+
 #fcc_test_message-box-rerun-button {
   top: 90px;
   transition: all .3s;
 }
+
 #fcc_test_message-box-rerun-button:hover {
   color: white;
   background-color: black;
 }
+
 #fcc_test_button {
   top: 140px;
 }
-.fcc_test_btn-default {
+
+button.fcc_test_btn-default {
   background-color: rgba(128, 128, 128, 0.7);
 }
-.fcc_test_btn-executing {
+
+button.fcc_test_btn-executing {
   background-color: rgba(255, 153, 0, 0.9);
 }
-.fcc_test_btn-error {
+
+button.fcc_test_btn-error {
   background-color: rgba(255, 0, 0, 0.7);
 }
-.fcc_test_btn-success {
+
+button.fcc_test_btn-success {
   background-color: rgba(81, 211, 81, 0.9);
 }
+
 #fcc_report-bug {
   position: absolute;
   top: 186px;
@@ -74,6 +97,8 @@
   padding: 0 10px;
   font-size: 12px;
   text-align: center;
+  height: auto;
+  box-shadow: none;
 }
 
 #fcc_legend_wrapper {
@@ -85,7 +110,10 @@
   text-align: left;
   font-size: 15px;
   background: none;
+  box-shadow: none;
+  height: auto;
 }
+
 #fcc_legend_wrapper span {
   height: 15px;
   margin-top: 6px;
@@ -93,23 +121,97 @@
   color: black;
   background: none;
 }
-.key {
+
+div.key {
   height: 15px;
   width: 15px;
   margin: 5px;
   vertical-align: top;
   border-radius: 0;
 }
+
 .key:first-of-type {
   background-color: rgba(255, 0, 0, 0.7);
 }
+
 .key:nth-of-type(2) {
   background-color: rgba(81, 211, 81, 0.9);
 }
+
 .key:nth-of-type(3) {
   background-color: rgba(255, 153, 0, 0.9);
 }
-.fcc_legend {
+
+div.fcc_legend, span.fcc_legend {
   position: relative;
   display: inline-block;
+  left: 0px;
+}
+
+/* This acts as sort of CSS reset. The div that will use this class is a 
+   wrapper div for the entire test UI. By using this class we ensure that
+   Camper code will be less specific and therefor won't override properties
+   that could change the layout or styling of our test UI.
+*/
+div.fcc_test_ui {
+  align-items: normal;  
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: black;
+  cursor: default;
+  display: block;
+  font-family: Noto Sans, arial, sans-serif;
+  font-size: 100%;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant-caps: normal;
+  font-weight: 400;
+  height: auto;
+  left: 0;
+  letter-spacing: normal;
+  line-height: 1;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  pointer-events: all;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  transform: none;
+  vertical-align: baseline;
+  word-spacing: 0px;  
+}
+
+/* Ensures that all child elements of the test UI wrapper div will have these
+   properties specified so Camper CSS won't override these properties.
+*/
+.fcc_test_ui * {
+  align-items: inherit;  
+  background-color: inherit;
+  border: inherit;
+  border-radius: inherit;
+  box-shadow: inherit;
+  color: inherit;
+  cursor: inherit;
+/*  display: inherit; */
+  font-family: inherit;
+  font-stretch: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-variant-caps: inherit;
+  font-weight: inherit;
+  height: inherit;
+  left: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: inherit;
+  outline: inherit;
+  padding: inherit;
+  pointer-events: inherit;
+  position: inherit;
+  text-align: inherit;
+  transform: inherit;
+  vertical-align: inherit;
+  word-spacing: inherit;  
 }
