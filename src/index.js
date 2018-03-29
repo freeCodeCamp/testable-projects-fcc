@@ -103,14 +103,26 @@ $(document).ready(function() {
         if (typeof projectName !== 'undefined') {
           projectNameLocal = projectName;
         }
+
+        // Create the test UI and its contents.
+        // Using the 'fcc_test_ui' CSS class allows us to set some reasonable
+        // CSS defaults that will be inherited for all child elements, making it
+        // harder for user code to override our test UI CSS.
+        // fCCTestTogglerSkeleton has the html for the toggle buttons.
+        // testFrameBody contains the main test UI.
+        // The mochaModal is where the test output goes.
         const fCCToggle = document.createElement('div');
+        fCCToggle.className = 'fcc_test_ui';
         fCCToggle.innerHTML = fCCTestTogglerSkeleton;
         document.body.appendChild(fCCToggle);
+
         const testFrameBody = document.createElement('div');
         testFrameBody.setAttribute('id', 'fcc_foldout_menu');
         testFrameBody.innerHTML = fCCTestSuiteSkeleton;
         fCCToggle.appendChild(testFrameBody);
+
         const mochaModal = document.createElement('div');
+        mochaModal.className = 'fcc_test_ui';
         mochaModal.innerHTML = mochaModalSkeleton;
         document.body.appendChild(mochaModal);
 
@@ -118,6 +130,8 @@ $(document).ready(function() {
         let indicatorWrapper = document.getElementById(
           'fcc_test_suite_indicator_wrapper'
         );
+
+        // Determine placeholder for the 'select' dropdown element.
         let placeholder = document.getElementById('placeholder');
 
         if ((!projectNameLocal) && (projectTitleCase === null)) {

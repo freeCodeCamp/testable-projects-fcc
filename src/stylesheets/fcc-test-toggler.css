@@ -1,26 +1,28 @@
 #fcc_foldout_menu {
+  background-color: rgba(255, 255, 204, 0.9);
+  border: 0px solid #fff;
+  border-radius: 0px 0px 5px 0px;
+  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
+  font-family: Noto Sans, arial, sans-serif;
+  height: 210px;
+  left: 0;
+  pointer-events: all;
   position: absolute;
   top: 0;
-  left: 0;
-  width: 320px;
-  height: 210px;
-  border: 0px solid #fff;
-  border-radius: 0 !important;
-  border-bottom-right-radius: 5px !important;
-  background-color: rgba(255, 255, 204, 0.9) !important;
-  z-index: 99997;
-  font-family: Noto Sans, arial, sans-serif !important;
-  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6) !important;
   transition: .5s;
-  pointer-events: all;
+  width: 320px;
+  z-index: 99997;
 }
+
 #fcc_toggle:checked ~ #fcc_foldout_menu {
   left: -330px;
   transition: .5s ease-in-out;
 }
+
 #fcc_toggle:checked ~ #fcc_test_suite_indicator_wrapper {
   display: none;
 }
+
 #fcc_toggle {
   height: 24px;
   width: 25px;
@@ -32,6 +34,7 @@
   z-index: 99999;
   pointer-events: auto;
 }
+
 #fcc_foldout_toggler {
   position: absolute;
   top: 20px;
@@ -39,6 +42,7 @@
   z-index: 99998;
   pointer-events: auto;
 }
+
 #fcc_foldout_toggler_background {
   width: 39px;
   height: 30px;
@@ -49,14 +53,17 @@
   left: -7px;
   z-index: -1;
 }
+
 .transform_top {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
 }
+
 .transform_middle {
   opacity: 0;
   transform: rotate(0deg) scale(0.2, 0.2);
 }
+
 .transform_bottom {
   opacity: 1;
   transform: rotate(-45deg) translate(-1px, -1px);
@@ -71,15 +78,24 @@
   border-radius: 5px !important;
   transform-origin: 4px 0px;
   transition: transform 0.4s ease, opacity 0.55s ease;
+  left: unset;
 }
+
 #hamburger_top {
   position: absolute;
   top: -7.5px;
   transform-origin: 0% 50%;
 }
+
+#hamburger_middle {
+  position: absolute;
+  top: 0px;
+  transform-origin: 0% 55%;
+}
+
 #hamburger_bottom {
   position: absolute;
-  bottom: -7.5px;
+  top: 7.5px;
   transform-origin: 3% 60%;
 }
 
@@ -87,7 +103,10 @@
   position: fixed;
   top: 15px;
   right: 20px;
+  left: unset;
+  height: auto;
 }
+
 #fcc_test_suite_indicator {
   position: fixed;
   top: 15px;
