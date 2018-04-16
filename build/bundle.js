@@ -10978,8 +10978,8 @@ var FCC_Global =
 	  }
 
 	  // capture stack trace
-	  ssf = ssf || arguments.callee;
-	  if (ssf && Error.captureStackTrace) {
+	  ssf = ssf || AssertionError;
+	  if (Error.captureStackTrace) {
 	    Error.captureStackTrace(this, ssf);
 	  } else {
 	    try {
@@ -14367,6 +14367,8 @@ var FCC_Global =
 	  revLookup[code.charCodeAt(i)] = i
 	}
 
+	// Support decoding URL-safe base64 strings, as Node.js does.
+	// See: https://en.wikipedia.org/wiki/Base64#URL_applications
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
@@ -14428,7 +14430,7 @@ var FCC_Global =
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -19159,7 +19161,7 @@ var FCC_Global =
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(47)(undefined);
+	exports = module.exports = __webpack_require__(47)(false);
 	// imports
 
 
@@ -19740,7 +19742,7 @@ var FCC_Global =
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(47)(undefined);
+	exports = module.exports = __webpack_require__(47)(false);
 	// imports
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
 
@@ -19785,12 +19787,12 @@ var FCC_Global =
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(47)(undefined);
+	exports = module.exports = __webpack_require__(47)(false);
 	// imports
 
 
 	// module
-	exports.push([module.id, "#fcc_foldout_menu {\n  background-color: rgba(255, 255, 204, 0.9);\n  border: 0px solid #fff;\n  border-radius: 0px 0px 5px 0px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n  height: 210px;\n  left: 0;\n  pointer-events: all;\n  position: absolute;\n  top: 0;\n  transition: .5s;\n  width: 320px;\n  z-index: 99997;\n}\n\n#fcc_toggle:checked ~ #fcc_foldout_menu {\n  left: -330px;\n  transition: .5s ease-in-out;\n}\n\n#fcc_toggle:checked ~ #fcc_test_suite_indicator_wrapper {\n  display: none;\n}\n\n#fcc_toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n  pointer-events: auto;\n}\n\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 15px;\n  z-index: 99998;\n  pointer-events: auto;\n}\n\n#fcc_foldout_toggler_background {\n  width: 39px;\n  height: 30px;\n  background-color: rgba(255, 255, 204, 0.08);\n  transform-origin: 0% 50%;\n  position: absolute;\n  top: -13px;\n  left: -7px;\n  z-index: -1;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-2px, -1px);\n}\n\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg) translate(-1px, -1px);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 4px;\n  display: block;\n  background: darkgreen !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n  left: unset;\n}\n\n#hamburger_top {\n  position: absolute;\n  top: -7.5px;\n  transform-origin: 0% 50%;\n}\n\n#hamburger_middle {\n  position: absolute;\n  top: 0px;\n  transform-origin: 0% 55%;\n}\n\n#hamburger_bottom {\n  position: absolute;\n  top: 7.5px;\n  transform-origin: 3% 60%;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  left: unset;\n  height: auto;\n}\n\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px;\n  background-color: rgba(255, 255, 204, 0.9);\n  color: black;\n  padding: 3px 5px;\n  border-radius: 5px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n}\n", ""]);
+	exports.push([module.id, "#fcc_foldout_menu {\n  background-color: rgba(255, 255, 204, 0.9);\n  border: 0px solid #fff;\n  border-radius: 0px 0px 5px 0px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n  height: 210px;\n  left: 0;\n  pointer-events: all;\n  position: absolute;\n  top: 0;\n  transition: .5s;\n  width: 320px;\n  z-index: 99997;\n}\n\n#fcc_toggle:checked ~ #fcc_foldout_menu {\n  left: -330px;\n  transition: .5s ease-in-out;\n}\n\n#fcc_toggle:checked ~ #fcc_test_suite_indicator_wrapper {\n  display: none;\n}\n\n#fcc_toggle {\n  height: 24px;\n  width: 25px;\n  position: fixed;\n  top: 7px;\n  left: 20px;\n  opacity: 0;\n  cursor: pointer;\n  z-index: 99999;\n  pointer-events: auto;\n}\n\n#fcc_foldout_toggler {\n  position: absolute;\n  top: 20px;\n  left: 15px;\n  z-index: 99998;\n  pointer-events: auto;\n}\n\n#fcc_foldout_toggler_background {\n  width: 39px;\n  height: 30px;\n  background-color: rgba(255, 255, 204, 0.08);\n  transform-origin: 0% 50%;\n  position: absolute;\n  top: -13px;\n  left: -7px;\n  z-index: -1;\n}\n\n.transform_top {\n  opacity: 1;\n  transform: rotate(45deg) translate(-1px, -1px);\n}\n\n.transform_middle {\n  opacity: 0;\n  transform: rotate(0deg) scale(0.2, 0.2);\n}\n\n.transform_bottom {\n  opacity: 1;\n  transform: rotate(-45deg);\n}\n\n.fcc_hamburger {\n  position: relative;\n  width: 25px;\n  height: 4px;\n  display: block;\n  background: darkgreen !important;\n  border-radius: 5px !important;\n  transform-origin: 4px 0px;\n  transition: transform 0.4s ease, opacity 0.55s ease;\n  left: unset;\n}\n\n#hamburger_top {\n  position: absolute;\n  top: -7.5px;\n  transform-origin: 0% 50%;\n}\n\n#hamburger_middle {\n  margin-top: 0.5px;\n  margin-bottom: 0.5px;\n}\n\n#hamburger_bottom {\n  position: absolute;\n  bottom: -7.5px;\n  transform-origin: 0 50%;\n}\n\n#fcc_test_suite_indicator_wrapper {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  left: unset;\n  height: auto;\n}\n\n#fcc_test_suite_indicator {\n  position: fixed;\n  top: 15px;\n  right: 20px;\n  font-size: 12px;\n  background-color: rgba(255, 255, 204, 0.9);\n  color: black;\n  padding: 3px 5px;\n  border-radius: 5px;\n  box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);\n  font-family: Noto Sans, arial, sans-serif;\n}\n", ""]);
 
 	// exports
 
