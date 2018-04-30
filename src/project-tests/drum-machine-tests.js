@@ -11,21 +11,43 @@ export default function createDrumMachineTests() {
     const audioElements = document.querySelectorAll('.drum-pad .clip');
 
     // functions:
-    function __triggerKeyboardEvent(el, keyCode) {
+
+    // As of React 15.6, we need a workaround that allows continued use of
+    // el.dispatchEvent()
+    // SEE: https://github.com/facebook/react/issues/10135
+    // Make <audio> Object configurable so that we can programmatically hit play
+    function configureAudioElement() {
+      var d = configureAudioElement.d || (
+        configureAudioElement.d = {
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      );
+      return d;
+    }
+    // Parameters called from tests are either for click or keydown events
+    function __triggerEvent(el, eventType, keyCode) {
       const eventObj = document.createEventObject
         ? document.createEventObject()
         : document.createEvent('Events');
       if (eventObj.initEvent) {
-        eventObj.initEvent('keydown', true, true);
+        eventObj.initEvent(eventType, true, true);
       }
       eventObj.keyCode = keyCode;
       eventObj.which = keyCode;
       /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
       el.dispatchEvent
         ? el.dispatchEvent(eventObj)
-        : el.fireEvent('onkeydown', eventObj);
+        : el.fireEvent('on' + eventType, eventObj);
     }
-
+    // This is to accommodate projects using both click and mousedown/up Events
+    // All three are fired in order
+    function __triggerClickEventCaller(el) {
+      __triggerEvent(el, 'mousedown', 0);
+      __triggerEvent(el, 'click', 0);
+      __triggerEvent(el, 'mouseup', 0);
+    }
 
     describe('#Technology Stack', function() {
       it(frontEndLibrariesStack, function() {
@@ -36,6 +58,16 @@ export default function createDrumMachineTests() {
     describe('#Tests', function() {
       let reqNum = 0;
 
+      before(function() {
+        audioElements.forEach(function(el) {
+          Object.defineProperty(el, 'paused', configureAudioElement);
+        });
+      });
+      after(function() {
+        audioElements.forEach(function(el) {
+          el.pause();
+        });
+      });
       reqNum++;
       it(`${reqNum}. I should be able to see an outer container with a
       corresponding id="drum-machine" that contains all other elements`,
@@ -136,9 +168,9 @@ export default function createDrumMachineTests() {
           'Audio elements do not exist '
         );
         audioElements.forEach(el => {
-          document.getElementById(el.parentElement.id).click();
+          __triggerClickEventCaller(el.parentElement);
           assert.isNotOk(
-            document.getElementById(el.id).paused,
+            el.paused,
             'The <audio> element with id="' + el.id +
             '" does not play when the ' + el.id + ' .drum-pad is clicked '
           );
@@ -162,8 +194,9 @@ export default function createDrumMachineTests() {
         return new Promise(resolve => {
           setTimeout(() => {
             audioElements.forEach((el, i) => {
-              __triggerKeyboardEvent(
-                document.getElementById(el.parentElement.id),
+              __triggerEvent(
+                el.parentElement,
+                'keydown',
                 keyCodes[i]
               );
               assert.isNotOk(
@@ -186,7 +219,7 @@ export default function createDrumMachineTests() {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             drumPads.forEach(pad => {
-              document.getElementById(pad.id).click();
+              __triggerClickEventCaller(pad);
               displayText.push(document.getElementById('display').innerText);
             });
             displayText = displayText.filter((str, i) =>
