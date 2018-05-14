@@ -823,19 +823,19 @@ export default function createPomodoroClockTests() {
       be rewound to the beginning when the element with the id of "reset" is
       clicked.`,
       function() {
-        var audioElem = document.getElementById('beep');
-
-        audioElem.play();
+        // Call document.getElementById('beep') each time to overcome framework
+        // cache
+        document.getElementById('beep').play();
         resetTimer();
 
         assert.isTrue(
-          audioElem.paused,
+          document.getElementById('beep').paused,
           'Audio element was not stopped when reset was clicked.'
         );
 
         assert.equal(
           0,
-          audioElem.currentTime,
+          document.getElementById('beep').currentTime,
           'Audio element was not rewound when reset was clicked. HINT: use ' +
           'the currentTime property of the audio element to rewind.'
         );
