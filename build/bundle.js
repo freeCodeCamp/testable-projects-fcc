@@ -21049,14 +21049,14 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. The audio element with id of "beep" must stop playing and\n      be rewound to the beginning when the element with the id of "reset" is\n      clicked.', function () {
-	        var audioElem = document.getElementById('beep');
-
-	        audioElem.play();
+	        // Call document.getElementById('beep') each time to overcome framework
+	        // cache
+	        document.getElementById('beep').play();
 	        resetTimer();
 
-	        _chai.assert.isTrue(audioElem.paused, 'Audio element was not stopped when reset was clicked.');
+	        _chai.assert.isTrue(document.getElementById('beep').paused, 'Audio element was not stopped when reset was clicked.');
 
-	        _chai.assert.equal(0, audioElem.currentTime, 'Audio element was not rewound when reset was clicked. HINT: use ' + 'the currentTime property of the audio element to rewind.');
+	        _chai.assert.equal(0, document.getElementById('beep').currentTime, 'Audio element was not rewound when reset was clicked. HINT: use ' + 'the currentTime property of the audio element to rewind.');
 	      });
 	      // END #Audio
 	    });
