@@ -20106,7 +20106,9 @@ var FCC_Global =
 	        _chai.assert.notStrictEqual(markdown.search(/(?:[-+*]|\d\.)\s[^|\s-*].+/), -1, 'write some markdown representing an <li> item ');
 
 	        // blockquote
-	        _chai.assert.notStrictEqual(markdown.search(/>\s.+/), -1, 'write some markdown representing a <blockquote> ');
+	        // Amended 5/18 to test for the > character at the beginning of a line,
+	        // with or without whitespace
+	        _chai.assert.notStrictEqual(markdown.search(/^>.+/m), -1, 'write some markdown representing a <blockquote> ');
 
 	        // image
 	        _chai.assert.notStrictEqual(markdown.search(/!\[.*\]\(.+\..+\)/), -1, 'write some markdown representing an <image> ');

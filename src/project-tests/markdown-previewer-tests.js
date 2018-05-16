@@ -214,8 +214,10 @@ export default function createMarkdownPreviewerTests() {
         );
 
         // blockquote
+        // Amended 5/18 to test for the > character at the beginning of a line,
+        // with or without whitespace
         assert.notStrictEqual(
-          markdown.search(/>\s.+/),
+          markdown.search(/^>.+/m),
           -1,
           'write some markdown representing a <blockquote> '
         );
