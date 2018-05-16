@@ -12,7 +12,7 @@ global.chromeBinaryPath = '/usr/bin/google-chrome-stable';
 global.screenshotDir = 'travis-screenshots';
 
 // URL for local bundle.js
-global.bundleUrl = 'https://localhost.daplie.me:8080/build/bundle.js';
+global.bundleUrl = 'https://127.0.0.1:8080/bundle.js';
 
 // Browser will be resized using these values.
 global.browserMaxWidth = 1920;
