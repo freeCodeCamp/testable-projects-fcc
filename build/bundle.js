@@ -42273,7 +42273,7 @@ var FCC_Global =
 
 	        var axis = document.querySelector('#y-axis');
 	        var coordAttr = 'y';
-	        var cellsCollection = document.querySelectorAll('.cell');
+	        var cellsCollection = document.querySelectorAll('rect.cell');
 	        var ticksCollection = axis.querySelectorAll('.tick');
 	        var shapeAttr = 'data-month';
 	        // options are 'minute', 'month', 'thousand', and 'year'

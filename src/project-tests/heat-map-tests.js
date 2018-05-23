@@ -151,7 +151,7 @@ export default function createHeatMapTests() {
 
         const axis = document.querySelector('#y-axis');
         const coordAttr = 'y';
-        const cellsCollection = document.querySelectorAll('.cell');
+        const cellsCollection = document.querySelectorAll('rect.cell');
         const ticksCollection = axis.querySelectorAll('.tick');
         const shapeAttr = 'data-month';
         // options are 'minute', 'month', 'thousand', and 'year'
