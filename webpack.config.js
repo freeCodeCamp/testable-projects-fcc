@@ -4,6 +4,8 @@ module.exports = {
 	mode: 'production',
 	entry: './src/index.js',
 	output: {
+		library: 'FCC_Global',
+		libraryTarget: 'var',
 		path: path.resolve(__dirname, './build/testable-projects-fcc/v1'),
 		filename: 'bundle.js'
 	},
@@ -35,13 +37,3 @@ module.exports = {
 		]
 	}
 };
-
-// {
-//     entry: './src/index.js',
-//     output: {
-//         library: 'FCC_Global',
-//         path: path.join(__dirname, '/build/testable-projects-fcc/v1'),
-//         filename: 'bundle.js'
-//     },
-
-// };
