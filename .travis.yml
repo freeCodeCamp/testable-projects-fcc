@@ -21,6 +21,8 @@ before_script:
   # The `&` at the end tells this process to fork into the background
   # https://github.com/travis-ci/travis-ci/issues/1321
   - cd config && openssl genrsa -des3 -passout pass:PASS -out server.key 2048 && openssl req -passin pass:PASS -new -key server.key -out server.csr -subj "/C=BR/ST=Parana/L=Curitiba/O=fCC/OU=test/CN=freeCodeCamp" && cp server.key server.key.org && openssl rsa -in server.key.org -passin pass:PASS -out server.key && openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt && cp live-server-https.js.example live-server-https.js && sleep 3 && npm run live-serve-build &
+  - /usr/bin/google-chrome-stable --version
+  - sleep 3
 cache:
   directories:
     - node_modules
