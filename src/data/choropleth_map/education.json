@@ -1,4 +1,4 @@
-[
+module.exports = [
 	{
 		"fips": 1001,
 		"state": "AL",

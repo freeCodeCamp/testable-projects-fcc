@@ -7,7 +7,7 @@ open an issue.
 begin working on fixing the bug, please follow the guidelines below.
 
 ### In general:
-- Fork, clone locally, and install dependencies using `yarn install`.
+- Fork, clone locally, and install dependencies using `npm install`.
 - Please make all PRs against a branch you have created specifically to address the issue you are fixing.
 - In order to keep things in scope for this bundle, we have defined a global library object called `FCC_Global`; Chai's `assert` is being exported and can be accessed through this object, as can all of our Utility Functions as defined in `index.js`, e.g.:
 
@@ -22,9 +22,9 @@ OR
 
 You can see examples of the above in the `src/project-tests` directory.
 
-- Be sure to run `yarn run build` to create a new bundle.
+- Be sure to run `npm run build` to create a new bundle.
 
-- Be sure to test all your changes to the bundle locally by running `yarn test`.
+- Be sure to test all your changes to the bundle locally by running `npm test`.
 Make sure all tests pass before you create a PR. See the section below
 about [Automated Testing](#automated-testing).
 
@@ -57,7 +57,7 @@ about [Automated Testing](#automated-testing).
 Running tests locally, summary:
 
 ```
-yarn test
+npm test
 ```
 
 If this is your first time testing, you will need to do some setup before the
@@ -83,7 +83,7 @@ So it is well worth it to go through the setup steps below, most of which only
 need to be run one time.
 
 #### Setup
-1. You should have already run `yarn` per the forking instructions.
+1. You should have already run `npm install` per the forking instructions.
 1. Make sure you have the Chrome browser installed. You should have version
 59.0.3071.115 or later.
 1. To make your local `bundle.js` available via https you will need to create
@@ -135,7 +135,7 @@ commands to recreate the certs.
 You can test your work by running the following command:
 
 ```
-yarn run live-serve-build
+npm run live-serve-build
 ```
 
 You should see something like the following:
@@ -167,7 +167,7 @@ Now you can edit the `test/setup.js` file and to reflect your environment. It
 is well documented inside the file and the defaults should work but at the very
 least you will have to choose a value for `global.chromeBinaryPath`.
 
-NOTE: If the address used by `yarn live-serve-build` from the section above
+NOTE: If the address used by `npm run live-serve-build` from the section above
 is different from `https://127.0.0.1:8080` you will also need to change the
 value of `global.bundleUrl` accordingly.
 
@@ -182,20 +182,20 @@ Should be obvious, and you should have already done this, but if you want to
 test your local `bundle.js` changes, make sure you have built the bundle first:
 
 ```
-yarn run build
+npm run build
 ```
 
 Per the previous section, in a separate window, make sure your `bundle.js` is
 available via https:
 
 ```
-yarn run live-serve-build
+npm run live-serve-build
 ```
 
 Leave that running. And in a new window, you can run the tests:
 
 ```
-yarn test
+npm test
 ```
 
 If everything is set up correctly, you should see the following happen
@@ -226,11 +226,11 @@ volume low or off.
 Many times you are only changing the tests for one CodePen sample project. You
 can run the tests for one project by using the Mocha grep command line flag. For
 example, the following will run only the D3 Tree Map test. Note the use of
-`$(yarn bin)` which should be typed in full since it locates the yarn bin
+`$(npm bin)` which should be typed in full since it locates the npm bin
 directory no matter where you are in the project directory:
 
 ```
-$(yarn bin)/mocha -g 'D3 Tree'
+$(npm bin)/mocha -g 'D3 Tree'
 ```
 
 For the names used by the grep option, see the `name` attribute in the
@@ -258,7 +258,7 @@ And then using the `:99` and (-screen) `0` values from above you run the tests
 like this:
 
 ```
-DISPLAY=':99.0' yarn test
+DISPLAY=':99.0' npm test
 ```
 
 The tests will now run on the virtual display without popping up the browser.
@@ -266,7 +266,7 @@ The tests will now run on the virtual display without popping up the browser.
 Running a single test works similarly:
 
 ```
-DISPLAY=':99.0' $(yarn bin)/mocha -g 'D3 Tree'
+DISPLAY=':99.0' $(npm bin)/mocha -g 'D3 Tree'
 ```
 
 **Capturing video of the tests**
@@ -286,7 +286,7 @@ small, but if the video quality is not good enough, you can increase the
 `-framerate` value and / or lower the `-crf` value.
 
 #### Port 8080
-Note that the `yarn serve-https-local` command may choose a different port
+Note that the `npm run serve-https-local` command may choose a different port
 if 8080 is already in use. You will either have to adjust your `test/setup.js`
 file to reflect what port the serve-https-local script uses, or make sure port
 8080 is not in use before running the script.
@@ -360,13 +360,13 @@ the folders you created in `local_test/`.
 resources you need (e.g. React, jQuery, D3, FontAwesome, etc.).
 - **NOTE:** Before you push your changes, please be sure to return index.html to
 its original state.
-- Run `yarn start` to start watching your files for changes.
+- Run `npm start` to start watching your files for changes.
 - Then, in another terminal tab navigate into the `local_test` directory and run
-`yarn serve-https-local`.
+`npm run serve-https-local`.
 - Now your changes to the test files will be automatically bundled by webpack
 and served in the project that is running locally.
 - Your changes will not be saved to the bundle we're using for production until
-you run `yarn build` and create a PR that is eventually merged.
+you run `npm run build` and create a PR that is eventually merged.
 - As a less desireable alternative, you can push your changes to your fork of
 this repo and utilize rawgit.com for a CDN style link that you can use to
 populate the test suite in CodePen or wherever else (use the right hand,
