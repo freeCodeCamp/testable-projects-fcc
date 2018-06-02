@@ -25,5 +25,5 @@ global.screenshotDir = 'test/screenshots';
 // If you are on a Mac (and now it seems like headless Chrome also has this
 // problem) the Chrome argument "--start-maximized" is ignored. So we just set
 // the screen size manually.
-global.browserMaxWidth = 1920;
-global.browserMaxHeight = 1080;
+global.browserMaxWidth = 1440;
+global.browserMaxHeight = 900;

@@ -15,5 +15,5 @@ global.screenshotDir = 'travis-screenshots';
 global.bundleUrl = 'https://127.0.0.1:8080/bundle.js';
 
 // Browser will be resized using these values.
-global.browserMaxWidth = 1920;
-global.browserMaxHeight = 1080;
+global.browserMaxWidth = 1440;
+global.browserMaxHeight = 900;
