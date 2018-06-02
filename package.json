@@ -13,7 +13,7 @@
   "devDependencies": {
     "babel-eslint": "^8.0.2",
     "chai": "^3.5.0",
-    "chromedriver": "^2.33.1",
+    "chromedriver": "^2.38",
     "css-loader": "^0.28.7",
     "eslint": "^4.11.0",
     "eslint-config-freecodecamp": "^1.1.1",
