@@ -5,8 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.49",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.49",
     "@babel/preset-env": "^7.0.0-beta.49",
+    "@babel/register": "^7.0.0-beta.49",
     "babel-loader": "^8.0.0-beta.3",
     "jsdom": "^11.2.0",
     "webpack": "^4.10.2"
@@ -24,13 +24,13 @@
     "html-loader": "^0.5.1",
     "jquery": "^3.2.1",
     "live-server": "^1.2.0",
-    "mocha": "^3.4.2",
+    "mocha": "^5.2.0",
     "selenium-webdriver": "^3.4.0",
     "style-loader": "^0.18.2",
     "webpack-cli": "^2.1.5"
   },
   "scripts": {
-    "live-serve-build": "live-server --no-browser --https=config/live-server-https build",
+    "live-serve-build": "live-server --no-browser --https=config/live-server-https build/testable-projects-fcc/v1",
     "lint": "eslint src/ test/",
     "pretest": "npm run lint",
     "test": "mocha",

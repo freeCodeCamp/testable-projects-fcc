@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+	mode: 'production',
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, './build/testable-projects-fcc/v1'),
@@ -14,8 +15,7 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['@babel/preset-env'],
-						plugins: [require('@babel/plugin-proposal-object-rest-spread')]
+						presets: ['@babel/preset-env']
 					}
 				}
 			},
