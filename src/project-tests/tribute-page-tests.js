@@ -155,7 +155,7 @@ export default function createTributePageTests() {
         // element has an actual size we will get the actual pixels. So we
         // temporarily set the "display" style to "none", which will tell
         // us if the height is "auto".
-        img.style.display = 'none';
+        img.setAttribute('style', 'display: none !important');
         heightValue = getPropValue(img, 'height');
         assert.equal(
           heightValue,
