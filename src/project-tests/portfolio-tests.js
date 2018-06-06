@@ -81,7 +81,11 @@ export default function createPortfolioTests() {
       it(`${reqNum}. The navbar should contain at least one link that I can
       click on to navigate to different sections of the page.`,
       function(done) {
-        const links = Array.from(document.querySelectorAll('#navbar a'));
+        // Filter anchors by location hash (don't click external links)
+        let links = Array.from(document.querySelectorAll('#navbar a'));
+        links = links.filter((nav) => {
+          return nav.getAttribute('href').substr(0, 1) === '#';
+        });
         let linksIndex = 0;
         let bottomScroll = false;
         let bottomPositionY;
@@ -146,9 +150,14 @@ export default function createPortfolioTests() {
         // Tests start here. We need a longer timeout for this test. 10 seconds
         // is enough to test about 10 nav links.
         this.timeout(10000);
+        // Filter anchors by location hash (don't click external links)
+        let anchors = Array.from(document.querySelectorAll('#navbar a'));
+        anchors = anchors.filter((nav) => {
+          return nav.getAttribute('href').substr(0, 1) === '#';
+        });
 
         assert.isAbove(
-          document.querySelectorAll('#navbar a').length,
+          anchors.length,
           0,
           'Navbar should contain a link '
         );

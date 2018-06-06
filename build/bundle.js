@@ -21296,7 +21296,11 @@ var FCC_Global =
 
 	      reqNum++;
 	      it(reqNum + '. The navbar should contain at least one link that I can\n      click on to navigate to different sections of the page.', function (done) {
+	        // Filter anchors by location hash (don't click external links)
 	        var links = Array.from(document.querySelectorAll('#navbar a'));
+	        links = links.filter(function (nav) {
+	          return nav.getAttribute('href').substr(0, 1) === '#';
+	        });
 	        var linksIndex = 0;
 	        var bottomScroll = false;
 	        var bottomPositionY = void 0;
@@ -21363,8 +21367,13 @@ var FCC_Global =
 	        // Tests start here. We need a longer timeout for this test. 10 seconds
 	        // is enough to test about 10 nav links.
 	        this.timeout(10000);
+	        // Filter anchors by location hash (don't click external links)
+	        var anchors = Array.from(document.querySelectorAll('#navbar a'));
+	        anchors = anchors.filter(function (nav) {
+	          return nav.getAttribute('href').substr(0, 1) === '#';
+	        });
 
-	        _chai.assert.isAbove(document.querySelectorAll('#navbar a').length, 0, 'Navbar should contain a link ');
+	        _chai.assert.isAbove(anchors.length, 0, 'Navbar should contain a link ');
 
 	        // Scroll the window to the top and then try the nav links to make sure
 	        // they scroll the window. We delay the starting of the tests because
