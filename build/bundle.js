@@ -184,11 +184,6 @@ var FCC_Global =
 	*/
 
 	var projectNameLocal = false;
-	var localStorageByProject = function localStorageByProject() {
-	  var placeholder = document.getElementById('placeholder');
-	  var visibleProjectName = placeholder.innerHTML.split(' ').join('');
-	  return 'fCC_' + visibleProjectName + '_hide';
-	};
 
 	// Load mocha.
 	(function () {
@@ -264,7 +259,7 @@ var FCC_Global =
 	          indicatorWrapper.innerHTML = '<span id=fcc_test_suite_indicator>FCC Test Suite: ' + (projectTitleCase + '</span>');
 	        }
 	        // If this is the first time loading this project, show test window
-	        if (!localStorage.getItem(localStorageByProject)) {
+	        if (!localStorage.getItem('fCC_' + localStorage.getItem('project_selector') + '_hide')) {
 	          toggleElement.checked = false;
 	        } else {
 	          // If student has hidden the test window once, keep it hidden.
@@ -283,7 +278,7 @@ var FCC_Global =
 
 	// Select project dropdown.
 	function selectProject(project) {
-	  localStorage.removeItem(localStorageByProject);
+	  localStorage.removeItem('fCC_' + project + '_hide');
 	  // Store project_selector for initTestRunner function.
 	  localStorage.setItem('project_selector', project);
 	  // Create & store pretty-print project name for display in indicator div.
@@ -429,7 +424,7 @@ var FCC_Global =
 	    document.getElementById('hamburger_bottom').classList.remove('transform_bottom');
 	    // Once the student has hidden the test window, this localStorage variable
 	    // keeps it hidden until manually toggled.
-	    localStorage.setItem(localStorageByProject, true);
+	    localStorage.setItem('fCC_' + localStorage.getItem('project_selector') + '_hide', true);
 	  } else {
 	    document.getElementById('hamburger_top').classList.add('transform_top');
 	    document.getElementById('hamburger_middle').classList.add('transform_middle');
