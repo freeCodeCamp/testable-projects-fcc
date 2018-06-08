@@ -55,11 +55,6 @@ import createHeatMapTests from './project-tests/heat-map-tests';
 export const assert = chai.assert;
 
 let projectNameLocal = false;
-let localStorageByProject = function() {
-  const placeholder = document.getElementById('placeholder');
-  const visibleProjectName = placeholder.innerHTML.split(' ').join('');
-  return 'fCC_' + visibleProjectName + '_hide';
-};
 
 // Load mocha.
 (function() {
@@ -150,7 +145,9 @@ $(document).ready(function() {
             `${projectTitleCase}</span>`;
         }
         // If this is the first time loading this project, show test window
-        if (!localStorage.getItem(localStorageByProject)) {
+        if (!localStorage.getItem(
+          'fCC_' + localStorage.getItem('project_selector') + '_hide'
+          )) {
           toggleElement.checked = false;
         } else {
           // If student has hidden the test window once, keep it hidden.
@@ -169,7 +166,9 @@ $(document).ready(function() {
 
 // Select project dropdown.
 export function selectProject(project) {
-  localStorage.removeItem(localStorageByProject);
+  localStorage.removeItem(
+  'fCC_' + project + '_hide'
+  );
   // Store project_selector for initTestRunner function.
   localStorage.setItem('project_selector', project);
   // Create & store pretty-print project name for display in indicator div.
@@ -335,7 +334,9 @@ export function hamburgerTransform() {
     );
     // Once the student has hidden the test window, this localStorage variable
     // keeps it hidden until manually toggled.
-    localStorage.setItem(localStorageByProject, true);
+    localStorage.setItem(
+      'fCC_' + localStorage.getItem('project_selector') + '_hide', true
+    );
   } else {
     document.getElementById('hamburger_top').classList.add(
       'transform_top'
