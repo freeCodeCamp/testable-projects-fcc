@@ -21604,7 +21604,17 @@ var FCC_Global =
 	        var video = document.getElementById('video');
 	        _chai.assert.isNotNull(video, '#video is not defined ');
 	        (0, _chai.assert)(video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME', '#video should be an <iframe> or <video> element ');
-	        _chai.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a scr attribute ');
+	        // To accommodate `<source>` elements within `<video>` elements
+	        // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
+	        var sourceNode = video.hasChildNodes();
+	        if (sourceNode) {
+	          video = [].concat(_toConsumableArray(video.children)).filter(function (node) {
+	            var type = node.getAttribute('type');
+	            var typeRegex = /^video/;
+	            return typeRegex.test(type);
+	          })[0];
+	        }
+	        _chai.assert.strictEqual(video.hasAttribute('src'), true, '#video should have a src attribute ');
 	      });
 
 	      reqNum++;
