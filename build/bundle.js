@@ -22133,13 +22133,17 @@ var FCC_Global =
 	      reqNum++;
 	      it(reqNum + '. On regular sized devices (laptops, desktops), the element\n      with id="navbar" should be shown on the left side of the screen and should\n      always be visible to the user.', function () {
 	        var windowWidth = document.documentElement.clientWidth || window.innerWidth;
+	        var windowHeight = document.documentElement.clientHeight || window.innerHeight;
 	        _chai.assert.isAbove(windowWidth, 850, 'Please run this test in a larger window (before any media queries) ');
 	        var navbar = document.getElementById('navbar');
-	        _chai.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'Left of bounding rectangle is not correct.');
-	        _chai.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'Top of bounding rectangle is not correct.');
+	        // navbar should be in top-left quadrant
+	        // navbar on left side
+	        _chai.assert.isBelow(navbar.getBoundingClientRect().left, windowWidth / 2 - navbar.getBoundingClientRect().width, 'Left of bounding rectangle is not correct.');
+	        // navbar above middle
+	        _chai.assert.isBelow(navbar.getBoundingClientRect().top, windowHeight / 2, 'Top of bounding rectangle is not correct.');
 	        window.scroll(0, 1000);
-	        _chai.assert.approximately(navbar.getBoundingClientRect().left, 0, 10, 'After scroll: Left of bounding rectangle is not correct.');
-	        _chai.assert.approximately(navbar.getBoundingClientRect().top, 0, 10, 'After scroll: Top of bounding rectangle is not correct.');
+	        _chai.assert.isBelow(navbar.getBoundingClientRect().left, windowWidth / 2 - navbar.getBoundingClientRect().width, 'After scroll: Left of bounding rectangle is not correct.');
+	        _chai.assert.isBelow(navbar.getBoundingClientRect().top, windowHeight / 2, 'After scroll: Top of bounding rectangle is not correct.');
 	        window.scroll(0, 0);
 	      });
 

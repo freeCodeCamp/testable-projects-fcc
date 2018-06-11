@@ -349,35 +349,36 @@ export default function createTechnicalDocsPageTests() {
       function() {
         const windowWidth =
           document.documentElement.clientWidth || window.innerWidth;
+        const windowHeight =
+          document.documentElement.clientHeight || window.innerHeight;
         assert.isAbove(
           windowWidth,
           850,
           'Please run this test in a larger window (before any media queries) '
         );
         var navbar = document.getElementById('navbar');
-        assert.approximately(
+        // navbar should be in top-left quadrant
+        // navbar on left side
+        assert.isBelow(
           navbar.getBoundingClientRect().left,
-          0,
-          10,
+          (windowWidth / 2) - navbar.getBoundingClientRect().width,
           'Left of bounding rectangle is not correct.'
         );
-        assert.approximately(
+        // navbar above middle
+        assert.isBelow(
           navbar.getBoundingClientRect().top,
-          0,
-          10,
+          windowHeight / 2,
           'Top of bounding rectangle is not correct.'
         );
         window.scroll(0, 1000);
-        assert.approximately(
+        assert.isBelow(
           navbar.getBoundingClientRect().left,
-          0,
-          10,
+          (windowWidth / 2) - navbar.getBoundingClientRect().width,
           'After scroll: Left of bounding rectangle is not correct.'
         );
-        assert.approximately(
+        assert.isBelow(
           navbar.getBoundingClientRect().top,
-          0,
-          10,
+          windowHeight / 2,
           'After scroll: Top of bounding rectangle is not correct.'
         );
         window.scroll(0, 0);
