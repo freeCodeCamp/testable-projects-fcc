@@ -115,16 +115,26 @@ export default function createProductLandingPageTests() {
       reqNum++;
       it(`${reqNum}. I can watch an embedded product video with id="video".`,
       function() {
-        const video = document.getElementById('video');
+        let video = document.getElementById('video');
         assert.isNotNull(video, '#video is not defined ');
         assert(
           video.nodeName === 'VIDEO' || video.nodeName === 'IFRAME',
           '#video should be an <iframe> or <video> element '
         );
+        // To accommodate `<source>` elements within `<video>` elements
+        // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
+        const sourceNode = video.hasChildNodes();
+        if (sourceNode) {
+          video = [...video.children].filter((node) => {
+            let type = node.getAttribute('type');
+            let typeRegex = /^video/;
+            return typeRegex.test(type);
+          })[0];
+        }
         assert.strictEqual(
           video.hasAttribute('src'),
           true,
-          '#video should have a scr attribute '
+          '#video should have a src attribute '
         );
       });
 
