@@ -21324,7 +21324,7 @@ var FCC_Global =
 	          setTimeout(function () {
 	            // If the test condition passes, we are done. Scroll the window
 	            // back to the top before successfully ending the tests.
-	            if (testCondition()) {
+	            if (testCondition) {
 	              window.scroll(0, 0);
 	              done();
 	            } else {
