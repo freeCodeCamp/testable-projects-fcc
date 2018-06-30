@@ -14478,65 +14478,97 @@ var FCC_Global =
 	revLookup['-'.charCodeAt(0)] = 62
 	revLookup['_'.charCodeAt(0)] = 63
 
-	function placeHoldersCount (b64) {
+	function getLens (b64) {
 	  var len = b64.length
+
 	  if (len % 4 > 0) {
 	    throw new Error('Invalid string. Length must be a multiple of 4')
 	  }
 
-	  // the number of equal signs (place holders)
-	  // if there are two placeholders, than the two characters before it
-	  // represent one byte
-	  // if there is only one, then the three characters before it represent 2 bytes
-	  // this is just a cheap hack to not do indexOf twice
-	  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+	  // Trim off extra bytes after placeholder bytes are found
+	  // See: https://github.com/beatgammit/base64-js/issues/42
+	  var validLen = b64.indexOf('=')
+	  if (validLen === -1) validLen = len
+
+	  var placeHoldersLen = validLen === len
+	    ? 0
+	    : 4 - (validLen % 4)
+
+	  return [validLen, placeHoldersLen]
 	}
 
+	// base64 is 4/3 + up to two characters of the original data
 	function byteLength (b64) {
-	  // base64 is 4/3 + up to two characters of the original data
-	  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+	  var lens = getLens(b64)
+	  var validLen = lens[0]
+	  var placeHoldersLen = lens[1]
+	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+	}
+
+	function _byteLength (b64, validLen, placeHoldersLen) {
+	  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
 	}
 
 	function toByteArray (b64) {
-	  var i, l, tmp, placeHolders, arr
-	  var len = b64.length
-	  placeHolders = placeHoldersCount(b64)
+	  var tmp
+	  var lens = getLens(b64)
+	  var validLen = lens[0]
+	  var placeHoldersLen = lens[1]
 
-	  arr = new Arr((len * 3 / 4) - placeHolders)
+	  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+	  var curByte = 0
 
 	  // if there are placeholders, only get up to the last complete 4 chars
-	  l = placeHolders > 0 ? len - 4 : len
+	  var len = placeHoldersLen > 0
+	    ? validLen - 4
+	    : validLen
 
-	  var L = 0
-
-	  for (i = 0; i < l; i += 4) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-	    arr[L++] = (tmp >> 16) & 0xFF
-	    arr[L++] = (tmp >> 8) & 0xFF
-	    arr[L++] = tmp & 0xFF
+	  for (var i = 0; i < len; i += 4) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 18) |
+	      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+	      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+	      revLookup[b64.charCodeAt(i + 3)]
+	    arr[curByte++] = (tmp >> 16) & 0xFF
+	    arr[curByte++] = (tmp >> 8) & 0xFF
+	    arr[curByte++] = tmp & 0xFF
 	  }
 
-	  if (placeHolders === 2) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-	    arr[L++] = tmp & 0xFF
-	  } else if (placeHolders === 1) {
-	    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-	    arr[L++] = (tmp >> 8) & 0xFF
-	    arr[L++] = tmp & 0xFF
+	  if (placeHoldersLen === 2) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 2) |
+	      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+	    arr[curByte++] = tmp & 0xFF
+	  }
+
+	  if (placeHoldersLen === 1) {
+	    tmp =
+	      (revLookup[b64.charCodeAt(i)] << 10) |
+	      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+	      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+	    arr[curByte++] = (tmp >> 8) & 0xFF
+	    arr[curByte++] = tmp & 0xFF
 	  }
 
 	  return arr
 	}
 
 	function tripletToBase64 (num) {
-	  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+	  return lookup[num >> 18 & 0x3F] +
+	    lookup[num >> 12 & 0x3F] +
+	    lookup[num >> 6 & 0x3F] +
+	    lookup[num & 0x3F]
 	}
 
 	function encodeChunk (uint8, start, end) {
 	  var tmp
 	  var output = []
 	  for (var i = start; i < end; i += 3) {
-	    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
+	    tmp =
+	      ((uint8[i] << 16) & 0xFF0000) +
+	      ((uint8[i + 1] << 8) & 0xFF00) +
+	      (uint8[i + 2] & 0xFF)
 	    output.push(tripletToBase64(tmp))
 	  }
 	  return output.join('')
@@ -14546,30 +14578,33 @@ var FCC_Global =
 	  var tmp
 	  var len = uint8.length
 	  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-	  var output = ''
 	  var parts = []
 	  var maxChunkLength = 16383 // must be multiple of 3
 
 	  // go through the array every three bytes, we'll deal with trailing stuff later
 	  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-	    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+	    parts.push(encodeChunk(
+	      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+	    ))
 	  }
 
 	  // pad the end with zeros, but make sure to not forget the extra bytes
 	  if (extraBytes === 1) {
 	    tmp = uint8[len - 1]
-	    output += lookup[tmp >> 2]
-	    output += lookup[(tmp << 4) & 0x3F]
-	    output += '=='
+	    parts.push(
+	      lookup[tmp >> 2] +
+	      lookup[(tmp << 4) & 0x3F] +
+	      '=='
+	    )
 	  } else if (extraBytes === 2) {
-	    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-	    output += lookup[tmp >> 10]
-	    output += lookup[(tmp >> 4) & 0x3F]
-	    output += lookup[(tmp << 2) & 0x3F]
-	    output += '='
+	    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+	    parts.push(
+	      lookup[tmp >> 10] +
+	      lookup[(tmp >> 4) & 0x3F] +
+	      lookup[(tmp << 2) & 0x3F] +
+	      '='
+	    )
 	  }
-
-	  parts.push(output)
 
 	  return parts.join('')
 	}
@@ -14581,7 +14616,7 @@ var FCC_Global =
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
 	  var e, m
-	  var eLen = nBytes * 8 - mLen - 1
+	  var eLen = (nBytes * 8) - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var nBits = -7
@@ -14594,12 +14629,12 @@ var FCC_Global =
 	  e = s & ((1 << (-nBits)) - 1)
 	  s >>= (-nBits)
 	  nBits += eLen
-	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  m = e & ((1 << (-nBits)) - 1)
 	  e >>= (-nBits)
 	  nBits += mLen
-	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+	  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
 
 	  if (e === 0) {
 	    e = 1 - eBias
@@ -14614,7 +14649,7 @@ var FCC_Global =
 
 	exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 	  var e, m, c
-	  var eLen = nBytes * 8 - mLen - 1
+	  var eLen = (nBytes * 8) - mLen - 1
 	  var eMax = (1 << eLen) - 1
 	  var eBias = eMax >> 1
 	  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
@@ -14647,7 +14682,7 @@ var FCC_Global =
 	      m = 0
 	      e = eMax
 	    } else if (e + eBias >= 1) {
-	      m = (value * c - 1) * Math.pow(2, mLen)
+	      m = ((value * c) - 1) * Math.pow(2, mLen)
 	      e = e + eBias
 	    } else {
 	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
@@ -19853,7 +19888,7 @@ var FCC_Global =
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Noto+Sans);", ""]);
 
 	// module
-	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n\n#mocha h1,#mocha h2{\n  margin:0;\n}\n\ndiv#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n\n#mocha li {\n  display: list-item;\n}\n\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n  background-color: unset;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n  display: block;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:12px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n  font-style: italic;\n  padding: 0;\n  margin: 0;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n  padding: 0;\n  margin: 0;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n  position: unset;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\ndiv#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\ndiv.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n  margin: 0;\n}\n\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n  padding: 0;\n  height: auto;\n  border: unset;\n}\n\ndiv.fcc_test_message-box-body {\n  flex: 1;\n  position: static;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n  line-height: 30px;\n  height: auto;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\ndiv#mocha {\n  margin: 10px !important;\n  position: static;\n}\n\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n\n#mocha-stats {\n  position: absolute;\n  left: unset;\n}\n\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n", ""]);
+	exports.push([module.id, "/* Please note making changes to the styles here might make some of the project\ntests no longer work, or even just give a false positive. Especially if you\nchange a selector name.\nThe project tests generally try to filter out any CSS selectors that\ncontain 'fcc_test', or that contain 'mocha'. So please make sure the\nselectors here use that naming convention.\nSee the following project tests which rely on filtering out the CSS rules\nused here. If you find other project tests that rely on the CSS here,\nplease add them to the list:\n- styleSheetUtils.js\n- product-landing-page-tests.js\n*/\n\n#mocha .test .html-error,#mocha .test pre{\n  float:left;\n  clear:left;\n  word-wrap:break-word;\n}\n#mocha ul,#mocha-stats li{\n  list-style:none;\n}\n\n#mocha h1,#mocha h2{\n  margin:0;\n}\n\ndiv#mocha{\n  font:20px/1.5 \"Helvetica Neue\",Helvetica,Arial,sans-serif;\n  margin:60px 50px;\n}\n\n#mocha li {\n  display: list-item;\n}\n\n#mocha li,#mocha ul{\n  margin:0;\n  padding:0;\n}\n#mocha .suite,#mocha .test{\n  margin-left:15px;\n}\n#mocha h1{\n  margin-top:15px;\n  font-size:1em;\n  font-weight:200;\n}\n#mocha h1 a{\n  text-decoration:none;\n  color:inherit;\n}\n#mocha h1 a:hover{\n  text-decoration:underline;\n}\n#mocha .suite .suite h1{\n  margin-top:0;\n  font-size:.8em;\n}\n#mocha .hidden{\n  display:none;\n}\n#mocha h2{\n  font-size:12px;\n  font-weight:400;\n  cursor:pointer;\n}\n#mocha .test{\n  overflow:hidden;\n  background-color: unset;\n}\n#mocha .test.pending:hover h2::after{\n  content:'(pending)';\n  font-family:arial,sans-serif;\n}\n#mocha .test.pass.medium .duration{\n  background:#c09853;\n}\n#mocha .test.pass.slow .duration{\n  background:#b94a48;\n}\n#mocha .test.pass::before{\n  content:'\\2713';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#00d6b2;\n}\n#mocha .test.pass .duration{\n  font-size:9px;\n  margin-left:5px;\n  padding:2px 5px;\n  color:#fff;\n  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow:inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius:5px;\n  -moz-border-radius:5px;\n  -ms-border-radius:5px;\n  -o-border-radius:5px;\n  border-radius:5px;\n}\n#mocha .test.pass.fast .duration{\n  display:none;\n}\n#mocha .test.pending{\n  color:#0b97c4;\n}\n#mocha .test.pending::before{\n  content:'\\25E6';\n  color:#0b97c4;\n}\n#mocha .test.fail{\n  color:#c00;\n}\n#mocha .test.fail pre{\n  color:#000;\n}\n#mocha .test.fail::before{\n  content:'\\2716';\n  font-size:12px;\n  display:block;\n  float:left;\n  margin-right:5px;\n  color:#c00;\n}\n#mocha .test pre.error{\n  color:#c00;\n  max-height:300px;\n  overflow:auto;\n}\n#mocha .test .html-error{\n  overflow:auto;\n  color:#000;\n  line-height:1.5;\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  max-height:300px;\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test .html-error pre.error{\n  border:none;\n  -webkit-border-radius:0;\n  -moz-border-radius:0;\n  border-radius:0;\n  -webkit-box-shadow:0;\n  -moz-box-shadow:0;\n  box-shadow:0; \n  padding:0; \n  margin:18px 0 0;\n  max-height:none;\n}\n#mocha .test pre{\n  display:block;\n  font:12px/1.5 monaco,monospace;\n  margin:5px;\n  padding:15px;\n  border:1px solid #eee;\n  max-width:85%;\n  max-width:-webkit-calc(100% - 42px);\n  max-width:-moz-calc(100% - 42px);\n  max-width:calc(100% - 42px);\n  border-bottom-color:#ddd;\n  -webkit-box-shadow:0 1px 3px #eee;\n  -moz-box-shadow:0 1px 3px #eee;\n  box-shadow:0 1px 3px #eee;\n  -webkit-border-radius:3px;\n  -moz-border-radius:3px;\n  border-radius:3px;\n}\n#mocha .test h2{\n  position:relative;\n  display: block;\n}\n#mocha .test a.replay{\n  display:none;\n}\n#mocha-report.fail .test.pass,#mocha-report.pass .test.fail,#mocha-report.pending .test.fail,#mocha-report.pending .test.pass{\n  display:none;\n}\n#mocha-report.pending .test.pass.pending{\n  display:block;\n}\n#mocha-error{\n  color:#c00;\n  font-size:1.5em;\n  font-weight:100;\n  letter-spacing:1px;\n}\n#mocha-stats{\n  position:fixed;\n  top:12px;\n  right:10px;\n  font-size:12px;\n  margin:0;\n  color:#888;\n  z-index:1;\n}\n#mocha-stats .progress{\n  float:right;\n  padding-top:0;\n  height:auto;\n  -webkit-box-shadow:none;\n  -moz-box-shadow:none;\n  box-shadow:none;\n  background-color:initial;\n}\n#mocha-stats em{\n  color:#000;\n  font-style: italic;\n  padding: 0;\n  margin: 0;\n}\n#mocha-stats a{\n  text-decoration:none;\n  color:inherit;\n  padding: 0;\n  margin: 0;\n}\n#mocha-stats a:hover{\n  border-bottom:1px solid #eee;\n}\n#mocha-stats li{\n  display:inline-block;\n  margin:0 5px;\n  padding-top:11px;\n  position: unset;\n}\n#mocha-stats canvas{\n  width:40px;\n  height:40px;\n}\n#mocha code .comment{\n  color:#ddd;\n}\n#mocha code .init{\n  color:#2f6fad;\n}\n#mocha code .string{\n  color:#5890ad;\n}\n#mocha code .keyword{\n  color:#8a6343;\n}\n#mocha code .number{\n  color:#2f6fad;\n}\n@media screen and (max-device-width:480px){\n  #mocha{\n    margin:60px 0;\n  }\n  #mocha #stats{\n    position:absolute;\n  }\n}\n\n/* TEST/MESSAGE CENTER CSS */\n\ndiv#fcc_test_message-box {\n  font-size: 20px !important;\n  font-family: Noto Sans, arial, sans-serif !important;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  text-align: center;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  transition: all .5s;\n  z-index: 100000;\n  overflow: auto;\n}\n\n.fcc_test_message-box-hidden {\n  visibility: hidden;\n  opacity: 0;\n  top: -300px;\n}\n\n.fcc_test_message-box-shown {\n  visibility: visible;\n  opacity: 1;\n  top: 0;\n}\n\ndiv.fcc_test_message-box-content {\n  position: relative;\n  color: black !important;\n  background-color: white !important;\n  top: 10vh;\n  width: 80%;\n  margin: 0 auto !important;\n  text-align: initial;\n  border-radius: 10px !important;\n  display: flex;\n  flex-direction: column;\n}\n\n.fcc_test_message-box-header,\n.fcc_test_message-box-footer{\n  position: relative;\n  flex: none;\n  box-sizing: border-box !important;\n  padding: 10px !important;\n  margin: 0;\n}\n\n.fcc_test_message-box-header {\n  border-bottom: 1px solid rgb(229,229,229);\n  height: 60px;\n}\n\n.fcc_test_message-box-header .title {\n  float: left;\n  font-size: 30px !important;\n  line-height: 40px !important;\n  margin-left: 10px !important;\n  padding: 0;\n  height: auto;\n  border: unset;\n}\n\ndiv.fcc_test_message-box-body {\n  flex: 1;\n  position: static;\n  max-width: 100%;\n}\n\n.fcc_test_message-box-footer {\n  border-top: 1px solid rgb(229,229,229);\n  height: 70px;\n}\n\n.fcc_test_message-box-close-btn {\n  float: right;\n  color: black;\n  background-color: white;\n  border: 1px solid rgb(229,229,229);\n  border-radius: 4px;\n  padding: 10px 20px !important;\n  margin-bottom: 10px;\n  transition: all .3s;\n  line-height: 30px;\n  height: auto;\n}\n.fcc_test_message-box-close-btn:hover {\n  color: white;\n  background-color: black;\n}\n\ndiv#mocha {\n  margin: 10px !important;\n  position: static;\n}\n\n#mocha .test pre {\n  background-color: rgb(245, 245, 245) !important;\n}\n\n#mocha-stats {\n  position: absolute;\n  left: unset;\n}\n\n#mocha ul {\n  max-width: initial;\n  margin: initial !important;\n  text-align: initial;\n}\n#mocha * {\n  font-family: Noto Sans, arial, sans-serif !important;\n  border: none !important;\n}\n\ndiv {\n  position: static;\n}\n\n", ""]);
 
 	// exports
 

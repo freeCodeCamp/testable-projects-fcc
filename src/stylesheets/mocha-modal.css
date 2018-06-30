@@ -337,6 +337,7 @@ div.fcc_test_message-box-content {
 div.fcc_test_message-box-body {
   flex: 1;
   position: static;
+  max-width: 100%;
 }
 
 .fcc_test_message-box-footer {
