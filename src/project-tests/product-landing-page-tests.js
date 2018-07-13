@@ -123,8 +123,8 @@ export default function createProductLandingPageTests() {
         );
         // To accommodate `<source>` elements within `<video>` elements
         // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
-        const sourceNode = video.hasChildNodes();
-        if (sourceNode) {
+        const sourceNode = video.children;
+        if (sourceNode.length > 0) {
           video = [...video.children].filter((node) => {
             let type = node.getAttribute('type');
             let typeRegex = /^video/;
