@@ -129,7 +129,8 @@ export default function createTechnicalDocsPageTests() {
           );
           // remove leading / trailing spaces  in headerText and then replace
           // all other spaces with underscores.
-          return el.firstElementChild.innerText.trim().replace(/\s/g, '_');
+          return el.firstElementChild.innerText.trim().replace(/\s/g, '_')
+            .toUpperCase();
         });
 
         const mainSectionIDs = mainSections.map((el) => {
@@ -138,7 +139,7 @@ export default function createTechnicalDocsPageTests() {
             true,
             'Each \'main-section\' should have an id attribute '
           );
-          return el.id;
+          return el.id.toUpperCase();
         });
 
         const remainder = headerText.filter(str =>
