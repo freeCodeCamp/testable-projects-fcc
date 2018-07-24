@@ -125,11 +125,14 @@ export default function createProductLandingPageTests() {
         // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
         const sourceNode = video.children;
         if (sourceNode.length > 0) {
-          video = [...video.children].filter((node) => {
-            let type = node.getAttribute('type');
-            let typeRegex = /^video/;
-            return typeRegex.test(type);
+          let sourceElement = [...video.children].filter((node) => {
+            return node.tagName === 'SOURCE';
           })[0];
+          // If there is a `<source>` element inside the `<video>` element
+          // use the `<source>` element in the video.src assertion
+          if (sourceElement !== void 0) {
+            video = sourceElement;
+          }
         }
         assert.strictEqual(
           video.hasAttribute('src'),
