@@ -45,12 +45,7 @@ about [Automated Testing](#automated-testing).
 - If it looks good to you and you think this represents an improvement, go ahead and submit a PR.
 
 ### Bundle CDNs:
-- FOR PRODUCTION: https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js
-  - will not throttle our traffic
-  - can take 2hrs or more to propagate changes to all users
-- FOR DEV: https://rawgit.com/freeCodeCamp/testable-projects-fcc/master/build/bundle.js
-  - will throttle heavy traffic
-  - changes will propagate much quicker so replace the gitCDN link with this for testing
+- https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js
 
 ### Automated testing
 
