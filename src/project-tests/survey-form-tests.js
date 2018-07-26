@@ -71,8 +71,9 @@ export default function createSurveyFormTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. Inside the form element, I am required to enter my name in
-      a field with id="name".`,
+      it(`${reqNum}. Inside the form element, I am required to enter my name 
+      in a field with id="name". If I do not enter a name I will see an HTML5 
+      validation error.`,
       function() {
         const name = document.getElementById('name');
         assert.isNotNull(
@@ -96,8 +97,9 @@ export default function createSurveyFormTests() {
       });
 
       reqNum++;
-      it(`${reqNum}. Inside the form element, I am required to enter an email in
-      a field with id="email".`,
+      it(`${reqNum}. Inside the form element, I am required to enter an email 
+      in a field with id="email". If I do not enter an email I will see an 
+      HTML5 validation error.`,
       function() {
         const email = document.getElementById('email');
         assert.isNotNull(
