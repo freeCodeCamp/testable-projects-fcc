@@ -16,16 +16,57 @@ export default function createPomodoroClockTests() {
   function resetTimer() {
     clickButtonsById([reset]);
   }
+/*  The regex checks for correct time format (mm:ss)
+      and extracts minutes (i.e 12:07 -> extract: 12)
+      Any react html comments are ignored, example is made for 12:07
+  /
+  SUCCESS:
+    1. [:,./] = ":,./" only one separator tolerated globaly (in marked spaces)
+      (<!-- react-text: 22 -->) // zero or more comments before minutes allowed
+        12[:,./]
+      <!-- /react-text -->
+        [:,./]
+      <!-- react-text: 23 -->
+        [:,.]07
+      <!-- /react-text -->
+    2. time format (mm:ss.* | mm : ss.*)
+    12:07
+    12: 07
+    12 : 07
+    12 / 07
+    12 , 07 .*
+    12:00007
 
+   FAIL:
+    1. with two or more separators OR with none ":,./"
+    <!-- react-text: 22 -->
+      12:
+    <!-- /react-text -->
+    <!-- react-text: 23 -->
+      :07 pm
+    <!-- /react-text -->
+    2. with wrong time format (!== [mm]mm:ss.*)
+    12000:07
+    :07
+    12:
+  */
+  /* eslint-disable max-len*/
   function getMinutes(str) {
-    const matches = (/^(\d{1,4})\s?([\.:,\/]\s?\d{2}.*)?$/g).exec(str);
+    const matches = (/^(?:<!--.*-->)?(\d{1,4})\s?(?:<!--.*-->)?\s?(?:[\.:,\/])\s?(?:<!--.*-->)?\s?(?:\d{2}.*)$/g).exec(str);
     return matches[1];
   }
-
+  /*  Everything same as for getMinutes method,
+      except it captures seconds and it checks the
+      correct seconds format (mm:ss), while getMinutes doesn't!
+  FAIL:
+    12:007
+    12:07 pm
+  */
   function getSeconds(str) {
-    const matches = (/^\d{1,4}\s?:\s?(\d{2})/g).exec(str);
+    const matches = (/^(?:<!--.*-->)?(?:\d{1,4})\s?(?:<!--.*-->)?\s?(?:[\.:,\/])\s?(?:<!--.*-->)?\s?(\d{2})(?:<!--.*-->)?/g).exec(str);
     return matches[1];
   }
+  /* eslint-enable max-len*/
 
   // TODO: Check all instances of observer.disconnect() to make sure it's used
   // correctly.
