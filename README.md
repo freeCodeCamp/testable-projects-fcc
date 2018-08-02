@@ -13,12 +13,7 @@ A CDN loaded test-suite for testing the beta.freecodecamp.com Frontend Libraries
 - You can see examples of these projects here: http://codepen.io/collection/npZPmR
 
 ### Bundle CDNs:
-- FOR PRODUCTION: https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js
-  - will not throttle our traffic
-  - can take 2hrs or more to propagate changes to all users
-- FOR DEV: https://rawgit.com/freeCodeCamp/testable-projects-fcc/master/build/bundle.js
-  - will throttle heavy traffic
-  - changes will propagate much quicker so replace the gitCDN link with this for testing
+- https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js
 
 ### Testing this project
 Warning that this gets a little meta. This project provides a feature that will
