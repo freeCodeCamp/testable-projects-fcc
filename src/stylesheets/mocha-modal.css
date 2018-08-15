@@ -100,7 +100,7 @@ div#mocha{
   -o-border-radius:5px;
   border-radius:5px;
 }
-#mocha .test.pass.fast .duration{
+#mocha .test.pass.fast .duration, #mocha .test.fail .duration{
   display:none;
 }
 #mocha .test.pending{
@@ -123,11 +123,6 @@ div#mocha{
   float:left;
   margin-right:5px;
   color:#c00;
-}
-#mocha .test pre.error{
-  color:#c00;
-  max-height:300px;
-  overflow:auto;
 }
 #mocha .test .html-error{
   overflow:auto;
@@ -164,7 +159,7 @@ div#mocha{
   max-height:none;
 }
 #mocha .test pre{
-  display:block;
+  display:none;
   font:12px/1.5 monaco,monospace;
   margin:5px;
   padding:15px;
@@ -180,6 +175,13 @@ div#mocha{
   -webkit-border-radius:3px;
   -moz-border-radius:3px;
   border-radius:3px;
+}
+/* Only show code block <pre> on test failures */
+#mocha .test.fail pre {
+  display: inline-block;
+  color:#c00;
+  max-height:300px;
+  overflow:auto;
 }
 #mocha .test h2{
   position:relative;
@@ -200,14 +202,16 @@ div#mocha{
   font-weight:100;
   letter-spacing:1px;
 }
+/* Slight adjustments so the stats fit neatly */
 #mocha-stats{
-  position:fixed;
-  top:12px;
-  right:10px;
+  position:absolute;
+  top:5px;
+  right:0;
   font-size:12px;
   margin:0;
   color:#888;
   z-index:1;
+  height: auto;
 }
 #mocha-stats .progress{
   float:right;
@@ -283,6 +287,20 @@ div#fcc_test_message-box {
   transition: all .5s;
   z-index: 100000;
   overflow: auto;
+}
+#fcc_test_message-box .fcc_result {
+  height: auto;
+  overflow: hidden;
+  cursor: pointer;
+  white-space: nowrap;
+  display: block;
+}
+#fcc_test_message-box .fcc_result pre {
+  word-wrap:break-word;
+  width: 100%;
+}
+#fcc_test_message-box .fcc_result pre br{
+  line-height: 0;
 }
 
 .fcc_test_message-box-hidden {
@@ -360,6 +378,11 @@ div.fcc_test_message-box-body {
 .fcc_test_message-box-close-btn:hover {
   color: white;
   background-color: black;
+}
+
+.fcc_test_title {
+  pointer-events: none;
+  white-space: normal;
 }
 
 div#mocha {

@@ -22,18 +22,16 @@
 
 import $ from 'jquery';
 import chai from 'chai';
+// Module from Mocha to reduce length of error stack trace
+import {stackTraceFilter} from 'mocha/lib/utils';
 // Webpack is configured to load those files with the .html extension as Strings
 import fCCTestSuiteSkeleton from './utils/fcc-test-suite-skeleton.html';
 import fCCTestTogglerSkeleton from './utils/fcc-test-toggler-skeleton.html';
 import mochaModalSkeleton from './utils/mocha-modal-skeleton.html';
-// style-loader injects css from css-loader into document
-/* eslint import/no-unresolved: [2, { ignore: ['!style-loader.*$'] }] */
-import fCCTestUIStyles from // eslint-disable-line no-unused-vars
-  '!style-loader!css-loader!./stylesheets/fcc-test-ui.css';
-import mochaModalStyles from // eslint-disable-line no-unused-vars
-  '!style-loader!css-loader!./stylesheets/mocha-modal.css';
-import fCCTestTogglerStyles from // eslint-disable-line no-unused-vars
-  '!style-loader!css-loader!./stylesheets/fcc-test-toggler.css';
+import mochaTestResultSkeleton from './utils/mocha-test-result.html';
+import fCCTestUIStyles from './stylesheets/fcc-test-ui.css';
+import mochaModalStyles from './stylesheets/mocha-modal.css';
+import fCCTestTogglerStyles from './stylesheets/fcc-test-toggler.css';
 import createDrumMachineTests from './project-tests/drum-machine-tests';
 import createMarkdownPreviewerTests from
   './project-tests/markdown-previewer-tests';
@@ -52,18 +50,44 @@ import createTreeMapTests from './project-tests/tree-map-tests';
 import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
 import createHeatMapTests from './project-tests/heat-map-tests';
 
+chai.config.includeStack = true;
+
 export const assert = chai.assert;
 
 let projectNameLocal = false;
+// filter out unnecessary stack trace in Mocha reporter
+const filterStack = stackTraceFilter();
+// Wrapper for shadow DOM
+const testDiv = document.createElement('div');
+testDiv.setAttribute('id', 'fcc_test_suite_wrapper');
+document.body.appendChild(testDiv);
+// Using a shadow DOM, the fCC css won't interfere with student css
+// A fallback div is provided.
+const supportsShadowDOMV1 = !!HTMLElement.prototype.attachShadow;
+let shadowDom;
+if (supportsShadowDOMV1) {
+  shadowDom = document.getElementById('fcc_test_suite_wrapper')
+   .attachShadow({ mode: 'open' });
+} else {
+  shadowDom = document.getElementById('fcc_test_suite_wrapper');
+}
+/* This method requires the use of `.querySelector` wherever we formerly used
+  `document.getElementBy...`
+  Note that
+  `shadowDom.getElementBy...` actually works fine when Shadow DOM is supported.
+  In the case that Shadow DOM is not supported, `shadowDom` is a regular element
+  with which `getElementBy...` is not a function.
+*/
+const shadow = shadowDom;
 
 // Load mocha.
 (function() {
   var mochaCdn = document.createElement('script');
   mochaCdn.setAttribute(
     'src',
-    'https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/mocha/5.2.0/mocha.min.js'
   );
-  document.head.appendChild(mochaCdn);
+  shadow.appendChild(mochaCdn);
 })();
 
 // When the document is fully loaded, create the "Tests" button and the
@@ -88,9 +112,11 @@ $(document).ready(function() {
     try {
       if (mocha) {
         clearInterval(mochaCheck);
-        mocha.setup('bdd');
-
-        // Once testFrame is loaded:
+        mocha.setup({
+          ui: 'bdd',
+          reporter: 'base',
+          fullTrace: true
+        });
         let projectTitleCase = localStorage.getItem('projectTitleCase');
         // projectName variable is defined in our example projects so the
         // correct test suite is automatically loaded. This sets default text
@@ -100,16 +126,19 @@ $(document).ready(function() {
         }
 
         // Create the test UI and its contents.
-        // Using the 'fcc_test_ui' CSS class allows us to set some reasonable
-        // CSS defaults that will be inherited for all child elements, making it
-        // harder for user code to override our test UI CSS.
+
         // fCCTestTogglerSkeleton has the html for the toggle buttons.
-        // testFrameBody contains the main test UI.
-        // The mochaModal is where the test output goes.
+        // fCCTestSuiteSkeleton contains the main test UI.
+        // mochaModalSkeleton is where the test output goes.
+        const style = document.createElement('style');
+        style.innerHTML =
+          fCCTestUIStyles + mochaModalStyles + fCCTestTogglerStyles;
+        shadow.appendChild(style);
+
         const fCCToggle = document.createElement('div');
         fCCToggle.className = 'fcc_test_ui';
         fCCToggle.innerHTML = fCCTestTogglerSkeleton;
-        document.body.appendChild(fCCToggle);
+        shadow.appendChild(fCCToggle);
 
         const testFrameBody = document.createElement('div');
         testFrameBody.setAttribute('id', 'fcc_foldout_menu');
@@ -119,15 +148,14 @@ $(document).ready(function() {
         const mochaModal = document.createElement('div');
         mochaModal.className = 'fcc_test_ui';
         mochaModal.innerHTML = mochaModalSkeleton;
-        document.body.appendChild(mochaModal);
+        shadow.appendChild(mochaModal);
 
-        let toggleElement = document.getElementById('fcc_toggle');
-        let indicatorWrapper = document.getElementById(
-          'fcc_test_suite_indicator_wrapper'
+        let toggleElement = shadow.querySelector('#fcc_toggle');
+        let indicatorWrapper = shadow.querySelector(
+          '#fcc_test_suite_indicator_wrapper'
         );
-
         // Determine placeholder for the 'select' dropdown element.
-        let placeholder = document.getElementById('placeholder');
+        let placeholder = shadow.querySelector('#placeholder');
 
         if ((!projectNameLocal) && (projectTitleCase === null)) {
           placeholder.innerHTML = '- - -';
@@ -174,44 +202,67 @@ export function selectProject(project) {
   // Create & store pretty-print project name for display in indicator div.
   let projectTitleCase = project.replace(/-/g, ' ').split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
-  document.getElementById(
-    'fcc_test_suite_indicator_wrapper'
+  shadow.querySelector(
+    '#fcc_test_suite_indicator_wrapper'
   ).innerHTML =
     '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
     `${projectTitleCase}</span>`;
   localStorage.setItem('projectTitleCase', projectTitleCase);
 }
 
+export function FCCHandleTestResultClick(e) {
+  var stack = e.target.querySelector('.fcc_err_stack');
+  if (stack.style.display === 'inline-block') {
+    stack.style.display = 'none';
+  } else {
+    stack.style.display = 'inline-block';
+  }
+}
+
 // Updates the button color and text on the target project, to show how many
 // tests passed and how many failed.
 export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-  const button = document.getElementById('fcc_test_button');
-  button.innerHTML = `Tests ${nbPassed}/${nbTests}`;
+  const button = shadow.querySelector('#fcc_test_button');
+  button.innerHTML = `Tests ${nbPassed}/${nbPassed + nbFailed}`;
+  // adding `.fcc_test_btn-done` for simpler querying by Selenium
+  button.classList.add('fcc_test_btn-done');
   if (nbFailed) {
     button.classList.add('fcc_test_btn-error');
   } else {
     button.classList.add('fcc_test_btn-success');
   }
+  var statsPassed = shadow.querySelector('.fcc_passes');
+  var statsFailed = shadow.querySelector('.fcc_failures');
+  var statsDuration = shadow.querySelector('.fcc_duration');
+  statsPassed.innerText = nbPassed;
+  statsFailed.innerText = nbFailed;
+  /* Duration calculated with unix timestamp */
+  statsDuration.innerText =
+    ((Date.now() - mochaTimeStamp) / 1000).toFixed(2) + 's';
 }
 
 // Updates the button text on the target project, to show how many tests were
 // executed so far.
 export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-  const button = document.getElementById('fcc_test_button');
+  const button = shadow.querySelector('#fcc_test_button');
   button.classList.add('fcc_test_btn-executing');
   button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
+  const statsProgress = shadow.querySelector('.fcc_progress');
+  /* Update percentage */
+  statsProgress.innerText =
+    ((nbTestsExecuted / nbTests) * 100).toFixed(2) + '%';
 }
 
 // Open the main modal.
 export function FCCOpenTestModal() {
-  const modal = document.getElementById('fcc_test_message-box');
+  const modal = shadow.querySelector('#fcc_test_message-box');
   modal.classList.remove('fcc_test_message-box-hidden');
   modal.classList.add('fcc_test_message-box-shown');
 }
 
 // Close the main modal.
 export function FCCCloseTestModal() {
-  const modal = document.getElementById('fcc_test_message-box');
+  const modal = shadow.querySelector('#fcc_test_message-box');
   modal.classList.remove('fcc_test_message-box-shown');
   modal.classList.add('fcc_test_message-box-hidden');
 }
@@ -248,7 +299,7 @@ function clearClassList(elem) {
 
 // run tests
 export function FCCRerunTests() {
-  const button = document.getElementById('fcc_test_button');
+  const button = shadow.querySelector('#fcc_test_button');
   button.innerHTML = (!projectNameLocal) &&
     (!localStorage.getItem('project_selector'))
     ? 'Load Tests!'
@@ -272,14 +323,86 @@ export function FCCResetTests(suite) {
   suite.suites.forEach(FCCResetTests);
 }
 
-// Shortcut keys.
-// TODO: Need better inline docs on why we need to redefine the global
-// onkeydown and onkeyup.
+let count = -1;
+let parentTitle, mochaReport, mochaTimeStamp = null;
+
+/* In order to append test results to the shadow DOM, we need to use a custom
+ reporter. */
+function appendTestResult(test) {
+  /* Test Suite title */
+  var parentParentTitle = test.parent.parent.title;
+  var mainTitleNode =
+    shadow.querySelector('.fcc_test_message-box-header .title');
+  /* Append #mocha-report if it doesn't exist already */
+  if (!mochaReport) {
+    mainTitleNode.innerHTML = parentParentTitle;
+    mochaReport = document.createElement('ul');
+    mochaReport.setAttribute('id', 'mocha-report');
+    shadow.querySelector('.fcc_test_message-box-body #mocha')
+      .appendChild(mochaReport);
+  } else {
+    mochaReport = shadow.querySelector('#mocha-report');
+  }
+  /* If current test.parent.title is different from previous test, count up and
+    create a new section with testList */
+  if (!parentTitle || parentTitle !== test.parent.title) {
+    count++;
+    parentTitle = test.parent.title;
+    var testSection = document.createElement('li');
+    testSection.setAttribute('class', `fcc_section_${count} suite`);
+    var parentTitleNode = document.createElement('h1');
+    parentTitleNode.innerText = parentTitle;
+    testSection.appendChild(parentTitleNode);
+    /* TODO: Currently using <ul>, but if we switch to <ol> we can eliminate all
+      of the `reqNum` instances in all the test suite files and use automatic
+      numbering. */
+    var testList = document.createElement('ul');
+    testSection.appendChild(testList);
+    mochaReport.appendChild(testSection);
+  }
+  /* Each test <li> is grouped with others in testList */
+  var result = document.createElement('li');
+  result.setAttribute('class', 'test');
+  result.innerHTML = mochaTestResultSkeleton;
+  testSection = shadow.querySelector(`.fcc_section_${count}`);
+  testList = testSection.querySelector('ul');
+  testList.appendChild(result);
+
+  var testTitle = result.querySelector('.fcc_test_title');
+  var testTitleNode = testTitle.querySelector('.title');
+  testTitleNode.innerText = test.title.replace(/\n/g, ' ');
+
+  var codeBox = result.querySelector('.fcc_err_stack');
+
+  if (test.state !== 'passed') {
+    var err = test.err;
+    var message;
+    if (err.message && typeof err.message.toString === 'function') {
+      message = err.message;
+    } else if (typeof err.inspect === 'function') {
+      message = err.inspect();
+    } else {
+      message = '';
+    }
+    var stack = (!err.stack ? '' : filterStack(err.stack));
+    result.setAttribute('class', 'test fail');
+    codeBox.innerText = message + ' \n' + stack;
+  } else {
+    var testDuration = result.querySelector('.duration > .number');
+    testDuration.innerText = test.duration;
+
+    var classList = 'test pass ' + test.speed;
+    result.setAttribute('class', classList);
+    /* Add test code to hidden code box */
+    codeBox.innerText = test.body.toString();
+  }
+}
+
 const map = [];
 /* global onkeydown:true, onkeyup:true */
 /* exported onkeydown, onkeyup */
 onkeydown = onkeyup = function(e) {
-  const modal = document.getElementById('fcc_test_message-box');
+  const modal = shadow.querySelector('#fcc_test_message-box');
   e = e || window.event;
   map[e.keyCode] = e.type === 'keydown';
   // run tests: Ctrl + Shift + Enter
@@ -302,7 +425,7 @@ onkeydown = onkeyup = function(e) {
     }
   // Open/close foldout menu: Ctrl + Shift + O.
   } else if (map[17] && map[16] && map[79]) {
-    document.getElementById('fcc_toggle').click();
+    shadow.querySelector('#fcc_toggle').click();
   }
 };
 
@@ -320,16 +443,16 @@ export function alertOnce(item, message) {
 
 // Hamburger menu transformation
 export function hamburgerTransform() {
-  if (document.getElementById('hamburger_top').classList.contains(
+  if (shadow.querySelector('#hamburger_top').classList.contains(
     'transform_top')
   ) {
-    document.getElementById('hamburger_top').classList.remove(
+    shadow.querySelector('#hamburger_top').classList.remove(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.remove(
+    shadow.querySelector('#hamburger_middle').classList.remove(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.remove(
+    shadow.querySelector('#hamburger_bottom').classList.remove(
       'transform_bottom'
     );
     // Once the student has hidden the test window, this localStorage variable
@@ -338,13 +461,13 @@ export function hamburgerTransform() {
       'fCC_' + localStorage.getItem('project_selector') + '_hide', true
     );
   } else {
-    document.getElementById('hamburger_top').classList.add(
+    shadow.querySelector('#hamburger_top').classList.add(
       'transform_top'
     );
-    document.getElementById('hamburger_middle').classList.add(
+    shadow.querySelector('#hamburger_middle').classList.add(
       'transform_middle'
     );
-    document.getElementById('hamburger_bottom').classList.add(
+    shadow.querySelector('#hamburger_bottom').classList.add(
       'transform_bottom'
     );
   }
@@ -352,9 +475,10 @@ export function hamburgerTransform() {
 
 // Init tests.
 export function FCCInitTestRunner() {
+  mochaTimeStamp = Date.now();
   let testRunner = null;
   // Empty the mocha tag in case of rerun.
-  document.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
+  shadow.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
   // Empty the test suite in the mocha object.
   mocha.suite.suites = [];
   // Check for hard-coded project selector (for our example projects).
@@ -431,13 +555,15 @@ export function FCCInitTestRunner() {
     testRunner.removeListener('fail', hasFailed);
     testRunner.removeListener('test end', updateProgress);
     testRunner.removeListener('end', updateEnd);
+    testRunner.removeListener('test end', appendTestResult);
   }
+
   // Run the test suite.
   testRunner = mocha.run();
   testRunner.on('pass', hasPassed);
   testRunner.on('fail', hasFailed);
   testRunner.on('test end', updateProgress);
-  // Update the "tests" button caption at the end of the overhall execution.
+  testRunner.on('test end', appendTestResult);
   testRunner.on('end', updateEnd);
 }
 

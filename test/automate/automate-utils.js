@@ -289,34 +289,75 @@ exports.doesProjectPassTests = function(name, URL) {
   // example project.
   driver.sleep(2000);
 
-  // Run the tests by clicking our test button after the element appears.
-  clickElement(By.id('fcc_test_message-box-rerun-button'));
+  let wrapperPromise = driver.wait(
+    until.elementLocated(By.css('#fcc_test_suite_wrapper')),
+    elementTimeout
+  );
 
-  // Wait for the "success" or "error" class to be added to the "Tests" button.
-  clickElement(By.css('.fcc_test_btn-error, .fcc_test_btn-success'))
+  // Run the tests by clicking our test button after the element appears.
+  // In order to click anything inside the Shadow DOM, we need to locate by
+  // webdriver.By.js, which uses webdriver.executeScript internally. It accepts
+  // a stringified Function as the first argument and an additional argument --
+  // in this case the element, #fcc_test_suite_wrapper
+  // More info in https://stackoverflow.com/a/21125803/3530394 and
+  // https://www.codesd.com/item/access-to-the-elements-in-the-shadow-dom.html
+  // and in the jsdocs for `selenium-webdriver/by.js`
+  wrapperPromise
   .then(function(element) {
-    return element.getAttribute('class');
-  })
-  .then(function(classes) {
-    success = classes.includes('fcc_test_btn-success', 0);
-  },
-  errorFunc);
+    driver.wait(until.elementLocated(By.js(
+      'return arguments[0]' +
+      '.shadowRoot.getElementById("fcc_test_message-box-rerun-button")', element
+      )),
+      elementTimeout
+    )
+    .then(function(element2) {
+      element2.click();
+    },
+    errorFunc);
+  });
+
+  // Wait for 'fcc_test_btn-done' class to be added to the 'Tests' button
+  // then click
+  wrapperPromise
+  .then(function(element) {
+    driver.wait(
+      until.elementLocated(
+        By.js(
+          'return arguments[0]' +
+          '.shadowRoot.querySelector(".fcc_test_btn-done")', element
+        )
+      ),
+      elementTimeout
+    )
+    .then(function(el) {
+      el.click();
+      return el.getAttribute('class');
+    })
+    .then(function(classes) {
+      success = classes.includes('fcc_test_btn-success', 0);
+    });
+  });
 
   // Wait for the test results modal. The message box fades in, so we wait for
   // opacity of 1 before grabbing the screenshot.
-  driver.wait(until.elementLocated(
-    By.className('fcc_test_message-box-shown')),
+  wrapperPromise
+  .then(function(element) {
+    driver.wait(until.elementLocated(By.js(
+      'return arguments[0]' +
+      '.shadowRoot.querySelector(".fcc_test_message-box-shown")', element
+    )),
     elementTimeout
-  )
-  .then(function(elem) {
-    return driver.wait(function() {
-      return elem.getCssValue('opacity')
-      .then(function(opacity) {
-        return opacity === '1';
+    )
+    .then(function(elem) {
+      return driver.wait(function() {
+        return elem.getCssValue('opacity')
+        .then(function(opacity) {
+          return opacity === '1';
+        });
       });
-    });
-  },
-  errorFunc);
+    },
+    errorFunc);
+  });
 
   // Grab a screenshot and write to disk.
   // TODO: Do we want to grab screenshots for success? Might be overkill.
