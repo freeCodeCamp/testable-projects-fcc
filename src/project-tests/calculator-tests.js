@@ -51,10 +51,11 @@ export default function createCalculatorTests() {
       it(`${reqNum}. My calculator should contain a clickable element
       containing an "=" (equal sign) with a corresponding id="equals"`,
       function() {
-        assert.isNotNull(document.getElementById(_eq));
+        let element = document.getElementById(_eq);
+        assert.isNotNull(element);
 
         assert.strictEqual(
-          document.getElementById(_eq).innerHTML,
+          element.localName === 'input' ? element.value : element.innerText,
           '=',
           'The element with id="equal" should have an "=" as its content '
         );
@@ -137,13 +138,14 @@ export default function createCalculatorTests() {
       containing a "." (decimal point) symbol with a corresponding
       id="decimal"`,
       function() {
+        var element = document.getElementById(_dec);
         assert.isNotNull(
-          document.getElementById(_dec),
+          element,
           'id="decimal" is not yet defined '
         );
 
         assert.strictEqual(
-          document.getElementById(_dec).innerHTML,
+          element.localName === 'input' ? element.value : element.innerText,
           '.',
           'The element with id="decimal" should have "." as its content '
         );
