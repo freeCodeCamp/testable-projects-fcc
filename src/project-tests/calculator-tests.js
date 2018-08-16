@@ -55,7 +55,8 @@ export default function createCalculatorTests() {
         assert.isNotNull(element);
 
         assert.strictEqual(
-          element.localName === 'input' ? element.value : element.innerText,
+          element.nodeName.toLowerCase() === 'input' ?
+            element.value : element.innerHTML,
           '=',
           'The element with id="equal" should have an "=" as its content '
         );
@@ -145,7 +146,8 @@ export default function createCalculatorTests() {
         );
 
         assert.strictEqual(
-          element.localName === 'input' ? element.value : element.innerText,
+          element.nodeName.toLowerCase() === 'input' ?
+            element.value : element.innerHTML,
           '.',
           'The element with id="decimal" should have "." as its content '
         );
