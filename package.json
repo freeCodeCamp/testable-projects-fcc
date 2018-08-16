@@ -26,6 +26,7 @@
     "live-server": "^1.2.0",
     "mocha": "^5.2.0",
     "selenium-webdriver": "^3.4.0",
+    "selfsigned": "^1.10.3",
     "style-loader": "^0.18.2",
     "webpack-cli": "^2.1.5"
   },

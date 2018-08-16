@@ -12,6 +12,8 @@
 // global.chromeBinaryPath = '/usr/bin/google-chrome-stable';
 // global.chromeBinaryPath =
 //     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+// global.chromeBinaryPath =
+//   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
 
 // The URL you want to be used for the bundle.js when running local tests.
 // The below value is typically used when you are using:
