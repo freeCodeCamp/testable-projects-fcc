@@ -45,15 +45,13 @@ export default function createDrumMachineTests() {
     });
 
     describe('#Tests', function() {
-      let reqNum = 0;
 
       after(function() {
         audioElements.forEach(function(el) {
           el.pause();
         });
       });
-      reqNum++;
-      it(`${reqNum}. I should be able to see an outer container with a
+      it(`I should be able to see an outer container with a
       corresponding id="drum-machine" that contains all other elements`,
       function() {
         assert.isNotNull(document.getElementById('drum-machine'));
@@ -66,15 +64,13 @@ export default function createDrumMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #drum-machine I can see an element with
+      it(`Within #drum-machine I can see an element with
       corresponding id="display".`,
       function() {
         assert.isNotNull(document.getElementById('display'));
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #drum-machine I can see 9 clickable "drum pad"
+      it(`Within #drum-machine I can see 9 clickable "drum pad"
       elements, each with a class name of "drum-pad", a unique id that describes
       the audio clip the drum pad will be set up to trigger, and an inner text
       that corresponds to one of the following keys on the keyboard: Q, W, E, A,
@@ -106,8 +102,7 @@ export default function createDrumMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within each .drum-pad, there should be an HTML5 <audio>
+      it(`Within each .drum-pad, there should be an HTML5 <audio>
       element which has a src attribute pointing to an audio clip, a class name
       of "clip", and an id corresponding to the inner text of its parent
       .drum-pad (e.g. id="Q", id="W", id="E" etc.).`,
@@ -142,8 +137,7 @@ export default function createDrumMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. When I click on a .drum-pad element, the audio clip
+      it(`When I click on a .drum-pad element, the audio clip
       contained in its child <audio> element should be triggered.`,
       function() {
         assert.isAtLeast(
@@ -162,8 +156,7 @@ export default function createDrumMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. When I press the trigger key associated with each
+      it(`When I press the trigger key associated with each
       .drum-pad, the audio clip contained in its child <audio> element should be
       triggered (e.g. pressing the Q key should trigger the drum pad which
       contains the string "Q", pressing the W key should trigger the drum pad
@@ -199,8 +192,7 @@ export default function createDrumMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. When a .drum-pad is triggered, a string describing the
+      it(`When a .drum-pad is triggered, a string describing the
       associated audio clip is displayed as the inner text of the #display
       element (each string must be unique).`,
       function() {

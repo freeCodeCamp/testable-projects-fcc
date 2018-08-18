@@ -31,10 +31,8 @@ export default function createTechnicalDocsPageTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. I can see a <main> element with a corresponding
+      it(`I can see a <main> element with a corresponding
       id="main-doc", which contains the page's main content (technical
       documentation).`,
       function() {
@@ -49,8 +47,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the #main-doc ( <main> ) element, I can see several
+      it(`Within the #main-doc ( <main> ) element, I can see several
       <section> elements, each with a class of "main-section". There should be
       a minimum of 5.`,
       function() {
@@ -81,8 +78,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The first element within each .main-section should be a
+      it(`The first element within each .main-section should be a
       <header> element which contains text that describes the topic of that
       section.`,
       function() {
@@ -104,8 +100,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each <section> element with the class of "main-section"
+      it(`Each <section> element with the class of "main-section"
       should also have an id that corresponds with the text of each <header>
       contained within it. Any spaces should be replaced with underscores (e.g.
       The <section> that contains the header "Javascript and Java" should have a
@@ -154,8 +149,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The .main-section elements should contain at least 10 <p>
+      it(`The .main-section elements should contain at least 10 <p>
       elements total (not each).`,
       function() {
         assert.isAtLeast(
@@ -166,8 +160,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The .main-section elements should contain at least 5 <code>
+      it(`The .main-section elements should contain at least 5 <code>
       elements total (not each).`,
       function() {
         assert.isAtLeast(
@@ -177,8 +170,7 @@ export default function createTechnicalDocsPageTests() {
           'elements with the class of \'main-section\' ');
       });
 
-      reqNum++;
-      it(`${reqNum}. The .main-section elements should contain at least 5 <li>
+      it(`The .main-section elements should contain at least 5 <li>
       items total (not each).`,
       function() {
         assert.isAtLeast(
@@ -189,8 +181,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see a <nav> element with a corresponding
+      it(`I can see a <nav> element with a corresponding
       id="navbar".`,
       function() {
         assert.isNotNull(
@@ -204,8 +195,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The navbar element should contain one <header> element
+      it(`The navbar element should contain one <header> element
       which contains text that describes the topic of the technical
       documentation.`,
       function() {
@@ -217,8 +207,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Additionally, the navbar should contain link (<a>) elements
+      it(`Additionally, the navbar should contain link (<a>) elements
       with the class of "nav-link". There should be one for every element with
       the class "main-section".`,
       function() {
@@ -248,8 +237,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The <header> element in the navbar must come before any
+      it(`The <header> element in the navbar must come before any
       link (<a>) elements in the navbar.`,
       function() {
         const navLinks = document.querySelectorAll('#navbar a.nav-link');
@@ -273,8 +261,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each element with the class of "nav-link" should contain
+      it(`Each element with the class of "nav-link" should contain
       text that corresponds to the <header> text within each <section> (e.g. if
       you have a "Hello world" section/header, your navbar should have an
       element which contains the text "Hello world").`,
@@ -301,8 +288,7 @@ export default function createTechnicalDocsPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When I click on a navbar element, the page should navigate
+      it(`When I click on a navbar element, the page should navigate
       to the corresponding section of the "main-doc" element (e.g. If I click on
       a "nav-link" element that contains the text "Hello world", the page
       navigates to a <section> element that has that id and contains the
@@ -341,10 +327,8 @@ export default function createTechnicalDocsPageTests() {
     });
 
     describe('#Layout', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. On regular sized devices (laptops, desktops), the element
+      it(`On regular sized devices (laptops, desktops), the element
       with id="navbar" should be shown on the left side of the screen and should
       always be visible to the user.`,
       function() {
@@ -385,8 +369,7 @@ export default function createTechnicalDocsPageTests() {
         window.scroll(0, 0);
       });
 
-      reqNum++;
-      it(`${reqNum}. My Technical Documentation page should use at least one
+      it(`My Technical Documentation page should use at least one
       media query.`,
       function() {
 

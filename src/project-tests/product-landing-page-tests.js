@@ -13,10 +13,8 @@ export default function createProductLandingPageTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My product landing page should have a <header> element with
+      it(`My product landing page should have a <header> element with
       corresponding id="header".`,
       function() {
         assert.isNotNull(
@@ -25,8 +23,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see an image within the #header element with a
+      it(`I can see an image within the #header element with a
       corresponding id="header-img". A company logo would make a good image
       here. `,
       function() {
@@ -53,8 +50,7 @@ export default function createProductLandingPageTests() {
           'The src attribute\'s value should be a url (http...) ');
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the <header> element I can see a <nav> element with
+      it(`Within the <header> element I can see a <nav> element with
       corresponding id="nav-bar".'`,
       function() {
         assert.isNotNull(
@@ -73,8 +69,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see at least three clickable elements inside the nav
+      it(`I can see at least three clickable elements inside the nav
       element, each with the class "nav-link".`,
       function() {
         assert.isAtLeast(
@@ -85,8 +80,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When I click a .nav-link button in the nav element, I am
+      it(`When I click a .nav-link button in the nav element, I am
       taken to the corresponding section of the landing page.'`,
       function() {
         const navLinks = document.querySelectorAll('#nav-bar .nav-link');
@@ -112,8 +106,7 @@ export default function createProductLandingPageTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can watch an embedded product video with id="video".`,
+      it('I can watch an embedded product video with id="video".',
       function() {
         let video = document.getElementById('video');
         assert.isNotNull(video, '#video is not defined ');
@@ -141,8 +134,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My landing page has a <form> element with a corresponding
+      it(`My landing page has a <form> element with a corresponding
       id="form".'`,
       function() {
         assert.isNotNull(
@@ -156,8 +148,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the form, there is an <input> field with id="email"
+      it(`Within the form, there is an <input> field with id="email"
       where I can enter an email address.`,
       function() {
         assert.isNotNull(
@@ -176,8 +167,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The #email input field should have placeholder text to let
+      it(`The #email input field should have placeholder text to let
       the user know what the field is for.`,
       function() {
         const emailElem = document.getElementById('email');
@@ -193,8 +183,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The #email input field uses HTML5 validation to confirm
+      it(`The #email input field uses HTML5 validation to confirm
       that the entered text is an email address.`,
       function() {
         const emailElem = document.getElementById('email');
@@ -205,8 +194,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the form, there is a submit <input> with
+      it(`Within the form, there is a submit <input> with
       corresponding id="submit".`,
       function() {
         const submitButton = document.getElementById('submit');
@@ -231,8 +219,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When I click the #submit element, the email is submitted to
+      it(`When I click the #submit element, the email is submitted to
       a static page (use this mock URL:
       https://www.freecodecamp.com/email-submit) that confirms the email address
       was entered (and that it posted successfully).`,
@@ -265,12 +252,10 @@ export default function createProductLandingPageTests() {
     });
 
     describe('#Layout', function() {
-      let reqNum = 0;
 
       // TODO: Most of this function should be extracted to a utility that
       // can be reused.
-      reqNum++;
-      it(`${reqNum}. The navbar should always be at the top of the viewport.`,
+      it('The navbar should always be at the top of the viewport.',
       function() {
         const header = document.getElementById('header');
         const headerChildren = header.children;
@@ -315,8 +300,7 @@ export default function createProductLandingPageTests() {
         window.scroll(0, 0);
       });
 
-      reqNum++;
-      it(`${reqNum}. My product landing page should have at least one media
+      it(`My product landing page should have at least one media
       query.`,
       function() {
 
@@ -336,8 +320,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My product landing page should utilize CSS flexbox at least
+      it(`My product landing page should utilize CSS flexbox at least
       once.`,
       function() {
         // Find CSS rules that use flexbox.

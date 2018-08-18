@@ -60,7 +60,7 @@ function triggerMouseEvent(area, mouseEvent) {
 export function testToolTip(areas, toolTipDataName, areaDataName) {
 
   describe('#TooltipTests', function() {
-    it(`1. I can mouse over an area and see a tooltip with a corresponding
+    it(`I can mouse over an area and see a tooltip with a corresponding
     id="tooltip" which displays more information about the area `,
     function() {
       const firstRequestTimeout = 500;
@@ -109,7 +109,7 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
       });
     });
 
-    it(`2. My tooltip should have a "${toolTipDataName}" property that
+    it(`My tooltip should have a "${toolTipDataName}" property that
     corresponds to the "${areaDataName}" of the active area.`,
     function() {
        const tooltip = document.getElementById('tooltip');

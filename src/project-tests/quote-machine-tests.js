@@ -18,17 +18,14 @@ export default function createRandomQuoteMachineTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. I can see a wrapper element with a corresponding
+      it(`I can see a wrapper element with a corresponding
       id="quote-box".`,
       function() {
         assert.isNotNull(document.getElementById('quote-box'));
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #quote-box, I can see an element with corresponding
+      it(`Within #quote-box, I can see an element with corresponding
       id="text".`,
       function() {
         assert.isNotNull(
@@ -42,8 +39,7 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #quote-box, I can see an element with corresponding
+      it(`Within #quote-box, I can see an element with corresponding
       id="author".`,
       function() {
         assert.isNotNull(
@@ -57,8 +53,7 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #quote-box, I can see a clickable element with
+      it(`Within #quote-box, I can see a clickable element with
       corresponding id="new-quote".`,
       function() {
         assert.isNotNull(
@@ -72,8 +67,7 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within #quote-box, I can see a clickable <a> element with
+      it(`Within #quote-box, I can see a clickable <a> element with
       corresponding id="tweet-quote".`,
       function() {
         assert.isNotNull(document.getElementById('tweet-quote'));
@@ -89,8 +83,7 @@ export default function createRandomQuoteMachineTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. On first load, my quote machine displays a random quote in
+      it(`On first load, my quote machine displays a random quote in
       the element with id="text".`,
       function() {
         this.timeout(requestTimeout);
@@ -108,8 +101,7 @@ export default function createRandomQuoteMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. On first load, my quote machine displays the random quote's
+      it(`On first load, my quote machine displays the random quote's
       author in the element with id="author".`,
       function() {
         this.timeout(requestTimeout);
@@ -125,8 +117,7 @@ export default function createRandomQuoteMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. When the #new-quote button is clicked, my quote machine
+      it(`When the #new-quote button is clicked, my quote machine
       should fetch a new quote and display it in the #text element.`,
       function() {
         let prevText;
@@ -147,8 +138,7 @@ export default function createRandomQuoteMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. My quote machine should fetch the new quote's author when
+      it(`My quote machine should fetch the new quote's author when
       the #new-quote button is clicked and display it in the #author element.`,
       function() {
         let prevAuth;
@@ -169,8 +159,7 @@ export default function createRandomQuoteMachineTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can tweet the current quote by clicking on the
+      it(`I can tweet the current quote by clicking on the
       #tweet-quote <a> element. This <a> element should include the
       "twitter.com/intent/tweet" path in it's href attribute to tweet the
       current quote.`,
@@ -192,10 +181,8 @@ export default function createRandomQuoteMachineTests() {
     });
 
     describe('#Layout', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. The #quote-box wrapper element should be horizontally
+      it(`The #quote-box wrapper element should be horizontally
       centered. Please run tests with browser's zoom level at 100% and page
       maximized.`,
       function() {
