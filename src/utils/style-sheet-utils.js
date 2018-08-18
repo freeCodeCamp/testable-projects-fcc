@@ -31,7 +31,12 @@ export const allCSSRulesAsArray = function(styleSheets) {
       try {
         if (styleSheet.cssRules) {
           // Convert the list of rules into an array.
-          const rulesAsArray = [].slice.call(styleSheet.cssRules);
+          const rulesAsArray = [].slice.call(styleSheet.cssRules)
+            .filter(rule => (
+              rule.type === CSSRule.STYLE_RULE ||
+              rule.type === CSSRule.MEDIA_RULE
+            )
+          );
           // Use the spread operator to push each individual element onto the
           // return array.
           prev.push(...rulesAsArray);

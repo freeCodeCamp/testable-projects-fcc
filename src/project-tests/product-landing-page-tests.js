@@ -327,12 +327,11 @@ export default function createProductLandingPageTests() {
         // Filter out our test suite and Mocha CSS rules. This may be trickier
         // than looks. The reason we can use allCSSRulesAsArray is because
         // media rules have a cssRules attribute.
-        let cssMediaRules = allCSSRulesAsArray(queryRules)
-          .filter(rule => !isTestSuiteRule(rule));
+        let useCSSMediaRules = allCSSRulesAsArray(queryRules)
+          .some(rule => !isTestSuiteRule(rule));
 
-        assert.isAbove(
-          cssMediaRules.length,
-          0,
+        assert.isTrue(
+          useCSSMediaRules,
           'No media queries detected '
         );
       });
@@ -342,27 +341,27 @@ export default function createProductLandingPageTests() {
       once.`,
       function() {
         // Find CSS rules that use flexbox.
-        const flexRules = allCSSRulesAsArray(document.styleSheets)
-          .filter(rule => {
+        function isRuleUseFlex(rule) {
             // Eliminate any CSS Rules that are part of our test suite UI.
             if (isTestSuiteRule(rule)) {
               return false;
             }
 
-            // Only include flexbox rules.
             return (
-              typeof rule.style !== 'undefined' &&
-              typeof rule.style.display !== 'undefined'
-            ) &&
-            (
               rule.style.display === 'flex' ||
               rule.style.display === 'inline-flex'
             );
+        }
+        const useFlex = allCSSRulesAsArray(document.styleSheets)
+          .some(rule => {
+            if (rule.type === CSSRule.MEDIA_RULE) {
+              return allCSSRulesAsArray([rule]).some(isRuleUseFlex);
+            }
+            return isRuleUseFlex(rule);
           });
 
-        assert.isAbove(
-          flexRules.length,
-          0,
+        assert.isTrue(
+          useFlex,
           'We do not detect a display property set to flex or inline-flex ' +
           'anywhere in your CSS '
         );
