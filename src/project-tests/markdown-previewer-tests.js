@@ -147,6 +147,43 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
+      /* Two ways of creating H(n) elements:
+        1. ATX
+          `# Example Heading`
+          `## Example Subheading`
+        2. setext
+          `Example Heading
+          ===`
+          `Example Subheading
+          ---`
+      https://github.github.com/gfm/#setext-heading-underline
+
+      // ATX
+      /* Added the m modifier to match hashes at the beginning of a paragraph
+      so that people using Setext headers to pass these tests can use
+      ATX headings elsewhere in the document additionally.
+      From regex101: 'm modifier: multi line. Causes ^ and $ to match the
+      begin/end of each line (not only begin/end of string)'
+
+      (?<!(?:[ ]{4}|\t)[ \t]*) is a negative lookbehind, it is used to verify
+      that our match is not a code block.
+      */
+      const h1regexHash = RegExp(
+        /^[ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)#\s(.*?\S.*?)#*\s*?$/m
+      );
+      const h2regexHash = RegExp(
+        /^[ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)##\s(.*?\S.*?)#*\s*?$/m
+      );
+
+      // Setext
+      /* the (.*) matches everything excluding line terminators. */
+      const h1regexEq = RegExp(
+        /^([ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)\S.*)[\n\r][ \t]*==+\s*$/m
+      );
+      const h2regexDash = RegExp(
+        /^([ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)\S.*)[\n\r][ \t]*--+\s*$/m
+      );
+
       reqNum++;
       it(`${reqNum}. When my markdown previewer first loads, the default text in
       the #editor field should contain valid markdown that represents at least
@@ -171,36 +208,34 @@ export default function createMarkdownPreviewerTests() {
         markdown = editor.value;
 
         // h1
-        assert.notStrictEqual(
-          markdown.search(/#\s.+/),
-          -1,
+        assert.isTrue(
+          h1regexHash.test(markdown) || h1regexEq.test(markdown),
           'write some markdown representing an <h1> '
         );
 
         // h2
-        assert.notStrictEqual(
-          markdown.search(/##\s.+/),
-          -1,
+        assert.isTrue(
+          h2regexHash.test(markdown) || h2regexDash.test(markdown),
           'write some markdown representing an <h2> '
         );
 
         // link
         assert.notStrictEqual(
-          markdown.search(/\[.+\]\(.+\..+\)/),
+          markdown.search(/\[.+?\]\(\s*[^\s]*(\s*('|").*?\2)?\s*\)/),
           -1,
           'write some markdown representing an <a> '
         );
 
         // inline code
         assert.notStrictEqual(
-          markdown.search(/`.+`/),
+          markdown.search(/`.+?`/),
           -1,
           'write some markdown representing inline <code> '
         );
 
         // codeblock
         assert.notStrictEqual(
-          markdown.search(/```[^]+```/),
+          markdown.search(/^\s*```[^]*[\n\r].*```\s*$|^\s*([ ]{4}|\t).*\S.*/m),
           -1,
           'write some markdown representing a codeblock, i.e. <pre><code>...' +
           '</code></pre> '
@@ -208,7 +243,7 @@ export default function createMarkdownPreviewerTests() {
 
         // ol or ul list item
         assert.notStrictEqual(
-          markdown.search(/(?:[-+*]|\d\.)\s[^|\s-*].+/),
+          markdown.search(/^\s*([-+*]|\d+\.)[ \t].+/m),
           -1,
           'write some markdown representing an <li> item '
         );
@@ -217,21 +252,21 @@ export default function createMarkdownPreviewerTests() {
         // Amended 5/18 to test for the > character at the beginning of a line,
         // with or without whitespace
         assert.notStrictEqual(
-          markdown.search(/^>.+/m),
+          markdown.search(/^\s*>.+/m),
           -1,
           'write some markdown representing a <blockquote> '
         );
 
         // image
         assert.notStrictEqual(
-          markdown.search(/!\[.*\]\(.+\..+\)/),
+          markdown.search(/!\[.*?\]\(\s*[^\s]+?(\s+('|").*?\2)?\s*\)/),
           -1,
           'write some markdown representing an <image> '
           );
 
           // bold text
         assert.notStrictEqual(
-          markdown.search(/(\*\*|__).+\1/),
+          markdown.search(/(\*\*|__).+?\1/),
           -1,
           'write some markdown representing <strong> text '
         );
@@ -310,42 +345,14 @@ export default function createMarkdownPreviewerTests() {
         // then check a couple of elements to make sure the present elements
         // are actually the ones represented by the markdown:
 
-        /* Two ways of creating H(n) elements:
-          1. ATX
-            `# Example Heading`
-            `## Example Subheading`
-          2. setext
-            `Example Heading
-            ===`
-            `Example Subheading
-            ---`
-        https://github.github.com/gfm/#setext-heading-underline
-
-        // ATX
-        /* Added the m modifier to match hashes at the beginning of a paragraph
-        so that people using Setext headers to pass these tests can use
-        ATX headings elsewhere in the document additionally.
-        From regex101: 'm modifier: multi line. Causes ^ and $ to match the
-        begin/end of each line (not only begin/end of string)' */
-        const h1regexHash = RegExp(/^#\s.*/m);
-        const h2regexHash = RegExp(/^##\s.*/m);
-
-        // Setext
-        /* the (.*) matches everything excluding line terminators, so the
-        m modifier is not needed for matching Setext headings. */
-        const h1regexEq = RegExp(/.*[\n\r]=+/);
-        const h2regexDash = RegExp(/.*[\n\r]--+/);
-
-        // if ATX, trim hash + space from string h1 text
-        // if setext, isolate text from the rest of the string at line
-        // terminator
+        // find matching H1 element
         h1Text =
           ( (h1regexHash).test(markdown) ?
-            (h1regexHash).exec(markdown)[0].slice(2) :
-            (h1regexEq).exec(markdown)[0].split(/[\n\r]/)[0] );
+            (h1regexHash).exec(markdown)[1].trim() :
+            (h1regexEq).exec(markdown)[1] );
         h1Match = [];
         document.querySelectorAll('#preview h1').forEach(h1 => {
-          if (h1.innerText === h1Text) {
+          if (h1.innerHTML === h1Text) {
             h1Match.push(h1);
           }
         });
@@ -359,11 +366,11 @@ export default function createMarkdownPreviewerTests() {
         // find matching H2 element
         h2Text =
           ( (h2regexHash).test(markdown) ?
-            (h2regexHash).exec(markdown)[0].slice(3) :
-            (h2regexDash).exec(markdown)[0].split(/[\n\r]/)[0] );
+            (h2regexHash).exec(markdown)[1].trim() :
+            (h2regexDash).exec(markdown)[1] );
         h2Match = [];
         document.querySelectorAll('#preview h2').forEach(h2 => {
-          if (h2.innerText === h2Text) {
+          if (h2.innerHTML === h2Text) {
             h2Match.push(h2);
           }
         });
