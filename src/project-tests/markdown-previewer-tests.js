@@ -164,25 +164,41 @@ export default function createMarkdownPreviewerTests() {
       ATX headings elsewhere in the document additionally.
       From regex101: 'm modifier: multi line. Causes ^ and $ to match the
       begin/end of each line (not only begin/end of string)'
-
-      (?<!(?:[ ]{4}|\t)[ \t]*) is a negative lookbehind, it is used to verify
-      that our match is not a code block.
       */
-      const h1regexHash = RegExp(
-        /^[ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)#\s(.*?\S.*?)#*\s*?$/m
+      const h1regexHash = new RegExp(
+        /^([ \t]*)#\s(.*?\S.*?)#*\s*?$/gm
       );
-      const h2regexHash = RegExp(
-        /^[ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)##\s(.*?\S.*?)#*\s*?$/m
+      const h2regexHash = new RegExp(
+        /^([ \t]*)##\s(.*?\S.*?)#*\s*?$/gm
       );
 
       // Setext
       /* the (.*) matches everything excluding line terminators. */
-      const h1regexEq = RegExp(
-        /^([ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)\S.*)[\n\r][ \t]*==+\s*$/m
+      const h1regexEq = new RegExp(
+        /^([ \t]*)(\S.*)[\n\r][ \t]*==+\s*$/gm
       );
-      const h2regexDash = RegExp(
-        /^([ \t]*(?<!(?:[ ]{4}|\t)[ \t]*)\S.*)[\n\r][ \t]*--+\s*$/m
+      const h2regexDash = new RegExp(
+        /^([ \t]*)(\S.*)[\n\r][ \t]*--+\s*$/gm
       );
+
+      /* Important! A regex above must have two capture groups.
+      The first is whitespaces from the beginning of the match,
+      the second is a header text.
+      */
+      function getHeaders(text, regex) {
+        let match = [];
+        let nextMatch;
+        let codeblockRegex = new RegExp(/^\s*([ ]{4}|\t)/m);
+        while ((nextMatch = regex.exec(text)) !== null) {
+          if (!codeblockRegex.test(nextMatch[1])) {
+            match.push(nextMatch[2].trim());
+          }
+        }
+        return match;
+      }
+
+      let h1Match = [];
+      let h2Match = [];
 
       reqNum++;
       it(`${reqNum}. When my markdown previewer first loads, the default text in
@@ -207,15 +223,21 @@ export default function createMarkdownPreviewerTests() {
         triggerChange(markdownOnLoad);
         markdown = editor.value;
 
+        h1Match = [...getHeaders(markdown, h1regexEq),
+           ...getHeaders(markdown, h1regexHash)];
         // h1
-        assert.isTrue(
-          h1regexHash.test(markdown) || h1regexEq.test(markdown),
+        assert.isAtLeast(
+          h1Match.length,
+          1,
           'write some markdown representing an <h1> '
         );
 
         // h2
-        assert.isTrue(
-          h2regexHash.test(markdown) || h2regexDash.test(markdown),
+        h2Match = [...getHeaders(markdown, h2regexDash),
+          ...getHeaders(markdown, h2regexHash)];
+        assert.isAtLeast(
+          h2Match.length,
+          1,
           'write some markdown representing an <h2> '
         );
 
@@ -277,11 +299,6 @@ export default function createMarkdownPreviewerTests() {
       markdown in the #editor field should be rendered as HTML in the #preview
       element`,
       function() {
-        const markdown = editor.value;
-        let h1Text,
-          h1Match,
-          h2Text,
-          h2Match;
 
         triggerChange(markdownOnLoad);
         assert.notStrictEqual(
@@ -346,39 +363,27 @@ export default function createMarkdownPreviewerTests() {
         // are actually the ones represented by the markdown:
 
         // find matching H1 element
-        h1Text =
-          ( (h1regexHash).test(markdown) ?
-            (h1regexHash).exec(markdown)[1].trim() :
-            (h1regexEq).exec(markdown)[1] );
-        h1Match = [];
-        document.querySelectorAll('#preview h1').forEach(h1 => {
-          if (h1.innerHTML === h1Text) {
-            h1Match.push(h1);
-          }
-        });
-        assert.isAtLeast(
-          h1Match.length,
-          1,
+        let hasH1 = [].slice.call(document.querySelectorAll('#preview h1'))
+          .some(h1 => {
+            let innerHTML = h1.innerHTML.trim();
+            return h1Match.some(text => innerHTML === text);
+          });
+        assert.isTrue(
+          hasH1,
           '#preview does not contain the H1 element represented by the ' +
-          'markdown in the #editor field with the inner text ' + h1Text + ' '
+          'markdown in the #editor field '
         );
 
         // find matching H2 element
-        h2Text =
-          ( (h2regexHash).test(markdown) ?
-            (h2regexHash).exec(markdown)[1].trim() :
-            (h2regexDash).exec(markdown)[1] );
-        h2Match = [];
-        document.querySelectorAll('#preview h2').forEach(h2 => {
-          if (h2.innerHTML === h2Text) {
-            h2Match.push(h2);
-          }
-        });
-        assert.isAtLeast(
-          h2Match.length,
-          1,
+        let hasH2 = [].slice.call(document.querySelectorAll('#preview h2'))
+          .some(h2 => {
+            let innerHTML = h2.innerHTML.trim();
+            return h2Match.some(text => innerHTML === text);
+          });
+        assert.isTrue(
+          hasH2,
           '#preview does not contain the H2 element represented by the ' +
-          'markdown in the #editor field with the inner text ' + h2Text + ' '
+          'markdown in the #editor field '
         );
 
       });
