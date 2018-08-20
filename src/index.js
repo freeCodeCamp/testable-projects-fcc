@@ -32,23 +32,8 @@ import mochaTestResultSkeleton from './utils/mocha-test-result.html';
 import fCCTestUIStyles from './stylesheets/fcc-test-ui.css';
 import mochaModalStyles from './stylesheets/mocha-modal.css';
 import fCCTestTogglerStyles from './stylesheets/fcc-test-toggler.css';
-import createDrumMachineTests from './project-tests/drum-machine-tests';
-import createMarkdownPreviewerTests from
-  './project-tests/markdown-previewer-tests';
-import createCalculatorTests from './project-tests/calculator-tests';
-import createPomodoroClockTests from './project-tests/pomodoro-clock-tests';
-import createTributePageTests from './project-tests/tribute-page-tests';
-import createPortfolioTests from './project-tests/portfolio-tests';
-import createProductLandingPageTests from
-  './project-tests/product-landing-page-tests';
-import createSurveyFormTests from './project-tests/survey-form-tests';
-import createTechnicalDocsPageTests from './project-tests/technical-docs-tests';
-import createBarChartTests from './project-tests/bar-chart-tests';
-import createScatterPlotTests from './project-tests/scatter-plot-tests';
-import createChoroplethTests from './project-tests/choropleth-tests';
-import createTreeMapTests from './project-tests/tree-map-tests';
-import createRandomQuoteMachineTests from './project-tests/quote-machine-tests';
-import createHeatMapTests from './project-tests/heat-map-tests';
+import projects from './project-tests';
+import { Object } from 'core-js';
 
 chai.config.includeStack = true;
 
@@ -144,6 +129,14 @@ $(document).ready(function() {
         testFrameBody.setAttribute('id', 'fcc_foldout_menu');
         testFrameBody.innerHTML = fCCTestSuiteSkeleton;
         fCCToggle.appendChild(testFrameBody);
+
+        const testSuiteSelector = shadow.querySelector('#test-suite-selector');
+        Object.keys(projects).forEach(key => {
+          const testOption = document.createElement('option');
+          testOption.value = key;
+          testOption.innerHTML = projects[key].name;
+          testSuiteSelector.appendChild(testOption);
+        });
 
         const mochaModal = document.createElement('div');
         mochaModal.className = 'fcc_test_ui';
@@ -482,58 +475,14 @@ export function FCCInitTestRunner() {
   // Empty the test suite in the mocha object.
   mocha.suite.suites = [];
   // Check for hard-coded project selector (for our example projects).
-  const hardCodedProjectName = (!projectNameLocal)
+  let hardCodedProjectName = (!projectNameLocal)
     ? null
     : projectNameLocal;
-  // create tests
-  switch (hardCodedProjectName || localStorage.getItem('project_selector')) {
-    case 'random-quote-machine':
-      createRandomQuoteMachineTests();
-      break;
-    case 'javascript-calculator':
-      createCalculatorTests();
-      break;
-    case 'pomodoro-clock':
-      createPomodoroClockTests();
-      break;
-    case 'tribute-page':
-      createTributePageTests();
-      break;
-    case 'drum-machine':
-      createDrumMachineTests();
-      break;
-    case 'portfolio':
-      createPortfolioTests();
-      break;
-    case 'product-landing-page':
-      createProductLandingPageTests();
-      break;
-    case 'survey-form':
-      createSurveyFormTests();
-      break;
-    case 'markdown-previewer':
-      createMarkdownPreviewerTests();
-      break;
-    case 'technical-docs-page':
-      createTechnicalDocsPageTests();
-      break;
-    case 'bar-chart':
-      createBarChartTests();
-      break;
-    case 'scatter-plot':
-      createScatterPlotTests();
-      break;
-    case 'choropleth':
-      createChoroplethTests();
-      break;
-    case 'heat-map':
-      createHeatMapTests();
-      break;
-    case 'tree-map':
-      createTreeMapTests();
-      break;
-    default:
-      // Do nothing.
+  hardCodedProjectName = hardCodedProjectName ||
+    localStorage.getItem('project_selector');
+
+  if (projects.hasOwnProperty(hardCodedProjectName)) {
+    projects[hardCodedProjectName].test();
   }
 
   // Save the number of tests in the selected suite.
