@@ -390,31 +390,8 @@ export default function createMarkdownPreviewerTests() {
 
       reqNum++;
       it(`${reqNum}. OPTIONAL BONUS (you do not need to make this test pass):
-      When I click a link rendered by my markdown previewer, the link is opened
-      up in a new tab (HINT: read the Marked.js docs for this one!)`,
-      function() {
-        const links = document.querySelectorAll('#preview a');
-        const targetLinks = document.querySelectorAll(
-          '#preview a[target="_blank"]'
-        );
-
-        assert.isAtLeast(
-          links.length,
-          1,
-          'There should be at least one link'
-        );
-
-        assert.strictEqual(
-          links.length,
-          targetLinks.length,
-          'All Links should target _blank'
-        );
-      });
-
-      reqNum++;
-      it(`${reqNum}. OPTIONAL BONUS (you do not need to make this test pass):
       My markdown previewer interprets carriage returns and renders them as <br>
-      (line break) elements`,
+      (line break) elements (HINT: read the Marked.js docs for this one!).`,
       function() {
         let brCount;
 
