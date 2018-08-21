@@ -10,6 +10,8 @@ before_install:
   # give xvfb some time to start
   - sleep 3
 before_script:
+  # Build budle.js
+  - npm run build
   # Same as what we specified for Xvfb.
   - "export DISPLAY=:99.0"
   - cp test/setup.js.travis test/setup.js
@@ -38,6 +40,12 @@ after_failure: |
     git -c user.name="$GITHUB_USER" -c user.email='travis' commit -m 'Travis CI screenshots'
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG travis-screenshots &2>/dev/null
+    git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG travis-screenshots 2>/dev/null
     cd "$TRAVIS_BUILD_DIR"
   fi
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: sh deploy.sh
+  on:
+    branch: master
