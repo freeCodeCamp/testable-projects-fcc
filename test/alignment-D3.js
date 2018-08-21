@@ -254,25 +254,6 @@ describe('D3 Alignment module tests', function() {
       });
 
       describe('areShapesAlignedWithTicks function', function() {
-        it('should return true when all datapoints are aligned with a y axis',
-        function() {
-          const axis = test.dom.window.document.querySelector('#y-axis'),
-            dataPoints = test.dom.window.document.querySelectorAll(
-              test.shapeClassName
-            );
-          const dimension = test.dimension.y;
-          const ticks = axis.querySelectorAll('.tick');
-
-          assert.isTrue(areShapesAlignedWithTicks(
-            dataPoints,
-            ticks,
-            dimension,
-            test.attribute.y,
-            test.dataType.y,
-            test.positionType.y
-          ));
-        });
-
         it('should return true when all datapoints are aligned with an x axis',
         function() {
           const axis = test.dom.window.document.querySelector('#x-axis'),
@@ -292,25 +273,6 @@ describe('D3 Alignment module tests', function() {
           ));
         });
 
-        it('should return false when one datapoint is not aligned with the x ' +
-        'axis',
-        function() {
-          const axis = test.dom.window.document.querySelector('#x-axis'),
-            dataPoints = test.dom.window.document.querySelectorAll(
-              test.shapeClassName + '-misaligned'
-            );
-          const dimension = test.dimension.x;
-          const ticks = axis.querySelectorAll('.tick');
-
-          assert.isFalse(areShapesAlignedWithTicks(
-            dataPoints,
-            ticks,
-            dimension,
-            test.attribute.x,
-            test.dataType.x,
-            test.positionType.x
-          ));
-        });
       });
     });
   });
