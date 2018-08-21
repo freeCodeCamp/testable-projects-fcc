@@ -252,14 +252,19 @@ export default function createPortfolioTests() {
         // CSS position:sticky. This is apparently a bug with Chrome.
         // See https://bugs.chromium.org/p/chromium/issues/detail?id=672457
         setTimeout(function() {
-          assert.approximately(
-            navbar.getBoundingClientRect().top,
-            0,
-            15,
-            'Navbar should be at the top of the viewport even after scrolling '
-          );
+          try {
+            assert.approximately(
+              navbar.getBoundingClientRect().top,
+              0,
+              15,
+              'Navbar should be at the top of the viewport even after ' +
+              'scrolling '
+            );
+            done();
+          } catch (err) {
+            done(err);
+          }
           window.scroll(0, 0);
-          done();
         }, 1);
 
       });
