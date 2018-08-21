@@ -20,6 +20,81 @@ export default function createMarkdownPreviewerTests() {
       previewOnLoad = preview.innerHTML;
     }
 
+    // Keeps track of which markdown was found.
+    const markDownHas = {
+      h1: false,
+      h1Text: [],
+      h2: false,
+      h2Text: [],
+      code: false,
+      link: false,
+      inlineCode: false,
+      listItem: false,
+      blockquote: false,
+      image: false,
+      bold: false
+    };
+
+    // Parse the editor value using markedjs and override some of the renderers
+    // so we can easily detect what markup was used.
+    function findMarkdownMatches(markdown) {
+      const renderer = new marked.Renderer();
+
+      renderer.heading = function(text, level) {
+        if (level === 1) {
+          markDownHas.h1 = true;
+          markDownHas.h1Text.push(text);
+        } else if ( level === 2 ) {
+          markDownHas.h2 = true;
+          markDownHas.h2Text.push(text);
+        }
+        return '';
+      };
+
+      renderer.code = function() {
+        markDownHas.code = true;
+        return '';
+      };
+
+      renderer.link = function() {
+        markDownHas.link = true;
+        return '';
+      };
+
+      renderer.codespan = function() {
+        markDownHas.inlineCode = true;
+        return '';
+      };
+
+      renderer.listitem = function() {
+        markDownHas.listItem = true;
+        return '';
+      };
+
+      renderer.blockquote = function() {
+        markDownHas.blockquote = true;
+        return '';
+      };
+
+      renderer.image = function() {
+        markDownHas.image = true;
+        return '';
+      };
+
+      renderer.strong = function() {
+        markDownHas.bold = true;
+        return '';
+      };
+
+      marked(markdown, { renderer });
+    }
+
+    // At the beginning of the project, the Camper will might not have added
+    // the markedjs library yet.
+    if (typeof marked === 'function' ) {
+      findMarkdownMatches(markdownOnLoad);
+    }
+
     // As of React 15.6, we need a workaround that allows continued use of
     // el.dispatchEvent()
     // SEE: https://github.com/facebook/react/issues/10135
@@ -147,59 +222,6 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      /* Two ways of creating H(n) elements:
-        1. ATX
-          `# Example Heading`
-          `## Example Subheading`
-        2. setext
-          `Example Heading
-          ===`
-          `Example Subheading
-          ---`
-      https://github.github.com/gfm/#setext-heading-underline
-
-      // ATX
-      /* Added the m modifier to match hashes at the beginning of a paragraph
-      so that people using Setext headers to pass these tests can use
-      ATX headings elsewhere in the document additionally.
-      From regex101: 'm modifier: multi line. Causes ^ and $ to match the
-      begin/end of each line (not only begin/end of string)'
-      */
-      const h1regexHash = new RegExp(
-        /^([ \t]*)#\s(.*?\S.*?)#*\s*?$/gm
-      );
-      const h2regexHash = new RegExp(
-        /^([ \t]*)##\s(.*?\S.*?)#*\s*?$/gm
-      );
-
-      // Setext
-      /* the (.*) matches everything excluding line terminators. */
-      const h1regexEq = new RegExp(
-        /^([ \t]*)(\S.*)[\n\r][ \t]*==+\s*$/gm
-      );
-      const h2regexDash = new RegExp(
-        /^([ \t]*)(\S.*)[\n\r][ \t]*--+\s*$/gm
-      );
-
-      /* Important! A regex above must have two capture groups.
-      The first is whitespaces from the beginning of the match,
-      the second is a header text.
-      */
-      function getHeaders(text, regex) {
-        let match = [];
-        let nextMatch;
-        let codeblockRegex = new RegExp(/^\s*([ ]{4}|\t)/m);
-        while ((nextMatch = regex.exec(text)) !== null) {
-          if (!codeblockRegex.test(nextMatch[1])) {
-            match.push(nextMatch[2].trim());
-          }
-        }
-        return match;
-      }
-
-      let h1Match = [];
-      let h2Match = [];
-
       reqNum++;
       it(`${reqNum}. When my markdown previewer first loads, the default text in
       the #editor field should contain valid markdown that represents at least
@@ -207,7 +229,6 @@ export default function createMarkdownPreviewerTests() {
       (H2 size), a link, inline code, a code block, a list item, a blockquote,
       an image, and bolded text`,
       function() {
-        let markdown;
 
         assert.notStrictEqual(
           markdownOnLoad,
@@ -220,76 +241,58 @@ export default function createMarkdownPreviewerTests() {
           '#editor does not contain any text '
         );
 
-        triggerChange(markdownOnLoad);
-        markdown = editor.value;
-
-        h1Match = [...getHeaders(markdown, h1regexEq),
-           ...getHeaders(markdown, h1regexHash)];
         // h1
-        assert.isAtLeast(
-          h1Match.length,
-          1,
+        assert.isTrue(
+          markDownHas.h1,
           'write some markdown representing an <h1> '
         );
 
         // h2
-        h2Match = [...getHeaders(markdown, h2regexDash),
-          ...getHeaders(markdown, h2regexHash)];
-        assert.isAtLeast(
-          h2Match.length,
-          1,
+        assert.isTrue(
+          markDownHas.h2,
           'write some markdown representing an <h2> '
         );
 
         // link
-        assert.notStrictEqual(
-          markdown.search(/\[.+?\]\(\s*[^\s]*(\s*('|").*?\2)?\s*\)/),
-          -1,
+        assert.isTrue(
+          markDownHas.link,
           'write some markdown representing an <a> '
         );
 
         // inline code
-        assert.notStrictEqual(
-          markdown.search(/`.+?`/),
-          -1,
+        assert.isTrue(
+          markDownHas.inlineCode,
           'write some markdown representing inline <code> '
         );
 
         // codeblock
-        assert.notStrictEqual(
-          markdown.search(/^\s*```[^]*[\n\r].*```\s*$|^\s*([ ]{4}|\t).*\S.*/m),
-          -1,
+        assert.isTrue(
+          markDownHas.code,
           'write some markdown representing a codeblock, i.e. <pre><code>...' +
           '</code></pre> '
         );
 
         // ol or ul list item
-        assert.notStrictEqual(
-          markdown.search(/^\s*([-+*]|\d+\.)[ \t].+/m),
-          -1,
+        assert.isTrue(
+          markDownHas.listItem,
           'write some markdown representing an <li> item '
         );
 
         // blockquote
-        // Amended 5/18 to test for the > character at the beginning of a line,
-        // with or without whitespace
-        assert.notStrictEqual(
-          markdown.search(/^\s*>.+/m),
-          -1,
+        assert.isTrue(
+          markDownHas.blockquote,
           'write some markdown representing a <blockquote> '
         );
 
         // image
-        assert.notStrictEqual(
-          markdown.search(/!\[.*?\]\(\s*[^\s]+?(\s+('|").*?\2)?\s*\)/),
-          -1,
+        assert.isTrue(
+          markDownHas.image,
           'write some markdown representing an <image> '
           );
 
           // bold text
-        assert.notStrictEqual(
-          markdown.search(/(\*\*|__).+?\1/),
-          -1,
+        assert.isTrue(
+          markDownHas.bold,
           'write some markdown representing <strong> text '
         );
       });
@@ -366,7 +369,7 @@ export default function createMarkdownPreviewerTests() {
         let hasH1 = [].slice.call(document.querySelectorAll('#preview h1'))
           .some(h1 => {
             let innerHTML = h1.innerHTML.trim();
-            return h1Match.some(text => innerHTML === text);
+            return markDownHas.h1Text.some(text => innerHTML === text);
           });
         assert.isTrue(
           hasH1,
@@ -378,7 +381,7 @@ export default function createMarkdownPreviewerTests() {
         let hasH2 = [].slice.call(document.querySelectorAll('#preview h2'))
           .some(h2 => {
             let innerHTML = h2.innerHTML.trim();
-            return h2Match.some(text => innerHTML === text);
+            return markDownHas.h2Text.some(text => innerHTML === text);
           });
         assert.isTrue(
           hasH2,
