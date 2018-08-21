@@ -20,12 +20,12 @@ const months = [
 export function getTickPosition(tick) {
   let x, y;
 
-  if (!tick.hasAttribute('transform')) {
-    throw new Error('Element does not have the required transform attribute.');
+  if (!tick.querySelector('line')) {
+    throw new Error('Tick does not contain the required line element.');
   }
 
-  y = parseFloat(tick.getAttribute('transform').split(',')[1].split(')')[0]);
-  x = parseFloat(tick.getAttribute('transform').split(',')[0].split('(')[1]);
+  y = tick.querySelector('line').getBoundingClientRect().top;
+  x = tick.querySelector('line').getBoundingClientRect().left;
 
   return { x: x, y: y};
 }
@@ -77,8 +77,8 @@ export function getShapeValue(item, attribute, dataType) {
 }
 
 export function getShapePosition(item, dimension, positionType) {
-  let half,
-    pos = parseFloat(item.getAttribute(dimension));
+  let half, bounds = item.getBoundingClientRect(),
+    pos = ((/y/g).test(dimension) ? bounds.top : bounds.left);
   switch (positionType) {
     case 'topLeft':
       // bar
@@ -86,7 +86,7 @@ export function getShapePosition(item, dimension, positionType) {
       break;
     case 'center':
       // get either 'width' or 'height' if dimension is 'x', 'cx', 'y', or 'cy'
-      let attr = dimension.match(/y/g) ? 'height' : 'width';
+      let attr = (/y/g).test(dimension) ? 'height' : 'width';
       // circle elements have 'r' attributes instead of 'height' or 'width'.
       // The half variable is for rect elements we want the midpoint from
       // so item.getAttribute(attr) will be null for circles.
