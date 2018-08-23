@@ -28,9 +28,11 @@
     "selenium-webdriver": "^3.4.0",
     "selfsigned": "^1.10.3",
     "style-loader": "^0.18.2",
-    "webpack-cli": "^2.1.5"
+    "webpack-cli": "^2.1.5",
+    "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
+    "develop": "webpack-dev-server --config webpack.config.dev.js",
     "live-serve-build": "live-server --no-browser --https=config/live-server-https build/testable-projects-fcc/v1",
     "lint": "eslint src/ test/",
     "pretest": "npm run lint",
