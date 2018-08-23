@@ -10,9 +10,6 @@ module.exports = {
 		path: path.join(PROJECT_PATH, '/js'),
 		filename: 'bundle.js'
 	},
-	devServer: {
-		https: true
-	},
 	module: {
 		rules: [
 		{
