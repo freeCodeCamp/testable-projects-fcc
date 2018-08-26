@@ -136,28 +136,10 @@ Leave that running. And in a new window, you can run the tests:
 yarn test
 ```
 
-If everything is set up correctly, you should see the following happen
-automatically:
-1. Chrome browser starts.
-1. The URL for one of the sample CodePen projects loads.
-1. Layout is changed for better viewing.
-1. External javascript settings are changed to use your local copy of bundle.js.
-1. The CodePen is re-run to get the new bundle.js.
-1. The "Run Tests" button is clicked and the script waits for test to complete.
-1. The "Tests" button is clicked to see the test output.
-1. A screenshot of the results is saved.
-1. Move on to the next CodePen by returning to step 1.
-
 You will find screenshots of all the test results in the `test/screenshots`
 directory (or the directory you configured in your `test/setup.js` file).
 
 #### Testing tips
-
-**Turn your volume down**
-
-Some of the tests make noise, so if you are in an environment where that is not
-desirable, or you just don't want to scare yourself, you might want to turn your
-volume low or off.
 
 **Running just one test**
 
@@ -171,20 +153,36 @@ directory no matter where you are in the project directory:
 $(yarn bin)/mocha -g 'D3 Tree'
 ```
 
-For the names used by the grep option, see the `name` attribute in the
-`tests` array at the top of the `tests/codepen-project.js` file.
+For the names used by the grep option, see the `name` attribute in the default
+export object of the `src/project-tests/index.js` file.
 
-**Running Chrome in a headless environment**
+**Running tests without headless mode**
 
-Although it looks kind of magic to see the automated tests run inside Chrome the
-first few times, and it can be useful for debugging, it gets annoying quickly
-because the browser popping up interferes with other work.
+By default tests run in the headless mode. If you need to see how it works on
+your screen, you need to disable the headless mode. For this run the tests like
+this:
 
-We tried to get headless Chrome (very new as of July 2017) to work but it had a
-lot of problems.
+```
+HEADLESS=0 yarn test
+```
 
-In the meantime, you can use the tried and trusted method of running a virtual
-screen via the `Xvfb` command. You may need to install the command first.
+If everything is set up correctly, you should see the following happen
+automatically:
+1. Browser starts.
+1. The URL for one of the sample CodePen projects loads.
+1. Layout is changed for better viewing.
+1. External javascript settings are changed to use your local copy of bundle.js.
+1. The CodePen is re-run to get the new bundle.js.
+1. The "Run Tests" button is clicked and the script waits for test to complete.
+1. The "Tests" button is clicked to see the test output.
+1. A screenshot of the results is saved.
+1. Move on to the next CodePen by returning to step 1.
+
+**Running tests on a virtual screen**
+
+If for some reason headless mode doesn't work for you, you can use the tried
+and trusted method of running a virtual screen via the `Xvfb` command.
+You may need to install the command first.
 
 In a separate window run the following command:
 
@@ -196,7 +194,7 @@ And then using the `:99` and (-screen) `0` values from above you run the tests
 like this:
 
 ```
-DISPLAY=':99.0' yarn test
+DISPLAY=':99.0' HEADLESS=0 yarn test
 ```
 
 The tests will now run on the virtual display without popping up the browser.
@@ -204,7 +202,7 @@ The tests will now run on the virtual display without popping up the browser.
 Running a single test works similarly:
 
 ```
-DISPLAY=':99.0' $(yarn bin)/mocha -g 'D3 Tree'
+DISPLAY=':99.0' HEADLESS=0 $(yarn bin)/mocha -g 'D3 Tree'
 ```
 
 **Capturing video of the tests**
@@ -242,8 +240,9 @@ global.browserMaxHeight = 900;
 
 #### Dependencies
 Much like the project tests, we use Mocha and Chai. For automating the browser
-we also use Selenium, chromedriver, and serve-https. Please be cautious about
-adding new dependencies unless absolutely needed.
+we also use Selenium, chromedriver, geckodriver, webpack-dev-server and
+live-server. Please be cautious about adding new dependencies unless absolutely
+needed.
 
 #### Travis CI
 The automated tests have been setup to run on Travis CI when you create a PR.

@@ -40,19 +40,22 @@ describe('CodePen Page Tests', function() {
   Object.keys(tests).forEach(function(key) {
     console.log(key);
     let test = tests[key];
-    it(
-      `CodePen "${test.name}" at URL ${test.URL} should pass all tests`,
-      function(done) {
-
-      doesProjectPassTests(test.name, test.URL)
-      .then(function(success) {
-        assert.isOk(
-          success,
-          `CodePen "${test.name}" did not pass all tests. See screenshot for` +
-          'more details.'
-        );
-        done();
-      });
+    global.browsers.forEach(browser => {
+      it(
+        `CodePen "${test.name}" at URL ${test.URL} in ${browser} ` +
+        'should pass all tests',
+        function(done) {
+          doesProjectPassTests(browser, test.name, test.URL)
+          .then(function(success) {
+            assert.isOk(
+              success,
+              `CodePen "${test.name}" in ${browser} did not pass all tests. ` +
+              'See screenshot for more details.'
+            );
+            done();
+          });
+        }
+      );
     });
   });
 });

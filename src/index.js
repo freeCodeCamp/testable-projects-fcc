@@ -72,14 +72,16 @@ const shadow = (function attachShadow() {
 // when the document is fully loaded (jquery required).
 $(document).ready(function initTests() {
   // Alert users about cross-browser compatibility issues.
-  const isChrome = !!window.chrome && !!window.chrome.webstore;
-  if (isChrome === false) {
+  const isBrowserSupported = (/(Chrome|Gecko)\/[\d\.]+/)
+    .test(navigator.userAgent);
+  if (isBrowserSupported === false) {
     alertOnce(
       'Intro Alert',
-      'Test suites are currently optimized for Chrome. There are known ' +
-      'issues that we are trying to work through to make these suites fully ' +
-      'cross-browser compatible, but it is a work in progress. For the best ' +
-      'user experience, please use Chrome until these issues are resolved. ' +
+      'Test suites are currently optimized for Chrome and Firefox.' +
+      'There are known issues that we are trying to work through to make' +
+      'these suites fully cross-browser compatible, but it is a work' +
+      'in progress. For the best user experience, please use Chrome or' +
+      'Firefox until these issues are resolved. ' +
       'Thanks and Happy Coding!'
     );
   }
