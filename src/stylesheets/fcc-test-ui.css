@@ -175,7 +175,7 @@ div.fcc_test_ui {
   outline: 0;
   padding: 0;
   pointer-events: all;
-  position: absolute;
+  position: fixed;
   text-align: center;
   top: 0;
   transform: none;
