@@ -34,8 +34,11 @@ export default function createDrumMachineTests() {
       if (eventObj.initEvent) {
         eventObj.initEvent(eventType, true, true);
       }
-      eventObj.keyCode = keyCode;
-      eventObj.which = keyCode;
+      if (keyCode) {
+        eventObj.keyCode = keyCode;
+        eventObj.which = keyCode;
+        eventObj.key = String.fromCharCode(keyCode);
+      }
       /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
       el.dispatchEvent
         ? el.dispatchEvent(eventObj)
