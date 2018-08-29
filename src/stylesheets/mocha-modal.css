@@ -159,7 +159,6 @@ div#mocha{
   max-height:none;
 }
 #mocha .test pre{
-  display:none;
   font:12px/1.5 monaco,monospace;
   margin:5px;
   padding:15px;
@@ -178,7 +177,6 @@ div#mocha{
 }
 /* Only show code block <pre> on test failures */
 #mocha .test.fail pre {
-  display: inline-block;
   color:#c00;
   max-height:300px;
   overflow:auto;
@@ -212,15 +210,6 @@ div#mocha{
   color:#888;
   z-index:1;
   height: auto;
-}
-#mocha-stats .progress{
-  float:right;
-  padding-top:0;
-  height:auto;
-  -webkit-box-shadow:none;
-  -moz-box-shadow:none;
-  box-shadow:none;
-  background-color:initial;
 }
 #mocha-stats em{
   color:#000;
@@ -326,6 +315,7 @@ div.fcc_test_message-box-content {
   border-radius: 10px !important;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .fcc_test_message-box-header,

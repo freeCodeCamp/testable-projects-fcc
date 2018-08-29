@@ -39,7 +39,6 @@ chai.config.includeStack = true;
 
 export const assert = chai.assert;
 
-let projectNameLocal = false;
 // filter out unnecessary stack trace in Mocha reporter
 const filterStack = stackTraceFilter();
 // Wrapper for shadow DOM
@@ -102,13 +101,6 @@ $(document).ready(function() {
           reporter: 'base',
           fullTrace: true
         });
-        let projectTitleCase = localStorage.getItem('projectTitleCase');
-        // projectName variable is defined in our example projects so the
-        // correct test suite is automatically loaded. This sets default text
-        // for <option> text and project indicator in top right corner.
-        if (typeof projectName !== 'undefined') {
-          projectNameLocal = projectName;
-        }
 
         // Create the test UI and its contents.
 
@@ -147,23 +139,25 @@ $(document).ready(function() {
         let indicatorWrapper = shadow.querySelector(
           '#fcc_test_suite_indicator_wrapper'
         );
-        // Determine placeholder for the 'select' dropdown element.
-        let placeholder = shadow.querySelector('#placeholder');
 
-        if ((!projectNameLocal) && (projectTitleCase === null)) {
-          placeholder.innerHTML = '- - -';
+        // projectName variable is defined in our example projects so the
+        // correct test suite is automatically loaded. This sets default text
+        // for <option> text and project indicator in top right corner.
+        if (typeof projectName !== 'undefined' &&
+            projects.hasOwnProperty(projectName)) {
+          testSuiteSelector.disabled = true;
+          localStorage.setItem('project_selector', projectName);
+        }
+
+        let projectNameLocal = localStorage.getItem('project_selector');
+        if (!projectNameLocal) {
+          testSuiteSelector.value = '';
           indicatorWrapper.innerHTML = '';
-        } else if (projectNameLocal) {
-          placeholder.innerHTML =
-            `${localStorage.getItem('example_project')}`;
-          indicatorWrapper.innerHTML =
-            '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
-            `${localStorage.getItem('example_project')}</span>`;
         } else {
-          placeholder.innerHTML = projectTitleCase;
+          testSuiteSelector.value = projectNameLocal;
           indicatorWrapper.innerHTML =
             '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
-            `${projectTitleCase}</span>`;
+            `${projects[projectNameLocal].name}</span>`;
         }
         // If this is the first time loading this project, show test window
         if (!localStorage.getItem(
@@ -187,20 +181,20 @@ $(document).ready(function() {
 
 // Select project dropdown.
 export function selectProject(project) {
-  localStorage.removeItem(
-  'fCC_' + project + '_hide'
-  );
+  localStorage.removeItem('fCC_' + project + '_hide');
   // Store project_selector for initTestRunner function.
   localStorage.setItem('project_selector', project);
-  // Create & store pretty-print project name for display in indicator div.
-  let projectTitleCase = project.replace(/-/g, ' ').split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.substr(1)).join(' ');
-  shadow.querySelector(
+
+  let indicatorWrapper = shadow.querySelector(
     '#fcc_test_suite_indicator_wrapper'
-  ).innerHTML =
-    '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
-    `${projectTitleCase}</span>`;
-  localStorage.setItem('projectTitleCase', projectTitleCase);
+  );
+  if (project) {
+    indicatorWrapper.innerHTML =
+      '<span id=fcc_test_suite_indicator>FCC Test Suite: ' +
+      `${projects[project].name}</span>`;
+  } else {
+    indicatorWrapper.innerHTML = '';
+  }
 }
 
 export function FCCHandleTestResultClick(e) {
@@ -210,40 +204,6 @@ export function FCCHandleTestResultClick(e) {
   } else {
     stack.style.display = 'inline-block';
   }
-}
-
-// Updates the button color and text on the target project, to show how many
-// tests passed and how many failed.
-export function FCCUpdateTestResult(nbTests, nbPassed, nbFailed) {
-  const button = shadow.querySelector('#fcc_test_button');
-  button.innerHTML = `Tests ${nbPassed}/${nbPassed + nbFailed}`;
-  // adding `.fcc_test_btn-done` for simpler querying by Selenium
-  button.classList.add('fcc_test_btn-done');
-  if (nbFailed) {
-    button.classList.add('fcc_test_btn-error');
-  } else {
-    button.classList.add('fcc_test_btn-success');
-  }
-  var statsPassed = shadow.querySelector('.fcc_passes');
-  var statsFailed = shadow.querySelector('.fcc_failures');
-  var statsDuration = shadow.querySelector('.fcc_duration');
-  statsPassed.innerText = nbPassed;
-  statsFailed.innerText = nbFailed;
-  /* Duration calculated with unix timestamp */
-  statsDuration.innerText =
-    ((Date.now() - mochaTimeStamp) / 1000).toFixed(2) + 's';
-}
-
-// Updates the button text on the target project, to show how many tests were
-// executed so far.
-export function FCCUpdateTestProgress(nbTests, nbTestsExecuted) {
-  const button = shadow.querySelector('#fcc_test_button');
-  button.classList.add('fcc_test_btn-executing');
-  button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
-  const statsProgress = shadow.querySelector('.fcc_progress');
-  /* Update percentage */
-  statsProgress.innerText =
-    ((nbTestsExecuted / nbTests) * 100).toFixed(2) + '%';
 }
 
 // Open the main modal.
@@ -267,129 +227,6 @@ $(document).keyup(function(e) {
     FCCCloseTestModal();
   }
 });
-
-// Close modal on click outside el.
-export function FCCclickOutsideToCloseModal(e) {
-  if (e.target.id === 'fcc_test_message-box') {
-    FCCCloseTestModal();
-  }
-}
-
-// Cannot reset classList with an = assignment due to cross-browser conflicts.
-// TODO: Refactor to eliminate for loops. The first for loop is simply:
-// let classListArray = [].slice.call(elem.classList);
-function clearClassList(elem) {
-  var classListAsArray = new Array(elem.classList.length);
-
-  for (var i = 0; i < elem.classList.length; i++) {
-    classListAsArray[i] = elem.classList[i];
-  }
-
-  for (var j = 0; j < classListAsArray.length; j++) {
-    elem.classList.remove(classListAsArray[j]);
-  }
-}
-
-// run tests
-export function FCCRerunTests() {
-  const button = shadow.querySelector('#fcc_test_button');
-  button.innerHTML = (!projectNameLocal) &&
-    (!localStorage.getItem('project_selector'))
-    ? 'Load Tests!'
-    : 'Testing';
-  button.title = (!projectNameLocal) &&
-    (!localStorage.getItem('project_selector'))
-    ? 'Select test suite from dropdown above'
-    : 'CTRL + SHIFT + T';
-  clearClassList(button);
-  button.classList.add('fcc_foldout_buttons');
-  button.classList.add('fcc_test_btn-default');
-  FCCInitTestRunner();
-}
-
-// Reset tests.
-export function FCCResetTests(suite) {
-  suite.tests.forEach(function(t) {
-    delete t.state;
-    t.timedOut = false;
-  });
-  suite.suites.forEach(FCCResetTests);
-}
-
-let count = -1;
-let parentTitle, mochaReport, mochaTimeStamp = null;
-
-/* In order to append test results to the shadow DOM, we need to use a custom
- reporter. */
-function appendTestResult(test) {
-  /* Test Suite title */
-  var parentParentTitle = test.parent.parent.title;
-  var mainTitleNode =
-    shadow.querySelector('.fcc_test_message-box-header .title');
-  /* Append #mocha-report if it doesn't exist already */
-  if (!mochaReport) {
-    mainTitleNode.innerHTML = parentParentTitle;
-    mochaReport = document.createElement('ul');
-    mochaReport.setAttribute('id', 'mocha-report');
-    shadow.querySelector('.fcc_test_message-box-body #mocha')
-      .appendChild(mochaReport);
-  } else {
-    mochaReport = shadow.querySelector('#mocha-report');
-  }
-  /* If current test.parent.title is different from previous test, count up and
-    create a new section with testList */
-  if (!parentTitle || parentTitle !== test.parent.title) {
-    count++;
-    parentTitle = test.parent.title;
-    var testSection = document.createElement('li');
-    testSection.setAttribute('class', `fcc_section_${count} suite`);
-    var parentTitleNode = document.createElement('h1');
-    parentTitleNode.innerText = parentTitle;
-    testSection.appendChild(parentTitleNode);
-    /* TODO: Currently using <ul>, but if we switch to <ol> we can eliminate all
-      of the `reqNum` instances in all the test suite files and use automatic
-      numbering. */
-    var testList = document.createElement('ul');
-    testSection.appendChild(testList);
-    mochaReport.appendChild(testSection);
-  }
-  /* Each test <li> is grouped with others in testList */
-  var result = document.createElement('li');
-  result.setAttribute('class', 'test');
-  result.innerHTML = mochaTestResultSkeleton;
-  testSection = shadow.querySelector(`.fcc_section_${count}`);
-  testList = testSection.querySelector('ul');
-  testList.appendChild(result);
-
-  var testTitle = result.querySelector('.fcc_test_title');
-  var testTitleNode = testTitle.querySelector('.title');
-  testTitleNode.innerText = test.title.replace(/\n/g, ' ');
-
-  var codeBox = result.querySelector('.fcc_err_stack');
-
-  if (test.state !== 'passed') {
-    var err = test.err;
-    var message;
-    if (err.message && typeof err.message.toString === 'function') {
-      message = err.message;
-    } else if (typeof err.inspect === 'function') {
-      message = err.inspect();
-    } else {
-      message = '';
-    }
-    var stack = (!err.stack ? '' : filterStack(err.stack));
-    result.setAttribute('class', 'test fail');
-    codeBox.innerText = message + ' \n' + stack;
-  } else {
-    var testDuration = result.querySelector('.duration > .number');
-    testDuration.innerText = test.duration;
-
-    var classList = 'test pass ' + test.speed;
-    result.setAttribute('class', classList);
-    /* Add test code to hidden code box */
-    codeBox.innerText = test.body.toString();
-  }
-}
 
 const map = [];
 /* global onkeydown:true, onkeyup:true */
@@ -425,9 +262,7 @@ onkeydown = onkeyup = function(e) {
 // Shortcuts interfere w/ markdown tests, disable and alert.
 export function alertOnce(item, message) {
   const alerted = sessionStorage.getItem(item) || false;
-  if (alerted) {
-    return;
-  } else {
+  if (!alerted) {
     /* eslint no-alert: "off" */
     alert(message);
     sessionStorage.setItem(item, true);
@@ -466,53 +301,173 @@ export function hamburgerTransform() {
   }
 }
 
+// Close modal on click outside el.
+export function FCCClickOutsideToCloseModal(e) {
+  if (e.target.id === 'fcc_test_message-box') {
+    FCCCloseTestModal();
+  }
+}
+
+// Cannot reset classList with an = assignment due to cross-browser conflicts.
+function clearClassList(elem) {
+  [].slice.call(elem.classList).forEach(className => {
+     elem.classList.remove(className);
+  });
+}
+
+// run tests
+export function FCCRerunTests() {
+  const button = shadow.querySelector('#fcc_test_button');
+  button.innerHTML = !localStorage.getItem('project_selector')
+    ? 'Load Tests!'
+    : 'Testing';
+  button.title = !localStorage.getItem('project_selector')
+    ? 'Select test suite from dropdown above'
+    : 'CTRL + SHIFT + T';
+  clearClassList(button);
+  button.classList.add('fcc_foldout_buttons');
+  button.classList.add('fcc_test_btn-default');
+  FCCInitTestRunner();
+}
+
 // Init tests.
-export function FCCInitTestRunner() {
-  mochaTimeStamp = Date.now();
-  let testRunner = null;
+function FCCInitTestRunner() {
+  let currentSection = shadow.querySelector('#mocha-report');
+
+  function startSuite(suite) {
+    if (suite.parent.root) {
+      let mainTitleNode =
+        shadow.querySelector('.fcc_test_message-box-header .title');
+      mainTitleNode.innerHTML = suite.title;
+      return;
+    }
+
+    let suiteSection = document.createElement('li');
+    suiteSection.setAttribute('class', 'suite');
+    let suiteTitleNode = document.createElement('h1');
+    suiteTitleNode.innerText = suite.title;
+    suiteSection.appendChild(suiteTitleNode);
+
+    let childrenList;
+    if (suite.tests.length) {
+      /* TODO: Currently using <ul>, but if we switch to <ol> we can eliminate
+        all of the `reqNum` instances in all the test suite files and use
+        automatic numbering. */
+      childrenList = document.createElement('ul');
+    } else {
+      childrenList = document.createElement('ul');
+    }
+
+    suiteSection.appendChild(childrenList);
+    currentSection.appendChild(suiteSection);
+    currentSection = childrenList;
+  }
+
+  function endSuite(suite) {
+    if (!suite.parent || !suite.parent.root) {
+      currentSection = currentSection.parentNode.parentNode;
+    }
+  }
+
+  function appendTestResult(test) {
+    let result = document.createElement('li');
+    result.innerHTML = mochaTestResultSkeleton;
+    currentSection.appendChild(result);
+
+    let testTitle = result.querySelector('.fcc_test_title');
+    let testTitleNode = testTitle.querySelector('.title');
+    testTitleNode.innerText = test.title.replace(/\n/g, ' ');
+
+    let codeBox = result.querySelector('.fcc_err_stack');
+
+    if (test.state !== 'passed') {
+      let err = test.err;
+      let message;
+      if (err.message && typeof err.message.toString === 'function') {
+        message = err.message;
+      } else if (typeof err.inspect === 'function') {
+        message = err.inspect();
+      } else {
+        message = '';
+      }
+      let stack = (!err.stack ? '' : filterStack(err.stack));
+      result.setAttribute('class', 'test fail');
+      codeBox.innerText = message + ' \n' + stack;
+      codeBox.style.display = 'inline-block';
+    } else {
+      let testDuration = result.querySelector('.duration > .number');
+      testDuration.innerText = test.duration;
+
+      result.setAttribute('class', `test pass ${test.speed}`);
+      /* Add test code to hidden code box */
+      codeBox.innerText = test.body.toString();
+    }
+  }
+
+  // Updates the button color and text on the target project, to show how many
+  // tests passed and how many failed.
+  function updateTestResult(nbPassed, nbFailed, startTimeStamp) {
+    const button = shadow.querySelector('#fcc_test_button');
+    button.innerHTML = `Tests ${nbPassed}/${nbPassed + nbFailed}`;
+    // adding `.fcc_test_btn-done` for simpler querying by Selenium
+    button.classList.add('fcc_test_btn-done');
+    if (nbFailed) {
+      button.classList.add('fcc_test_btn-error');
+    } else {
+      button.classList.add('fcc_test_btn-success');
+    }
+    var statsPassed = shadow.querySelector('.fcc_passes');
+    var statsFailed = shadow.querySelector('.fcc_failures');
+    var statsDuration = shadow.querySelector('.fcc_duration');
+    statsPassed.innerText = nbPassed;
+    statsFailed.innerText = nbFailed;
+    /* Duration calculated with unix timestamp */
+    statsDuration.innerText =
+      ((Date.now() - startTimeStamp) / 1000).toFixed(2) + 's';
+  }
+
+  // Updates the button text on the target project, to show how many tests were
+  // executed so far.
+  function updateTestProgress(nbTests, nbTestsExecuted) {
+    const button = shadow.querySelector('#fcc_test_button');
+    button.classList.add('fcc_test_btn-executing');
+    button.innerHTML = `Testing ${nbTestsExecuted}/${nbTests}`;
+    const statsProgress = shadow.querySelector('.fcc_progress');
+    /* Update percentage */
+    statsProgress.innerText =
+      ((nbTestsExecuted / nbTests) * 100).toFixed(2) + '%';
+  }
+
+  let startTimeStamp = Date.now();
   // Empty the mocha tag in case of rerun.
-  shadow.querySelector('.fcc_test_message-box-body #mocha').innerHTML = '';
+  currentSection.innerHTML = '';
   // Empty the test suite in the mocha object.
   mocha.suite.suites = [];
   // Check for hard-coded project selector (for our example projects).
-  let hardCodedProjectName = (!projectNameLocal)
-    ? null
-    : projectNameLocal;
-  hardCodedProjectName = hardCodedProjectName ||
-    localStorage.getItem('project_selector');
+  let projectNameLocal = localStorage.getItem('project_selector');
 
-  if (projects.hasOwnProperty(hardCodedProjectName)) {
-    projects[hardCodedProjectName].test();
+  if (projects.hasOwnProperty(projectNameLocal)) {
+    projects[projectNameLocal].test();
   }
 
   // Save the number of tests in the selected suite.
-  let nbTests = 0;
-  mocha.suite.eachTest(() => nbTests++);
+  let nbTests = mocha.suite.total();
   let nbTestsExecuted = 0;
   let nbPassed = 0;
   let nbFailed = 0;
   const hasPassed = () => nbPassed++;
   const hasFailed = () => nbFailed++;
-  const updateProgress = () =>
-    FCCUpdateTestProgress(nbTests, ++nbTestsExecuted);
-  const updateEnd = () =>
-    FCCUpdateTestResult && FCCUpdateTestResult(nbTests, nbPassed, nbFailed);
-  if (testRunner) {
-    FCCResetTests(mocha.suite);
-    testRunner.abort();
-    testRunner.removeListener('pass', hasPassed);
-    testRunner.removeListener('fail', hasFailed);
-    testRunner.removeListener('test end', updateProgress);
-    testRunner.removeListener('end', updateEnd);
-    testRunner.removeListener('test end', appendTestResult);
-  }
+  const updateProgress = () => updateTestProgress(nbTests, ++nbTestsExecuted);
+  const updateEnd = () => updateTestResult(nbPassed, nbFailed, startTimeStamp);
 
   // Run the test suite.
-  testRunner = mocha.run();
+  let testRunner = mocha.run();
   testRunner.on('pass', hasPassed);
   testRunner.on('fail', hasFailed);
   testRunner.on('test end', updateProgress);
+  testRunner.on('suite', startSuite);
   testRunner.on('test end', appendTestResult);
+  testRunner.on('suite end', endSuite);
   testRunner.on('end', updateEnd);
 }
 

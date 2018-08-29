@@ -25,10 +25,10 @@
 
 #fcc_toggle {
   height: 24px;
-  width: 25px;
-  position: fixed;
+  width: 30px;
+  position: absolute;
   top: 7px;
-  left: 20px;
+  left: 10px;
   opacity: 0;
   cursor: pointer;
   z-index: 99999;
@@ -107,9 +107,7 @@
 }
 
 #fcc_test_suite_indicator {
-  position: fixed;
-  top: 15px;
-  right: 20px;
+  position: static;
   font-size: 12px;
   background-color: rgba(255, 255, 204, 0.9);
   color: black;
