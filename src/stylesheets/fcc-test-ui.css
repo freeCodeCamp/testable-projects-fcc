@@ -190,8 +190,8 @@ div.fcc_test_ui {
   align-items: inherit;  
   background: inherit;
   background-color: inherit;
-  border: inherit;
-  border-radius: inherit;
+  border: initial;
+  border-radius: initial;
   box-shadow: inherit;
   color: inherit;
   cursor: inherit;
@@ -210,7 +210,7 @@ div.fcc_test_ui {
   outline: inherit;
   padding: inherit;
   pointer-events: inherit;
-  position: inherit;
+  position: initial;
   text-align: inherit;
   transform: inherit;
   vertical-align: inherit;

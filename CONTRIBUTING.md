@@ -9,18 +9,6 @@ begin working on fixing the bug, please follow the guidelines below.
 ### In general:
 - Fork, clone locally, and install dependencies using `yarn install`.
 - Please make all PRs against a branch you have created specifically to address the issue you are fixing.
-- In order to keep things in scope for this bundle, we have defined a global library object called `FCC_Global`; Chai's `assert` is being exported and can be accessed through this object, as can all of our Utility Functions as defined in `index.js`, e.g.:
-
-```javascript
-`FCC_Global.assert.isAtLeast(awesomeness.length, 10000000, 'your awesomeness is too short');`
-```
-OR
-
-```javascript
-`FCC_Global.FCCInitTestRunner()`
-```
-
-You can see examples of the above in the `src/project-tests` directory.
 
 - Be sure to run `yarn run build` to create a new bundle.
 
