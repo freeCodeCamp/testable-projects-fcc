@@ -12,16 +12,22 @@
     "webpack": "^4.10.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "@commitlint/travis-cli": "^7.0.0",
     "babel-eslint": "^8.2.3",
     "chai": "^3.5.0",
     "chromedriver": "^2.40.0",
+    "commitizen": "^2.10.1",
     "css-loader": "^0.28.11",
+    "cz-customizable": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-freecodecamp": "^1.1.1",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-prefer-object-spread": "^1.1.0",
     "eslint-plugin-react": "^7.9.1",
     "html-loader": "^0.5.1",
+    "husky": "^1.0.0-rc.13",
     "jquery": "^3.3.1",
     "live-server": "^1.2.0",
     "mocha": "^5.2.0",
@@ -33,12 +39,27 @@
   },
   "scripts": {
     "develop": "webpack-dev-server --config webpack.config.dev.js",
+    "commit": "git-cz",
     "live-serve-build": "live-server --no-browser --https=config/live-server-https build/testable-projects-fcc/v1",
-    "lint": "eslint src/ test/",
+    "lint": "eslint ./**/*.js",
     "pretest": "npm run lint",
     "test": "mocha",
     "start": "webpack --watch --config webpack.config.dev.js",
     "build": "webpack"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "commitizen.config.js"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e",
+      "pre-commit": "yarn run lint"
+    }
   },
   "author": "",
   "license": "ISC"

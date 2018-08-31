@@ -25,6 +25,9 @@ cache:
   directories:
     - node_modules
 sudo: required
+script:
+  - commitlint-travis
+  - npm test
 # When the test script fails, push screen shots to a git branch.
 after_failure: |
   if [ -n "$GITHUB_API_KEY" ]; then
