@@ -12,20 +12,6 @@ export default function createDrumMachineTests() {
 
     // functions:
 
-    // As of React 15.6, we need a workaround that allows continued use of
-    // el.dispatchEvent()
-    // SEE: https://github.com/facebook/react/issues/10135
-    // Make <audio> Object configurable so that we can programmatically hit play
-    function configureAudioElement() {
-      var d = configureAudioElement.d || (
-        configureAudioElement.d = {
-          enumerable: false,
-          writable: true,
-          configurable: true
-        }
-      );
-      return d;
-    }
     // Parameters called from tests are either for click or keydown events
     function __triggerEvent(el, eventType, keyCode) {
       const eventObj = document.createEventObject
@@ -58,11 +44,6 @@ export default function createDrumMachineTests() {
     describe('#Tests', function() {
       let reqNum = 0;
 
-      before(function() {
-        audioElements.forEach(function(el) {
-          Object.defineProperty(el, 'paused', configureAudioElement);
-        });
-      });
       after(function() {
         audioElements.forEach(function(el) {
           el.pause();
@@ -168,8 +149,9 @@ export default function createDrumMachineTests() {
           'Audio elements do not exist '
         );
         audioElements.forEach(el => {
+          el.pause();
           __triggerClickEventCaller(el.parentElement);
-          assert.isNotOk(
+          assert.isFalse(
             el.paused,
             'The <audio> element with id="' + el.id +
             '" does not play when the ' + el.id + ' .drum-pad is clicked '
@@ -191,18 +173,23 @@ export default function createDrumMachineTests() {
           9,
           'Audio elements do not exist '
         );
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
           setTimeout(() => {
             audioElements.forEach((el, i) => {
+              el.pause();
               __triggerEvent(
                 el.parentElement,
                 'keydown',
                 keyCodes[i]
               );
-              assert.isNotOk(
-                document.getElementById(el.id).paused,
-                'No audio plays when the ' + el.id + ' key is pressed '
-              );
+              try {
+                assert.isFalse(
+                  el.paused,
+                  'No audio plays when the ' + el.id + ' key is pressed '
+                );
+              } catch (err) {
+                reject(err);
+              }
             });
             resolve();
           }, 800);
