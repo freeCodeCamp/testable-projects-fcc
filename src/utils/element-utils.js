@@ -45,3 +45,8 @@ export function hasUniqueColorsCount(elements, numberOfColors) {
 
   return false;
 }
+
+export function getInputValue(element) {
+  return element.nodeName.toLowerCase() === 'input' ?
+    element.value : element.innerText;
+}

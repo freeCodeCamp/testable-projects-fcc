@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { clickButtonsById } from '../utils/element-utils';
+import { clickButtonsById, getInputValue } from '../utils/element-utils';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createCalculatorTests() {
@@ -55,8 +55,7 @@ export default function createCalculatorTests() {
         assert.isNotNull(element);
 
         assert.strictEqual(
-          element.nodeName.toLowerCase() === 'input' ?
-            element.value : element.innerHTML,
+          getInputValue(element),
           '=',
           'The element with id="equal" should have an "=" as its content '
         );
@@ -146,8 +145,7 @@ export default function createCalculatorTests() {
         );
 
         assert.strictEqual(
-          element.nodeName.toLowerCase() === 'input' ?
-            element.value : element.innerHTML,
+          getInputValue(element),
           '.',
           'The element with id="decimal" should have "." as its content '
         );
@@ -180,7 +178,7 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '0',
           'Element with with id="display" should show 0 '
         );
@@ -192,7 +190,7 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_1, _2, _3]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '123',
           'Numbers do not display correctly within id="display" '
         );
@@ -205,8 +203,8 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
         assert(
-          document.getElementById('display').innerHTML === '32.5' ||
-          document.getElementById('display').innerHTML === '11.5',
+          getInputValue(document.getElementById('display')) === '32.5' ||
+          getInputValue(document.getElementById('display')) === '11.5',
           `The expression 3 + 5 * 6 - 2 / 4 should produce 32.5 or 11.5 as an
           answer, depending on the logic your calculator uses
           (formula vs. immediate execution) `
@@ -214,7 +212,7 @@ export default function createCalculatorTests() {
         clearDisplay();
         clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
         assert(
-          document.getElementById('display').innerHTML === '1',
+          getInputValue(document.getElementById('display')) === '1',
           'The expression 5 - 9 + 5 should produce a result of 1 '
         );
       });
@@ -225,7 +223,7 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_0, _0, _0]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '0',
           'An input of 0 0 0 should display 0 '
         );
@@ -238,14 +236,14 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_5, _dec, _dec, _0]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '5.0',
           'An input of "5 . . 0" should display 5.0 '
         );
         clearDisplay();
         clickButtonsById([_5, _dec, _5, _dec, _5]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '5.55',
           'An input of "5 . 5 . 5" should display 5.55 '
         );
@@ -257,28 +255,28 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '5',
           'The expression "10.5 - 5.5" should produce an output of "5" '
         );
         clearDisplay();
         clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '27.5',
           'The expression "5 * 5.5" should produce an output of "27.5" '
         );
         clearDisplay();
         clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '16',
           'The expression "10.5 + 5.5" should produce an output of "16" '
         );
         clearDisplay();
         clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '4',
           'The expression "10 / 2.5" should produce an output of "4" '
         );
@@ -290,14 +288,14 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '10',
           'The sequence "5 * - + 5" = should produce an output of "10" '
         );
         clearDisplay();
         clickButtonsById([_5, _plus, _plus, _5, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '10',
           'The sequence "5 + + 5" = should produce an output of "10" '
         );
@@ -310,14 +308,14 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '1.5',
           'The sequence "5 - 2 = / 2 =" should produce an output of "1.5" '
         );
         clearDisplay();
         clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
         assert.strictEqual(
-          document.getElementById('display').innerHTML,
+          getInputValue(document.getElementById('display')),
           '13',
           'The sequence "5 + 3 = + 3 =" should produce an output of "13" '
         );
@@ -331,7 +329,7 @@ export default function createCalculatorTests() {
       function() {
         clickButtonsById([_2, _div, _7, _eq]);
         assert.isOk(/0?\.2857\d*/.test(
-          document.getElementById('display').innerHTML),
+          getInputValue(document.getElementById('display'))),
           'The expression "2 / 7" should produce an output number with at ' +
           'least 4 decimal places of precision '
         );
