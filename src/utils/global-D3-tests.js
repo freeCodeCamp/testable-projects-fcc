@@ -8,9 +8,10 @@ function isToolTipHidden(tooltip) {
     // :hidden will return false because it takes up space in the DOM.
     // This test combines jQuery's :hidden with tests for opacity and visbility
     // to cover most use cases (z-index and potentially others are not tested).
+    let style = window.getComputedStyle(tooltip, null);
     return ($(tooltip).is(':hidden') ||
-      tooltip.style.opacity === '0' ||
-      tooltip.style.visibility === 'hidden'
+      style.opacity === '0' ||
+      style.visibility === 'hidden'
     );
 }
 
@@ -92,6 +93,7 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
 
           // Remove mouse from cell and check if tooltip is hidden again.
           triggerMouseEvent(randomArea, 'mouseout');
+          triggerMouseEvent(randomArea, 'mouseleave');
           setTimeout(() => {
             if (!isToolTipHidden(tooltip)) {
               reject(
