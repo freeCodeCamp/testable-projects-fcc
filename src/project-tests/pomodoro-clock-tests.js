@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { clickButtonsById } from '../utils/element-utils';
+import { clickButtonsById, getInputValue } from '../utils/element-utils';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createPomodoroClockTests() {
@@ -196,7 +196,7 @@ export default function createPomodoroClockTests() {
       function() {
         const breakLength = document.getElementById('break-length');
         assert.strictEqual(
-          breakLength.innerHTML,
+          getInputValue(breakLength),
           '5',
           'A value of 5 is not displayed by default'
         );
@@ -208,7 +208,7 @@ export default function createPomodoroClockTests() {
       function() {
         const sessionLength = document.getElementById('session-length');
         assert.strictEqual(
-          sessionLength.innerHTML,
+          getInputValue(sessionLength),
           '25',
           'A value of 25 is not displayed by default'
         );
@@ -291,10 +291,14 @@ export default function createPomodoroClockTests() {
                 // (pomodoro is stopped)
                 setTimeout(() => {
                   const breakLenAfterResetCorrect = (
-                    document.getElementById('break-length').innerHTML === '5'
+                    getInputValue(
+                      document.getElementById('break-length')
+                    ) === '5'
                   );
                   const sessionLenAfterResetCorrect = (
-                    document.getElementById('session-length').innerHTML === '25'
+                    getInputValue(
+                      document.getElementById('session-length')
+                    ) === '25'
                   );
                   if (
                     !breakLenAfterResetCorrect || !sessionLenAfterResetCorrect
@@ -335,13 +339,13 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML,
+          getInputValue(document.getElementById('break-length')),
           '1'
         );
         resetTimer();
         clickButtonsById([breakMin]);
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML,
+          getInputValue(document.getElementById('break-length')),
           '4'
         );
       });
@@ -353,13 +357,13 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById(Array(4).fill(breakPlus));
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML,
+          getInputValue(document.getElementById('break-length')),
           '9'
         );
         resetTimer();
         clickButtonsById([breakPlus]);
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML, '6'
+          getInputValue(document.getElementById('break-length')), '6'
         );
       });
 
@@ -370,13 +374,13 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById(Array(4).fill(seshMin));
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '21'
         );
         resetTimer();
         clickButtonsById([seshMin]);
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '24'
         );
       });
@@ -388,13 +392,13 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById(Array(4).fill(seshPlus));
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '29'
         );
         resetTimer();
         clickButtonsById([seshPlus]);
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '26'
         );
       });
@@ -405,14 +409,14 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById(Array(10).fill(breakMin));
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML,
+          getInputValue(document.getElementById('break-length')),
           '1',
           'Value in element with id of "break-length" is less than 1.'
         );
         resetTimer();
         clickButtonsById(Array(30).fill(seshMin));
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '1',
           'Value in element with id of "session-length" is less than 1.'
         );
@@ -424,14 +428,14 @@ export default function createPomodoroClockTests() {
       function() {
         clickButtonsById(Array(60).fill(breakPlus));
         assert.strictEqual(
-          document.getElementById('break-length').innerHTML,
+          getInputValue(document.getElementById('break-length')),
           '60',
           'Value in element with id of "break-length" is greater than 60.'
         );
         resetTimer();
         clickButtonsById(Array(40).fill(seshPlus));
         assert.strictEqual(
-          document.getElementById('session-length').innerHTML,
+          getInputValue(document.getElementById('session-length')),
           '60',
           'Value in element with id of "session-length" is greater than 60.'
         );
@@ -448,7 +452,7 @@ export default function createPomodoroClockTests() {
           getMinutes(
             document.getElementById('time-left').innerHTML
           ),
-          document.getElementById('session-length').innerHTML
+          getInputValue(document.getElementById('session-length'))
         );
       });
 
@@ -611,7 +615,7 @@ export default function createPomodoroClockTests() {
                   'Test timed out because Break time didn\'t start with the ' +
                   'correct value: ' + (
                     parseInt(getMinutes(timeLeft.innerHTML), 10) + 1
-                  ) + ' instead of ' + breakLength.innerHTML
+                  ) + ' instead of ' + getInputValue(breakLength)
                 )
               );
               observer.disconnect();
@@ -660,7 +664,7 @@ export default function createPomodoroClockTests() {
                   'Timer has switched to Break time, but it didn\'t start ' +
                   'with the correct value: ' + (
                     parseInt(getMinutes(timeLeft.innerHTML), 10) + 1
-                  ) + ' instead of ' + breakLength.innerHTML
+                  ) + ' instead of ' + getInputValue(breakLength)
                 )
               );
               observer.disconnect();
@@ -668,7 +672,7 @@ export default function createPomodoroClockTests() {
             } else if (shouldBeInBreak) {
               if (currentTimer.innerHTML !== sessionLabel) {
                 let getTimeLeftHTML = +getMinutes(timeLeft.innerHTML);
-                if (getTimeLeftHTML === +breakLength.innerHTML) {
+                if (getTimeLeftHTML === +getInputValue(breakLength)) {
                   resolve();
                 } else {
                   reject(
@@ -676,7 +680,7 @@ export default function createPomodoroClockTests() {
                       'Timer has switched to Break time, but it didn\'t ' +
                       'start with the correct value: ' +
                       getMinutes(timeLeft.innerHTML) + ' instead of ' +
-                      breakLength.innerHTML
+                      getInputValue(breakLength)
                     )
                   );
                   observer.disconnect();
@@ -771,7 +775,7 @@ export default function createPomodoroClockTests() {
               const sessionLength = document.getElementById('session-length');
               if (currentTimer.innerHTML !== breakLabel) {
                 let getTimeLeftHTML = +getMinutes(timeLeft.innerHTML);
-                if (getTimeLeftHTML === +sessionLength.innerHTML) {
+                if (getTimeLeftHTML === +getInputValue(sessionLength)) {
                   resolve();
                 } else {
                   reject(
@@ -779,7 +783,7 @@ export default function createPomodoroClockTests() {
                       'Timer has switched back to Session time, but it ' +
                       'didn\'t start with the correct value: ' +
                       getMinutes(timeLeft.innerHTML) + ' instead of ' +
-                      sessionLength.innerHTML
+                      getInputValue(sessionLength)
                     )
                   );
                 }
@@ -821,7 +825,7 @@ export default function createPomodoroClockTests() {
                   'Test timed out because Break time didn\'t start with ' +
                   'the correct value: ' + (
                     parseInt(getMinutes(timeLeft.innerHTML), 10) + 1
-                  ) + ' instead of ' + breakLength.innerHTML
+                  ) + ' instead of ' + getInputValue(breakLength)
                 )
               );
             } else if (timeLeft.innerHTML === '00:00') {
