@@ -45,6 +45,9 @@ const filterStack = stackTraceFilter();
 // Wrapper for shadow DOM
 const testDiv = document.createElement('div');
 testDiv.setAttribute('id', 'fcc_test_suite_wrapper');
+// position our user interface at the top layer
+testDiv.style.setProperty('position', 'relative', 'important');
+testDiv.style.setProperty('z-index', '99999', 'important');
 document.body.appendChild(testDiv);
 // Using a shadow DOM, the fCC css won't interfere with student css
 // A fallback div is provided.
