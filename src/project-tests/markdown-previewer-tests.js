@@ -98,54 +98,49 @@ export default function createMarkdownPreviewerTests() {
     // As of React 15.6, we need a workaround that allows continued use of
     // el.dispatchEvent()
     // SEE: https://github.com/facebook/react/issues/10135
-    // the main idea is making the value writable and the Object configurable —
-    // writable so that we can programmatically set the value in these
-    // tests, and configurable so that the textarea Object can receive these
-    // settings each test
-    function withValue(value) {
-      var d = withValue.d || (
-        withValue.d = {
-          enumerable: false,
-          writable: true,
-          configurable: true,
-          value: null
-        }
-      );
-      d.value = value;
-      return d;
+
+    // Do not try to delete non-configurable properties.
+    function deletePropertySafe(elem, prop) {
+      var desc = Object.getOwnPropertyDescriptor(elem, prop);
+      if (desc && desc.configurable) {
+        delete elem[prop];
+      }
+    }
+
+    // This is a hack and is tightly coupled with React's implementation
+    // details. https://github.com/vitalyq/react-trigger-change
+    function reactTriggerChange(node) {
+      // Cache artificial value property descriptor.
+      // Property doesn't exist in React <15.6, descriptor is undefined.
+      let descriptor = Object.getOwnPropertyDescriptor(node, 'value');
+
+      // Update inputValueTracking cached value.
+      // Remove artificial value property.
+      // Restore initial value to trigger event with it.
+      let initialValue = node.value;
+      node.value = initialValue + '#';
+      deletePropertySafe(node, 'value');
+      node.value = initialValue;
+
+      node.dispatchEvent(new Event('input', {bubbles: true}));
+
+      // Restore artificial value property descriptor.
+      if (descriptor) {
+        Object.defineProperty(node, 'value', descriptor);
+      }
     }
 
     // A change in the editor value won't be detected unless the correct event
     // is dispatched.
     function triggerChange(str) {
       editor.value = str;
-      if (preview.innerHTML !== marked(str) || editor.value !== str) {
-        // REACT
-        const eventReact = new Event('input', {bubbles: true});
-        Object.defineProperty(editor, 'value', withValue(str));
-        editor.dispatchEvent(eventReact);
-        // If the React dispatch worked, we can already return.
-        if (preview.innerHTML === marked(str)) {
-          return;
-        }
-      }
+      // React
+      reactTriggerChange(editor);
       // jQUERY OR JAVASCRIPT
       // must be keyup to live preview
       const eventJS = new Event('keyup', {bubbles: true});
       editor.dispatchEvent(eventJS);
-      return;
-
     }
-    // We need to undo the configuration set in triggerChange after running
-    // tests. The configuration was added to allow dispatchEvent for
-    // programmatic value change in React 15.6
-    // See https://stackoverflow.com/a/7144252/3530394
-    after(function() {
-      // remove the value attribute in order to remove the configuration
-      delete editor.value;
-      // restore default markdown text
-      editor.value = markdownOnLoad;
-    });
 
     describe('#Technology Stack', function() {
       it(frontEndLibrariesStack, function() {
