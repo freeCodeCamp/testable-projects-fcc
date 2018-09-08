@@ -92,7 +92,7 @@ export default function createMarkdownPreviewerTests() {
     // At the beginning of the project, the Camper will might not have added
     // the markedjs library yet.
     if (typeof marked === 'function' ) {
-      findMarkdownMatches(markdownOnLoad);
+      findMarkdownMatches(markdownOnLoad || '');
     }
 
     // As of React 15.6, we need a workaround that allows continued use of
