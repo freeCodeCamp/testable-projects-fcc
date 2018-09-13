@@ -1,0 +1,185 @@
+/* This acts as sort of CSS reset. The div that will use this class is a
+   wrapper div for the entire test UI. By using this class we ensure that
+   Camper code will be less specific and therefor won't override properties
+   that could change the layout or styling of our test UI.
+*/
+
+/* Ensures that all child elements of the test UI wrapper div will have these
+   properties specified so Camper CSS won't override these properties.
+*/
+.fcc_test_ui * {
+  align-items: unset;
+  background: unset;
+  background-color: unset;
+  border: unset;
+  border-radius: unset;
+  box-shadow: unset;
+  color: unset;
+  cursor: unset;
+  display: unset;
+  font-family: unset;
+  font-stretch: unset;
+  font-size: unset;
+  font-style: unset;
+  font-variant-caps: unset;
+  font-weight: unset;
+  height: unset;
+  left: unset;
+  letter-spacing: unset;
+  line-height: unset;
+  margin: unset;
+  outline: unset;
+  padding: unset;
+  pointer-events: unset;
+  position: unset;
+  text-align: unset;
+  transform: unset;
+  vertical-align: unset;
+  word-spacing: unset;
+}
+
+/* This rules are used for set default values on our elements.
+   Based on Firefox css rules
+   https://dxr.mozilla.org/mozilla-central/source/layout/style/res/html.css
+*/
+
+/* blocks */
+.fcc_test_ui div,
+.fcc_test_ui footer,
+.fcc_test_ui header,
+.fcc_test_ui section,
+.fcc_test_ui select {
+  display: block;
+}
+
+.fcc_test_ui p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
+.fcc_test_ui h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  margin-block-start: .67em;
+  margin-block-end: .67em;
+}
+
+.fcc_test_ui h2,
+.fcc_test_ui section h1 {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-block-start: .83em;
+  margin-block-end: .83em;
+}
+
+.fcc_test_ui h3,
+.fcc_test_ui section, section h1 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
+.fcc_test_ui pre {
+  display: block;
+  white-space: pre;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
+.fcc_test_ui option {
+  font-weight: normal;
+  display: block;
+  white-space: pre;
+  min-height: 1.2em;
+  padding: 0px 2px 1px;
+}
+
+/* inlines */
+.fcc_test_ui b,
+.fcc_test_ui strong {
+  font-weight: bolder;
+}
+.fcc_test_ui i,
+.fcc_test_ui em {
+  font-style: italic;
+}
+
+.fcc_test_ui u,
+.fcc_test_ui ins {
+  text-decoration: underline;
+}
+
+.fcc_test_ui s,
+.fcc_test_ui strike,
+.fcc_test_ui del {
+  text-decoration: line-through;
+}
+
+.fcc_test_ui big {
+  font-size: larger;
+}
+
+.fcc_test_ui small {
+  font-size: smaller;
+}
+
+/* lists */
+.fcc_test_ui ul,
+.fcc_test_ui menu,
+.fcc_test_ui dir {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+}
+
+.fcc_test_ui ol {
+  display: block;
+  list-style-type: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+}
+
+.fcc_test_ui li {
+  display: list-item;
+  text-align: match-parent;
+}
+
+/* hidden elements */
+.fcc_test_ui script,
+.fcc_test_ui style {
+   display: none;
+}
+
+div.fcc_test_ui {
+  align-items: normal;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: black;
+  cursor: default;
+  display: block;
+  font-family: Noto Sans, arial, sans-serif;
+  font-size: 100%;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant-caps: normal;
+  font-weight: 400;
+  height: auto;
+  letter-spacing: normal;
+  line-height: 1;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  pointer-events: all;
+  text-align: center;
+  transform: none;
+  word-spacing: 0;
+}

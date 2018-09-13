@@ -1,45 +1,30 @@
 #fcc_foldout_menu_inner {
-  height: 0px;
-  position: relative;
-  background-color: transparent;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  padding: 30px 10px 10px;
 }
 
 #fcc_foldout_menu_inner label {
-  border-radius: 0px;
-  box-shadow: none;
-  border: none;
-  color: black;
-  cursor: default;
   font-size: 15px;
-  height: 20px;
-  left: 20px;
-  margin: 0px;
-  padding: 0px;
-  position: absolute;
-  top: 38px;
-  width: fit-content;
-  z-index: 0;
 }
 
 #fcc_foldout_menu_inner select {
   background-color: buttonface;
   border: 1px solid;
   border-color: rgb(169, 169, 169);
-  border-radius: 0px;
-  box-shadow: none;
-  color: black;
-  display: inherit;
   font-size: 12px;
-  height: auto;
-  left: 18px;
-  margin: 0px;
-  padding: 0px;
-  position: absolute;
-  top: 61px;
-  width: auto;
+  flex: 1 100%;
+  margin: 10px 15px;
+  text-align: left;
 }
 
-button.fcc_foldout_buttons {
+#fcc_foldout_menu_inner #fcc_report-bug {
+  display: block;
+  cursor: pointer;
+}
+
+button.fcc_foldout_button {
   background-color: rgba(128, 128, 128, 0.7);
   border: none;
   border-radius: 4px;
@@ -50,27 +35,19 @@ button.fcc_foldout_buttons {
   display: block;
   font-size: 15px;
   height: 20px;
-  left: 20px;
-  margin: 0px;
+  margin: 0 5px 10px;
   padding: 10px;
-  position: absolute;
   text-align: center;
   width: 110px;
-  z-index: 0;
 }
 
 #fcc_test_message-box-rerun-button {
-  top: 90px;
   transition: all .3s;
 }
 
 #fcc_test_message-box-rerun-button:hover {
   color: white;
   background-color: black;
-}
-
-#fcc_test_button {
-  top: 140px;
 }
 
 button.fcc_test_btn-default {
@@ -90,28 +67,14 @@ button.fcc_test_btn-success {
 }
 
 #fcc_report-bug {
-  position: absolute;
-  top: 186px;
-  left: 20px;
-  width: 110px;
-  padding: 0 10px;
   font-size: 12px;
-  text-align: center;
-  height: auto;
-  box-shadow: none;
 }
 
 #fcc_legend_wrapper {
-  position: absolute;
-  top: 95px;
-  left: 160px;
   width: 125px;
-  vertical-align: top;
   text-align: left;
   font-size: 15px;
-  background: none;
-  box-shadow: none;
-  height: auto;
+  padding: 5px 0;
 }
 
 #fcc_legend_wrapper span {
@@ -119,7 +82,6 @@ button.fcc_test_btn-success {
   margin-top: 6px;
   font-size: 12px ;
   color: black;
-  background: none;
 }
 
 div.fcc_legend.key {
@@ -127,7 +89,6 @@ div.fcc_legend.key {
   width: 15px;
   margin: 5px;
   vertical-align: top;
-  border-radius: 0;
 }
 
 div.fcc_legend.key:first-of-type {
@@ -143,76 +104,11 @@ div.fcc_legend.key:nth-of-type(3) {
 }
 
 div.fcc_legend, span.fcc_legend {
-  position: relative;
   display: inline-block;
-  left: 0px;
 }
 
-/* This acts as sort of CSS reset. The div that will use this class is a 
-   wrapper div for the entire test UI. By using this class we ensure that
-   Camper code will be less specific and therefor won't override properties
-   that could change the layout or styling of our test UI.
-*/
 div.fcc_test_ui {
-  align-items: normal;  
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  color: black;
-  cursor: default;
-  display: block;
-  font-family: Noto Sans, arial, sans-serif;
-  font-size: 100%;
-  font-stretch: normal;
-  font-style: normal;
-  font-variant-caps: normal;
-  font-weight: 400;
-  height: auto;
-  left: 0;
-  letter-spacing: normal;
-  line-height: 1;
-  margin: 0;
-  outline: 0;
-  padding: 0;
-  pointer-events: all;
   position: fixed;
-  text-align: center;
+  left: 0;
   top: 0;
-  transform: none;
-  vertical-align: baseline;
-  word-spacing: 0px;  
-}
-
-/* Ensures that all child elements of the test UI wrapper div will have these
-   properties specified so Camper CSS won't override these properties.
-*/
-.fcc_test_ui * {
-  align-items: inherit;  
-  background: inherit;
-  background-color: inherit;
-  border: inherit;
-  border-radius: inherit;
-  box-shadow: inherit;
-  color: inherit;
-  cursor: inherit;
-/*  display: inherit; */
-  font-family: inherit;
-  font-stretch: inherit;
-  font-size: inherit;
-  font-style: inherit;
-  font-variant-caps: inherit;
-  font-weight: inherit;
-  height: inherit;
-  left: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  margin: inherit;
-  outline: inherit;
-  padding: inherit;
-  pointer-events: inherit;
-  position: inherit;
-  text-align: inherit;
-  transform: inherit;
-  vertical-align: inherit;
-  word-spacing: inherit;  
 }
