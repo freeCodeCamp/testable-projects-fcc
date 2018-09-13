@@ -19,24 +19,24 @@ describe('D3 Alignment support tests', function() {
 
   describe('getTickPosition function', function() {
 
-    it('should get a position from the transform attribute',
+    it('should get a position of a tick element',
     function() {
 
       const dom = new JSDOM(`
         <g class="tick" transform="translate(0,16.5)">
+          <line x2="-10" y2="0"></line>
         </g>`
       );
 
       const tick = dom.window.document.querySelector('.tick');
-
       const position = getTickPosition(tick);
 
       assert.equal(position.x, 0);
-      assert.equal(position.y, 16.5);
+      assert.equal(position.y, 0);
 
     });
 
-    it('should throw an error if there is no transform attribute',
+    it('should throw an error if there is no line element',
     function() {
 
       const dom = new JSDOM(`
@@ -67,8 +67,9 @@ describe('D3 Alignment support tests', function() {
       const shape = dom.window.document.querySelector('.cell');
       const positionX = getShapePosition(shape, 'x', 'center');
       const positionY = getShapePosition(shape, 'y', 'center');
-      assert.strictEqual(positionX, 4.5);
-      assert.strictEqual(positionY, 20.5);
+
+      assert.strictEqual(positionX, 2.5);
+      assert.strictEqual(positionY, 16.5);
     });
   });
 
