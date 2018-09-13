@@ -43,12 +43,9 @@ after_failure: |
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG travis-screenshots 2>/dev/null
     cd "$TRAVIS_BUILD_DIR"
   fi
-after_success:
-  - cd $TRAVIS_BUILD_DIR
-  - chmod +x ./deploy.sh
 deploy:
   provider: script
   skip_cleanup: true
-  script: bash ./deploy.sh
+  script: bash deploy.sh
   on:
     branch: master
