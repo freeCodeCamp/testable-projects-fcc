@@ -21,10 +21,8 @@ export default function createScatterPlotTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. I can see a title element that has a corresponding
+      it(`I can see a title element that has a corresponding
       id="title".`,
       function() {
         assert.isNotNull(
@@ -33,8 +31,7 @@ export default function createScatterPlotTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see an x-axis that has a corresponding id="x-axis".`,
+      it('I can see an x-axis that has a corresponding id="x-axis".',
       function() {
         assert.isNotNull(
           document.getElementById('x-axis'),
@@ -47,8 +44,7 @@ export default function createScatterPlotTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see a y-axis that has a corresponding id="y-axis".`,
+      it('I can see a y-axis that has a corresponding id="y-axis".',
       function() {
         assert.isNotNull(
           document.getElementById('y-axis'),
@@ -61,8 +57,7 @@ export default function createScatterPlotTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see dots, that each have a class of "dot", which
+      it(`I can see dots, that each have a class of "dot", which
       represent the data being plotted.`,
       function() {
         assert.isAbove(
@@ -72,8 +67,7 @@ export default function createScatterPlotTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each dot should have the properties "data-xvalue" and
+      it(`Each dot should have the properties "data-xvalue" and
       "data-yvalue" containing their corresponding x and y values.`,
       function() {
         const dots = document.getElementsByClassName('dot');
@@ -95,8 +89,7 @@ export default function createScatterPlotTests() {
         }
       });
 
-      reqNum++;
-      it(`${reqNum}. The data-xvalue and data-yvalue of each dot should be
+      it(`The data-xvalue and data-yvalue of each dot should be
       within the range of the actual data and in the correct data format. For
       data-xvalue, integers (full years) or Date objects are acceptable for test
       evaluation. For data-yvalue (minutes), use Date objects. `,
@@ -142,8 +135,7 @@ export default function createScatterPlotTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. The data-xvalue and its corresponding dot should align
+      it(`The data-xvalue and its corresponding dot should align
       with the corresponding point/value on the x-axis.`,
       function() {
         const axis = document.querySelector('#x-axis');
@@ -168,8 +160,7 @@ export default function createScatterPlotTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. The data-yvalue and its corresponding dot should align
+      it(`The data-yvalue and its corresponding dot should align
       with the corresponding point/value on the y-axis.`,
       function() {
         const axis = document.querySelector('#y-axis');
@@ -194,8 +185,7 @@ export default function createScatterPlotTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see multiple tick labels on the y-axis with "%M:%S"
+      it(`I can see multiple tick labels on the y-axis with "%M:%S"
       time format.`,
       function() {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
@@ -214,8 +204,7 @@ export default function createScatterPlotTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see multiple tick labels on the x-axis that show the
+      it(`I can see multiple tick labels on the x-axis that show the
       year.`,
       function() {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
@@ -234,8 +223,7 @@ export default function createScatterPlotTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see that the range of the x-axis labels are within
+      it(`I can see that the range of the x-axis labels are within
       the range of the actual x-axis data.`,
       function() {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
@@ -261,8 +249,7 @@ export default function createScatterPlotTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see that the range of the y-axis labels are within
+      it(`I can see that the range of the y-axis labels are within
       the range of the actual y-axis data.`,
       function() {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
@@ -291,8 +278,7 @@ export default function createScatterPlotTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see a legend containing descriptive text that has
+      it(`I can see a legend containing descriptive text that has
       id="legend".`,
       function() {
         assert.isNotNull(

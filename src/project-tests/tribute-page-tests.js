@@ -17,10 +17,8 @@ export default function createTributePageTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My tribute page should have an element with corresponding
+      it(`My tribute page should have an element with corresponding
       id="main", which contains all other elements.`,
       function() {
         assert.isNotNull(document.getElementById('main'));
@@ -31,8 +29,7 @@ export default function createTributePageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I should see an element with corresponding id="title",
+      it(`I should see an element with corresponding id="title",
       which contains a string (i.e. text) that describes the subject of the
       tribute page (e.g. "Dr. Norman Borlaug").`,
       function() {
@@ -45,15 +42,13 @@ export default function createTributePageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I should see a <div> element with corresponding
+      it(`I should see a <div> element with corresponding
       id="img-div".`,
       function() {
         assert.isNotNull(document.getElementById('img-div'));
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the "img-div" element, I should see an <img> element
+      it(`Within the "img-div" element, I should see an <img> element
       with a corresponding id="image".`,
       function() {
         assert.isNotNull(document.getElementById('image'));
@@ -64,8 +59,7 @@ export default function createTributePageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Within the "img-div" element, I should see an element with
+      it(`Within the "img-div" element, I should see an element with
       a corresponding id="img-caption" that contains textual content describing
       the image shown in "img-div".`,
       function() {
@@ -84,8 +78,7 @@ export default function createTributePageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I should see an element with a corresponding
+      it(`I should see an element with a corresponding
       id="tribute-info", which contains textual content describing the subject
       of the tribute page.`,
       function() {
@@ -99,8 +92,7 @@ export default function createTributePageTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I should see an <a> element with a corresponding
+      it(`I should see an <a> element with a corresponding
       id="tribute-link", which links to an outside site that contains additional
       information about the subject of the tribute page. HINT: You must give
       your element an attribute of target and set it to "_blank" in order for
@@ -129,10 +121,8 @@ export default function createTributePageTests() {
     });
 
     describe('#Layout', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. The <img> element should responsively resize, relative to
+      it(`The <img> element should responsively resize, relative to
       the width of its parent element, without exceeding its original size.`,
       function() {
         const img = document.getElementById('image');
@@ -166,8 +156,7 @@ export default function createTributePageTests() {
         img.style.display = displayValue;
       });
 
-      reqNum++;
-      it(`${reqNum}. The <img> element should be centered within its parent
+      it(`The <img> element should be centered within its parent
       element.`,
       function() {
         const img = document.getElementById('image'),

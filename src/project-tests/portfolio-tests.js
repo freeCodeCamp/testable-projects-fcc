@@ -14,17 +14,14 @@ export default function createPortfolioTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My portfolio should have a Welcome section with an id of
+      it(`My portfolio should have a Welcome section with an id of
       "welcome-section".`,
       function() {
         assert.isNotNull(document.getElementById('welcome-section'));
       });
 
-      reqNum++;
-      it(`${reqNum}. The welcome section should have an h1 element that contains
+      it(`The welcome section should have an h1 element that contains
       text.`,
       function() {
 
@@ -42,15 +39,13 @@ export default function createPortfolioTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My portfolio should have a projects section with an id of
+      it(`My portfolio should have a projects section with an id of
       "projects".`,
       function() {
         assert.isNotNull(document.getElementById('projects'));
       });
 
-      reqNum++;
-      it(`${reqNum}. The projects section should contain at least one element
+      it(`The projects section should contain at least one element
       with a class of "project-tile" to hold a project.`,
       function() {
         assert.isAbove(
@@ -59,8 +54,7 @@ export default function createPortfolioTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The projects section should contain at least one link to a
+      it(`The projects section should contain at least one link to a
       project.`,
       function() {
         assert.isAbove(
@@ -69,16 +63,14 @@ export default function createPortfolioTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My portfolio should have a navbar with an id of "navbar".`,
+      it('My portfolio should have a navbar with an id of "navbar".',
       function() {
         const navbar = document.getElementById('navbar');
 
         assert.isNotNull(navbar);
       });
 
-      reqNum++;
-      it(`${reqNum}. The navbar should contain at least one link that I can
+      it(`The navbar should contain at least one link that I can
       click on to navigate to different sections of the page.`,
       function(done) {
         // Filter anchors by location hash (don't click external links)
@@ -170,8 +162,7 @@ export default function createPortfolioTests() {
         setTimeout(() => testScroll(testTopCondition), 500);
       });
 
-      reqNum++;
-      it(`${reqNum}. My portfolio should have a link with an id of
+      it(`My portfolio should have a link with an id of
       "profile-link", which opens my GitHub or FCC profile in a new tab.`,
       function() {
         const profileLink = document.getElementById('profile-link');
@@ -198,10 +189,8 @@ export default function createPortfolioTests() {
     });
 
     describe('#Layout', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My portfolio should have at least one media query.`,
+      it('My portfolio should have at least one media query.',
       function() {
 
         // Filter to get only media queries.
@@ -221,8 +210,7 @@ export default function createPortfolioTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The height of the welcome section should be equal to the
+      it(`The height of the welcome section should be equal to the
       height of the viewport.`,
       function() {
         assert.equal(
@@ -233,8 +221,7 @@ export default function createPortfolioTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The navbar should always be at the top of the viewport.`,
+      it('The navbar should always be at the top of the viewport.',
       function(done) {
         const navbar = document.getElementById('navbar');
         assert.approximately(

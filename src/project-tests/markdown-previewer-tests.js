@@ -149,10 +149,8 @@ export default function createMarkdownPreviewerTests() {
     });
 
     describe('#Tests', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. I can see a <textarea> element with corresponding
+      it(`I can see a <textarea> element with corresponding
       id="editor"`,
       function() {
         assert.isNotNull(editor, '#editor is not defined ');
@@ -163,14 +161,12 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. I can see an element with corresponding id="preview"`,
+      it('I can see an element with corresponding id="preview"',
       function() {
         assert.isNotNull(preview, '#preview is not defined ');
       });
 
-      reqNum++;
-      it(`${reqNum}. When I enter text into the #editor element, the #preview
+      it(`When I enter text into the #editor element, the #preview
       element is updated as I type to display the content of the textarea`,
       function() {
         // initial triggerChange is to enable writability and configurability
@@ -185,8 +181,7 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When I enter GitHub flavored markdown into the #editor
+      it(`When I enter GitHub flavored markdown into the #editor
       element, the text is rendered as HTML in the #preview element as I type
       (Hint: You don't need to parse Markdown yourself - you can import the
       Marked library for this: https://cdnjs.com/libraries/marked)`,
@@ -217,8 +212,7 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When my markdown previewer first loads, the default text in
+      it(`When my markdown previewer first loads, the default text in
       the #editor field should contain valid markdown that represents at least
       one of each of the following elements: a header (H1 size), a sub header
       (H2 size), a link, inline code, a code block, a list item, a blockquote,
@@ -292,8 +286,7 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. When my markdown previewer first loads, the default
+      it(`When my markdown previewer first loads, the default
       markdown in the #editor field should be rendered as HTML in the #preview
       element`,
       function() {
@@ -386,8 +379,7 @@ export default function createMarkdownPreviewerTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. OPTIONAL BONUS (you do not need to make this test pass):
+      it(`OPTIONAL BONUS (you do not need to make this test pass):
       My markdown previewer interprets carriage returns and renders them as <br>
       (line break) elements (HINT: read the Marked.js docs for this one!).`,
       function() {

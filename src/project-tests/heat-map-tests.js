@@ -16,10 +16,8 @@ export default function createHeatMapTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have a title with a corresponding
+      it(`My heat map should have a title with a corresponding
       id="title".`,
       function() {
         assert.isNotNull(
@@ -28,8 +26,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have a description with a corresponding
+      it(`My heat map should have a description with a corresponding
       id="description".`,
       function() {
         assert.isNotNull(
@@ -38,8 +35,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have an x-axis with a corresponding
+      it(`My heat map should have an x-axis with a corresponding
       id="x-axis".`,
       function() {
         assert.isNotNull(
@@ -48,8 +44,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have a y-axis with a corresponding
+      it(`My heat map should have a y-axis with a corresponding
       id="y-axis".`,
       function() {
         assert.isNotNull(
@@ -58,8 +53,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have <rect> elements with a class="cell"
+      it(`My heat map should have <rect> elements with a class="cell"
       that represent the data.`,
       function() {
         assert.isAbove(
@@ -69,8 +63,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. There should be at least 4 different fill colors used for
+      it(`There should be at least 4 different fill colors used for
       the cells.`,
       function() {
         const cells = document.querySelectorAll('rect.cell');
@@ -81,8 +74,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each cell will have the properties "data-month",
+      it(`Each cell will have the properties "data-month",
       "data-year", "data-temp" containing their corresponding month, year, and
       temperature values.`,
       function() {
@@ -113,8 +105,7 @@ export default function createHeatMapTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. The "data-month", "data-year" of each cell should be
+      it(`The "data-month", "data-year" of each cell should be
       within the range of the data.`,
       function() {
 
@@ -144,8 +135,7 @@ export default function createHeatMapTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have cells that align with the
+      it(`My heat map should have cells that align with the
       corresponding month on the y-axis.`,
       function() {
 
@@ -173,8 +163,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have cells that align with the
+      it(`My heat map should have cells that align with the
       corresponding year on the x-axis.`,
       function() {
         const cellsCollection = document.querySelectorAll('rect.cell');
@@ -201,8 +190,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have multiple tick labels on the y-axis
+      it(`My heat map should have multiple tick labels on the y-axis
       with the full month name.`,
       function() {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
@@ -238,8 +226,7 @@ export default function createHeatMapTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have multiple tick labels on the x-axis
+      it(`My heat map should have multiple tick labels on the x-axis
       with the years between 1754 and 2015.`,
       function() {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
@@ -268,8 +255,7 @@ export default function createHeatMapTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. My heat map should have a legend with corresponding
+      it(`My heat map should have a legend with corresponding
       id="legend".`,
       function() {
         assert.isNotNull(
@@ -278,8 +264,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My legend should contain <rect> elements.`,
+      it('My legend should contain <rect> elements.',
       function() {
         assert.isAbove(
           document.querySelectorAll('#legend rect').length,
@@ -288,8 +273,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The <rect> elements in the legend should use at least 4 
+      it(`The <rect> elements in the legend should use at least 4 
       different fill colors`,
       function() {
         const legendItems =

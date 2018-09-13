@@ -18,10 +18,8 @@ export default function createBarChartTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My chart should have a title with a corresponding
+      it(`My chart should have a title with a corresponding
       id="title"`,
       function() {
         assert.isNotNull(
@@ -30,8 +28,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My Chart should have a <g> element x-axis with a 
+      it(`My Chart should have a <g> element x-axis with a 
       corresponding id="x-axis"`,
       function() {
         assert.isAbove(
@@ -41,8 +38,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My Chart should have a <g> element y-axis with a 
+      it(`My Chart should have a <g> element y-axis with a 
       corresponding id="y-axis"`,
       function() {
         assert.isAbove(
@@ -52,8 +48,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Both axes should contain multiple tick labels, each with 
+      it(`Both axes should contain multiple tick labels, each with 
       the corresponding class="tick" `,
       function() {
 
@@ -69,8 +64,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My Chart should have a <rect> element for each data point 
+      it(`My Chart should have a <rect> element for each data point 
       with a corresponding class="bar" displaying the data`,
       function() {
 
@@ -86,8 +80,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each bar should have the properties "data-date" and
+      it(`Each bar should have the properties "data-date" and
       "data-gdp" containing date and GDP values`,
       function() {
         const bars = document.querySelectorAll('rect.bar');
@@ -110,8 +103,7 @@ export default function createBarChartTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. The bar elements' "data-date" properties should match the 
+      it(`The bar elements' "data-date" properties should match the 
       order of the provided data`,
       function(done) {
         $.getJSON(
@@ -142,8 +134,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The bar elements' "data-gdp" properties should match the 
+      it(`The bar elements' "data-gdp" properties should match the 
       order of the provided data`,
       function(done) {
         $.getJSON(
@@ -174,8 +165,7 @@ export default function createBarChartTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each bar element's height should accurately represent the 
+      it(`Each bar element's height should accurately represent the 
       data's corresponding GDP`,
       function() {
         const bars = document.querySelectorAll('rect.bar');
@@ -199,8 +189,7 @@ export default function createBarChartTests() {
         });
       });
 
-      reqNum++;
-      it(`${reqNum}. The data-date attribute and its corresponding bar element 
+      it(`The data-date attribute and its corresponding bar element 
       should align with the corresponding value on the x-axis.`,
       function() {
 
@@ -235,8 +224,7 @@ export default function createBarChartTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. The data-gdp attribute and its corresponding bar element 
+      it(`The data-gdp attribute and its corresponding bar element 
       should align with the corresponding value on the y-axis.`,
       function() {
 

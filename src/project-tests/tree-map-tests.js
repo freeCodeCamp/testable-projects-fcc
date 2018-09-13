@@ -15,10 +15,8 @@ export default function createTreeMapTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My tree map should have a title with a corresponding
+      it(`My tree map should have a title with a corresponding
       id="title"`,
       function() {
         assert.isNotNull(
@@ -27,8 +25,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My tree map should have a description with a corresponding
+      it(`My tree map should have a description with a corresponding
       id="description"`,
       function() {
         assert.isNotNull(
@@ -37,8 +34,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My tree map should have <rect> elements with a
+      it(`My tree map should have <rect> elements with a
       corresponding class="tile" that represent the data`,
       function() {
         assert.isAbove(
@@ -48,8 +44,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. There should be at least 2 different fill colors used for
+      it(`There should be at least 2 different fill colors used for
       the tiles`,
       function() {
         const tiles = document.querySelectorAll('rect.tile');
@@ -60,8 +55,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. Each tile should have the properties "data-name",
+      it(`Each tile should have the properties "data-name",
       "data-category",  and "data-value" containing their corresponding name,
       category, and value`,
       function() {
@@ -89,8 +83,7 @@ export default function createTreeMapTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}.  The area of each tile should correspond to the data-value
+      it(` The area of each tile should correspond to the data-value
       amount: tiles with a larger data-value should have a bigger area.`,
       function() {
         const tilesCollection = document.querySelectorAll('rect.tile');
@@ -156,8 +149,7 @@ export default function createTreeMapTests() {
         }
       });
 
-      reqNum++;
-      it(`${reqNum}. My tree map should have a legend with corresponding
+      it(`My tree map should have a legend with corresponding
       id="legend"`,
       function() {
         assert.isNotNull(
@@ -166,8 +158,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My legend should have <rect> elements with a
+      it(`My legend should have <rect> elements with a
       corresponding class="legend-item"`,
       function() {
         assert.isAbove(
@@ -177,8 +168,7 @@ export default function createTreeMapTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. The <rect> elements in the legend should use at least 2 
+      it(`The <rect> elements in the legend should use at least 2 
       different fill colors`,
       function() {
         const legendItems =

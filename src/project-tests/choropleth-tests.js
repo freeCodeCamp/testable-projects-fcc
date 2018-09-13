@@ -15,10 +15,8 @@ export default function createChoroplethTests() {
     });
 
     describe('#Content', function() {
-      let reqNum = 0;
 
-      reqNum++;
-      it(`${reqNum}. My Choropleth should have a title with a corresponding
+      it(`My Choropleth should have a title with a corresponding
       id="title"`,
       function() {
         assert.isNotNull(
@@ -27,8 +25,7 @@ export default function createChoroplethTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My Choropleth should have a description element with a
+      it(`My Choropleth should have a description element with a
       corresponding id="description"`,
       function() {
         assert.isNotNull(
@@ -37,8 +34,7 @@ export default function createChoroplethTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My Choropleth should have counties with a corresponding
+      it(`My Choropleth should have counties with a corresponding
       class="county" that represent the data`,
       function() {
         assert.isAbove(
@@ -48,8 +44,7 @@ export default function createChoroplethTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. There should be at least 4 different fill colors used for
+      it(`There should be at least 4 different fill colors used for
       the counties`,
       function() {
         const counties = document.querySelectorAll('.county');
@@ -60,8 +55,7 @@ export default function createChoroplethTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. My counties should each have "data-fips" and
+      it(`My counties should each have "data-fips" and
       "data-education" properties containing their corresponding fips and
       education values`,
       function() {
@@ -85,8 +79,7 @@ export default function createChoroplethTests() {
         }
       });
 
-      reqNum++;
-      it(`${reqNum}. My Choropleth should have a county for each provided data
+      it(`My Choropleth should have a county for each provided data
       point`,
       function() {
         const counties = document.querySelectorAll('.county');
@@ -94,8 +87,7 @@ export default function createChoroplethTests() {
         assert.equal(counties.length, educationData.length);
       });
 
-      reqNum++;
-      it(`${reqNum}. The counties should have data-fips and data-education
+      it(`The counties should have data-fips and data-education
       values that match the sample data`,
       function() {
         const counties = document.querySelectorAll('.county');
@@ -158,8 +150,7 @@ export default function createChoroplethTests() {
 
       });
 
-      reqNum++;
-      it(`${reqNum}. My Choropleth should have a legend with a corresponding
+      it(`My Choropleth should have a legend with a corresponding
       id="legend"`,
       function() {
         assert.isNotNull(
@@ -168,8 +159,7 @@ export default function createChoroplethTests() {
         );
       });
 
-      reqNum++;
-      it(`${reqNum}. There should be at least 4 different fill colors used for
+      it(`There should be at least 4 different fill colors used for
       the legend`,
       function() {
         const rects = document.querySelectorAll('#legend rect');
