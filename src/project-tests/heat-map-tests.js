@@ -227,7 +227,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have multiple tick labels on the x-axis
-      with the years between 1754 and 2015.`,
+      with the years between 1753 and 2015.`,
       function() {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
@@ -242,8 +242,8 @@ export default function createHeatMapTests() {
         xAxisTickLabels.forEach(tickLabel => {
           assert.isAtLeast(
             tickLabel.textContent,
-            1754,
-            'X axis labels should contain a year that\'s at least 1754 '
+            1753,
+            'X axis labels should contain a year that\'s at least 1753 '
           );
 
           assert.isAtMost(
