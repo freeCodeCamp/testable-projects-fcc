@@ -1,5 +1,5 @@
 /* global bundleUrl, browserMaxWidth, browserMaxHeight, screenshotDir,
-   chromeBinaryPath
+   chromeBinaryPath, firefoxBinaryPath
 */
 
 /*
@@ -14,53 +14,28 @@
  * - Click on the "Tests" button to see the results.
  * - Grab a screenshot of the results and save it to disk.
  *
- * Note that we tried to get headless Chrome to work running these tests but
- * there were intermitant failures, so that is not a viable option as of July
- * 2017. Perhaps a later version will work more reliably. In which case, we
- * no longer need Xvfb in the travis.yml file.
  */
-
-let screenShotUniq = 0;
-
- // Grab a screenshot and write to disk.
- // TODO: Do we want to grab screenshots for success?
- const saveScreenshot = function(driver, screenshotDir, name, type) {
-
-   const fileName =
-     `test-result-${screenShotUniq}-${name.replace(/ /g, '-')}-${type}.png`;
-
-   screenShotUniq++;
-
-   return driver.takeScreenshot()
-   .then(function(data) {
-     if (data) {
-       var base64Data = data.replace(/^data:image\/png;base64,/, '');
-       fs.writeFile(
-         path.join(screenshotDir, fileName),
-         base64Data,
-         'base64',
-         function(err) {
-          if (err) { console.log(err); }
-         }
-       );
-     }
-   });
- };
-
-// Chromedriver is used by Selenium and requiring the module avoids having to
-// download and install the executable from Google along with setting the path.
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "chromedriver" }] */
-let chromedriver = require('chromedriver');
-
-let webdriver = require('selenium-webdriver'),
-    By = webdriver.By,
-    until = webdriver.until;
 
 // Used to save screenshots.
 const fs = require('fs');
 const path = require('path');
 
-exports.doesProjectPassTests = function(name, URL) {
+let screenShotUniq = 0;
+
+// Chromedriver and geckodriver are used by Selenium and requiring the module
+// avoids having to download and install the executable from Google
+// along with setting the path.
+/* eslint no-unused-vars: ["error", {
+    "varsIgnorePattern": "chromedriver|geckodriver"
+   }] */
+let chromedriver = require('chromedriver');
+let geckodriver = require('geckodriver');
+
+let webdriver = require('selenium-webdriver'),
+    By = webdriver.By,
+    until = webdriver.until;
+
+exports.doesProjectPassTests = (browser, name, URL) => {
 
   // If elements don't appear within 1 minute, it's usually an error.
   const elementTimeout = 60000;
@@ -68,231 +43,263 @@ exports.doesProjectPassTests = function(name, URL) {
   // If all of the project tests pass, this is set to true.
   let success = false;
 
-  const chrome = require('selenium-webdriver/chrome');
+  // headless mode for chrome and firefox is enabled by default
+  let headless = process.env.HEADLESS !== '0';
 
-  // Set up Chrome options. We use both "start-maximized" along with
-  // "window-size" because some platforms prefer one or the other.
-  let options = new chrome.Options();
-  options.addArguments([
-    'start-maximized',
-    `window-size=${browserMaxWidth}x${browserMaxHeight}`,
-    'no-sandbox'
-  ]);
-  options.setChromeBinaryPath(chromeBinaryPath);
+  let capabilities;
+
+  if (browser === 'chrome') {
+
+    // Set up Chrome options.
+    const chrome = require('selenium-webdriver/chrome');
+    let chromeOptions = (new chrome.Options())
+      .addArguments([
+        // Decrease log output, on Windows it's verbose.
+        'log-level=3',
+        // Some of the tests make noise, so turn off the sound.
+        'mute-audio'
+      ])
+      .setChromeBinaryPath(chromeBinaryPath);
+    if (headless) {
+      chromeOptions.headless();
+    }
+
+    capabilities = chromeOptions.toCapabilities();
+
+  } else if (browser === 'firefox') {
+
+    // Set up Firefox options.
+    const firefox = require('selenium-webdriver/firefox');
+    let profile = new firefox.Profile();
+    // Some of the tests make noise, so turn off the sound.
+    profile.setPreference('media.volume_scale', '0.0');
+    let firefoxOptions = (new firefox.Options())
+      .setProfile(profile)
+      .setBinary(firefoxBinaryPath);
+    if (headless) {
+      firefoxOptions.headless();
+    }
+
+    capabilities = firefoxOptions.toCapabilities();
+
+  } else {
+    throw new Error(`Browser ${browser} is not supported`);
+  }
+
+  // For tests purpose, we use a self-signed certificate, so accept
+  // insecure certificates
+  capabilities.set('acceptInsecureCerts', true);
 
   // Create the browser.
-  var driver = new webdriver.Builder()
-    .forBrowser('chrome')
-    .setChromeOptions(options)
+  let driver = new webdriver.Builder()
+    .withCapabilities(capabilities)
     .build();
 
   // The following functions are defined below instead of outside this function
   // so we do not have to pass the 'driver' as a function parameter. It makes
   // the functions easier to use in a 'then' chain.
 
+  // Grab a screenshot and write to disk.
+  // TODO: Do we want to grab screenshots for success?
+  const saveScreenshot = (name, type) => {
+
+    const fileName =
+      `test-result-${screenShotUniq}-${browser}-` +
+      `${name.replace(/[ :]/g, '_')}-${type}.png`;
+
+    screenShotUniq++;
+
+    return driver.takeScreenshot()
+      .then(data => {
+        if (data) {
+          var base64Data = data.replace(/^data:image\/png;base64,/, '');
+          return fs.writeFile(
+            path.join(screenshotDir, fileName),
+            base64Data,
+            'base64',
+            err => {if (err) { console.log(err); }}
+          );
+        }
+        return null;
+      });
+  };
+
   // Locates an element and then clicks it.
-  const clickElement = function(locator) {
-    return driver.wait(
+  const clickElement = locator => driver.wait(
       until.elementLocated(locator),
       elementTimeout
     )
-    .then(clickWhenVisible, errorFunc);
-  };
+    .then(clickWhenVisible);
 
   // Waits for an element to be visible, and then clicks it.
-  const clickWhenVisible = function(element) {
-    return driver.wait(
-     until.elementIsVisible(element),
-     elementTimeout
-   )
-   .then(function(element) {
-     element.click();
-     return element;
-   },
-   errorFunc);
-  };
+  const clickWhenVisible = element => driver.wait(
+      until.elementIsVisible(element),
+      elementTimeout
+    )
+    .then(element => element.click().then(() => element));
 
   // Waits for an element to have opacity of 1. Helps for waiting for elements
   // that fade in. Returns the element when the opacity reaches '1' so that
   // this can be chained with other promises.
-  const waitOpacity = function(element) {
-    return driver.wait(function() {
-      return element.getCssValue('opacity')
-      .then(function(opacity) {
-        if (opacity === '1') {
-          return element;
-        } else {
-          return false;
-        }
-      });
-    });
-  };
+  const waitOpacity = element => driver.wait(() => (
+    element.getCssValue('opacity')
+    .then(opacity => (opacity === '1') ? element : false)
+  ));
 
   // Handles errors. Saves a screenshot so we can see what the error is.
-  const errorFunc = function(error) {
-    // Ignore unexpected alert error, log all others.
-    if (error.name === 'UnexpectedAlertOpenError') {
-      console.log('Ignoring UnexpectedAlertOpenError');
-      saveScreenshot(driver, screenshotDir, name, `ERROR-${error.name}`);
-    } else {
-      saveScreenshot(driver, screenshotDir, name, `ERROR-${error.name}`);
+  const errorFunc = error => {
       console.error(error);
-    }
+      return saveScreenshot(name, `ERROR-${error.name}`);
+  };
+
+  // Alert appears only once.
+  let accepted = false;
+  const acceptAlert = () => {
+    if (accepted) { return null; }
+    return driver.wait(until.alertIsPresent(), 10000)
+      .then(
+        () => {
+          accepted = true;
+          return driver.switchTo().alert().accept();
+        },
+        () => 'do nothing'
+      );
   };
 
   // Test automation starts here.
 
-  // Mac OS for some reason doesn't like the 'start-maximized' flag.
-  // In some cases (e.g. Mac, headless Chrome) the "start-maximized" flag is
-  // ignored, so we do this just in case.
-  driver.manage().window().setPosition(0, 0);
-  driver.manage().window().setSize(browserMaxWidth, browserMaxHeight);
+  // Firefox doesn't have an option to maximize the window
+  // So we set the size here.
+  return driver.manage().window().setPosition(0, 0)
+  .then(() => driver.manage().window()
+    .setSize(browserMaxWidth, browserMaxHeight)
+  )
 
   // Get the specified URL.
-  driver.get(URL);
+  .then(() => driver.get(URL))
+
+  // Will not be needed after deploy
+  .then(acceptAlert)
 
   // Change the CodePen view to put the editor on the left side, so it is easier
   // to see the project tests output.
-
-  clickElement(By.id('view-switcher-button'));
-  clickElement(By.id('left-layout'));
+  .then(() => clickElement(By.id('view-switcher-button')))
+  .then(() => clickElement(By.id('left-layout')))
   // Need to click again to hide the view switcher.
-  clickElement(By.id('view-switcher-button'));
+  .then(() => clickElement(By.id('view-switcher-button')))
 
   // Now we need to change some settings.
 
   // Click on the "Edit Settings" button, and then sleep because the settings
   // modal fades in.
-  clickElement(By.id('edit-settings'));
+  .then(() => clickElement(By.id('edit-settings')))
 
   // Wait for the item settings modal.
-  driver.wait(
+  .then(() => driver.wait(
     until.elementLocated(By.css('#item-settings-modal.open')),
     elementTimeout
-  )
+  ))
   .then(waitOpacity)
-  .then(function(element) {
-    driver.wait(
-     until.elementIsVisible(element),
-     elementTimeout
-   );
-  },
-  errorFunc);
+  .then(element => driver.wait(
+    until.elementIsVisible(element),
+    elementTimeout
+  ))
 
   // Click on "Behavior" settings tab.
-  clickElement(By.id('settings-behavior-tab'));
+  .then(() => clickElement(By.id('settings-behavior-tab')))
 
   // Wait until it is the active tab.
-  driver.wait(
+  .then(() => driver.wait(
     until.elementLocated(By.css('#settings-behavior.active')),
     elementTimeout
-  )
-  .then(function(element) {
-    return driver.wait(
-     until.elementIsVisible(element),
-     elementTimeout
-   );
-  },
-  errorFunc);
+  ))
+  .then(element => driver.wait(
+    until.elementIsVisible(element),
+    elementTimeout
+  ))
 
   // Make sure "Auto-Updating Preview" is not checked. This means we will need
   // to click the "Run" button after making changes. This is more reliable than
   // waiting for the page to refresh on its own.
-  driver.wait(
+  .then(() => driver.wait(
     until.elementLocated(By.id('auto-run')),
     elementTimeout
   )
-  .then(function(element) {
-    return driver.wait(
+  .then(element => driver.wait(
      until.elementIsVisible(element),
      elementTimeout
-   );
-  })
-  .then(function(elementAutoRun) {
-     return elementAutoRun.getAttribute('checked')
-    .then(function(checked) {
-      if (checked) {
-        elementAutoRun.click();
-      }
-    });
-  })
-  .catch(errorFunc);
+  ))
+  .then(elementAutoRun => elementAutoRun.getAttribute('checked')
+    .then(checked => checked ? elementAutoRun.click() : null)
+  ))
 
   // This next section changes the javascript settings to remove the CDN
   // bundle.js and use our local bundle.js from the URL specified in the Mocha
   // setup.js file. Note you must have a setup.js file and set
   // global.bundleUrl for this section to execute.
-  if ('undefined' !== typeof bundleUrl) {
-    // Click on javascript settings.
-    clickElement(By.id('settings-js-tab'));
+  .then(() => clickElement(By.id('settings-js-tab')))
+  // Wait until it is the active tab.
+  .then(() => driver.wait(
+    until.elementLocated(By.css('#settings-js.active')),
+    elementTimeout
+  ))
+  .then(element => driver.wait(
+    until.elementIsVisible(element),
+    elementTimeout
+  ))
 
-    // Find the bundle.js input row and set it to blank.
-    // TODO: Put the var declaration elsewhere.
-    var javascriptRows = driver.findElements(
-      By.className('js-resource external-resource')
-    );
-
-    javascriptRows.then(function(webElems) {
-      webElems.forEach(function(elem) {
-        var value = elem.getAttribute('value');
-        value.then(function(val) {
-          if (val.includes('bundle.js', 0)) {
-            elem.clear();
-            elem.sendKeys(bundleUrl);
-          }
-        });
-      });
-    });
-  }
+  // Find the bundle.js input row and set it to bundleUrl.
+  .then(() => driver.findElements(
+    By.css("input[class*='js-resource external-resource'][value*='bundle.js']")
+  ))
+  .then(rows => [].slice.call(rows)
+    .reduce((P, elem) => (
+      // Without ' ' works wrong in Firefox
+      P.then(() => elem.clear().then(() => elem.sendKeys(bundleUrl + ' ')))
+    ), Promise.resolve(''))
+  )
 
   // We are done changing the settings. Close the modal.
-  clickElement(By.id('close-settings'));
+  .then(() => clickElement(By.id('close-settings')))
 
   // Re-run the web page and detect when is reloaded. The way we do this is a
   // little tricky. We get the current "results" iframe and then
   // later (after clicking "Run") we detect when it is no longer present.
   // Which means the new iframe will load.
-  let iframeElem = driver.wait(
+  .then(() => driver.wait(
     until.elementLocated(By.className('result-iframe')),
     elementTimeout
-  );
+  ))
 
   // Now we click the run button...
-  clickElement(By.id('run'));
-
-  // And wait for the previous iframe to no longer exist, because CodePen
-  // creates a new iframe for the output on each click of "Run".
-  driver.wait(
-    until.stalenessOf(iframeElem),
-    elementTimeout
-  )
-  .catch(errorFunc);
+  .then(iframeElement => {
+    clickElement(By.id('run'));
+    return driver.wait(
+      until.stalenessOf(iframeElement),
+      elementTimeout
+    );
+  })
 
   // Switch to the CodePen output frame. This is the frame where the
   // newly refreshed project web page is displayed.
-  // For some reason immediately switching to the new iframe is no longer
-  // working. It could be due to a change in the way CodePen manages its iframes
-  // or a bug in Selenium or something else. Unfortunately that means we have
-  // to do a short sleep before switching to the new iframe.
-  driver.sleep(1000);
-  driver.wait(
+  .then(() => driver.wait(
     until.ableToSwitchToFrame(By.className('result-iframe')),
     elementTimeout
-  );
+  ))
 
   // Wait for the page to finish loading. In some cases, just for example the
   // D3 projects, projects are loading remote data, so we have to be generous
   // here.
   // TODO: A better way to do this is to change all of the example projects to
-  // set a varialbe such as 'fccTestableProjectsdataLoaded', and then we can
+  // set a variable such as 'fccTestableProjectsDataLoaded', and then we can
   // wait for that variable to be true. But that will require changing every
   // example project.
-  driver.sleep(2000);
+  .then(() => driver.sleep(2000))
 
-  let wrapperPromise = driver.wait(
-    until.elementLocated(By.css('#fcc_test_suite_wrapper')),
+  .then(() => driver.wait(
+    until.elementLocated(By.id('fcc_test_suite_wrapper')),
     elementTimeout
-  );
+  ))
 
   // Run the tests by clicking our test button after the element appears.
   // In order to click anything inside the Shadow DOM, we need to locate by
@@ -302,71 +309,54 @@ exports.doesProjectPassTests = function(name, URL) {
   // More info in https://stackoverflow.com/a/21125803/3530394 and
   // https://www.codesd.com/item/access-to-the-elements-in-the-shadow-dom.html
   // and in the jsdocs for `selenium-webdriver/by.js`
-  wrapperPromise
-  .then(function(element) {
-    driver.wait(until.elementLocated(By.js(
-      'return arguments[0]' +
-      '.shadowRoot.getElementById("fcc_test_message-box-rerun-button")', element
-      )),
-      elementTimeout
-    )
-    .then(function(element2) {
-      element2.click();
-    },
-    errorFunc);
-  });
+
+  .then(wrapper => clickElement(
+    By.js(wrapper => (
+        (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
+          .querySelector('#fcc_test_message-box-rerun-button')
+      ),
+      wrapper
+    ))
+    .then(() => wrapper)
+  )
 
   // Wait for 'fcc_test_btn-done' class to be added to the 'Tests' button
   // then click
-  wrapperPromise
-  .then(function(element) {
-    driver.wait(
-      until.elementLocated(
-        By.js(
-          'return arguments[0]' +
-          '.shadowRoot.querySelector(".fcc_test_btn-done")', element
-        )
+  .then(wrapper => clickElement(
+    By.js(wrapper => (
+        (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
+          .querySelector('.fcc_test_btn-done')
       ),
-      elementTimeout
-    )
-    .then(function(el) {
-      el.click();
-      return el.getAttribute('class');
-    })
-    .then(function(classes) {
+      wrapper
+    ))
+    .then(element => element.getAttribute('class'))
+    .then(classes => {
       success = classes.includes('fcc_test_btn-success', 0);
-    });
-  });
+      return wrapper;
+    })
+  )
 
   // Wait for the test results modal. The message box fades in, so we wait for
   // opacity of 1 before grabbing the screenshot.
-  wrapperPromise
-  .then(function(element) {
-    driver.wait(until.elementLocated(By.js(
-      'return arguments[0]' +
-      '.shadowRoot.querySelector(".fcc_test_message-box-shown")', element
+  .then(wrapper => driver.wait(until.elementLocated(
+    By.js(wrapper => (
+        (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
+          .querySelector('.fcc_test_message-box-shown')
+      ),
+      wrapper
     )),
     elementTimeout
-    )
-    .then(function(elem) {
-      return driver.wait(function() {
-        return elem.getCssValue('opacity')
-        .then(function(opacity) {
-          return opacity === '1';
-        });
-      });
-    },
-    errorFunc);
-  });
+  ))
+  .then(waitOpacity)
 
   // Grab a screenshot and write to disk.
   // TODO: Do we want to grab screenshots for success? Might be overkill.
-  saveScreenshot(driver, screenshotDir, name, 'FINAL');
+  .then(() => saveScreenshot(name, 'FINAL'))
 
+  // Catches all possible errors.
+  .catch(errorFunc)
   // We are done. Close the browser and return with success status. We return
   // the promise so Mocha will wait correctly for these tests to finish.
-  return driver.quit()
-  .then(function() {
-    return success;
-  });
+  .then(() => driver.quit())
+  .then(() => success, () => success);
 };

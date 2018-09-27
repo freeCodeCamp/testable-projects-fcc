@@ -5,8 +5,17 @@
  *
  */
 
+// What browsers are used for testing
+global.browsers = [
+  'chrome',
+  'firefox'
+];
+
 // Location of chrome binary.
 global.chromeBinaryPath = '/usr/bin/google-chrome-stable';
+
+// Location of firefox binary.
+global.firefoxBinaryPath = 'firefox';
 
 // Where to save screenshots.
 global.screenshotDir = 'travis-screenshots';
