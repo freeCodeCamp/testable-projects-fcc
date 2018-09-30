@@ -33,8 +33,6 @@ export function getTickPosition(tick) {
 export function getTickValue(item, dataType) {
   let val = item.querySelector('text').innerHTML;
   switch (dataType) {
-    case null:
-      break;
     case 'minute':
       val = parseInt(val.split(':')[0], 10) +
         (parseInt(val.split(':')[1], 10) / 60);
@@ -54,9 +52,6 @@ export function getTickValue(item, dataType) {
 export function getShapeValue(item, attribute, dataType) {
   let val;
   switch (dataType) {
-    case null:
-      val = item.getAttribute(attribute);
-      break;
     case 'year':
       val = new Date(item.getAttribute(attribute)).getFullYear();
       break;
@@ -77,27 +72,10 @@ export function getShapeValue(item, attribute, dataType) {
 }
 
 export function getShapePosition(item, dimension, positionType) {
-  let half, bounds = item.getBoundingClientRect(),
+  let bounds = item.getBoundingClientRect(),
     pos = ((/y/g).test(dimension) ? bounds.top : bounds.left);
-  switch (positionType) {
-    case 'topLeft':
-      // bar
-      half = 0;
-      break;
-    case 'center':
-      // get either 'width' or 'height' if dimension is 'x', 'cx', 'y', or 'cy'
-      let attr = (/y/g).test(dimension) ? 'height' : 'width';
-      // circle elements have 'r' attributes instead of 'height' or 'width'.
-      // The half variable is for rect elements we want the midpoint from
-      // so item.getAttribute(attr) will be null for circles.
-      half = ( !item.getAttribute(attr) ?
-        0 :
-        parseFloat(item.getAttribute(attr)) / 2
-      );
-      break;
-    default:
-      half = 0;
+  if (positionType === 'center') {
+    pos += ((/y/g).test(dimension) ? bounds.height : bounds.width) / 2;
   }
-  pos += half;
   return pos;
 }

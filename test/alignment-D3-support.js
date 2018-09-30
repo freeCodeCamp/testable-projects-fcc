@@ -65,6 +65,16 @@ describe('D3 Alignment support tests', function() {
         </rect>`
       );
       const shape = dom.window.document.querySelector('.cell');
+      // We have to mock this for jsdom.
+      const width = 5, height = 33;
+      shape.getBoundingClientRect = () => ({
+        width,
+        height,
+        top: 0,
+        left: 0,
+        right: width,
+        bottom: height
+      });
       const positionX = getShapePosition(shape, 'x', 'center');
       const positionY = getShapePosition(shape, 'y', 'center');
 

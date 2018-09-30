@@ -1,7 +1,8 @@
 // BDD tests for the alignment-D3 module.
 
 import {
-  getShapeValue
+  getShapeValue,
+  getTickValue
 } from '../src/utils/alignment-D3-support';
 
 import {
@@ -76,15 +77,15 @@ describe('D3 Alignment module tests', function() {
   </g>
   <g id="x-axis" transform="translate(0,500)">
     <g class="tick" transform="translate(37.02173913043478,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1994</text>
     </g>
     <g class="tick" transform="translate(110.06521739130434,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1996</text>
     </g>
     <g class="tick" transform="translate(183.1086956521739,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1998</text>
     </g>
   </g>
@@ -121,28 +122,28 @@ describe('D3 Alignment module tests', function() {
   </g>
   <g id="x-axis">
     <g class="tick" transform="translate(110.91666666666666,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1994</text>
     </g>
     <g class="tick" transform="translate(171.75,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1996</text>
     </g>
     <g class="tick" transform="translate(232.66666666666666,0)">
-      <line y2="6"></line>      
+      <line y2="6"></line>
       <text>1998</text>
     </g>
   </g>
-  <circle class="dot" r="3" cx="140.83333333333331" cy="400" data-xvalue="1995" 
+  <circle class="dot" r="3" cx="140.83333333333331" cy="400" data-xvalue="1995"
     data-yvalue="Mon Jan 01 1900 00:36:50 GMT-0700 (MST)">
   </circle>
-  <circle class="dot" r="3" cx="201.75" cy="390" data-xvalue="1997" 
+  <circle class="dot" r="3" cx="201.75" cy="390" data-xvalue="1997"
     data-yvalue="Mon Jan 01 1900 00:36:55 GMT-0700 (MST)">
   </circle>
-  <circle class="dot" r="3" cx="110.41666666666666" cy="350" data-xvalue="1994" 
+  <circle class="dot" r="3" cx="110.41666666666666" cy="350" data-xvalue="1994"
     data-yvalue="Mon Jan 01 1900 00:37:15 GMT-0700 (MST)">
   </circle>
-  
+
   <circle class="dot-misaligned" r="6" cx="0"
     cy="355" data-xvalue="1997"
     data-yvalue="Mon Jan 01 1900 00:37:25 GMT-0200 (BRST)">
@@ -168,7 +169,7 @@ describe('D3 Alignment module tests', function() {
         <text x="-9" dy="0.32em">8,000</text>
       </g>
     </g>
-    
+
     <g id="x-axis" transform="translate(60, 400)">
       <g class="tick" transform="translate(35.794117647058826,0)">
         <line y2="6"></line>
@@ -187,17 +188,17 @@ describe('D3 Alignment module tests', function() {
         <text y="9" dy="0.71em">1965</text>
       </g>
     </g>
-    
-    <rect data-date="1947-01-01" data-gdp="243.1" class="bar" 
-      x="0" y="394.6171262185367" width="2.909090909090909" 
+
+    <rect data-date="1947-01-01" data-gdp="243.1" class="bar"
+      x="0" y="394.6171262185367" width="2.909090909090909"
       height="5.382873781463295" transform="translate(60, 0)">
     </rect>
-    <rect data-date="1947-04-01" data-gdp="246.3" class="bar" 
-      x="2.909090909090909" y="394.5462697968967" width="2.909090909090909" 
+    <rect data-date="1947-04-01" data-gdp="246.3" class="bar"
+      x="2.909090909090909" y="394.5462697968967" width="2.909090909090909"
       height="5.453730203103289" transform="translate(60, 0)">
     </rect>
-    <rect data-date="1947-01-01" data-gdp="243.1" class="bar-misaligned" 
-      x="0" y="0" width="2.909090909090909" 
+    <rect data-date="1947-01-01" data-gdp="243.1" class="bar-misaligned"
+      x="0" y="0" width="2.909090909090909"
       height="5.382873781463295" transform="translate(60, 0)">
     </rect>
   `);
@@ -258,21 +259,24 @@ describe('D3 Alignment module tests', function() {
 
         it('should return before and after ticks for a given shape',
         function() {
-          const ticks = test.dom.window.document.querySelectorAll(
-            '#y-axis .tick'
+          let tickValues = [].map.call(
+            test.dom.window.document.querySelectorAll(
+              '#y-axis .tick'
+            ), tick => getTickValue(tick, test.dataType.y)
           );
+          const increment = tickValues[1] - tickValues[0];
+          tickValues = [
+            tickValues[0] - increment,
+            ...tickValues,
+            tickValues[tickValues.length - 1] + increment
+          ];
+
           const shapes =
             test.dom.window.document.querySelectorAll(test.shapeClassName);
 
-          const beginIndex = test.tickOrderNormalYAxis ? -1 : ticks.length;
-
           const alignedTicks = _getSurroundingTicks(
-            shapes[0],
             getShapeValue(shapes[0], test.attribute.y, test.dataType.y),
-            ticks,
-            beginIndex,
-            test.increment.y,
-            test.dataType.y,
+            tickValues,
             test.tickOrderNormalYAxis
           );
 

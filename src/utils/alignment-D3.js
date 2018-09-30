@@ -6,59 +6,30 @@ import {
 } from '../utils/alignment-D3-support';
 
 export function _getSurroundingTicks(
-  shape,
-  val,
+  value,
   ticks,
-  tickIndex,
-  increment,
-  dataType,
   normalTickOrder
 ) {
-  let surroundingTicks = [],
-    returnValue = null,
-    nextIndex;
-  do {
-    // nextIndex is either one greater- or less-than according to sort order
-    nextIndex = ( normalTickOrder ? (tickIndex + 1) : (tickIndex - 1) );
+  let leftIndex = 0;
+  let rightIndex = ticks.length;
 
-    let tickVal0 = (
-      !ticks[tickIndex] ?
-      // ticks[tickIndex] may be undefined. If so, calc mock tick value
-      ( getTickValue(ticks[nextIndex], dataType) - increment ) :
-      getTickValue(ticks[tickIndex], dataType) );
-
-    let tickVal1 = (
-      !ticks[nextIndex] ?
-      ( getTickValue(ticks[tickIndex], dataType) + increment ) :
-      getTickValue(ticks[nextIndex], dataType) );
-
-    // In order to run a single comparison (if), ensure prevTickVal is smaller
-    // than nextTickVal
-    var prevTickVal = Math.min(tickVal0, tickVal1);
-    var nextTickVal = Math.max(tickVal1, tickVal0);
-
-    // each shape should only compare with one set (2) ticks and the shape's
-    // value may equal one of the tick's value
-    if (val >= prevTickVal && val < nextTickVal ) {
-      let nextTick = (!ticks[nextIndex] ? null : ticks[nextIndex]);
-      let prevTick = (!ticks[tickIndex] ? null : ticks[tickIndex]);
-      surroundingTicks = [ prevTick, nextTick ];
-    }
-
-    if (normalTickOrder) {
-      tickIndex++;
+  // Use binary search to find an index before which to insert the value
+  while (leftIndex !== rightIndex) {
+    let midIndex = Math.floor((leftIndex + rightIndex) / 2);
+    if (ticks[midIndex] === value) {
+      leftIndex = rightIndex = midIndex + 1;
+    } else if (normalTickOrder && ticks[midIndex] > value ||
+        !normalTickOrder && ticks[midIndex] < value) {
+      rightIndex = midIndex;
     } else {
-      tickIndex--;
+      leftIndex = midIndex + 1;
     }
-  } while ( surroundingTicks.length < 2
-    // stop when two surroundingTicks are captured and tick NodeList iterated
-    && ( normalTickOrder ? tickIndex < ticks.length : tickIndex >= 0 )
-  );
-  if (surroundingTicks.length === 2) {
-    returnValue = surroundingTicks;
   }
-  // null if surroundingTicks is []
-  return returnValue;
+
+  if (leftIndex === 0 || leftIndex === ticks.length) {
+    return [];
+  }
+  return [leftIndex - 1, leftIndex];
 }
 
 export function areShapesAlignedWithTicks(
@@ -84,56 +55,59 @@ export function areShapesAlignedWithTicks(
   // get either 'x' or 'y' in case of 'cx' or 'cy'
   const coord = dimension.match(/c/g) ? dimension.split('c')[1] : dimension;
 
-  const normalTickOrder =
-    getTickValue(ticksCollection[ticksCollection.length - 1], dataType) >
-    getTickValue(ticksCollection[0], dataType);
+  let tickValues = [].map.call(
+    ticksCollection,
+    tick => getTickValue(tick, dataType)
+  );
+  const normalValueOrder = tickValues[tickValues.length - 1] > tickValues[0];
 
   // increment may be positive or negative based on axis sort order
-  const increment = getTickValue(ticksCollection[1], dataType) -
-    getTickValue(ticksCollection[0], dataType);
+  const increment = tickValues[1] - tickValues[0];
+  tickValues = [
+    tickValues[0] - increment,
+    ...tickValues,
+    tickValues[tickValues.length - 1] + increment
+  ];
 
+  let tickPositions = [].map.call(
+    ticksCollection,
+    tick => getTickPosition(tick)[coord]
+  );
+  const normalPositionOrder = tickPositions[1] > tickPositions[0];
   // positionIncrement may be positive or negative based on axis sort order
-  const positionIncrement = getTickPosition( ticksCollection[1] )[coord] -
-    getTickPosition( ticksCollection[0] )[coord];
+  const positionIncrement = tickPositions[1] - tickPositions[0];
+  tickPositions = [
+    tickPositions[0] - positionIncrement,
+    ...tickPositions,
+    tickPositions[tickPositions.length - 1] + positionIncrement
+  ];
 
   shapeCollection.forEach(function(shape) {
     let pos = getShapePosition(shape, dimension, positionType);
     let val = getShapeValue(shape, dataAttribute, dataType);
     // index is initially off (either -1 or ticksCollection.length), then
     // _getSurroundingTicks increments or decrements according to sort order
-    let tickIndex = ( !normalTickOrder ? ticksCollection.length : -1 );
 
     let surroundingTicks = _getSurroundingTicks(
-      shape,
       val,
-      ticksCollection,
-      tickIndex,
-      increment,
-      dataType,
-      normalTickOrder
+      tickValues,
+      normalValueOrder
     );
 
     if (surroundingTicks.length > 0) {
-      let tickPos0 = ( !surroundingTicks[0] ?
-        // surroundingTicks[0] may be null. if so, calc mock begin position
-        ( getTickPosition( surroundingTicks[1] )[coord] - positionIncrement ) :
-        // actual begin position
-        getTickPosition( surroundingTicks[0] )[coord]
-      );
+      let prevTick, nextTick;
+      if (normalPositionOrder) {
+        [prevTick, nextTick] = surroundingTicks;
+      } else {
+        [nextTick, prevTick] = surroundingTicks;
+      }
 
-      let tickPos1 = ( !surroundingTicks[1] ?
-        // calc mock end position
-        ( getTickPosition( surroundingTicks[0] )[coord] + positionIncrement ) :
-        // actual position
-        getTickPosition( surroundingTicks[1] )[coord]
-      );
-      let beforeTickPos = Math.min(tickPos0, tickPos1),
-        afterTickPos = Math.max(tickPos0, tickPos1);
+      let prevPos = tickPositions[prevTick];
+      let nextPos = tickPositions[nextTick];
 
-      // if shape is positioned between the two ticks plus or minus 11px
-      // TODO reduce to 2px after Bar Chart is fixed. A leeway is necessary
-      // for this code to work on all chart types.
-      if ( (pos >= beforeTickPos - 11 ) && ( pos <= afterTickPos + 11 ) ) {
+      // If shape is positioned between the two ticks plus or minus 3px
+      // A leeway is necessary for this code to work on all chart types.
+      if ( prevPos - 3 <= pos && pos <= nextPos + 3 ) {
         aligned++;
       }
     }
