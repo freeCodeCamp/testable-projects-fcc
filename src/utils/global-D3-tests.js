@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 import $ from 'jquery';
 
+import { timeout } from './threading';
+
 function isToolTipHidden(tooltip) {
     // jQuery's :hidden selector checks if the element or its parents have a
     // display of none, a type of hidden, or height/width set to 0.
@@ -62,90 +64,81 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
   describe('#TooltipTests', function() {
     it(`I can mouse over an area and see a tooltip with a corresponding
     id="tooltip" which displays more information about the area `,
-    function() {
+    async function() {
       const firstRequestTimeout = 500;
       const secondRequestTimeout = 2000;
-      const randomIndex = getRandomIndex(areas.length);
-      const tooltip = document.getElementById('tooltip');
-      let randomArea;
 
       this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
+
+      const tooltip = document.getElementById('tooltip');
       assert.isNotNull(
-        document.getElementById('tooltip'),
+        tooltip,
         'There should be an element with id="tooltip"'
       );
 
       // Place mouse on random bar and check if tooltip is visible.
-      randomArea = areas[randomIndex];
+      const randomIndex = getRandomIndex(areas.length);
+      const randomArea = areas[randomIndex];
       triggerMouseEvent(randomArea, 'mouseover');
       triggerMouseEvent(randomArea, 'mousemove');
       triggerMouseEvent(randomArea, 'mouseenter');
 
-      // Promise is used to prevent test from ending prematurely.
-      return new Promise((resolve, reject) => {
-        // Timeout is used to accommodate tooltip transitions.
-        setTimeout(() => {
-          if (isToolTipHidden(tooltip)) {
-            reject(
-              new Error('Tooltip should be visible when mouse is on an area')
-            );
-          }
+      // Timeout is used to accommodate tooltip transitions.
+      await timeout(firstRequestTimeout);
 
-          // Remove mouse from cell and check if tooltip is hidden again.
-          triggerMouseEvent(randomArea, 'mouseout');
-          triggerMouseEvent(randomArea, 'mouseleave');
-          setTimeout(() => {
-            if (!isToolTipHidden(tooltip)) {
-              reject(
-                new Error(
-                  'Tooltip should be hidden when mouse is not on an area'
-                )
-              );
-            } else {
-              resolve();
-            }
-          }, secondRequestTimeout);
-        }, firstRequestTimeout);
-      });
+      let hidden = isToolTipHidden(tooltip);
+      assert.isFalse(
+        hidden,
+        'Tooltip should be visible when mouse is on an area'
+      );
+
+      // Remove mouse from cell and check if tooltip is hidden again.
+      triggerMouseEvent(randomArea, 'mouseout');
+      triggerMouseEvent(randomArea, 'mouseleave');
+
+      await timeout(secondRequestTimeout);
+
+      hidden = isToolTipHidden(tooltip);
+      assert.isTrue(
+        hidden,
+        'Tooltip should be hidden when mouse is not on an area'
+      );
     });
 
     it(`My tooltip should have a "${toolTipDataName}" property that
     corresponds to the "${areaDataName}" of the active area.`,
-    function() {
+    async function() {
       const tooltip = document.getElementById('tooltip');
-      const randomIndex = getRandomIndex(areas.length);
-      let randomArea;
+      assert.isNotNull(
+        tooltip,
+        'There should be an element with id="tooltip"'
+      );
 
       assert.isNotNull(
         tooltip.getAttribute(toolTipDataName),
         `Could not find property "${toolTipDataName}" in tooltip `
       );
 
-      randomArea = areas[randomIndex];
+      const randomIndex = getRandomIndex(areas.length);
+      const randomArea = areas[randomIndex];
 
       triggerMouseEvent(randomArea, 'mouseover');
       triggerMouseEvent(randomArea, 'mousemove');
       triggerMouseEvent(randomArea, 'mouseenter');
 
-      return new Promise((resolve, reject) => {
-        // Timeout is used to accommodate tooltip transitions.
-        setTimeout(() => {
-          try {
-            assert.equal(
-              tooltip.getAttribute(toolTipDataName),
-              randomArea.getAttribute(areaDataName),
-              `Tooltip's "${toolTipDataName}" property should be equal to ` +
-              `the active area's "${areaDataName}" property`
-            );
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-          // Clear out tooltip.
-          triggerMouseEvent(randomArea, 'mouseout');
-          triggerMouseEvent(randomArea, 'mouseleave');
-        }, 500);
-      });
+      // Timeout is used to accommodate tooltip transitions.
+      await timeout(500);
+
+      assert.equal(
+        tooltip.getAttribute(toolTipDataName),
+        randomArea.getAttribute(areaDataName),
+        `Tooltip's "${toolTipDataName}" property should be equal to the ` +
+        `active area's "${areaDataName}" property`
+      );
+
+      // Clear out tooltip.
+      triggerMouseEvent(randomArea, 'mouseout');
+      triggerMouseEvent(randomArea, 'mouseleave');
     });
   });
 }

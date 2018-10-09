@@ -1,7 +1,9 @@
+import { assert } from 'chai';
+
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 import { allCSSRulesAsArray, isTestSuiteRule } from
   '../utils/style-sheet-utils';
-import { assert } from 'chai';
+import { timeout } from '../utils/threading';
 
 export default function createPortfolioTests() {
 
@@ -72,84 +74,19 @@ export default function createPortfolioTests() {
 
       it(`The navbar should contain at least one link that I can
       click on to navigate to different sections of the page.`,
-      function(done) {
-        // Filter anchors by location hash (don't click external links)
+      async function() {
+        // We need a longer timeout for this test. 11 seconds
+        // is enough to test about 10 nav links.
+        this.timeout(11000);
+
+        // Filter links by location hash (don't click external links)
         let links = Array.from(document.querySelectorAll('#navbar a'));
         links = links.filter((nav) => {
           return nav.getAttribute('href').substr(0, 1) === '#';
         });
-        let linksIndex = 0;
-        let bottomScroll = false;
-        let bottomPositionY;
-
-        // If the window has been scrolled then the nav link worked.
-        let testTopCondition = () => {
-          return window.scrollY !== 0;
-        };
-
-        // Similar to above, but we are testing if the window scrolled from the
-        // bottom.
-        let testBottomCondition = () => {
-          let distanceFromBottom = bottomPositionY - window.scrollY;
-          // if distance from bottom is not 0, clicking a link made it move,
-          // so we end the loop.
-          return distanceFromBottom !== 0;
-        };
-
-        // Tests if the window scrolled, and if not it clicks the next link
-        // and calls itself to see if that link scrolled. We need the timeout
-        // in case the CSS uses "scroll-behavior: smooth;" which takes some
-        // time to finish scrolling.
-        // NOTE: This function is not easy to understand. Some well placed
-        // console.log statements will help understand what is happening.
-        let testScroll = (testCondition) => {
-          setTimeout(() => {
-            // If the test condition passes, we are done. Scroll the window
-            // back to the top before successfully ending the tests.
-            if (testCondition) {
-              window.scroll(0, 0);
-              done();
-            } else {
-              // Test condition did not pass, so try the next link and then
-              // call this function to test to see if it scrolled the window.
-              linksIndex++;
-              if (linksIndex < links.length) {
-                links[linksIndex].click();
-                testScroll(testCondition);
-              } else if (!bottomScroll) {
-                // We are out of the links. If we have not yet tested with
-                // scrolling from the bottom, then run the tests again after
-                // first scrolling to the bottom.
-                bottomScroll = true;
-                window.scroll(0, document.body.scrollHeight);
-                // Before running the new set of tests, give it some time to
-                // finish scrolling to the bottom.
-                setTimeout(() => testBottomScroll(), 500);
-              }
-            }
-          }, 500);
-        };
-
-        // Kicks off the tests that will check if the nav links scroll the
-        // window from the bottom.
-        let testBottomScroll = () => {
-          bottomPositionY = window.scrollY;
-          linksIndex = 0;
-          links[linksIndex].click();
-          testScroll(testBottomCondition);
-        };
-
-        // Tests start here. We need a longer timeout for this test. 10 seconds
-        // is enough to test about 10 nav links.
-        this.timeout(10000);
-        // Filter anchors by location hash (don't click external links)
-        let anchors = Array.from(document.querySelectorAll('#navbar a'));
-        anchors = anchors.filter((nav) => {
-          return nav.getAttribute('href').substr(0, 1) === '#';
-        });
 
         assert.isAbove(
-          anchors.length,
+          links.length,
           0,
           'Navbar should contain a link '
         );
@@ -158,8 +95,45 @@ export default function createPortfolioTests() {
         // they scroll the window. We delay the starting of the tests because
         // it could take some time to scroll the window to the top.
         window.scroll(0, 0);
-        links[linksIndex].click();
-        setTimeout(() => testScroll(testTopCondition), 500);
+        await timeout(500);
+
+        for (let i = 0; i < links.length; i++) {
+          links[i].click();
+          // We need the timeout in case the CSS uses "scroll-behavior: smooth;"
+          // which takes some time to finish scrolling.
+          await timeout(500);
+          if (window.scrollY) {
+            // if the window's y position is not 0, clicking a link made it move
+            window.scroll(0, 0);
+            return;
+          }
+        }
+
+        // move window to bottom
+        window.scroll(0, document.body.scrollHeight);
+        await timeout(500);
+
+        const bottomPositionY = window.scrollY;
+
+        for (let i = 0; i < links.length; i++) {
+          links[i].click();
+          // We need the timeout in case the CSS uses "scroll-behavior: smooth;"
+          // which takes some time to finish scrolling.
+          await timeout(500);
+          const distanceFromBottom = bottomPositionY - window.scrollY;
+          if (distanceFromBottom) {
+            // if distance from bottom is not 0, clicking a link made it move
+            window.scroll(0, 0);
+            return;
+          }
+        }
+
+        // none of the links changed the scroll position
+        window.scroll(0, 0);
+        assert.isTrue(
+          false,
+          'At least one navbar link should move the page position when clicked '
+        );
       });
 
       it(`My portfolio should have a link with an id of
@@ -222,7 +196,7 @@ export default function createPortfolioTests() {
       });
 
       it('The navbar should always be at the top of the viewport.',
-      function(done) {
+      async function() {
         const navbar = document.getElementById('navbar');
         assert.approximately(
           navbar.getBoundingClientRect().top,
@@ -238,21 +212,15 @@ export default function createPortfolioTests() {
         // report the wrong value while the page is still laying out, when using
         // CSS position:sticky. This is apparently a bug with Chrome.
         // See https://bugs.chromium.org/p/chromium/issues/detail?id=672457
-        setTimeout(function() {
-          try {
-            assert.approximately(
-              navbar.getBoundingClientRect().top,
-              0,
-              15,
-              'Navbar should be at the top of the viewport even after ' +
-              'scrolling '
-            );
-            done();
-          } catch (err) {
-            done(err);
-          }
-          window.scroll(0, 0);
-        }, 1);
+        await timeout(1);
+        assert.approximately(
+          navbar.getBoundingClientRect().top,
+          0,
+          15,
+          'Navbar should be at the top of the viewport even after ' +
+          'scrolling '
+        );
+        window.scroll(0, 0);
 
       });
 
