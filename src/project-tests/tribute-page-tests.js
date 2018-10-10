@@ -145,15 +145,17 @@ export default function createTributePageTests() {
         // element has an actual size we will get the actual pixels. So we
         // temporarily set the "display" style to "none", which will tell
         // us if the height is "auto".
-        img.setAttribute('style', 'display: none !important');
+        const oldDisplayValue = img.style.getPropertyValue('display');
+        const oldDisplayPriority = img.style.getPropertyPriority('display');
+        img.style.setProperty('display', 'none', 'important');
         heightValue = getPropValue(img, 'height');
+        img.style.setProperty('display', oldDisplayValue, oldDisplayPriority);
         assert.equal(
           heightValue,
           'auto',
           'Use the "height" style property with a value of "auto" for' +
           'responsive images.'
         );
-        img.style.display = displayValue;
       });
 
       it(`The <img> element should be centered within its parent
