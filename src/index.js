@@ -62,7 +62,8 @@ const shadow = (function attachShadow() {
   let shadowDom;
   if (supportsShadowDOMV1) {
     shadowDom = testDiv.attachShadow({ mode: 'open' });
-  } else {
+  } 
+ else {
     shadowDom = testDiv;
   }
   return shadowDom;
@@ -122,7 +123,8 @@ $(document).ready(function initTests() {
       projects.hasOwnProperty(projectName)) {
     testSuiteSelector.disabled = true;
     projectNameLocal = projectName;
-  } else {
+  } 
+ else {
     projectNameLocal = localStorage.getItem('project_selector');
   }
 
