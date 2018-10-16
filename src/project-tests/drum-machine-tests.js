@@ -162,33 +162,25 @@ export default function createDrumMachineTests() {
       contains the string "Q", pressing the W key should trigger the drum pad
       which contains the string "W", etc.).`,
       function() {
-        this.timeout(900);
         const keyCodes = [ 81, 87, 69, 65, 83, 68, 90, 88, 67 ];
         assert.isAtLeast(
           audioElements.length,
           9,
           'Audio elements do not exist '
         );
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            audioElements.forEach((el, i) => {
-              el.pause();
-              __triggerEvent(
-                el.parentElement,
-                'keydown',
-                keyCodes[i]
-              );
-              try {
-                assert.isFalse(
-                  el.paused,
-                  'No audio plays when the ' + el.id + ' key is pressed '
-                );
-              } catch (err) {
-                reject(err);
-              }
-            });
-            resolve();
-          }, 800);
+
+        audioElements.forEach((el, i) => {
+          el.pause();
+          __triggerEvent(
+            el.parentElement,
+            'keydown',
+            keyCodes[i]
+          );
+          assert.isFalse(
+            el.paused,
+            'No audio plays when the ' + el.id + ' key is pressed '
+          );
+          el.pause();
         });
       });
 
@@ -196,27 +188,19 @@ export default function createDrumMachineTests() {
       associated audio clip is displayed as the inner text of the #display
       element (each string must be unique).`,
       function() {
-        this.timeout(900);
         let displayText = [];
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            drumPads.forEach(pad => {
-              __triggerClickEventCaller(pad);
-              displayText.push(document.getElementById('display').innerText);
-            });
-            displayText = displayText.filter((str, i) =>
-              displayText[0] === displayText[i]
-            );
-            if (displayText.length === 1) {
-              resolve();
-            } else {
-              reject(new Error(
-                'Each time a drum pad is triggered, a unique string should ' +
-                'be displayed in the element with the id "display"'
-              ));
-            }
-          }, 800);
+        drumPads.forEach(pad => {
+          __triggerClickEventCaller(pad);
+          displayText.push(document.getElementById('display').innerText);
         });
+        displayText = displayText.filter((str, i) =>
+          displayText[0] === displayText[i]
+        );
+        assert.isTrue(
+          displayText.length === 1,
+          'Each time a drum pad is triggered, a unique string should ' +
+          'be displayed in the element with the id "display"'
+        );
       });
 
     });
