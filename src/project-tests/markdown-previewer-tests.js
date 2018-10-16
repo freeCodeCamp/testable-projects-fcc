@@ -199,10 +199,13 @@ export default function createMarkdownPreviewerTests() {
         triggerChange(editor.value + ' and...');
         assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
         triggerChange('# h1 \n## h2');
-        assert.strictEqual(
-          preview.innerHTML,
-          '<h1 id="h1">h1</h1>\n<h2 id="h2">h2</h2>\n',
-          error
+        assert.isTrue(
+          preview.children.length === 2 &&
+          preview.children[0].nodeName === 'H1' &&
+          preview.children[0].innerHTML === 'h1' &&
+          preview.children[1].nodeName === 'H2' &&
+          preview.children[1].innerHTML === 'h2',
+          '"# h1 \n## h2" should be rendered as <h1>h1</h1>\n<h2>h2</h2>\n'
         );
         triggerChange('**bold**');
         assert.strictEqual(
