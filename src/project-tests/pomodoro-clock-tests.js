@@ -825,7 +825,26 @@ export default function createPomodoroClockTests() {
 
       it(`The audio element with id="beep" must be 1 second or
       longer.`,
-      function() {
+      async function() {
+
+        const audio = document.querySelector('audio#beep');
+        assert.isNotNull(
+          audio,
+          'There is no audio tag with ID "beep" on the page.'
+        );
+
+        if (audio.readyState === 0) {
+          // Wait for the audio to load.
+          await new Promise(resolve => {
+            const listener = audio.addEventListener('loadeddata', () => {
+              if (audio.readyState > 0) {
+                audio.removeEventListener('loadeddata', listener);
+                resolve();
+              }
+            });
+          });
+        }
+
         assert.isAbove(
           document.getElementById('beep').duration,
           1,
