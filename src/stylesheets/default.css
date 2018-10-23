@@ -1,6 +1,6 @@
 /* This acts as sort of CSS reset. The div that will use this class is a
    wrapper div for the entire test UI. By using this class we ensure that
-   Camper code will be less specific and therefor won't override properties
+   Camper code will be less specific and therefore won't override properties
    that could change the layout or styling of our test UI.
 */
 
@@ -38,7 +38,7 @@
   word-spacing: unset;
 }
 
-/* This rules are used for set default values on our elements.
+/* These rules are used for set default values on our elements.
    Based on Firefox css rules
    https://dxr.mozilla.org/mozilla-central/source/layout/style/res/html.css
 */
