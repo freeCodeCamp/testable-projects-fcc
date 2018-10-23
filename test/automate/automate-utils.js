@@ -1,3 +1,4 @@
+/*FreeCodeCamp*/
 /* global bundleUrl, browserMaxWidth, browserMaxHeight, screenshotDir,
    chromeBinaryPath, firefoxBinaryPath
 */
