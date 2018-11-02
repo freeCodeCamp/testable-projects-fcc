@@ -50,3 +50,9 @@ export function getInputValue(element) {
   return element.nodeName.toLowerCase() === 'input' ?
     element.value : element.innerText;
 }
+
+export function decodeHtml(html) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
+}

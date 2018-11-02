@@ -2,6 +2,7 @@
 
 import { assert } from 'chai';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
+import { decodeHtml } from '../utils/element-utils';
 
 export default function createMarkdownPreviewerTests() {
 
@@ -41,6 +42,7 @@ export default function createMarkdownPreviewerTests() {
       const renderer = new marked.Renderer();
 
       renderer.heading = function(text, level) {
+        text = decodeHtml(text);
         if (level === 1) {
           markDownHas.h1 = true;
           markDownHas.h1Text.push(text);
