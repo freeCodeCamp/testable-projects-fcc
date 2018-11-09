@@ -70,12 +70,6 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
 
       this.timeout(firstRequestTimeout + secondRequestTimeout + 1000);
 
-      const tooltip = document.getElementById('tooltip');
-      assert.isNotNull(
-        tooltip,
-        'There should be an element with id="tooltip"'
-      );
-
       // Place mouse on random bar and check if tooltip is visible.
       const randomIndex = getRandomIndex(areas.length);
       const randomArea = areas[randomIndex];
@@ -85,6 +79,12 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
 
       // Timeout is used to accommodate tooltip transitions.
       await timeout(firstRequestTimeout);
+
+      const tooltip = document.getElementById('tooltip');
+      assert.isNotNull(
+        tooltip,
+        'There should be an element with id="tooltip"'
+      );
 
       let hidden = isToolTipHidden(tooltip);
       assert.isFalse(
@@ -108,16 +108,6 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
     it(`My tooltip should have a "${toolTipDataName}" property that
     corresponds to the "${areaDataName}" of the active area.`,
     async function() {
-      const tooltip = document.getElementById('tooltip');
-      assert.isNotNull(
-        tooltip,
-        'There should be an element with id="tooltip"'
-      );
-
-      assert.isNotNull(
-        tooltip.getAttribute(toolTipDataName),
-        `Could not find property "${toolTipDataName}" in tooltip `
-      );
 
       const randomIndex = getRandomIndex(areas.length);
       const randomArea = areas[randomIndex];
@@ -128,6 +118,17 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
 
       // Timeout is used to accommodate tooltip transitions.
       await timeout(500);
+
+      const tooltip = document.getElementById('tooltip');
+      assert.isNotNull(
+        tooltip,
+        'There should be an element with id="tooltip"'
+      );
+
+      assert.isNotNull(
+        tooltip.getAttribute(toolTipDataName),
+        `Could not find property "${toolTipDataName}" in tooltip `
+      );
 
       assert.equal(
         tooltip.getAttribute(toolTipDataName),
