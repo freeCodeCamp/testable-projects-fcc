@@ -13,7 +13,9 @@ function isToolTipHidden(tooltip) {
     let style = window.getComputedStyle(tooltip, null);
     return ($(tooltip).is(':hidden') ||
       style.opacity === '0' ||
-      style.visibility === 'hidden'
+      style.visibility === 'hidden' ||
+      // It is needed only for svg, jQuery does not support it.
+      style.display === 'none'
     );
 }
 
