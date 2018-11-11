@@ -6,10 +6,7 @@
  */
 
 // What browsers are used for testing
-global.browsers = [
-  'chrome',
-  'firefox'
-];
+global.browsers = [process.env.BROWSER];
 
 // Location of chrome binary.
 global.chromeBinaryPath = '/usr/bin/google-chrome-stable';

@@ -1,14 +1,34 @@
 language: node_js
 node_js:
-  - '6'
-dist: trusty
-addons:
-  chrome: stable
-  firefox: latest
-before_install:
-  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-  # Codecs needed for Firefox to play audio.
-  - sudo apt-get install -y ubuntu-restricted-extras
+  - 'lts/*'
+cache:
+  directories:
+    - node_modules
+jobs:
+  include:
+    - stage: pretest
+      before_script: skip
+      script: commitlint-travis
+      after_failure: skip
+    - stage: test
+      env: BROWSER=chrome
+      addons:
+        chrome: stable
+    - stage: test
+      env: BROWSER=firefox
+      addons:
+        firefox: latest
+      # Codecs needed for Firefox to play audio.
+      before_install: sudo apt-get install -y ubuntu-restricted-addons
+    - stage: deploy
+      if: branch = master && type != pull_request
+      before_script: skip
+      script: npm run build
+      after_failure: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script: bash deploy.sh
 before_script:
   # Build budle.js
   - npm run build
@@ -21,13 +41,8 @@ before_script:
   # taking up more shared memory than is available which causes tests to fail.
   # See https://github.com/SeleniumHQ/docker-selenium/issues/431
   - sudo mount -o remount,size=64G /run/shm
-cache:
-  directories:
-    - node_modules
 sudo: required
-script:
-  - commitlint-travis
-  - npm test
+script: npm test -- --bail
 # When the test script fails, push screen shots to a git branch.
 after_failure: |
   if [ -n "$GITHUB_API_KEY" ]; then
@@ -41,9 +56,3 @@ after_failure: |
     git push -f -q https://$GITHUB_USER:$GITHUB_API_KEY@github.com/$TRAVIS_REPO_SLUG travis-screenshots 2>/dev/null
     cd "$TRAVIS_BUILD_DIR"
   fi
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: bash deploy.sh
-  on:
-    branch: master
