@@ -48,10 +48,10 @@ export default function createPortfolioTests() {
       });
 
       it(`The projects section should contain at least one element
-      with a class of "project-title" to hold a project.`,
+      with a class of "project-tile" to hold a project.`,
       function() {
         assert.isAbove(
-          document.querySelectorAll('#projects .project-title').length,
+          document.querySelectorAll('#projects .project-tile').length,
           0
         );
       });
