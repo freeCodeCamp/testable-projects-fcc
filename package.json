@@ -4,21 +4,21 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "chai": "^3.5.0",
+    "jquery": "^3.3.1",
+    "mocha": "^5.2.0"
+  },
+  "devDependencies": {
     "@babel/core": "^7.0.0-beta.49",
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.0.0-beta.49",
     "@babel/register": "^7.0.0-beta.49",
     "@babel/runtime": "^7.1.2",
     "babel-loader": "^8.0.0-beta.3",
-    "jsdom": "^11.2.0",
-    "webpack": "^4.10.2"
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.1.0",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "@commitlint/travis-cli": "^7.0.0",
     "babel-eslint": "^8.2.3",
-    "chai": "^3.5.0",
     "chromedriver": "^2.40.0",
     "commitizen": "^2.10.1",
     "css-loader": "^0.28.11",
@@ -31,12 +31,12 @@
     "geckodriver": "^1.12.2",
     "html-loader": "^0.5.1",
     "husky": "^1.0.0-rc.13",
-    "jquery": "^3.3.1",
+    "jsdom": "^11.2.0",
     "live-server": "^1.2.0",
-    "mocha": "^5.2.0",
     "selenium-webdriver": "^3.4.0",
     "selfsigned": "^1.10.3",
     "style-loader": "^0.18.2",
+    "webpack": "^4.10.2",
     "webpack-cli": "^2.1.5",
     "webpack-dev-server": "^3.1.5"
   },
