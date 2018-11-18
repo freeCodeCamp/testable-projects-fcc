@@ -24,6 +24,8 @@ export default function createDrumMachineTests() {
         eventObj.keyCode = keyCode;
         eventObj.which = keyCode;
         eventObj.key = String.fromCharCode(keyCode);
+        // It works only for letters
+        eventObj.code = `Key${eventObj.key}`;
       }
       /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
       el.dispatchEvent
@@ -174,6 +176,11 @@ export default function createDrumMachineTests() {
           __triggerEvent(
             el.parentElement,
             'keydown',
+            keyCodes[i]
+          );
+          __triggerEvent(
+            el.parentElement,
+            'keypress',
             keyCodes[i]
           );
           assert.isFalse(
