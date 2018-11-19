@@ -187,9 +187,10 @@ export default function createPortfolioTests() {
       it(`The height of the welcome section should be equal to the
       height of the viewport.`,
       function() {
-        assert.equal(
+        assert.approximately(
           document.getElementById('welcome-section').offsetHeight,
           window.innerHeight,
+          window.devicePixelRatio === 1 ? 0 : 1,
           'The height of #welcome-section is not equal to the height of the ' +
           'viewport '
         );
