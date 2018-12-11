@@ -152,20 +152,6 @@ exports.doesProjectPassTests = (browser, name, URL) => {
       return saveScreenshot(name, `ERROR-${error.name}`);
   };
 
-  // Alert appears only once.
-  let accepted = false;
-  const acceptAlert = () => {
-    if (accepted) { return null; }
-    return driver.wait(until.alertIsPresent(), 10000)
-      .then(
-        () => {
-          accepted = true;
-          return driver.switchTo().alert().accept();
-        },
-        () => 'do nothing'
-      );
-  };
-
   // Test automation starts here.
 
   // Firefox doesn't have an option to maximize the window
@@ -176,17 +162,7 @@ exports.doesProjectPassTests = (browser, name, URL) => {
   )
 
   // Get the specified URL.
-  .then(() => driver.get(URL))
-
-  // Will not be needed after deploy
-  .then(acceptAlert)
-
-  // Change the CodePen view to put the editor on the left side, so it is easier
-  // to see the project tests output.
-  .then(() => clickElement(By.id('view-switcher-button')))
-  .then(() => clickElement(By.id('left-layout')))
-  // Need to click again to hide the view switcher.
-  .then(() => clickElement(By.id('view-switcher-button')))
+  .then(() => driver.get(`${URL}/left/`))
 
   // Now we need to change some settings.
 
