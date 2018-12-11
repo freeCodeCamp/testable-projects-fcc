@@ -66,8 +66,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`Inside the form element, I am required to enter my name 
-      in a field with id="name". If I do not enter a name I will see an HTML5 
+      it(`Inside the form element, I am required to enter my name
+      in a field with id="name". If I do not enter a name I will see an HTML5
       validation error.`,
       function() {
         const name = document.getElementById('name');
@@ -91,8 +91,8 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it(`Inside the form element, I am required to enter an email 
-      in a field with id="email". If I do not enter an email I will see an 
+      it(`Inside the form element, I am required to enter an email
+      in a field with id="email". If I do not enter an email I will see an
       HTML5 validation error.`,
       function() {
         const email = document.getElementById('email');
@@ -374,7 +374,7 @@ export default function createSurveyFormTests() {
         assert.strictEqual(
           checkboxes.length,
           document.querySelectorAll(
-            '#survey-form input[value][type="checkbox"]:not([value=""]'
+            '#survey-form input[value][type="checkbox"]:not([value=""])'
           ).length,
           'All your checkboxes must have a value attribute '
         );
