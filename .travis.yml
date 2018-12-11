@@ -30,6 +30,14 @@ jobs:
         skip_cleanup: true
         script: bash deploy.sh
 before_script:
+  - |
+    if [ $HEADLESS -eq 0 ]; then
+      /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1920x1080x16
+      # give xvfb some time to start
+      sleep 3
+      # Same as what we specified for Xvfb.
+      export DISPLAY=:99.0
+    fi
   # Build budle.js
   - npm run build
   - cp test/setup.js.travis test/setup.js
