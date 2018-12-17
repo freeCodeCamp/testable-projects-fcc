@@ -47,15 +47,25 @@ export default function createPomodoroClockTests() {
     return observer;
   }
 
-  const waitForState = (target, check, errMsg) =>
+  const waitForState = (target, check, errMsg, timeout = 2000) =>
     new Promise((resolve, reject) => {
 
       const timerId = savedSetTimeout(() => {
         observer.disconnect();
+        clearTimeout(waitForChangesTimerId);
+        reject(new Error(errMsg));
+      }, timeout);
+
+      // If a target does not change for 5 seconds,
+      // then stop waiting for changes.
+      const waitForChangesTimerId = savedSetTimeout(() => {
+        observer.disconnect();
+        clearTimeout(timerId);
         reject(new Error(errMsg));
       }, 5000);
 
       const observer = observeElement(target, () => {
+        clearTimeout(waitForChangesTimerId);
         if (check()) {
           observer.disconnect();
           clearTimeout(timerId);
@@ -66,12 +76,13 @@ export default function createPomodoroClockTests() {
   );
 
   // Resolves when the timer reaches 00:00.
-  const timerHasReachedZero = () => {
+  const timerHasReachedZero = (timeout = 90000) => {
     const target = document.getElementById('time-left');
     return waitForState(
       target,
       () => (/^00[\.:,\/]00$/).test(target.innerText),
-      'Timer has not reached 00:00.'
+      'Timer has not reached 00:00.',
+      timeout
     );
   };
 
@@ -87,11 +98,11 @@ export default function createPomodoroClockTests() {
 
   // We "Hack" the global setTimeout and setInterval functions so time elapses
   // faster (delay is forced to 30ms)
-  // Note: we should consider putting these hacks in the beforeEach function
-  // so every timed test can be done in less time
   // The problem is that we still don't know if it's acceptable to use this
   // hack, because it implies forcing the campers to use setTimeout and
   // setInterval functions to measure time in their pomodoro.
+  // In cases where hacking does not work, we wait for the timer
+  // as much time as is usually required for it.
   const savedSetTimeout = window.setTimeout;
   const savedSetInterval = window.setInterval;
 
@@ -230,7 +241,7 @@ export default function createPomodoroClockTests() {
       return to 5, the value within id="session-length" should return to 25, and
       the element with id="time-left" should reset to it's default state.`,
       async function() {
-        this.timeout(7000);
+        this.timeout(100000);
 
         hackGlobalTimerFunctions();
         // decrement session and break length
@@ -478,7 +489,7 @@ export default function createPomodoroClockTests() {
       id="start_stop", the countdown should resume running from the point at
       which it was paused.`,
       async function() {
-        this.timeout(5000);
+        this.timeout(6000);
         // start the pomodoro
         clickButtonsById([startStop]);
 
@@ -536,7 +547,7 @@ export default function createPomodoroClockTests() {
       reach 00:00), and a new countdown begins, the element with the id of
       "timer-label" should display a string indicating a break has begun.`,
       async function() {
-        this.timeout(6000);
+        this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
@@ -573,7 +584,7 @@ export default function createPomodoroClockTests() {
       reach 00:00), a new break countdown should begin, counting down from the
       value currently displayed in the id="break-length" element.`,
       async function() {
-        this.timeout(6000);
+        this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
@@ -610,7 +621,7 @@ export default function createPomodoroClockTests() {
       00:00), and a new countdown begins, the element with the id of
       "timer-label" should display a string indicating a session has begun.`,
       async function() {
-        this.timeout(10000);
+        this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
@@ -639,7 +650,7 @@ export default function createPomodoroClockTests() {
       reach 00:00), a new session countdown should begin, counting down from
       the value currently displayed in the id="session-length" element.`,
       async function() {
-        this.timeout(6000);
+        this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
@@ -684,7 +695,7 @@ export default function createPomodoroClockTests() {
       00:00), a sound indicating that time is up should play. This should
       utilize an HTML5 <audio> tag and have a corresponding id="beep".`,
       async function() {
-        this.timeout(6000);
+        this.timeout(100000);
 
         assert.isNotNull(
           document.querySelector('audio#beep'),
