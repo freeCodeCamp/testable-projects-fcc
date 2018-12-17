@@ -2,8 +2,18 @@
   "name": "testable-projects-fcc",
   "version": "1.0.0",
   "description": "",
+  "author": "freeCodeCamp <team@freecodecamp.org> (https://freecodecamp.org)",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freeCodeCamp/testable-projects-fcc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/freeCodeCamp/testable-projects-fcc/issues"
+  },
   "main": "index.js",
   "dependencies": {
+    "@babel/runtime": "^7.1.2",
     "chai": "^3.5.0",
     "jquery": "^3.3.1",
     "mocha": "^5.2.0"
@@ -13,7 +23,6 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.0.0-beta.49",
     "@babel/register": "^7.0.0-beta.49",
-    "@babel/runtime": "^7.1.2",
     "babel-loader": "^8.0.0-beta.3",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
@@ -41,14 +50,14 @@
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
-    "develop": "webpack-dev-server --config webpack.config.dev.js",
+    "develop": "webpack-dev-server --https",
     "commit": "git-cz",
     "live-serve-build": "live-server --no-browser --https=config/live-server-https build/testable-projects-fcc/v1",
     "lint": "eslint ./**/*.js",
-    "pretest": "npm run lint",
+    "pretest": "yarn lint",
     "test": "mocha",
-    "start": "webpack --watch --config webpack.config.dev.js",
-    "build": "webpack"
+    "start": "webpack --watch",
+    "build": "webpack --env.production"
   },
   "config": {
     "commitizen": {
@@ -61,9 +70,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e",
-      "pre-commit": "yarn run lint"
+      "pre-commit": "yarn lint"
     }
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }

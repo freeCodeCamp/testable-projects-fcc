@@ -1,14 +1,17 @@
 language: node_js
 node_js:
-  - 'lts/*'
+  - "lts/*"
 cache:
+  yarn: true
   directories:
     - node_modules
 jobs:
   include:
     - stage: pretest
       before_script: skip
-      script: commitlint-travis
+      script:
+        - commitlint-travis
+        - yarn lint
       after_failure: skip
     - stage: test
       env: BROWSER=chrome
@@ -18,17 +21,20 @@ jobs:
       env: BROWSER=firefox
       addons:
         firefox: latest
-      # Codecs needed for Firefox to play audio.
-      before_install: sudo apt-get install -y ubuntu-restricted-addons
     - stage: deploy
       if: branch = master && type != pull_request
       before_script: skip
-      script: npm run build
+      script: yarn build
       after_failure: skip
       deploy:
         provider: script
         skip_cleanup: true
         script: bash deploy.sh
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.12.3
+  - export PATH=$HOME/.yarn/bin:$PATH
+  # Codecs needed for Firefox to play audio.
+  - if [[ "$BROWSER" == "firefox" ]]; then sudo apt-get install -y -qq ubuntu-restricted-addons; fi
 before_script:
   - |
     if [ $HEADLESS -eq 0 ]; then
@@ -39,18 +45,17 @@ before_script:
       export DISPLAY=:99.0
     fi
   # Build budle.js
-  - npm run build
+  - yarn build
   - cp test/setup.js.travis test/setup.js
   # Start https server (and sleep) so we can get the local bundle.js via https.
   # The `&` at the end tells this process to fork into the background
   # https://github.com/travis-ci/travis-ci/issues/1321
-  - npm run live-serve-build &
+  - yarn live-serve-build &
   # Increase the shared memory mountpoint. Chrome or something in the tests is
   # taking up more shared memory than is available which causes tests to fail.
   # See https://github.com/SeleniumHQ/docker-selenium/issues/431
   - sudo mount -o remount,size=64G /run/shm
-sudo: required
-script: npm test -- --bail
+script: yarn mocha --bail
 # When the test script fails, push screen shots to a git branch.
 after_failure: |
   if [ -n "$GITHUB_API_KEY" ]; then
