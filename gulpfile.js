@@ -1,11 +1,14 @@
+const path = require('path');
+const { pipeline } = require('stream');
+
 const gulp = require('gulp');
-const concat = require('gulp-concat');
-const watch = require('gulp-watch');
 const through2 = require('through2');
 const Vinyl = require('vinyl');
-const path = require('path');
+const concat = require('gulp-concat');
+const watch = require('gulp-watch');
 const babel = require('gulp-babel');
 const sass = require('gulp-sass');
+
 const pug = require('pug');
 
 sass.compiler = require('node-sass');
@@ -19,21 +22,27 @@ const babelOptions = {
 };
 
 function js(projectPath) {
-  return gulp
-    .src(projectPath + '/*.{js,jsx}')
-    .pipe(babel(babelOptions))
-    .pipe(concat('index.js'));
+  return pipeline(
+    gulp.src(projectPath + '/*.{js,jsx}'),
+    babel(babelOptions).on('error', err => {
+      const message = err.toString();
+      process.stderr.write(`${message}\n`);
+      this.emit('end');
+    }),
+    concat('index.js')
+  );
 }
 
 function css(projectPath) {
-  return gulp
-    .src(projectPath + '/*.{scss,css}')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(concat('index.css'));
+  return pipeline(
+    gulp.src(projectPath + '/*.{css,scss,sass}'),
+    sass().on('error', sass.logError),
+    concat('index.css')
+  );
 }
 
 function html(projectPath) {
-  return gulp.src(projectPath + '/*.html').pipe(concat('index.html'));
+  return pipeline(gulp.src(projectPath + '/*.html'), concat('index.html'));
 }
 
 function getData(stream) {
@@ -95,35 +104,28 @@ function buildProjects() {
 }
 
 function build() {
-  return gulp
-    .src('./src/projects/*')
-    .pipe(buildProjects())
-    .pipe(
-      gulp.dest(
-        file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`
-      )
-    );
+  return pipeline(
+    gulp.src('./src/projects/*'),
+    buildProjects(),
+    gulp.dest(file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`)
+  );
 }
 
 function watchProjects() {
-  return watch(
-    [
-      './src/projects/**/*.{js,jsx}',
-      './src/projects/**/*.{css,scss}',
-      './src/projects/**/*.html'
-    ],
-    { read: false }
-  )
-    .pipe(
-      through2.obj((file, _, cb) => buildProjectFromDirectory(file.dirname, cb))
-    )
-    .pipe(
-      gulp.dest(
-        file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`
-      )
-    );
+  return pipeline(
+    watch(
+      [
+        './src/projects/**/*.{js,jsx}',
+        './src/projects/**/*.{css,scss,sass}',
+        './src/projects/**/*.html'
+      ],
+      { read: false }
+    ),
+    through2.obj((file, _, cb) => buildProjectFromDirectory(file.dirname, cb)),
+    gulp.dest(file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`)
+  );
 }
 
 exports.build = build;
 exports.watch = watchProjects;
-exports.default = build;
+exports.default = gulp.series(build, watchProjects);
