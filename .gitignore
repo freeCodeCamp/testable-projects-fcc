@@ -45,17 +45,6 @@ test/setup.js
 # Optional REPL history
 .node_repl_history
 
-# local_test directory
-local_test/*
-!local_test/js
-!local_test/css
-!local_test/index.html
-local_test/js/*
-local_test/css/*
-
-# local test code
-localTestCode.txt
-
 # Apple files
 *.DS_Store
 

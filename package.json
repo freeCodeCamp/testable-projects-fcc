@@ -12,6 +12,9 @@
     "url": "https://github.com/freeCodeCamp/testable-projects-fcc/issues"
   },
   "main": "index.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "chai": "^3.5.0",
@@ -49,6 +52,7 @@
     "jsdom": "^11.2.0",
     "live-server": "^1.2.0",
     "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.5",
     "pug": "^2.0.3",
     "selenium-webdriver": "^3.4.0",
     "selfsigned": "^1.10.3",
@@ -66,8 +70,13 @@
     "lint": "eslint ./**/*.js",
     "pretest": "yarn lint",
     "test": "mocha",
-    "start": "webpack --watch",
-    "build": "webpack --env.production"
+    "serve": "live-server build",
+    "start": "run-p start:* serve",
+    "start:projects-tests": "webpack --watch",
+    "start:projects": "gulp",
+    "build": "run-p build:*",
+    "build:projects-tests": "webpack --env.production",
+    "build:projects": "gulp build"
   },
   "config": {
     "commitizen": {
