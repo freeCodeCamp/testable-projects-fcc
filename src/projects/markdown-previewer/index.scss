@@ -1,0 +1,189 @@
+@import url("https://fonts.googleapis.com/css?family=Russo+One");
+$darkAccent: #224b4b;
+$lightAccent: #2cda9d;
+$backgroundBase: #619e9e;
+
+$shadow: 1px 1px 10px 2px darken($backgroundBase, 20%);
+$default-border: 1px solid darken($backgroundBase, 35%);
+
+body {
+  background: lighten($backgroundBase, 12%);
+  margin: 10px 0;
+}
+
+#preview,
+.title {
+  display: inline-block;
+}
+
+.colorScheme {
+  background-color: lighten($backgroundBase, 30%);
+  border: $default-border;
+  box-shadow: $shadow;
+  border-top: none;
+}
+
+.toolbar {
+  position: relative;
+  background-color: lighten($darkAccent, 25%);
+  padding: 4px 4px 3px 3px;
+  border: $default-border;
+  box-shadow: $shadow;
+  font-family: Russo One;
+  font-size: 15px;
+  i {
+    width: 25px;
+    color: black;
+    margin-left: 5px;
+  }
+  .fa-arrows-alt,
+  .fa-compress {
+    position: absolute;
+    right: -5px;
+  }
+}
+
+.fa-retweet,
+.fa-compress,
+.fa-arrows-alt {
+  &:hover {
+    color: lighten($lightAccent, 10%);
+    cursor: pointer;
+  }
+}
+
+.fa-free-code-camp {
+  margin-right: 3px;
+}
+
+.editorWrap {
+  width: 600px;
+  margin: 18px auto;
+  .toolbar {
+    width: 99%;
+  }
+  textarea {
+    @extend .colorScheme;
+    width: 99%;
+    min-height: 200px;
+    margin-bottom: -5px;
+    resize: vertical;
+    outline: none;
+    padding-left: 5px;
+    padding-top: 5px;
+    font-size: 12px;
+  }
+}
+
+.converter {
+  width: 100px;
+  text-align: center;
+  font-size: 35px;
+  margin: auto;
+}
+
+.previewWrap {
+  @extend .colorScheme;
+  width: 800px;
+  margin: 20px auto;
+  min-height: 200px;
+  overflow-wrap: break-word;
+  padding-right: 20px;
+  .toolbar {
+    left: -1px;
+    width: 100%;
+    padding-right: 17px;
+  }
+  #preview {
+    margin-left: 5px;
+    margin-top: -10px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .previewWrap {
+    width: 630px;
+  }
+  .editorWrap {
+    width: 550px;
+  }
+}
+
+.maximized {
+  width: 96%;
+  min-height: 100vh;
+  margin: auto;
+  textarea {
+    min-height: 95vh;
+    resize: none;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+@media screen and (max-width: 650px) {
+  body {
+    margin: 5px 0;
+  }
+  .editorWrap {
+    width: 80vw;
+    margin: 0 auto;
+  }
+  .maximized {
+    width: 95%;
+    margin: auto;
+  }
+  .previewWrap {
+    width: 95vw;
+    #preview {
+      width: 100%;
+      img {
+        height: 200px;
+      }
+    }
+  }
+}
+
+// MARKDOWN STYLES
+#preview {
+  blockquote {
+    border-left: 3px solid #224b4b;
+    color: #224b4b;
+    padding-left: 5px;
+    margin-left: 25px;
+  }
+
+  code {
+    background: white;
+    padding: 1px 4px 2px 4px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  pre {
+    background: white;
+    padding: 5px 0 5px 5px;
+  }
+
+  h1 {
+    border-bottom: 2px solid $darkAccent;
+  }
+
+  h2 {
+    border-bottom: 1px solid $darkAccent;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  td,
+  th {
+    border: 2px solid $darkAccent;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
