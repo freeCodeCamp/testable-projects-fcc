@@ -1,14 +1,12 @@
-/* global bundleUrl, browserMaxWidth, browserMaxHeight, screenshotDir,
+/* global browserMaxWidth, browserMaxHeight, screenshotDir,
    chromeBinaryPath, firefoxBinaryPath
 */
 
 /*
  * Automates testing of a testable project. In a nutshell, it does everything
- * you would do if you had to test a testable FCC CodePen project manually.
+ * you would do if you had to test a testable FCC project manually.
  *
  * It uses Selenium to:
- * - Get the CodePen project webpage and change to the "Full Page" view.
- * - Optionally set the external javascript to a local bundle.js.
  * - Click on the "Run Tests" button.
  * - Wait for the "Tests" button to show failure or success.
  * - Click on the "Tests" button to see the results.
@@ -162,106 +160,7 @@ exports.doesProjectPassTests = (browser, name, URL) => {
   )
 
   // Get the specified URL.
-  .then(() => driver.get(`${URL}/left/`))
-
-  // Now we need to change some settings.
-
-  // Click on the "Edit Settings" button, and then sleep because the settings
-  // modal fades in.
-  .then(() => clickElement(By.id('edit-settings')))
-
-  // Wait for the item settings modal.
-  .then(() => driver.wait(
-    until.elementLocated(By.css('#item-settings-modal.open')),
-    elementTimeout
-  ))
-  .then(waitOpacity)
-  .then(element => driver.wait(
-    until.elementIsVisible(element),
-    elementTimeout
-  ))
-
-  // Click on "Behavior" settings tab.
-  .then(() => clickElement(By.id('settings-behavior-tab')))
-
-  // Wait until it is the active tab.
-  .then(() => driver.wait(
-    until.elementLocated(By.css('#settings-behavior.active')),
-    elementTimeout
-  ))
-  .then(element => driver.wait(
-    until.elementIsVisible(element),
-    elementTimeout
-  ))
-
-  // Make sure "Auto-Updating Preview" is not checked. This means we will need
-  // to click the "Run" button after making changes. This is more reliable than
-  // waiting for the page to refresh on its own.
-  .then(() => driver.wait(
-    until.elementLocated(By.id('auto-run')),
-    elementTimeout
-  )
-  .then(element => driver.wait(
-     until.elementIsVisible(element),
-     elementTimeout
-  ))
-  .then(elementAutoRun => elementAutoRun.getAttribute('checked')
-    .then(checked => checked ? elementAutoRun.click() : null)
-  ))
-
-  // This next section changes the javascript settings to remove the CDN
-  // bundle.js and use our local bundle.js from the URL specified in the Mocha
-  // setup.js file. Note you must have a setup.js file and set
-  // global.bundleUrl for this section to execute.
-  .then(() => clickElement(By.id('settings-js-tab')))
-  // Wait until it is the active tab.
-  .then(() => driver.wait(
-    until.elementLocated(By.css('#settings-js.active')),
-    elementTimeout
-  ))
-  .then(element => driver.wait(
-    until.elementIsVisible(element),
-    elementTimeout
-  ))
-
-  // Find the bundle.js input row and set it to bundleUrl.
-  .then(() => driver.findElements(
-    By.css("input[class*='js-resource external-resource'][value*='bundle.js']")
-  ))
-  .then(rows => [].slice.call(rows)
-    .reduce((P, elem) => (
-      // Without ' ' works wrong in Firefox
-      P.then(() => elem.clear().then(() => elem.sendKeys(bundleUrl + ' ')))
-    ), Promise.resolve(''))
-  )
-
-  // We are done changing the settings. Close the modal.
-  .then(() => clickElement(By.id('close-settings')))
-
-  // Re-run the web page and detect when is reloaded. The way we do this is a
-  // little tricky. We get the current "results" iframe and then
-  // later (after clicking "Run") we detect when it is no longer present.
-  // Which means the new iframe will load.
-  .then(() => driver.wait(
-    until.elementLocated(By.className('result-iframe')),
-    elementTimeout
-  ))
-
-  // Now we click the run button...
-  .then(iframeElement => {
-    clickElement(By.id('run'));
-    return driver.wait(
-      until.stalenessOf(iframeElement),
-      elementTimeout
-    );
-  })
-
-  // Switch to the CodePen output frame. This is the frame where the
-  // newly refreshed project web page is displayed.
-  .then(() => driver.wait(
-    until.ableToSwitchToFrame(By.className('result-iframe')),
-    elementTimeout
-  ))
+  .then(() => driver.get(`${URL}`))
 
   // Wait for the page to finish loading. In some cases, just for example the
   // D3 projects, projects are loading remote data, so we have to be generous
