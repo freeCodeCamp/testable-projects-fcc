@@ -80,15 +80,14 @@ export default function createPortfolioTests() {
         this.timeout(11000);
 
         // Filter links by location hash (don't click external links)
-        let links = Array.from(document.querySelectorAll('#navbar a'));
-        links = links.filter((nav) => {
-          return nav.getAttribute('href').substr(0, 1) === '#';
-        });
+        const links = Array.from(document.querySelectorAll('#navbar a')).filter(
+          nav => (nav.getAttribute('href') || '').substr(0, 1) === '#'
+        );
 
         assert.isAbove(
           links.length,
           0,
-          'Navbar should contain a link '
+          'Navbar should contain an anchor link '
         );
 
         // Scroll the window to the top and then try the nav links to make sure
