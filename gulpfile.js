@@ -76,16 +76,20 @@ async function buildProjectFromDirectory(projectPath, cb) {
       base: projectPath + '/build/',
       path: projectPath + '/build/index.html'
     });
-    vinyl.contents = Buffer.from(
-      compileHtml({
-        contents,
-        style,
-        script,
-        bundle,
-        title
-      })
-    );
-    cb(null, vinyl);
+    if (!script && !style && !contents) {
+      cb();
+    } else {
+      vinyl.contents = Buffer.from(
+        compileHtml({
+          contents,
+          style,
+          script,
+          bundle,
+          title
+        })
+      );
+      cb(null, vinyl);
+    }
   } catch (err) {
     cb(err);
   }
