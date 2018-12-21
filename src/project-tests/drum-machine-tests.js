@@ -26,6 +26,7 @@ export default function createDrumMachineTests() {
         eventObj.key = String.fromCharCode(keyCode);
         // It works only for letters
         eventObj.code = `Key${eventObj.key}`;
+        eventObj.charCode = eventType === 'keypress' ? keyCode : 0;
       }
       /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
       el.dispatchEvent
@@ -173,16 +174,9 @@ export default function createDrumMachineTests() {
 
         audioElements.forEach((el, i) => {
           el.pause();
-          __triggerEvent(
-            el.parentElement,
-            'keydown',
-            keyCodes[i]
-          );
-          __triggerEvent(
-            el.parentElement,
-            'keypress',
-            keyCodes[i]
-          );
+          __triggerEvent(el.parentElement, 'keydown', keyCodes[i]);
+          __triggerEvent(el.parentElement, 'keypress', keyCodes[i]);
+          __triggerEvent(el.parentElement, 'keyup', keyCodes[i]);
           assert.isFalse(
             el.paused,
             'No audio plays when the ' + el.id + ' key is pressed '
