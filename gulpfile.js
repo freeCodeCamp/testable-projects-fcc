@@ -14,16 +14,20 @@ const pug = require('pug');
 sass.compiler = require('node-sass');
 
 const compileHtml = pug.compileFile('./src/projects/index.pug');
-const bundle =
-  process.env.BUNDLE_URL || '../../testable-projects-fcc/v1/bundle.js';
+
 const babelOptions = {
   babelrc: false,
   presets: ['@babel/preset-env', '@babel/preset-react']
 };
 
+const bundle =
+  process.env.BUNDLE_URL || '../../testable-projects-fcc/v1/bundle.js';
+const projectsPath = process.env.PROJECTS_PATH || './src/projects';
+const buildPath = process.env.BUILD_PATH || './build/pages';
+
 function js(projectPath) {
   return pipeline(
-    gulp.src(projectPath + '/*.{js,jsx}'),
+    gulp.src(projectPath + '/**/*.{js,jsx}'),
     babel(babelOptions).on('error', err => {
       const message = err.toString();
       process.stderr.write(`${message}\n`);
@@ -35,14 +39,14 @@ function js(projectPath) {
 
 function css(projectPath) {
   return pipeline(
-    gulp.src(projectPath + '/*.{css,scss,sass}'),
+    gulp.src(projectPath + '/**/*.{css,scss,sass}'),
     sass().on('error', sass.logError),
     concat('index.css')
   );
 }
 
 function html(projectPath) {
-  return pipeline(gulp.src(projectPath + '/*.html'), concat('index.html'));
+  return pipeline(gulp.src(projectPath + '/**/*.html'), concat('index.html'));
 }
 
 function getData(stream) {
@@ -59,9 +63,8 @@ function getData(stream) {
 
 async function buildProjectFromDirectory(projectPath, cb) {
   try {
-    const title = `FCC: ${projectPath
-      .split(path.sep)
-      .reverse()[0]
+    const projectName = projectPath.split(path.sep).reverse()[0];
+    const title = `FCC: ${projectName
       .split('-')
       .map(word => word[0].toUpperCase() + word.slice(1))
       .join(' ')}`;
@@ -71,23 +74,23 @@ async function buildProjectFromDirectory(projectPath, cb) {
     const _html = getData(html(projectPath));
 
     const [script, style, contents] = await Promise.all([_js, _css, _html]);
-    const vinyl = new Vinyl({
-      cwd: '/',
-      base: projectPath + '/build/',
-      path: projectPath + '/build/index.html'
-    });
     if (!script && !style && !contents) {
       cb();
     } else {
-      vinyl.contents = Buffer.from(
-        compileHtml({
-          contents,
-          style,
-          script,
-          bundle,
-          title
-        })
-      );
+      const vinyl = new Vinyl({
+        cwd: '/',
+        path: '/index.html',
+        contents: Buffer.from(
+          compileHtml({
+            contents,
+            style,
+            script,
+            bundle,
+            title
+          })
+        ),
+        projectName
+      });
       cb(null, vinyl);
     }
   } catch (err) {
@@ -95,7 +98,7 @@ async function buildProjectFromDirectory(projectPath, cb) {
   }
 }
 
-function buildProjects() {
+function buildProject() {
   const _buildFromDirectory = (vinyl, _, cb) => {
     if (vinyl.isDirectory()) {
       buildProjectFromDirectory(vinyl.path, cb);
@@ -109,9 +112,9 @@ function buildProjects() {
 
 function build() {
   return pipeline(
-    gulp.src('./src/projects/*'),
-    buildProjects(),
-    gulp.dest(file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`)
+    gulp.src(`${projectsPath}/*`),
+    buildProject(),
+    gulp.dest(file => `${buildPath}/${file.projectName}`)
   );
 }
 
@@ -119,14 +122,14 @@ function watchProjects() {
   return pipeline(
     watch(
       [
-        './src/projects/**/*.{js,jsx}',
-        './src/projects/**/*.{css,scss,sass}',
-        './src/projects/**/*.html'
+        `${projectsPath}/**/*.{js,jsx}`,
+        `${projectsPath}/**/*.{css,scss,sass}`,
+        `${projectsPath}/**/*.html`
       ],
       { read: false }
     ),
     through2.obj((file, _, cb) => buildProjectFromDirectory(file.dirname, cb)),
-    gulp.dest(file => `./build/pages/${file.base.split(path.sep).reverse()[1]}`)
+    gulp.dest(file => `${buildPath}/${file.projectName}`)
   );
 }
 
