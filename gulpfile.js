@@ -19,6 +19,7 @@ const babelOptions = {
   babelrc: false,
   presets: ['@babel/preset-env', '@babel/preset-react']
 };
+const noop = () => {};
 
 const bundle =
   process.env.BUNDLE_URL || '../../testable-projects-fcc/v1/bundle.js';
@@ -33,7 +34,8 @@ function js(projectPath) {
       process.stderr.write(`${message}\n`);
       this.emit('end');
     }),
-    concat('index.js')
+    concat('index.js'),
+    noop
   );
 }
 
@@ -41,12 +43,17 @@ function css(projectPath) {
   return pipeline(
     gulp.src(projectPath + '/**/*.{css,scss,sass}'),
     sass().on('error', sass.logError),
-    concat('index.css')
+    concat('index.css'),
+    noop
   );
 }
 
 function html(projectPath) {
-  return pipeline(gulp.src(projectPath + '/**/*.html'), concat('index.html'));
+  return pipeline(
+    gulp.src(projectPath + '/**/*.html'),
+    concat('index.html'),
+    noop
+  );
 }
 
 function getData(stream) {
@@ -114,7 +121,8 @@ function build() {
   return pipeline(
     gulp.src(`${projectsPath}/*`),
     buildProject(),
-    gulp.dest(file => `${buildPath}/${file.projectName}`)
+    gulp.dest(file => `${buildPath}/${file.projectName}`),
+    noop
   );
 }
 
@@ -129,7 +137,8 @@ function watchProjects() {
       { read: false }
     ),
     through2.obj((file, _, cb) => buildProjectFromDirectory(file.dirname, cb)),
-    gulp.dest(file => `${buildPath}/${file.projectName}`)
+    gulp.dest(file => `${buildPath}/${file.projectName}`),
+    noop
   );
 }
 
