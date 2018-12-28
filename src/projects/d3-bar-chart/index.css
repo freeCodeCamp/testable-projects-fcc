@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto";
+  background-color: #708090;
+  background-size: 64px 128px;
+}
+.main .container {
+  height: 560px;
+  width: 900px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 20px 20px;
+  align-self: center;
+  position: relative;
+}
+@media (min-width: 1000px) {
+  .main .container {
+    box-shadow: 2px 2px 20px;
+  }
+}
+.main .container #title {
+  text-align: center;
+  font-size: 2.5em;
+}
+.main .container .visHolder {
+  position: absolute;
+  top: 6em;
+}
+
+#tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 150px;
+  height: 50px;
+  padding: 2px;
+  font: 12px;
+  background: lightsteelblue;
+  box-shadow: 1px 1px 10px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  background: #fff;
+  pointer-events: none;
+}
+
+#y-axis path {
+  stroke: black;
+  stroke-width: 1;
+  fill: none;
+}
+
+#x-axis path {
+  stroke: black;
+  stroke-width: 1;
+  fill: none;
+}
+
+.info {
+  font-size: 0.8em;
+}

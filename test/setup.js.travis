@@ -17,9 +17,6 @@ global.firefoxBinaryPath = 'firefox';
 // Where to save screenshots.
 global.screenshotDir = 'travis-screenshots';
 
-// URL for local bundle.js
-global.bundleUrl = 'https://127.0.0.1:8080/bundle.js';
-
 // Browser will be resized using these values.
 global.browserMaxWidth = 1920;
 global.browserMaxHeight = 1080;

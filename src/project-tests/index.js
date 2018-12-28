@@ -1,3 +1,5 @@
+import path from 'path';
+
 import createTributePageTests from './tribute-page-tests';
 import createPortfolioTests from './portfolio-tests';
 import createSurveyFormTests from './survey-form-tests';
@@ -14,80 +16,100 @@ import createHeatMapTests from './heat-map-tests';
 import createChoroplethTests from './choropleth-tests';
 import createTreeMapTests from './tree-map-tests';
 
+let projectsPath = `file:///${path
+  .resolve('./build/pages/')
+  .split(path.sep)
+  .join('/')}`;
+
 export default {
   'tribute-page': {
     name: 'Tribute Page',
-    URL: 'https://codepen.io/freeCodeCamp/pen/zNqgVx',
+    URL: projectsPath + '/tribute-page/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/zNqgVx',
     test: createTributePageTests
   },
   portfolio: {
     name: 'Personal Portfolio',
-    URL: 'https://codepen.io/freeCodeCamp/pen/zNBOYG',
+    URL: projectsPath + '/portfolio/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/zNBOYG',
     test: createPortfolioTests
   },
   'survey-form': {
     name: 'Survey Form',
-    URL: 'https://codepen.io/freeCodeCamp/pen/VPaoNP',
+    URL: projectsPath + '/survey-form/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/VPaoNP',
     test: createSurveyFormTests
   },
   'product-landing-page': {
     name: 'Product Landing Page',
-    URL: 'https://codepen.io/freeCodeCamp/pen/RKRbwL',
+    URL: projectsPath + '/product-landing-page/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/RKRbwL',
     test: createProductLandingPageTests
   },
   'technical-docs-page': {
     name: 'Technical Documentation Page',
-    URL: 'https://codepen.io/freeCodeCamp/pen/NdrKKL',
+    URL: projectsPath + '/technical-documentation-page/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/NdrKKL',
     test: createTechnicalDocsPageTests
   },
   'random-quote-machine': {
     name: 'Random Quote Machine',
-    URL: 'https://codepen.io/freeCodeCamp/pen/qRZeGZ',
+    URL: projectsPath + '/random-quote-machine/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/qRZeGZ',
     test: createRandomQuoteMachineTests
   },
   'markdown-previewer': {
     name: 'Markdown Previewer',
-    URL: 'https://codepen.io/freeCodeCamp/pen/GrZVVO',
+    URL: projectsPath + '/markdown-previewer/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/GrZVVO',
     test: createMarkdownPreviewerTests
   },
   'drum-machine': {
     name: 'Drum Machine',
-    URL: 'https://codepen.io/freeCodeCamp/pen/MJyNMd',
+    URL: projectsPath + '/drum-machine/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/MJyNMd',
     test: createDrumMachineTests
   },
   'pomodoro-clock': {
     name: 'Pomodoro Clock',
-    URL: 'https://codepen.io/freeCodeCamp/pen/XpKrrW',
+    URL: projectsPath + '/pomodoro-clock/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/XpKrrW',
     test: createPomodoroClockTests
   },
   'javascript-calculator': {
     name: 'Javascript Calculator',
-    URL: 'https://codepen.io/freeCodeCamp/pen/wgGVVX',
+    URL: projectsPath + '/javascript-calculator/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/wgGVVX',
     test: createCalculatorTests
   },
   'bar-chart': {
     name: 'D3: Bar Chart',
-    URL: 'https://codepen.io/freeCodeCamp/pen/GrZVaM',
+    URL: projectsPath + '/d3-bar-chart/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/GrZVaM',
     test: createBarChartTests
   },
   'scatter-plot': {
     name: 'D3: Scatter Plot',
-    URL: 'https://codepen.io/freeCodeCamp/pen/bgpXyK',
+    URL: projectsPath + '/d3-scatter-plot/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/bgpXyK',
     test: createScatterPlotTests
   },
   'heat-map': {
     name: 'D3: Heat Map',
-    URL: 'https://codepen.io/freeCodeCamp/pen/JEXgeY',
+    URL: projectsPath + '/d3-heat-map/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/JEXgeY',
     test: createHeatMapTests
   },
   choropleth: {
     name: 'D3: Choropleth',
-    URL: 'https://codepen.io/freeCodeCamp/pen/EZKqza',
+    URL: projectsPath + '/d3-choropleth/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/EZKqza',
     test: createChoroplethTests
   },
   'tree-map': {
     name: 'D3: Tree Map',
-    URL: 'https://codepen.io/freeCodeCamp/pen/KaNGNR',
+    URL: projectsPath + '/d3-tree-map/index.html',
+    codepen: 'https://codepen.io/freeCodeCamp/pen/KaNGNR',
     test: createTreeMapTests
   }
 };

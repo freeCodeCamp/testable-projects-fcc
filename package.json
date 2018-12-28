@@ -12,6 +12,9 @@
     "url": "https://github.com/freeCodeCamp/testable-projects-fcc/issues"
   },
   "main": "index.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "chai": "^3.5.0",
@@ -19,15 +22,16 @@
     "mocha": "^5.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.49",
-    "@babel/plugin-transform-runtime": "^7.1.0",
-    "@babel/preset-env": "^7.0.0-beta.49",
-    "@babel/register": "^7.0.0-beta.49",
-    "babel-loader": "^8.0.0-beta.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "@commitlint/travis-cli": "^7.0.0",
     "babel-eslint": "^8.2.3",
+    "babel-loader": "^8.0.4",
     "chromedriver": "^2.40.0",
     "commitizen": "^2.10.1",
     "css-loader": "^0.28.11",
@@ -38,13 +42,21 @@
     "eslint-plugin-prefer-object-spread": "^1.1.0",
     "eslint-plugin-react": "^7.9.1",
     "geckodriver": "^1.12.2",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-watch": "^5.0.1",
     "html-loader": "^0.5.1",
-    "husky": "^1.0.0-rc.13",
+    "husky": "^1.2.1",
     "jsdom": "^11.2.0",
     "live-server": "^1.2.0",
+    "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.5",
+    "pug": "^2.0.3",
     "selenium-webdriver": "^3.4.0",
-    "selfsigned": "^1.10.3",
-    "style-loader": "^0.18.2",
+    "through2": "^3.0.0",
+    "vinyl": "^2.2.0",
     "webpack": "^4.10.2",
     "webpack-cli": "^2.1.5",
     "webpack-dev-server": "^3.1.5"
@@ -52,12 +64,16 @@
   "scripts": {
     "develop": "webpack-dev-server --https",
     "commit": "git-cz",
-    "live-serve-build": "live-server --no-browser --https=config/live-server-https build/testable-projects-fcc/v1",
     "lint": "eslint ./**/*.js",
     "pretest": "yarn lint",
     "test": "mocha",
-    "start": "webpack --watch",
-    "build": "webpack --env.production"
+    "serve": "live-server build",
+    "start": "run-p start:* serve",
+    "start:projects-tests": "webpack --watch",
+    "start:projects": "gulp",
+    "build": "run-p build:*",
+    "build:projects-tests": "webpack --env.production",
+    "build:projects": "gulp build"
   },
   "config": {
     "commitizen": {

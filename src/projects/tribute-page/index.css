@@ -1,0 +1,45 @@
+html,
+body {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  text-align: center;
+  min-width: 260px;
+  color: #333;
+}
+#main {
+  margin: 30px auto;
+  padding: 15px;
+  border: 0px solid;
+  border-radius: 5px;
+  background: #eee;
+}
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+  margin: auto;
+}
+#img-div {
+  margin: -5px;
+  margin-top: 20px;
+  width: 100%;
+  border: 5px solid white;
+  background: white;
+}
+#img-caption {
+  margin: 15px;
+}
+#headline {
+  margin-top: 50px;
+  text-align: left;
+}
+ul {
+  max-width: 550px;
+  margin: 0 auto;
+  text-align: left;
+}
+li {
+  margin: 10px;
+}
+blockquote {
+  font-style: italic;
+}

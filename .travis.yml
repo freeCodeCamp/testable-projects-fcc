@@ -47,10 +47,6 @@ before_script:
   # Build budle.js
   - yarn build
   - cp test/setup.js.travis test/setup.js
-  # Start https server (and sleep) so we can get the local bundle.js via https.
-  # The `&` at the end tells this process to fork into the background
-  # https://github.com/travis-ci/travis-ci/issues/1321
-  - yarn live-serve-build &
   # Increase the shared memory mountpoint. Chrome or something in the tests is
   # taking up more shared memory than is available which causes tests to fail.
   # See https://github.com/SeleniumHQ/docker-selenium/issues/431
