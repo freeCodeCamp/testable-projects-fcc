@@ -1,42 +1,34 @@
 <nav id="navbar">
   <header>JS Documentation</header>
   <ul>
-    <a class="nav-link" href="#Introduction" rel="internal"
-      ><li>Introduction</li></a
-    >
-    <a class="nav-link" href="#What_you_should_already_know" rel="internal"
-      ><li>What you should already know</li></a
-    >
-    <a class="nav-link" href="#JavaScript_and_Java" rel="internal"
-      ><li>JavaScript and Java</li></a
-    >
-    <a class="nav-link" href="#Hello_world" rel="internal"
-      ><li>Hello world</li></a
-    >
-    <a class="nav-link" href="#Variables" rel="internal"><li>Variables</li></a>
-    <a class="nav-link" href="#Declaring_variables" rel="internal"
-      ><li>Declaring variables</li></a
-    >
-    <a class="nav-link" href="#Variable_scope" rel="internal"
-      ><li>Variable scope</li></a
-    >
-    <a class="nav-link" href="#Global_variables" rel="internal"
-      ><li>Global variables</li></a
-    >
-    <a class="nav-link" href="#Constants" rel="internal"><li>Constants</li></a>
-    <a class="nav-link" href="#Data_types" rel="internal"
-      ><li>Data types</li></a
-    >
-    <a class="nav-link" href="#if...else_statement" rel="internal"
-      ><li>if...else statement</li></a
-    >
-    <a class="nav-link" href="#while_statement" rel="internal"
-      ><li>while statement</li></a
-    >
-    <a class="nav-link" href="#Function_declarations" rel="internal"
-      ><li>Function declarations</li></a
-    >
-    <a class="nav-link" href="#Reference" rel="internal"><li>Reference</li></a>
+    <li><a class="nav-link" href="#Introduction">Introduction</a></li>
+    <li>
+      <a class="nav-link" href="#What_you_should_already_know"
+        >What you should already know</a
+      >
+    </li>
+    <li>
+      <a class="nav-link" href="#JavaScript_and_Java">JavaScript and Java</a>
+    </li>
+    <li><a class="nav-link" href="#Hello_world">Hello world</a></li>
+    <li><a class="nav-link" href="#Variables">Variables</a></li>
+    <li>
+      <a class="nav-link" href="#Declaring_variables">Declaring variables</a>
+    </li>
+    <li><a class="nav-link" href="#Variable_scope">Variable scope</a></li>
+    <li><a class="nav-link" href="#Global_variables">Global variables</a></li>
+    <li><a class="nav-link" href="#Constants">Constants</a></li>
+    <li><a class="nav-link" href="#Data_types">Data types</a></li>
+    <li>
+      <a class="nav-link" href="#if...else_statement">if...else statement</a>
+    </li>
+    <li><a class="nav-link" href="#while_statement">while statement</a></li>
+    <li>
+      <a class="nav-link" href="#Function_declarations"
+        >Function declarations</a
+      >
+    </li>
+    <li><a class="nav-link" href="#Reference">Reference</a></li>
   </ul>
 </nav>
 <main id="main-doc">
@@ -57,21 +49,22 @@
         variety of purposes by supplementing it with additional objects; for
         example:
       </p>
-
-      <li>
-        Client-side JavaScript extends the core language by supplying objects to
-        control a browser and its Document Object Model (DOM). For example,
-        client-side extensions allow an application to place elements on an HTML
-        form and respond to user events such as mouse clicks, form input, and
-        page navigation.
-      </li>
-      <li>
-        Server-side JavaScript extends the core language by supplying objects
-        relevant to running JavaScript on a server. For example, server-side
-        extensions allow an application to communicate with a database, provide
-        continuity of information from one invocation to another of the
-        application, or perform file manipulations on a server.
-      </li>
+      <ul>
+        <li>
+          Client-side JavaScript extends the core language by supplying objects
+          to control a browser and its Document Object Model (DOM). For example,
+          client-side extensions allow an application to place elements on an
+          HTML form and respond to user events such as mouse clicks, form input,
+          and page navigation.
+        </li>
+        <li>
+          Server-side JavaScript extends the core language by supplying objects
+          relevant to running JavaScript on a server. For example, server-side
+          extensions allow an application to communicate with a database,
+          provide continuity of information from one invocation to another of
+          the application, or perform file manipulations on a server.
+        </li>
+      </ul>
     </article>
   </section>
   <section class="main-section" id="What_you_should_already_know">
@@ -79,14 +72,16 @@
     <article>
       <p>This guide assumes you have the following basic background:</p>
 
-      <li>
-        A general understanding of the Internet and the World Wide Web (WWW).
-      </li>
-      <li>Good working knowledge of HyperText Markup Language (HTML).</li>
-      <li>
-        Some programming experience. If you are new to programming, try one of
-        the tutorials linked on the main page about JavaScript.
-      </li>
+      <ul>
+        <li>
+          A general understanding of the Internet and the World Wide Web (WWW).
+        </li>
+        <li>Good working knowledge of HyperText Markup Language (HTML).</li>
+        <li>
+          Some programming experience. If you are new to programming, try one of
+          the tutorials linked on the main page about JavaScript.
+        </li>
+      </ul>
     </article>
   </section>
   <section class="main-section" id="JavaScript_and_Java">
@@ -266,26 +261,28 @@
     <header>Data types</header>
     <article>
       <p>The latest ECMAScript standard defines seven data types:</p>
-      <li>
-        <p>Six data types that are primitives:</p>
-        <ul>
-          <li>Boolean. true and false.</li>
-          <li>
-            null. A special keyword denoting a null value. Because JavaScript is
-            case-sensitive, null is not the same as Null, NULL, or any other
-            variant.
-          </li>
-          <li>undefined. A top-level property whose value is undefined.</li>
-          <li>Number. 42 or 3.14159.</li>
-          <li>String. "Howdy"</li>
-          <li>
-            Symbol (new in ECMAScript 2015). A data type whose instances are
-            unique and immutable.
-          </li>
-        </ul>
-      </li>
+      <ul>
+        <li>
+          <p>Six data types that are primitives:</p>
+          <ul>
+            <li>Boolean. true and false.</li>
+            <li>
+              null. A special keyword denoting a null value. Because JavaScript
+              is case-sensitive, null is not the same as Null, NULL, or any
+              other variant.
+            </li>
+            <li>undefined. A top-level property whose value is undefined.</li>
+            <li>Number. 42 or 3.14159.</li>
+            <li>String. "Howdy"</li>
+            <li>
+              Symbol (new in ECMAScript 2015). A data type whose instances are
+              unique and immutable.
+            </li>
+          </ul>
+        </li>
 
-      <li>and Object</li>
+        <li>and Object</li>
+      </ul>
       Although these data types are a relatively small amount, they enable you
       to perform useful functions with your applications. Objects and functions
       are the other fundamental elements in the language. You can think of
@@ -361,17 +358,19 @@
 
       <p>The following while loop iterates as long as n is less than three:</p>
 
-      <code>var n = 0; var x = 0; while (n < 3) { n++; x += n; }</code>
+      <code>var n = 0; var x = 0; while (n &lt; 3) { n++; x += n; }</code>
       <p>
         With each iteration, the loop increments n and adds that value to x.
         Therefore, x and n take on the following values:
       </p>
 
-      <li>After the first pass: n = 1 and x = 1</li>
-      <li>After the second pass: n = 2 and x = 3</li>
-      <li>After the third pass: n = 3 and x = 6</li>
+      <ul>
+        <li>After the first pass: n = 1 and x = 1</li>
+        <li>After the second pass: n = 2 and x = 3</li>
+        <li>After the third pass: n = 3 and x = 6</li>
+      </ul>
       <p>
-        After completing the third pass, the condition n &lt 3 is no longer
+        After completing the third pass, the condition n &lt; 3 is no longer
         true, so the loop terminates.
       </p>
     </article>
@@ -382,15 +381,17 @@
       A function definition (also called a function declaration, or function
       statement) consists of the function keyword, followed by:
 
-      <li>The name of the function.</li>
-      <li>
-        A list of arguments to the function, enclosed in parentheses and
-        separated by commas.
-      </li>
-      <li>
-        The JavaScript statements that define the function, enclosed in curly
-        brackets, { }.
-      </li>
+      <ul>
+        <li>The name of the function.</li>
+        <li>
+          A list of arguments to the function, enclosed in parentheses and
+          separated by commas.
+        </li>
+        <li>
+          The JavaScript statements that define the function, enclosed in curly
+          brackets, { }.
+        </li>
+      </ul>
       <p>
         For example, the following code defines a simple function named square:
       </p>
@@ -414,14 +415,16 @@
   <section class="main-section" id="Reference">
     <header>Reference</header>
     <article>
-      <li>
-        All the documentation in this page is taken from
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
-          target="_blank"
-          >MDN</a
-        >
-      </li>
+      <ul>
+        <li>
+          All the documentation in this page is taken from
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+            target="_blank"
+            >MDN</a
+          >
+        </li>
+      </ul>
     </article>
   </section>
 </main>
