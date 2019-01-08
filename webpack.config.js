@@ -2,9 +2,7 @@ const path = require('path');
 
 module.exports = function(env = {}) {
   const __DEV__ = env.production ? false : true;
-  const outputPath = __DEV__
-    ? path.join(__dirname, 'local_test/js')
-    : path.join(__dirname, 'build/testable-projects-fcc/v1');
+  const outputPath = path.join(__dirname, 'build/testable-projects-fcc/v1');
   return {
     mode: __DEV__ ? 'development' : 'production',
     entry: './src/index.js',
