@@ -3,6 +3,13 @@ import $ from 'jquery';
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 
 export default function createTributePageTests() {
+  // Save the HTML element type of the element with id="main"
+  // Needed for checking if we should run the tests for old or new projects
+  let mainElement = null;
+  const hasMain = document.getElementById('main');
+  if (hasMain) {
+    mainElement = hasMain.localName;
+  }
 
   function getPropValue(el, prop) {
     return window.getComputedStyle(el).getPropertyValue(prop);
@@ -19,11 +26,21 @@ export default function createTributePageTests() {
     describe('#Content', function() {
 
       it(`My tribute page should have an element with corresponding
+      id="main"`, function() {
+        assert.isNotNull(hasMain);
+        assert(document.querySelectorAll('div#main, main#main').length,
+        'element with id="main" should be a "div" or "main" element');
+      });
+
+      it(`My tribute page should have an element with corresponding
       id="main", which contains all other elements.`,
       function() {
         assert.isNotNull(document.getElementById('main'));
         assert(
-          document.querySelectorAll('#main div, #main a, #main h1, #main img')
+          document.querySelectorAll(
+            '#main div, #main figure, #main section,' +
+            ' #main a, #main h1, #main img'
+            )
           .length,
           'element with id="main" must contain other elements'
         );
@@ -42,41 +59,85 @@ export default function createTributePageTests() {
         );
       });
 
-      it(`I should see a <div> element with corresponding
-      id="img-div".`,
-      function() {
-        assert.isNotNull(document.getElementById('img-div'));
-      });
+      // Tests for old projects when id=main is a div element
+      if (mainElement === 'div') {
 
-      it(`Within the "img-div" element, I should see an <img> element
-      with a corresponding id="image".`,
-      function() {
-        assert.isNotNull(document.getElementById('image'));
-        assert.strictEqual(
-          $('#img-div').find('#image').length,
-          1,
-          'Element is not a child of id="img-div" '
-        );
-      });
+        it(`I should see a <div> element with corresponding
+        id="img-div".`,
+          function() {
+            assert.isNotNull(document.getElementById('img-div'));
+          });
 
-      it(`Within the "img-div" element, I should see an element with
-      a corresponding id="img-caption" that contains textual content describing
-      the image shown in "img-div".`,
-      function() {
-        assert.isNotNull(document.getElementById('img-caption'));
-        assert.strictEqual(
-          $('#img-div').find('#img-caption').length,
-          1,
-          'Element is not a child of id="img-div" '
-        );
-        const captionContents =
-          document.getElementById('img-caption').innerText;
-        assert.isAbove(
-          captionContents.length,
-          0,
-          'Element does not have any content '
-        );
-      });
+        it(`Within the "img-div" element, I should see an <img> element
+        with a corresponding id="image".`,
+          function() {
+            assert.isNotNull(document.getElementById('image'));
+            assert.strictEqual(
+              $('#img-div').find('#image').length,
+              1,
+              'Element is not a child of id="img-div" '
+            );
+          });
+
+        it(`Within the "img-div" element, I should see an element with
+        a corresponding id="img-caption" that contains textual content
+        describing the image shown in "img-div".`,
+        function() {
+          assert.isNotNull(document.getElementById('img-caption'));
+          assert.strictEqual(
+            $('#img-div').find('#img-caption').length,
+            1,
+            'Element is not a child of id="img-div" '
+          );
+          const captionContents =
+            document.getElementById('img-caption').innerText;
+          assert.isAbove(
+            captionContents.length,
+            0,
+            'Element does not have any content '
+          );
+        });
+      }
+
+      // Test for new projects when id=main is a main element
+      if (mainElement === 'main') {
+
+        it(`I should see a <figure> element with corresponding
+        id="figure".`,
+          function() {
+            assert.isNotNull(document.getElementById('figure'));
+          });
+
+        it(`Within the "figure" element, I should see an <img> element
+        with a corresponding id="image".`,
+          function() {
+            assert.isNotNull(document.getElementById('image'));
+            assert.strictEqual(
+              $('#figure').find('#image').length,
+              1,
+              'Element is not a child of id="figure" '
+            );
+          });
+
+        it(`Within the "figure" element, I should see an element with
+        a corresponding id="figcaption" that contains textual content describing
+        the image shown in "figure".`,
+        function() {
+          assert.isNotNull(document.getElementById('figcaption'));
+          assert.strictEqual(
+            $('#figure').find('#figcaption').length,
+            1,
+            'Element is not a child of id="figure" '
+          );
+          const captionContents =
+            document.getElementById('figcaption').innerText;
+          assert.isAbove(
+            captionContents.length,
+            0,
+            'Element does not have any content '
+          );
+        });
+      }
 
       it(`I should see an element with a corresponding
       id="tribute-info", which contains textual content describing the subject
