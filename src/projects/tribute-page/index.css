@@ -59,18 +59,18 @@ img {
   margin: 0 auto;
 }
 
-#figure {
+#img-div {
   background: white;
   padding: 10px;
   margin: 0;
 }
 
-#figcaption {
+#img-caption {
   margin: 15px 0 5px 0;
 }
 
 @media (max-width: 460px) {
-  #figcaption {
+  #img-caption {
     font-size: 1.4rem;
   }
 }
