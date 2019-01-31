@@ -218,7 +218,20 @@ export default function createPomodoroClockTests() {
       NOTE: Paused or running, the value in this field should always be
       displayed in mm:ss format (i.e. 25:00).`,
       function() {
-        assert.isNotNull(document.getElementById('time-left'));
+        const target = document.getElementById('time-left');
+        assert.isNotNull(target);
+        assert.strictEqual(
+          getMinutes(target.innerText),
+          '25',
+          'time-left is not formatted correctly'
+        );
+        // Set session length to 60
+        clickButtonsById(Array(35).fill(seshPlus));
+        assert.strictEqual(
+          getMinutes(target.innerText),
+          '60',
+          'time-left is not formatted correctly'
+        );
       });
 
       it(`I can see a clickable element with corresponding
