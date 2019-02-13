@@ -1,3 +1,4 @@
 {
-  "extends": "freecodecamp"
+  "extends": "freecodecamp",
+  "root": true
 }
