@@ -62,9 +62,9 @@ export default function createTributePageTests() {
         );
       });
 
-      it(`Within the "img-div" element, I should see an element with
-      a corresponding id="img-caption" that contains textual content
-      describing the image shown in "img-div".`,
+      it(`Within the "img-div" element, I should see either a <figcaption>
+      or <div> element with a corresponding id="img-caption" that contains
+      textual content describing the image shown in "img-div".`,
       function() {
         assert.isNotNull(document.getElementById('img-caption'));
         assert.strictEqual(
