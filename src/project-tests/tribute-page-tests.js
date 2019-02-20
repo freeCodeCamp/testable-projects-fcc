@@ -23,7 +23,10 @@ export default function createTributePageTests() {
       function() {
         assert.isNotNull(document.getElementById('main'));
         assert(
-          document.querySelectorAll('#main div, #main a, #main h1, #main img')
+          document.querySelectorAll(
+            '#main div, #main figure, #main section,' +
+            ' #main a, #main h1, #main img'
+            )
           .length,
           'element with id="main" must contain other elements'
         );
@@ -42,7 +45,7 @@ export default function createTributePageTests() {
         );
       });
 
-      it(`I should see a <div> element with corresponding
+      it(`I should see either a <figure> or <div> element with corresponding
       id="img-div".`,
       function() {
         assert.isNotNull(document.getElementById('img-div'));
@@ -59,9 +62,9 @@ export default function createTributePageTests() {
         );
       });
 
-      it(`Within the "img-div" element, I should see an element with
-      a corresponding id="img-caption" that contains textual content describing
-      the image shown in "img-div".`,
+      it(`Within the "img-div" element, I should see either a <figcaption>
+      or <div> element with a corresponding id="img-caption" that contains
+      textual content describing the image shown in "img-div".`,
       function() {
         assert.isNotNull(document.getElementById('img-caption'));
         assert.strictEqual(
