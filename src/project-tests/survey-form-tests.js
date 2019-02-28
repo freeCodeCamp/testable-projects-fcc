@@ -303,7 +303,7 @@ export default function createSurveyFormTests() {
 
       it(`Inside the form element, I can select a field from one or
       more groups of radio buttons. Each group should be grouped using the name
-      attribute.`,
+      attribute. Each radio button must have a value attribute.`,
       function() {
         let groups;
         // [].slice.call converts to array.
