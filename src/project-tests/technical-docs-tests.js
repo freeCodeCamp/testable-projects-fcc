@@ -101,9 +101,9 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`Each <section> element with the class of "main-section"
-      should also have an id string comprised of the innerText of each <header>
-      contained within it, and using underscores in place of spaces. The id may
-      include special characters corresponding with any special characters in
+      should also have an id comprised of the <header> innerText 
+      contained within it, with underscores in place of spaces. The id may
+      include special characters if there are special characters in
       the respective <header> innerText. (e.g. The <section> that contains the
       header, "Javascript & Java", should have a corresponding
       id="Javascript_&_Java").`,
