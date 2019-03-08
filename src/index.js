@@ -77,10 +77,10 @@ $(document).ready(function initTests() {
   if (isBrowserSupported === false) {
     alertOnce(
       'Intro Alert',
-      'Test suites are currently optimized for Chrome and Firefox.' +
-      'There are known issues that we are trying to work through to make' +
-      'these suites fully cross-browser compatible, but it is a work' +
-      'in progress. For the best user experience, please use Chrome or' +
+      'Test suites are currently optimized for Chrome and Firefox. ' +
+      'There are known issues that we are trying to work through to make ' +
+      'these suites fully cross-browser compatible, but it is a work ' +
+      'in progress. For the best user experience, please use Chrome or ' +
       'Firefox until these issues are resolved. ' +
       'Thanks and Happy Coding!'
     );

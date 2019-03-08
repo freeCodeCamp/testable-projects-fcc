@@ -115,7 +115,7 @@ export default function createTributePageTests() {
         assert.strictEqual(
           tributeLink.getAttribute('target'),
           '_blank',
-          'The target attribute should be set to "_blank", in order for the' +
+          'The target attribute should be set to "_blank", in order for the ' +
           'link to open in a new tab '
         );
       });
@@ -140,7 +140,7 @@ export default function createTributePageTests() {
         assert.equal(
           displayValue,
           'block',
-          'Use the "display" style property with a value of "block" for' +
+          'Use the "display" style property with a value of "block" for ' +
           'responsive images.'
         );
         // In order to determine if the height style is "auto", we
@@ -156,7 +156,7 @@ export default function createTributePageTests() {
         assert.equal(
           heightValue,
           'auto',
-          'Use the "height" style property with a value of "auto" for' +
+          'Use the "height" style property with a value of "auto" for ' +
           'responsive images.'
         );
       });
