@@ -1,7 +1,7 @@
 <!-- freeCodeCamp Testable Projects Pull Request Template -->
 
 <!-- IMPORTANT: PRs against this repo should follow the general guidelines laid out for FCC's main repo as well as the guidlines specific to this repo -->
-<!-- Please review https://github.com/freeCodeCamp/freeCodeCamp/blob/staging/CONTRIBUTING.md && https://github.com/freeCodeCamp/testable-projects-fcc/blob/master/CONTRIBUTING.md for detailed contributing guidelines -->
+<!-- Please review https://github.com/freeCodeCamp/freeCodeCamp/blob/master/CONTRIBUTING.md && https://github.com/freeCodeCamp/testable-projects-fcc/blob/master/CONTRIBUTING.md for detailed contributing guidelines -->
 <!-- Help with PRs can be found at https://gitter.im/FreeCodeCamp/Contributors -->
 <!-- Make sure that your PR is not a duplicate -->
 
