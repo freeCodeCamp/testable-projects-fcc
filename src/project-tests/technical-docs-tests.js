@@ -101,10 +101,12 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`Each <section> element with the class of "main-section"
-      should also have an id that corresponds with the text of each <header>
-      contained within it. Any spaces should be replaced with underscores (e.g.
-      The <section> that contains the header "Javascript and Java" should have a
-      corresponding id="Javascript_and_Java").`,
+      should also have an id comprised of the <header> innerText 
+      contained within it, with underscores in place of spaces. The id may
+      include special characters if there are special characters in
+      the respective <header> innerText. (e.g. The <section> that contains the
+      header, "Javascript & Java", should have a corresponding
+      id="Javascript_&_Java").`,
       function() {
 
         const mainSections = classArray('main-section');
