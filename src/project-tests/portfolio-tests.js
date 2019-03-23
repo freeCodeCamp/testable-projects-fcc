@@ -1,8 +1,7 @@
 import { assert } from 'chai';
 
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
-import { allCSSRulesAsArray, isTestSuiteRule } from
-  '../utils/style-sheet-utils';
+import { hasMediaQuery } from '../utils/style-sheet-utils';
 import { timeout } from '../utils/threading';
 
 export default function createPortfolioTests() {
@@ -165,20 +164,8 @@ export default function createPortfolioTests() {
 
       it('My portfolio should have at least one media query.',
       function() {
-
-        // Filter to get only media queries.
-        let queryRules = allCSSRulesAsArray(document.styleSheets)
-          .filter(rule => rule.type === CSSRule.MEDIA_RULE);
-
-        // Filter out our test suite and Mocha CSS rules. This may be trickier
-        // than looks. The reason we can use allCSSRulesAsArray is because
-        // media rules have a cssRules attribute.
-        let cssMediaRules = allCSSRulesAsArray(queryRules)
-          .filter(rule => !isTestSuiteRule(rule));
-
-        assert.isAbove(
-          cssMediaRules.length,
-          0,
+        assert.isTrue(
+          hasMediaQuery(document.styleSheets),
           'No media queries detected '
         );
       });

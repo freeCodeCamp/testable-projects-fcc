@@ -1,5 +1,5 @@
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
-import { allCSSRulesAsArray, isTestSuiteRule } from
+import { allCSSRulesAsArray, isTestSuiteRule, hasMediaQuery } from
   '../utils/style-sheet-utils';
 import { assert } from 'chai';
 
@@ -303,19 +303,8 @@ export default function createProductLandingPageTests() {
       it(`My product landing page should have at least one media
       query.`,
       function() {
-
-        // Filter to get only media queries.
-        let queryRules = allCSSRulesAsArray(document.styleSheets)
-          .filter(rule => rule.type === CSSRule.MEDIA_RULE);
-
-        // Filter out our test suite and Mocha CSS rules. This may be trickier
-        // than looks. The reason we can use allCSSRulesAsArray is because
-        // media rules have a cssRules attribute.
-        let useCSSMediaRules = allCSSRulesAsArray(queryRules)
-          .some(rule => !isTestSuiteRule(rule));
-
         assert.isTrue(
-          useCSSMediaRules,
+          hasMediaQuery(document.styleSheets),
           'No media queries detected '
         );
       });
@@ -335,16 +324,17 @@ export default function createProductLandingPageTests() {
               rule.style.display === 'inline-flex'
             );
         }
-        const useFlex = allCSSRulesAsArray(document.styleSheets)
-          .some(rule => {
-            if (rule.type === CSSRule.MEDIA_RULE) {
-              return allCSSRulesAsArray([rule]).some(isRuleUseFlex);
+        function isStyleSheetsUseFlex(styleSheets) {
+          return allCSSRulesAsArray(styleSheets).some(rule => {
+            if (rule.type === CSSRule.STYLE_RULE) {
+              return isRuleUseFlex(rule);
             }
-            return isRuleUseFlex(rule);
+            return isStyleSheetsUseFlex([rule]);
           });
+        }
 
         assert.isTrue(
-          useFlex,
+          isStyleSheetsUseFlex(document.styleSheets),
           'We do not detect a display property set to flex or inline-flex ' +
           'anywhere in your CSS '
         );

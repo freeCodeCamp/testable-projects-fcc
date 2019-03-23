@@ -34,7 +34,8 @@ export const allCSSRulesAsArray = function(styleSheets) {
           const rulesAsArray = [].slice.call(styleSheet.cssRules)
             .filter(rule => (
               rule.type === CSSRule.STYLE_RULE ||
-              rule.type === CSSRule.MEDIA_RULE
+              rule.type === CSSRule.MEDIA_RULE ||
+              rule.type === CSSRule.SUPPORTS_RULE
             )
           );
           // Use the spread operator to push each individual element onto the
@@ -77,3 +78,28 @@ export const isTestSuiteRule = function(cssStyleRule) {
 
   return false;
 };
+
+/*
+ * Given a list of styleSheet-like objects, it returns true if there is
+ * at least one rule with type CSSRule.MEDIA_RULE
+ *
+ */
+export function hasMediaQuery(styleSheets) {
+  const sourceOfRules = [styleSheets];
+  while (sourceOfRules.length) {
+    const source = sourceOfRules.shift(sourceOfRules);
+    const rules = allCSSRulesAsArray(source);
+    for (let rule of rules) {
+      if (
+        rule.type === CSSRule.MEDIA_RULE &&
+        !allCSSRulesAsArray([rule]).some(rule => isTestSuiteRule(rule))
+      ) {
+        // found media query
+        return true;
+      } else if (rule.type === CSSRule.SUPPORTS_RULE) {
+        sourceOfRules.push([rule]);
+      }
+    }
+  }
+  return false;
+}
