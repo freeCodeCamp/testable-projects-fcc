@@ -104,8 +104,8 @@ export default function createTechnicalDocsPageTests() {
       contained within it, with underscores in place of spaces. The id may
       include special characters if there are special characters in
       the respective <header> innerText. (e.g. The <section> that contains the
-      header, "Javascript & Java", should have a corresponding
-      id="Javascript_&_Java").`,
+      header, "JavaScript & Java", should have a corresponding
+      id="JavaScript_&_Java").`,
       function() {
 
         const mainSections = classArray('main-section');
