@@ -45,32 +45,32 @@ export default function createTributePageTests() {
         );
       });
 
-      it(`I should see either a <figure> or <div> element with corresponding
-      id="img-div".`,
+      it(`I should see a <figure> element with corresponding
+      id="img-figure".`,
       function() {
-        assert.isNotNull(document.getElementById('img-div'));
+        assert.isNotNull(document.getElementById('img-figure'));
       });
 
-      it(`Within the "img-div" element, I should see an <img> element
+      it(`Within the "img-figure" element, I should see an <img> element
       with a corresponding id="image".`,
       function() {
         assert.isNotNull(document.getElementById('image'));
         assert.strictEqual(
-          $('#img-div').find('#image').length,
+          $('#img-figure').find('#image').length,
           1,
-          'Element is not a child of id="img-div" '
+          'Element is not a child of id="img-figure" '
         );
       });
 
-      it(`Within the "img-div" element, I should see either a <figcaption>
-      or <div> element with a corresponding id="img-caption" that contains
-      textual content describing the image shown in "img-div".`,
+      it(`Within the "img-figure" element, I should see a <figcaption>
+      element with a corresponding id="img-caption" that contains
+      textual content describing the image shown in "img-figure".`,
       function() {
         assert.isNotNull(document.getElementById('img-caption'));
         assert.strictEqual(
-          $('#img-div').find('#img-caption').length,
+          $('#img-figure').find('#img-caption').length,
           1,
-          'Element is not a child of id="img-div" '
+          'Element is not a child of id="img-figure" '
         );
         const captionContents =
           document.getElementById('img-caption').innerText;
