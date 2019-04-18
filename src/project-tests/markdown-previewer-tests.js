@@ -197,9 +197,13 @@ export default function createMarkdownPreviewerTests() {
           '#preview\'s only children should be those rendered by marked.js '
         );
         triggerChange('testing');
-        assert.strictEqual(preview.innerHTML, '<p>testing</p>\n', error);
+        assert.strictEqual(preview.innerHTML.trim(), '<p>testing</p>', error);
         triggerChange(editor.value + ' and...');
-        assert.strictEqual(preview.innerHTML, '<p>testing and...</p>\n', error);
+        assert.strictEqual(
+          preview.innerHTML.trim(),
+          '<p>testing and...</p>',
+          error
+        );
         triggerChange('# h1 \n## h2');
         assert.isTrue(
           preview.children.length === 2 &&
@@ -211,8 +215,8 @@ export default function createMarkdownPreviewerTests() {
         );
         triggerChange('**bold**');
         assert.strictEqual(
-          preview.innerHTML,
-          '<p><strong>bold</strong></p>\n',
+          preview.innerHTML.trim(),
+          '<p><strong>bold</strong></p>',
           error
         );
       });
