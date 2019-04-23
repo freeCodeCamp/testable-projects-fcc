@@ -25,7 +25,7 @@
 }
 
 button.fcc_foldout_button {
-  background-color: rgba(128, 128, 128, 0.7);
+  background-color: rgba(50, 50, 50, 0.75);
   border: none;
   border-radius: 4px;
   box-shadow: 1px 1px 4px black;
@@ -42,7 +42,7 @@ button.fcc_foldout_button {
 }
 
 #fcc_test_message-box-rerun-button {
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 #fcc_test_message-box-rerun-button:hover {
@@ -80,7 +80,7 @@ button.fcc_test_btn-success {
 #fcc_legend_wrapper span {
   height: 15px;
   margin-top: 6px;
-  font-size: 12px ;
+  font-size: 12px;
   color: black;
 }
 
@@ -103,7 +103,8 @@ div.fcc_legend.key:nth-of-type(3) {
   background-color: rgba(255, 153, 0, 0.9);
 }
 
-div.fcc_legend, span.fcc_legend {
+div.fcc_legend,
+span.fcc_legend {
   display: inline-block;
 }
 
