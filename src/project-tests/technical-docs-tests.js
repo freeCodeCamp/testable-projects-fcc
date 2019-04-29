@@ -330,7 +330,7 @@ export default function createTechnicalDocsPageTests() {
     describe('#Layout', function() {
 
       it(`On regular sized devices (laptops, desktops), the element
-      with id="navbar" should be shown on the left half of the screen. It should
+      with id="navbar" should only display on the left half of the screen. It should
       always be visible to the user and should remain stationary. You may need
       to enlarge the viewport or zoom out to ensure the navbar doesn't scroll
       with the page content.`,
