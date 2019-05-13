@@ -165,7 +165,7 @@ export default function createDrumMachineTests() {
       contains the string "Q", pressing the W key should trigger the drum pad
       which contains the string "W", etc.).`,
       function() {
-        const keyCodes = [ 81, 87, 69, 65, 83, 68, 90, 88, 67 ];
+        const keyCodes = [ 113, 119, 101, 97, 115, 100, 122, 120, 99 ];
         assert.isAtLeast(
           audioElements.length,
           9,
