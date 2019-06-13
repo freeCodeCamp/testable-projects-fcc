@@ -270,8 +270,16 @@ export default function createCalculatorTests() {
       });
 
       it(`If 2 or more operators are entered consecutively, the
-      operation performed should be the last operator entered`,
+      operation performed should be the last operator entered (excluding
+      the negative (-) sign.`,
       function() {
+        clickButtonsById([_5, _x, _min, _5, _eq]);
+        assert.strictEqual(
+          getInputValue(document.getElementById('display')),
+          '-25',
+          'The sequence "5 * - 5" = should produce an output of "-25" '
+        );
+        clearDisplay();
         clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
