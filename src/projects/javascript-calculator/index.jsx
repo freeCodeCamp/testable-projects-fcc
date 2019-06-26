@@ -15,7 +15,7 @@ const projectName = 'javascript-calculator';
 const isOperator = /[x/+‑]/,
   endsWithOperator = /[x+‑/]$/,
   multiOperators = /[x/+‑]{2,}/,
-  negativeSign = /[x/+]+[‑]$/,
+  endsWithNegativeSign = /[x/+]‑$/,
   clearStyle = { background: '#ac3939' },
   operatorStyle = { background: '#666666' },
   equalsStyle = {
@@ -26,7 +26,7 @@ const isOperator = /[x/+‑]/,
   };
 
 let negativeException =
-(str) => (multiOperators.test(str) && negativeSign.test(str));
+(str) => (multiOperators.test(str) && endsWithNegativeSign.test(str));
 
 // COMPONENTS:
 class Calculator extends React.Component {
@@ -58,15 +58,8 @@ class Calculator extends React.Component {
   handleEvaluate() {
     if (!this.state.currentVal.includes('Limit')) {
       let expression = this.state.formula;
-      if (endsWithOperator.test(expression)) {
+      while (endsWithOperator.test(expression)) {
         expression = expression.slice(0, -1);
-      }
-      if (multiOperators.test(expression) &&
-        !negativeException(expression.match(multiOperators)[0])) {
-        const operator = expression.match(multiOperators)[0].split('')[1];
-        let exp = expression.split(multiOperators);
-        exp.splice(1, 0, operator);
-        expression = exp.join('');
       }
       expression = expression.replace(/x/g, '*').replace(/‑/g, '-');
       let answer = Math.round(1000000000000 * eval(expression)) / 1000000000000;
@@ -117,8 +110,8 @@ class Calculator extends React.Component {
         this.setState({
           currentVal:
             this.state.currentVal === '0' ||
-            isOperator.test(this.state.currentVal) &&
-            !negativeException(currPlusTarget)
+            isOperator.test(this.state.currentVal) ||
+            negativeException(currPlusTarget)
               ? e.target.value
               : this.state.currentVal + e.target.value,
           formula:
