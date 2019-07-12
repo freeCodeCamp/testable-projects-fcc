@@ -14,6 +14,7 @@ const projectName = 'javascript-calculator';
 // VARS:
 const isOperator = /[x/+‑]/,
   endsWithOperator = /[x+‑/]$/,
+  endsWithNegativeSign = /[x/+]‑$/,
   clearStyle = { background: '#ac3939' },
   operatorStyle = { background: '#666666' },
   equalsStyle = {
@@ -53,7 +54,7 @@ class Calculator extends React.Component {
   handleEvaluate() {
     if (!this.state.currentVal.includes('Limit')) {
       let expression = this.state.formula;
-      if (endsWithOperator.test(expression)) {
+      while (endsWithOperator.test(expression)) {
         expression = expression.slice(0, -1);
       }
       expression = expression.replace(/x/g, '*').replace(/‑/g, '-');
@@ -70,18 +71,24 @@ class Calculator extends React.Component {
 
   handleOperators(e) {
     if (!this.state.currentVal.includes('Limit')) {
-      this.setState({ currentVal: e.target.value, evaluated: false });
-      if (this.state.formula.includes('=')) {
-        this.setState({ formula: this.state.prevVal + e.target.value });
-      } else {
+      const value = e.target.value;
+      const { formula, prevVal, evaluated } = this.state;
+      this.setState({ currentVal: value, evaluated: false });
+      if (evaluated) {
+        this.setState({ formula: prevVal + value });
+      } else if (!endsWithOperator.test(formula)) {
         this.setState({
-          // comment 2
-          prevVal: !isOperator.test(this.state.currentVal)
-            ? this.state.formula
-            : this.state.prevVal,
-          formula: !isOperator.test(this.state.currentVal)
-            ? (this.state.formula += e.target.value)
-            : (this.state.prevVal += e.target.value)
+          prevVal: formula,
+          formula: formula + value
+        });
+      } else if (!endsWithNegativeSign.test(formula)) {
+        this.setState({
+          formula: (endsWithNegativeSign.test(formula + value)
+            ? formula : prevVal) + value
+        });
+      } else if (value !== '‑') {
+        this.setState({
+          formula: prevVal + value
         });
       }
     }
@@ -89,27 +96,28 @@ class Calculator extends React.Component {
 
   handleNumbers(e) {
     if (!this.state.currentVal.includes('Limit')) {
+      const { currentVal, formula, evaluated } = this.state;
+      const value = e.target.value;
       this.setState({ evaluated: false });
-      if (this.state.currentVal.length > 21) {
+      if (currentVal.length > 21) {
         this.maxDigitWarning();
-      } else if (this.state.evaluated === true) {
+      } else if (evaluated) {
         this.setState({
-          currentVal: e.target.value,
-          formula: e.target.value !== '0' ? e.target.value : ''
+          currentVal: value,
+          formula: value !== '0' ? value : ''
         });
       } else {
         this.setState({
           currentVal:
-            this.state.currentVal === '0' ||
-            isOperator.test(this.state.currentVal)
-              ? e.target.value
-              : this.state.currentVal + e.target.value,
+            currentVal === '0' || isOperator.test(currentVal)
+              ? value
+              : currentVal + value,
           formula:
-            this.state.currentVal === '0' && e.target.value === '0'
-              ? this.state.formula
-              : (/([^.0-9]0)$/).test(this.state.formula)
-                ? this.state.formula.slice(0, -1) + e.target.value
-                : this.state.formula + e.target.value
+            currentVal === '0' && value === '0'
+              ? formula
+              : (/([^.0-9]0)$/).test(formula)
+                ? formula.slice(0, -1) + value
+                : formula + value
         });
       }
     }
@@ -152,7 +160,8 @@ class Calculator extends React.Component {
       prevVal: '0',
       formula: '',
       currentSign: 'pos',
-      lastClicked: ''
+      lastClicked: '',
+      evaluated: false
     });
   }
 
