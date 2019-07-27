@@ -114,8 +114,8 @@ class Calculator extends React.Component {
               : currentVal + value,
           formula:
             currentVal === '0' && value === '0'
-              ? formula
-              : (/([^.0-9]0)$/).test(formula)
+              ? formula === '' ? value : formula
+              : (/([^.0-9]0|^0)$/).test(formula)
                 ? formula.slice(0, -1) + value
                 : formula + value
         });
