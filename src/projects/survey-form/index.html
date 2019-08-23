@@ -1,7 +1,3 @@
-<link
-  type="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
-/>
 <h1 id="title">Survey Form</h1>
 <div id="form-outer">
   <p id="description">Let us know how we can improve freeCodeCamp</p>
@@ -16,7 +12,6 @@
       </div>
       <div class="rightTab">
         <input
-          autofocus
           type="text"
           name="name"
           id="name"
@@ -36,14 +31,14 @@
           name="email"
           id="email"
           class="input-field"
-          required
           placeholder="Enter your Email"
+          required
         />
       </div>
     </div>
     <div class="rowTab">
       <div class="labels">
-        <label id="number-label" for="age">* Age: </label>
+        <label id="number-label" for="number">* Age: </label>
       </div>
       <div class="rightTab">
         <input
@@ -54,18 +49,19 @@
           max="125"
           class="input-field"
           placeholder="Age"
+          required
         />
       </div>
     </div>
     <div class="rowTab">
       <div class="labels">
-        <label for="currentPos"
+        <label for="dropdown"
           >Which option best describes your current role?</label
         >
       </div>
       <div class="rightTab">
         <select id="dropdown" name="currentPos" class="dropdown">
-          <option disabled value>Select an option</option>
+          <option disabled selected value>Select an option</option>
           <option value="student">Student</option>
           <option value="job">Full Time Job</option>
           <option value="learner">Full Time Learner</option>
@@ -76,18 +72,15 @@
     </div>
     <div class="rowTab">
       <div class="labels">
-        <label for="userRating"
-          >* How likely is that you would recommend freeCodeCamp to a
-          friend?</label
-        >
+        <label>Would you recommend freeCodeCamp to a friend?</label>
       </div>
       <div class="rightTab">
-        <ul style="list-style: none;">
+        <ul>
           <li class="radio">
             <label
               >Definitely<input
                 name="radio-buttons"
-                value="1"
+                value="definitely"
                 type="radio"
                 class="userRatings"
             /></label>
@@ -96,7 +89,7 @@
             <label
               >Maybe<input
                 name="radio-buttons"
-                value="2"
+                value="maybe"
                 type="radio"
                 class="userRatings"
             /></label>
@@ -105,7 +98,7 @@
             <label
               >Not sure<input
                 name="radio-buttons"
-                value="3"
+                value="not-sure"
                 type="radio"
                 class="userRatings"
             /></label>
@@ -129,36 +122,38 @@
     </div>
     <div class="rowTab">
       <div class="labels">
-        <label for="preferences"
+        <label
           >Things that should be improved in the future<br />(Check all that
           apply):
         </label>
       </div>
       <div class="rightTab">
-        <ul id="preferences" style="list-style: none;">
+        <ul id="preferences">
           <li class="checkbox">
             <label
               ><input
                 name="prefer"
-                value="1"
+                value="front-end-projects"
                 type="checkbox"
                 class="userRatings"
               />Front-end Projects</label
             >
           </li>
           <li class="checkbox">
-            <input
-              name="prefer"
-              value="2"
-              type="checkbox"
-              class="userRatings"
-            />Back-end Projects
+            <label>
+              <input
+                name="prefer"
+                value="back-end-projects"
+                type="checkbox"
+                class="userRatings"
+              />Back-end Projects</label
+            >
           </li>
           <li class="checkbox">
             <label
               ><input
                 name="prefer"
-                value="3"
+                value="data-visualization"
                 type="checkbox"
                 class="userRatings"
               />Data Visualization</label
@@ -168,7 +163,7 @@
             <label
               ><input
                 name="prefer"
-                value="4"
+                value="challenges"
                 type="checkbox"
                 class="userRatings"
               />Challenges</label
@@ -178,7 +173,7 @@
             <label
               ><input
                 name="prefer"
-                value="5"
+                value="open-source-community"
                 type="checkbox"
                 class="userRatings"
               />Open Source Community</label
@@ -188,7 +183,7 @@
             <label
               ><input
                 name="prefer"
-                value="6"
+                value="gitter-help-rooms"
                 type="checkbox"
                 class="userRatings"
               />Gitter help rooms</label
@@ -198,7 +193,7 @@
             <label
               ><input
                 name="prefer"
-                value="7"
+                value="videos"
                 type="checkbox"
                 class="userRatings"
               />Videos</label
@@ -208,7 +203,7 @@
             <label
               ><input
                 name="prefer"
-                value="8"
+                value="city-meetups"
                 type="checkbox"
                 class="userRatings"
               />City Meetups</label
@@ -218,7 +213,7 @@
             <label
               ><input
                 name="prefer"
-                value="9"
+                value="wiki"
                 type="checkbox"
                 class="userRatings"
               />Wiki</label
@@ -228,7 +223,7 @@
             <label
               ><input
                 name="prefer"
-                value="10"
+                value="forum"
                 type="checkbox"
                 class="userRatings"
               />Forum</label
@@ -238,7 +233,7 @@
             <label
               ><input
                 name="prefer"
-                value="10"
+                value="additional-courses"
                 type="checkbox"
                 class="userRatings"
               />Additional Courses</label
@@ -255,7 +250,6 @@
         <textarea
           id="comments"
           class="input-field"
-          style="height:50px;resize:vertical;"
           name="comment"
           placeholder="Enter your comment here..."
         ></textarea>
