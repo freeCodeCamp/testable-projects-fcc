@@ -40,6 +40,7 @@ exports.doesProjectPassTests = (browser, name, URL) => {
 
   // If all of the project tests pass, this is set to true.
   let success = false;
+  let err;
 
   // headless mode for chrome and firefox is enabled by default
   let headless = process.env.HEADLESS !== '0';
@@ -146,8 +147,29 @@ exports.doesProjectPassTests = (browser, name, URL) => {
 
   // Handles errors. Saves a screenshot so we can see what the error is.
   const errorFunc = error => {
-      console.error(error);
+      if (!err) {
+        err = '' + error;
+      }
       return saveScreenshot(name, `ERROR-${error.name}`);
+  };
+
+  const collectErrors = async wrapper => {
+    const elements = await driver.wait(
+      By.js(wrapper => (
+          (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
+            .querySelectorAll('.test.fail')
+        ),
+        wrapper
+      )
+    );
+    const errors = [];
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const heading = await element.findElement(By.css('h2'));
+      const error = await element.findElement(By.className('error'));
+      errors.push(`${await heading.getText()}\n${await error.getText()}`);
+    }
+    err = errors.join('\n\n');
   };
 
   // Test automation starts here.
@@ -214,24 +236,29 @@ exports.doesProjectPassTests = (browser, name, URL) => {
   // Wait for the test results modal. The message box fades in, so we wait for
   // opacity of 1 before grabbing the screenshot.
   .then(wrapper => driver.wait(until.elementLocated(
-    By.js(wrapper => (
-        (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
-          .querySelector('.fcc_test_message-box-shown')
-      ),
-      wrapper
-    )),
-    elementTimeout
-  ))
-  .then(waitOpacity)
+      By.js(wrapper => (
+          (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper)
+            .querySelector('.fcc_test_message-box-shown')
+        ),
+        wrapper
+      )),
+      elementTimeout
+    )
+    .then(waitOpacity)
+    .then(() => wrapper)
+  )
 
-  // Grab a screenshot and write to disk.
-  // TODO: Do we want to grab screenshots for success? Might be overkill.
-  .then(() => saveScreenshot(name, 'FINAL'))
+  .then(async wrapper => {
+    if (!success) {
+      await collectErrors(wrapper);
+    }
+    return saveScreenshot(name, 'FINAL');
+  })
 
   // Catches all possible errors.
   .catch(errorFunc)
   // We are done. Close the browser and return with success status. We return
   // the promise so Mocha will wait correctly for these tests to finish.
   .then(() => driver.quit())
-  .then(() => success, () => success);
+  .then(() => ({ success, err }), () => ({ success, err }));
 };
