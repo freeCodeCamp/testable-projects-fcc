@@ -34,12 +34,16 @@ describe('Projects Tests', function() {
     let test = tests[key];
     global.browsers.forEach(browser =>
       it(`Project "${test.name}" in ${browser} should pass all tests`, () =>
-        doesProjectPassTests(browser, test.name, test.URL).then(success =>
-          assert.isOk(
-            success,
-            `Project "${test.name}" in ${browser} did not pass all tests. ` +
-              'See screenshot for more details.'
-          )
+        doesProjectPassTests(browser, test.name, test.URL).then(
+          ({success, err}) =>
+            assert.isOk(
+              success,
+`Project "${test.name}" in ${browser} did not pass all tests.
+
+${err}
+
+See screenshot for more details.`
+            )
         ))
     );
   });
