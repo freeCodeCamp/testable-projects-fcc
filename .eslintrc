@@ -1,4 +1,17 @@
 {
-  "extends": "freecodecamp",
-  "root": true
+  "root": true,
+  "extends": ["@freecodecamp/eslint-config", "prettier", "prettier/react"],
+  "plugins": ["prettier"],
+  "rules": {
+    "max-len": [
+      "error",
+      { "code": 100, "ignoreUrls": true, "ignoreTemplateLiterals": true }
+    ],
+    "prettier/prettier": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "16.4.2"
+    }
+  }
 }
