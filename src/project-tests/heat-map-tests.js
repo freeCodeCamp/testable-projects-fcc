@@ -121,14 +121,14 @@ export default function createHeatMapTests() {
         );
 
         cells.forEach((cell) => {
-          const dataMonth = cell.getAttribute('data-month');
+          const dataMonth = +cell.getAttribute('data-month');
 
           assert.isAtLeast(dataMonth, 0, 'data-month should be at least 0');
           assert.isAtMost(dataMonth, 11, 'data-month should be at most 11');
         });
 
         cells.forEach((cell) => {
-          const dataYear = cell.getAttribute('data-year');
+          const dataYear = +cell.getAttribute('data-year');
 
           assert.isAtLeast(dataYear, 1753, 'data-year should be at least 1753');
           assert.isAtMost(dataYear, 2015, 'data-year should be at most 2015');
@@ -241,13 +241,13 @@ export default function createHeatMapTests() {
 
         xAxisTickLabels.forEach(tickLabel => {
           assert.isAtLeast(
-            tickLabel.textContent,
+            +tickLabel.textContent,
             1753,
             'X axis labels should contain a year that\'s at least 1753 '
           );
 
           assert.isAtMost(
-            tickLabel.textContent,
+            +tickLabel.textContent,
             2015,
             'X axis labels should contain a year that\'s at most 2015 '
           );
@@ -273,7 +273,7 @@ export default function createHeatMapTests() {
         );
       });
 
-      it(`The <rect> elements in the legend should use at least 4 
+      it(`The <rect> elements in the legend should use at least 4
       different fill colors`,
       function() {
         const legendItems =

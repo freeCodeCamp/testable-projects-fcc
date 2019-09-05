@@ -320,7 +320,7 @@ export default function createCalculatorTests() {
       reasonable precision to at least 4 decimal places)`,
       function() {
         clickButtonsById([_2, _div, _7, _eq]);
-        assert.isOk(/0?\.2857\d*/.test(
+        assert.isOk((/0?\.2857\d*/).test(
           getInputValue(document.getElementById('display'))),
           'The expression "2 / 7" should produce an output number with at ' +
           'least 4 decimal places of precision '

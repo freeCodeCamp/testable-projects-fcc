@@ -451,8 +451,8 @@ export default function createPomodoroClockTests() {
         );
 
         assert.isAbove(
-          secondsAfter,
-          secondsBefore,
+          +secondsAfter,
+          +secondsBefore,
           'Pomodoro has started but time displayed is not changing '
         );
       });
@@ -550,8 +550,8 @@ export default function createPomodoroClockTests() {
         );
 
         assert.isBelow(
-          secondsAfterResume,
-          secondsAfterPause,
+          +secondsAfterResume,
+          +secondsAfterPause,
           'Pomodoro has resumed but displayed time is not changing '
         );
       });

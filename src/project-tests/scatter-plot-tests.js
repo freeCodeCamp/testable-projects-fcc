@@ -237,12 +237,12 @@ export default function createScatterPlotTests() {
 
         xAxisTickLabels.forEach(label => {
           assert.isAtLeast(
-            label.textContent,
+            +label.textContent,
             MIN_YEAR,
             'x axis labels are below the range of the actual data '
           );
           assert.isAtMost(
-            label.textContent,
+            +label.textContent,
             MAX_YEAR,
             'x axis labels are above the range of the actual data '
           );

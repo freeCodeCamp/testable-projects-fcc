@@ -16,7 +16,6 @@
 
 // Selenium wrapper for Mocha testing. You can also add the following if
 // needed: after, afterEach, before, beforeEach, and xit.
-import { describe, it } from 'selenium-webdriver/testing';
 import { assert } from 'chai';
 
 import tests from '../src/project-tests';
@@ -35,7 +34,7 @@ describe('Projects Tests', function() {
     global.browsers.forEach(browser =>
       it(`Project "${test.name}" in ${browser} should pass all tests`, () =>
         doesProjectPassTests(browser, test.name, test.URL).then(
-          ({success, err}) =>
+          ({ success, err }) =>
             assert.isOk(
               success,
 `Project "${test.name}" in ${browser} did not pass all tests.

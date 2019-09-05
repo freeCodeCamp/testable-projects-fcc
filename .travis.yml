@@ -32,7 +32,7 @@ jobs:
         skip_cleanup: true
         script: bash deploy.sh
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.12.3
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
   - export PATH=$HOME/.yarn/bin:$PATH
   # Codecs needed for Firefox to play audio.
   - if [[ "$BROWSER" == "firefox" ]]; then sudo apt-get install -y -qq ubuntu-restricted-addons; fi

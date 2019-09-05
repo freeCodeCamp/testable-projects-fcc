@@ -113,7 +113,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
         `<li class="test fail">
           <h2>%e</h2>
         </li>`,
-        this.numberingTestTitle(test.title),
+        this.numberingTestTitle(test.title)
       );
       let err = test.err;
       let message;
@@ -180,7 +180,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
 
   numberingTestTitle(title) {
     this.stats.testNumber++;
-    if (/^\d+\./.test(title)) {
+    if ((/^\d+\./).test(title)) {
       return title.replace(/^\d+\.\s*/, `${this.stats.testNumber}. `);
     }
     return `${this.stats.testNumber}. ${title}`;

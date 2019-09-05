@@ -230,7 +230,6 @@ $(document).keyup(function(e) {
 });
 
 const map = [];
-/* global onkeydown:true, onkeyup:true */
 /* exported onkeydown, onkeyup */
 onkeydown = onkeyup = function(e) {
   e = e || window.event;
