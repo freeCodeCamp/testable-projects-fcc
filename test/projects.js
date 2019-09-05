@@ -37,7 +37,7 @@ describe('Projects Tests', function() {
           ({ success, err }) =>
             assert.isOk(
               success,
-`Project "${test.name}" in ${browser} did not pass all tests.
+              `Project "${test.name}" in ${browser} did not pass all tests.
 
 ${err}
 

@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,500");
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,500');
 
 html,
 body {
   background-color: #a9d7d1;
   text-align: center;
-  font-family: "Raleway", Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, sans-serif;
   min-width: 320px;
 }
 
@@ -54,7 +54,7 @@ header {
 }
 
 .userRatings,
-input[type="checkbox"] {
+input[type='checkbox'] {
   float: left;
   margin-right: 5px;
 }

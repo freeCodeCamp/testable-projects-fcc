@@ -4,7 +4,6 @@ import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 export default function createRandomQuoteMachineTests() {
   describe('Random Quote Machine tests', function() {
-
     // We set the timeout at a very generous 15 seconds because it might take
     // a long time on a slow network to load a new quote. The tests are
     // written in a way that they will pass as soon as we detect success,
@@ -18,16 +17,13 @@ export default function createRandomQuoteMachineTests() {
     });
 
     describe('#Content', function() {
-
       it(`I can see a wrapper element with a corresponding
-      id="quote-box".`,
-      function() {
+      id="quote-box".`, function() {
         assert.isNotNull(document.getElementById('quote-box'));
       });
 
       it(`Within #quote-box, I can see an element with corresponding
-      id="text".`,
-      function() {
+      id="text".`, function() {
         assert.isNotNull(
           document.getElementById('text'),
           '#text is not defined '
@@ -40,8 +36,7 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`Within #quote-box, I can see an element with corresponding
-      id="author".`,
-      function() {
+      id="author".`, function() {
         assert.isNotNull(
           document.getElementById('author'),
           '#author is not defined '
@@ -54,8 +49,7 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`Within #quote-box, I can see a clickable element with
-      corresponding id="new-quote".`,
-      function() {
+      corresponding id="new-quote".`, function() {
         assert.isNotNull(
           document.getElementById('new-quote'),
           '#new-quote is not defined '
@@ -68,8 +62,7 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`Within #quote-box, I can see a clickable <a> element with
-      corresponding id="tweet-quote".`,
-      function() {
+      corresponding id="tweet-quote".`, function() {
         assert.isNotNull(document.getElementById('tweet-quote'));
         assert.strictEqual(
           document.getElementById('tweet-quote').nodeName,
@@ -84,12 +77,11 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`On first load, my quote machine displays a random quote in
-      the element with id="text".`,
-      function() {
+      the element with id="text".`, function() {
         this.timeout(requestTimeout);
         // Check every half second if the test passes. If we don't ever detect
         // the success condition, the test will fail by timing out.
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           const intervalId = setInterval(() => {
             const text = document.getElementById('text');
             if (text.innerText.length > 0) {
@@ -102,10 +94,9 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`On first load, my quote machine displays the random quote's
-      author in the element with id="author".`,
-      function() {
+      author in the element with id="author".`, function() {
         this.timeout(requestTimeout);
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           const intervalId = setInterval(() => {
             const author = document.getElementById('author');
             if (author.innerText.length > 0) {
@@ -118,8 +109,7 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`When the #new-quote button is clicked, my quote machine
-      should fetch a new quote and display it in the #text element.`,
-      function() {
+      should fetch a new quote and display it in the #text element.`, function() {
         let prevText;
 
         this.timeout(requestTimeout);
@@ -127,7 +117,7 @@ export default function createRandomQuoteMachineTests() {
         prevText = document.getElementById('text').innerText;
         document.getElementById('new-quote').click();
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           const intervalId = setInterval(() => {
             const newText = document.getElementById('text').innerText;
             if (newText !== prevText) {
@@ -139,8 +129,7 @@ export default function createRandomQuoteMachineTests() {
       });
 
       it(`My quote machine should fetch the new quote's author when
-      the #new-quote button is clicked and display it in the #author element.`,
-      function() {
+      the #new-quote button is clicked and display it in the #author element.`, function() {
         let prevAuth;
 
         this.timeout(requestTimeout);
@@ -148,7 +137,7 @@ export default function createRandomQuoteMachineTests() {
         prevAuth = document.getElementById('author').innerText;
         document.getElementById('new-quote').click();
 
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           const intervalId = setInterval(() => {
             const newAuth = document.getElementById('author').innerText;
             if (newAuth !== prevAuth) {
@@ -162,8 +151,7 @@ export default function createRandomQuoteMachineTests() {
       it(`I can tweet the current quote by clicking on the
       #tweet-quote <a> element. This <a> element should include the
       "twitter.com/intent/tweet" path in it's href attribute to tweet the
-      current quote.`,
-      function() {
+      current quote.`, function() {
         assert.isOk(
           document.getElementById('tweet-quote').hasAttribute('href'),
           '#tweet-quote <a> element must have an href attribute '
@@ -173,27 +161,25 @@ export default function createRandomQuoteMachineTests() {
           href.toLowerCase(),
           'twitter.com/intent/tweet',
           'The #tweet-quote element does not utilize the correct twitter ' +
-          'intent '
+            'intent '
         );
       });
 
-    // END #Content
+      // END #Content
     });
 
     describe('#Layout', function() {
-
       it(`The #quote-box wrapper element should be horizontally
       centered. Please run tests with browser's zoom level at 100% and page
-      maximized.`,
-      function() {
+      maximized.`, function() {
         assert.isOk(testHorizontallyCentered('quote-box', window));
       });
 
-    // END #Layout
+      // END #Layout
     });
 
-  // END Random Quote Machine tests
+    // END Random Quote Machine tests
   });
 
-// END createRandomQuoteMachineTests()
+  // END createRandomQuoteMachineTests()
 }

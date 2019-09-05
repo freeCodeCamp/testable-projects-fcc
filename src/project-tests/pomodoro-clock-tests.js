@@ -4,14 +4,14 @@ import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { timeout } from '../utils/threading';
 
 export default function createPomodoroClockTests() {
-
   const breakMin = 'break-decrement';
   const breakPlus = 'break-increment';
   const seshMin = 'session-decrement';
   const seshPlus = 'session-increment';
   const reset = 'reset';
   const startStop = 'start_stop';
-  const originalTimerLabel = document.getElementById('timer-label') &&
+  const originalTimerLabel =
+    document.getElementById('timer-label') &&
     document.getElementById('timer-label').innerText;
 
   function resetTimer() {
@@ -30,7 +30,6 @@ export default function createPomodoroClockTests() {
   /* eslint-enable max-len*/
 
   function observeElement(target, callback) {
-
     // create an observer instance
     var observer = new MutationObserver(callback);
 
@@ -49,7 +48,6 @@ export default function createPomodoroClockTests() {
 
   const waitForState = (target, check, errMsg, timeout = 2000) =>
     new Promise((resolve, reject) => {
-
       const timerId = savedSetTimeout(() => {
         observer.disconnect();
         clearTimeout(waitForChangesTimerId);
@@ -72,15 +70,14 @@ export default function createPomodoroClockTests() {
           resolve();
         }
       });
-    }
-  );
+    });
 
   // Resolves when the timer reaches 00:00.
   const timerHasReachedZero = (timeout = 90000) => {
     const target = document.getElementById('time-left');
     return waitForState(
       target,
-      () => (/^00[\.:,\/]00$/).test(target.innerText),
+      () => /^00[\.:,\/]00$/.test(target.innerText),
       'Timer has not reached 00:00.',
       timeout
     );
@@ -89,11 +86,7 @@ export default function createPomodoroClockTests() {
   // Resolves when the timer changes.
   const timerStateHasChanged = () => {
     const target = document.getElementById('time-left');
-    return waitForState(
-      target,
-      () => true,
-      'Timer has not changed.'
-    );
+    return waitForState(target, () => true, 'Timer has not changed.');
   };
 
   // We "Hack" the global setTimeout and setInterval functions so time elapses
@@ -107,10 +100,10 @@ export default function createPomodoroClockTests() {
   const savedSetInterval = window.setInterval;
 
   function hackGlobalTimerFunctions() {
-    window.setTimeout = (fun) => {
+    window.setTimeout = fun => {
       return savedSetTimeout(fun, 30);
     };
-    window.setInterval = (fun) => {
+    window.setInterval = fun => {
       return savedSetInterval(fun, 30);
     };
   }
@@ -135,16 +128,13 @@ export default function createPomodoroClockTests() {
       restoreGlobalTimerFunctions();
     });
 
-    describe('#Technology Stack',
-    function() {
+    describe('#Technology Stack', function() {
       it(frontEndLibrariesStack, function() {
         return true;
       });
     });
 
-    describe('#Content',
-    function() {
-
+    describe('#Content', function() {
       it(`I can see an element with id="break-label" that contains a
       string (e.g. “Break Length”).`, function() {
         const breakTitle = document.getElementById('break-label');
@@ -156,8 +146,7 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I can see an element with id="session-label" that contains
-      a string (e.g. "Session Length”).`,
-      function() {
+      a string (e.g. "Session Length”).`, function() {
         const sessionTitle = document.getElementById('session-label');
         assert.isAbove(
           sessionTitle.innerText.length,
@@ -167,22 +156,19 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I can see two clickable elements with corresponding IDs:
-      id="break-decrement" and id="session-decrement".`,
-      function() {
+      id="break-decrement" and id="session-decrement".`, function() {
         assert.isNotNull(document.getElementById('break-decrement'));
         assert.isNotNull(document.getElementById('session-decrement'));
       });
 
       it(`I can see two clickable elements with corresponding IDs:
-      id="break-increment" and id="session-increment".`,
-      function() {
+      id="break-increment" and id="session-increment".`, function() {
         assert.isNotNull(document.getElementById('break-increment'));
         assert.isNotNull(document.getElementById('session-increment'));
       });
 
       it(`I can see an element, with corresponding id="break-length",
-      which by default (on load) displays a value of 5.`,
-      function() {
+      which by default (on load) displays a value of 5.`, function() {
         const breakLength = document.getElementById('break-length');
         assert.strictEqual(
           getInputValue(breakLength),
@@ -192,8 +178,7 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I can see an element, with corresponding
-      id="session-length", which by default displays a value of 25.`,
-      function() {
+      id="session-length", which by default displays a value of 25.`, function() {
         const sessionLength = document.getElementById('session-length');
         assert.strictEqual(
           getInputValue(sessionLength),
@@ -204,8 +189,7 @@ export default function createPomodoroClockTests() {
 
       it(`I can see an element, with corresponding id="timer-label",
       that contains a string indicating a session is initialized
-      (e.g. "Session").`,
-      function() {
+      (e.g. "Session").`, function() {
         const timerLabel = document.getElementById('timer-label');
         assert.isAbove(
           timerLabel.innerText.length,
@@ -216,8 +200,7 @@ export default function createPomodoroClockTests() {
 
       it(`I can see an element with corresponding id="time-left".
       NOTE: Paused or running, the value in this field should always be
-      displayed in mm:ss format (i.e. 25:00).`,
-      function() {
+      displayed in mm:ss format (i.e. 25:00).`, function() {
         const target = document.getElementById('time-left');
         assert.isNotNull(target);
         assert.strictEqual(
@@ -235,25 +218,21 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I can see a clickable element with corresponding
-      id="start_stop".`,
-      function() {
+      id="start_stop".`, function() {
         assert.isNotNull(document.getElementById('start_stop'));
       });
 
       it(`I can see a clickable element with corresponding
-      id="reset".`,
-      function() {
+      id="reset".`, function() {
         assert.isNotNull(document.getElementById('reset'));
       });
     });
 
-    describe('#Timer',
-    function() {
+    describe('#Timer', function() {
       it(`When I click the element with the id of "reset", any
       running timer should be stopped, the value within id="break-length" should
       return to 5, the value within id="session-length" should return to 25, and
-      the element with id="time-left" should reset to it's default state.`,
-      async function() {
+      the element with id="time-left" should reset to it's default state.`, async function() {
         this.timeout(100000);
 
         hackGlobalTimerFunctions();
@@ -272,9 +251,8 @@ export default function createPomodoroClockTests() {
         await timeout(1500);
 
         resetTimer();
-        const timerLabelAfterReset = document.getElementById(
-          'timer-label'
-        ).innerText;
+        const timerLabelAfterReset = document.getElementById('timer-label')
+          .innerText;
         const secondsAfterReset = getSeconds(
           document.getElementById('time-left').innerText
         );
@@ -315,8 +293,7 @@ export default function createPomodoroClockTests() {
 
       it(`When I click the element with the id of "break-decrement",
       the value within id="break-length" decrements by a value of 1, and I can
-      see the updated value.`,
-      function() {
+      see the updated value.`, function() {
         clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
@@ -332,8 +309,7 @@ export default function createPomodoroClockTests() {
 
       it(`When I click the element with the id of "break-increment",
       the value within id="break-length" increments by a value of 1, and I can
-      see the updated value.`,
-      function() {
+      see the updated value.`, function() {
         clickButtonsById(Array(4).fill(breakPlus));
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
@@ -342,14 +318,14 @@ export default function createPomodoroClockTests() {
         resetTimer();
         clickButtonsById([breakPlus]);
         assert.strictEqual(
-          getInputValue(document.getElementById('break-length')), '6'
+          getInputValue(document.getElementById('break-length')),
+          '6'
         );
       });
 
       it(`When I click the element with the id of
       "session-decrement", the value within id="session-length" decrements by a
-      value of 1, and I can see the updated value.`,
-      function() {
+      value of 1, and I can see the updated value.`, function() {
         clickButtonsById(Array(4).fill(seshMin));
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
@@ -365,8 +341,7 @@ export default function createPomodoroClockTests() {
 
       it(`When I click the element with the id of
       "session-increment", the value within id="session-length" increments by a
-      value of 1, and I can see the updated value.`,
-      function() {
+      value of 1, and I can see the updated value.`, function() {
         clickButtonsById(Array(4).fill(seshPlus));
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
@@ -381,8 +356,7 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I should not be able to set a session or break length to
-      <= 0.`,
-      function() {
+      <= 0.`, function() {
         clickButtonsById(Array(10).fill(breakMin));
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
@@ -399,8 +373,7 @@ export default function createPomodoroClockTests() {
       });
 
       it(`I should not be able to set a session or break length to
-      > 60.`,
-      function() {
+      > 60.`, function() {
         clickButtonsById(Array(60).fill(breakPlus));
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
@@ -419,21 +392,17 @@ export default function createPomodoroClockTests() {
       it(`When I first click the element with id="start_stop", the
       timer should begin running from the value currently displayed in
       id="session-length", even if the value has been incremented or
-      decremented from the original value of 25.`,
-      function() {
+      decremented from the original value of 25.`, function() {
         clickButtonsById([startStop]);
         assert.strictEqual(
-          getMinutes(
-            document.getElementById('time-left').innerText
-          ),
+          getMinutes(document.getElementById('time-left').innerText),
           getInputValue(document.getElementById('session-length'))
         );
       });
 
       it(`If the timer is running, the element with the id of
       "time-left" should display the remaining time in mm:ss format
-      (decrementing by a value of 1 and updating the display every 1000ms).`,
-      async function() {
+      (decrementing by a value of 1 and updating the display every 1000ms).`, async function() {
         this.timeout(2500);
         // start the pomodoro
         clickButtonsById([startStop]);
@@ -458,8 +427,7 @@ export default function createPomodoroClockTests() {
       });
 
       it(`If the timer is running and I click the element with
-      id="start_stop", the countdown should pause.`,
-      async function() {
+      id="start_stop", the countdown should pause.`, async function() {
         this.timeout(4000);
         // start the pomodoro
         clickButtonsById([startStop]);
@@ -500,8 +468,7 @@ export default function createPomodoroClockTests() {
 
       it(`If the timer is paused and I click the element with
       id="start_stop", the countdown should resume running from the point at
-      which it was paused.`,
-      async function() {
+      which it was paused.`, async function() {
         this.timeout(6000);
         // start the pomodoro
         clickButtonsById([startStop]);
@@ -558,8 +525,7 @@ export default function createPomodoroClockTests() {
 
       it(`When a session countdown reaches zero (NOTE: timer MUST
       reach 00:00), and a new countdown begins, the element with the id of
-      "timer-label" should display a string indicating a break has begun.`,
-      async function() {
+      "timer-label" should display a string indicating a break has begun.`, async function() {
         this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
@@ -581,7 +547,7 @@ export default function createPomodoroClockTests() {
         assert.isAtMost(
           breakTime,
           breakLength,
-          'Break time didn\'t start with the correct value.'
+          "Break time didn't start with the correct value."
         );
 
         let tLabelB = document.getElementById('timer-label').innerHTML;
@@ -589,14 +555,13 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           tLabelB,
           tLabelA,
-          'Timer has reached zero but didn\'t switch to Break time'
+          "Timer has reached zero but didn't switch to Break time"
         );
       });
 
       it(`When a session countdown reaches zero (NOTE: timer MUST
       reach 00:00), a new break countdown should begin, counting down from the
-      value currently displayed in the id="break-length" element.`,
-      async function() {
+      value currently displayed in the id="break-length" element.`, async function() {
         this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
@@ -613,7 +578,7 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           currentTimer,
           sessionLabel,
-          'Timer has reached zero but didn\'t switch to Break time'
+          "Timer has reached zero but didn't switch to Break time"
         );
 
         const breakLength = +getInputValue(
@@ -625,15 +590,14 @@ export default function createPomodoroClockTests() {
         assert.strictEqual(
           breakTime,
           breakLength,
-          'Timer has switched to Break time, but it didn\'t start with ' +
-          'the correct value.'
+          "Timer has switched to Break time, but it didn't start with " +
+            'the correct value.'
         );
       });
 
       it(`When a break countdown reaches zero (NOTE: timer MUST reach
       00:00), and a new countdown begins, the element with the id of
-      "timer-label" should display a string indicating a session has begun.`,
-      async function() {
+      "timer-label" should display a string indicating a session has begun.`, async function() {
         this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
@@ -655,14 +619,13 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           timerLabel,
           breakLabel,
-          'Timer has reached zero but didn\'t switch back to Session time.'
+          "Timer has reached zero but didn't switch back to Session time."
         );
       });
 
       it(`When a break countdown reaches zero (NOTE: timer MUST
       reach 00:00), a new session countdown should begin, counting down from
-      the value currently displayed in the id="session-length" element.`,
-      async function() {
+      the value currently displayed in the id="session-length" element.`, async function() {
         this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
@@ -684,7 +647,7 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           timerLabel,
           breakLabel,
-          'Timer has reached zero but didn\'t switch back to Session time.'
+          "Timer has reached zero but didn't switch back to Session time."
         );
 
         const sessionLength = +getInputValue(
@@ -697,17 +660,15 @@ export default function createPomodoroClockTests() {
           currentTime,
           sessionLength,
           'Timer has switched back to Session time, but it ' +
-          'didn\'t start with the correct value.'
+            "didn't start with the correct value."
         );
       });
     });
 
-    describe('#Audio',
-    function() {
+    describe('#Audio', function() {
       it(`When a countdown reaches zero (NOTE: timer MUST reach
       00:00), a sound indicating that time is up should play. This should
-      utilize an HTML5 <audio> tag and have a corresponding id="beep".`,
-      async function() {
+      utilize an HTML5 <audio> tag and have a corresponding id="beep".`, async function() {
         this.timeout(100000);
 
         assert.isNotNull(
@@ -731,13 +692,10 @@ export default function createPomodoroClockTests() {
           document.getElementById('beep').paused,
           'Timer has reached zero but audio is not playing while it should.'
         );
-
       });
 
       it(`The audio element with id="beep" must be 1 second or
-      longer.`,
-      async function() {
-
+      longer.`, async function() {
         const audio = document.querySelector('audio#beep');
         assert.isNotNull(
           audio,
@@ -765,8 +723,7 @@ export default function createPomodoroClockTests() {
 
       it(`The audio element with id of "beep" must stop playing and
       be rewound to the beginning when the element with the id of "reset" is
-      clicked.`,
-      function() {
+      clicked.`, function() {
         // Call document.getElementById('beep') each time to overcome framework
         // cache
         document.getElementById('beep').play();
@@ -781,7 +738,7 @@ export default function createPomodoroClockTests() {
           document.getElementById('beep').currentTime,
           0,
           'Audio element was not rewound when reset was clicked. HINT: use ' +
-          'the currentTime property of the audio element to rewind.'
+            'the currentTime property of the audio element to rewind.'
         );
       });
       // END #Audio

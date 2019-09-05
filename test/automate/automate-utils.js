@@ -50,7 +50,7 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
   // the functions easier to use in a 'then' chain.
 
   // Grab a screenshot and write to disk.
-  const saveScreenshot = async(name, type) => {
+  const saveScreenshot = async (name, type) => {
     const fileName =
       `test-result-${screenShotUniq}-${browser}-` +
       `${name.replace(/[ :]/g, '_')}-${type}.png`;

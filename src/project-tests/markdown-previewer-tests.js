@@ -5,15 +5,12 @@ import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { decodeHtml } from '../utils/element-utils';
 
 export default function createMarkdownPreviewerTests() {
-
   describe('Markdown Previewer tests', function() {
-
     // Save the values of the editor and preview.
     const editor = document.getElementById('editor');
     const preview = document.getElementById('preview');
 
-    let markdownOnLoad,
-      previewOnLoad;
+    let markdownOnLoad, previewOnLoad;
     if (editor) {
       markdownOnLoad = editor.value;
     }
@@ -46,7 +43,7 @@ export default function createMarkdownPreviewerTests() {
         if (level === 1) {
           markDownHas.h1 = true;
           markDownHas.h1Text.push(text);
-        } else if ( level === 2 ) {
+        } else if (level === 2) {
           markDownHas.h2 = true;
           markDownHas.h2Text.push(text);
         }
@@ -93,7 +90,7 @@ export default function createMarkdownPreviewerTests() {
 
     // At the beginning of the project, the Camper will might not have added
     // the markedjs library yet.
-    if (typeof marked === 'function' ) {
+    if (typeof marked === 'function') {
       findMarkdownMatches(markdownOnLoad || '');
     }
 
@@ -124,7 +121,7 @@ export default function createMarkdownPreviewerTests() {
       deletePropertySafe(node, 'value');
       node.value = initialValue;
 
-      node.dispatchEvent(new Event('input', {bubbles: true}));
+      node.dispatchEvent(new Event('input', { bubbles: true }));
 
       // Restore artificial value property descriptor.
       if (descriptor) {
@@ -140,7 +137,7 @@ export default function createMarkdownPreviewerTests() {
       reactTriggerChange(editor);
       // jQUERY OR JAVASCRIPT
       // must be keyup to live preview
-      const eventJS = new Event('keyup', {bubbles: true});
+      const eventJS = new Event('keyup', { bubbles: true });
       editor.dispatchEvent(eventJS);
     }
 
@@ -151,10 +148,8 @@ export default function createMarkdownPreviewerTests() {
     });
 
     describe('#Tests', function() {
-
       it(`I can see a <textarea> element with corresponding
-      id="editor"`,
-      function() {
+      id="editor"`, function() {
         assert.isNotNull(editor, '#editor is not defined ');
         assert.strictEqual(
           editor.nodeName,
@@ -163,14 +158,12 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      it('I can see an element with corresponding id="preview"',
-      function() {
+      it('I can see an element with corresponding id="preview"', function() {
         assert.isNotNull(preview, '#preview is not defined ');
       });
 
       it(`When I enter text into the #editor element, the #preview
-      element is updated as I type to display the content of the textarea`,
-      function() {
+      element is updated as I type to display the content of the textarea`, function() {
         // initial triggerChange is to enable writability and configurability
         // for the textarea Object.
         triggerChange('');
@@ -179,22 +172,22 @@ export default function createMarkdownPreviewerTests() {
           preview.innerText.slice(0, 1),
           'a',
           '#preview is not being updated as I type into #editor (should ' +
-          'update on every keyup) '
+            'update on every keyup) '
         );
       });
 
       it(`When I enter GitHub flavored markdown into the #editor
       element, the text is rendered as HTML in the #preview element as I type
       (Hint: You don't need to parse Markdown yourself - you can import the
-      Marked library for this: https://cdnjs.com/libraries/marked)`,
-      function() {
-        const error = 'The markdown in #editor is not being interpreted ' +
+      Marked library for this: https://cdnjs.com/libraries/marked)`, function() {
+        const error =
+          'The markdown in #editor is not being interpreted ' +
           'correctly and/or rendered into #preview ';
         triggerChange('');
         assert.strictEqual(
           preview.innerHTML,
           '',
-          '#preview\'s only children should be those rendered by marked.js '
+          "#preview's only children should be those rendered by marked.js "
         );
         triggerChange('testing');
         assert.strictEqual(preview.innerHTML.trim(), '<p>testing</p>', error);
@@ -207,10 +200,10 @@ export default function createMarkdownPreviewerTests() {
         triggerChange('# h1 \n## h2');
         assert.isTrue(
           preview.children.length === 2 &&
-          preview.children[0].nodeName === 'H1' &&
-          preview.children[0].innerHTML === 'h1' &&
-          preview.children[1].nodeName === 'H2' &&
-          preview.children[1].innerHTML === 'h2',
+            preview.children[0].nodeName === 'H1' &&
+            preview.children[0].innerHTML === 'h1' &&
+            preview.children[1].nodeName === 'H2' &&
+            preview.children[1].innerHTML === 'h2',
           '"# h1 \n## h2" should be rendered as <h1>h1</h1>\n<h2>h2</h2>\n'
         );
         triggerChange('**bold**');
@@ -225,9 +218,7 @@ export default function createMarkdownPreviewerTests() {
       the #editor field should contain valid markdown that represents at least
       one of each of the following elements: a header (H1 size), a sub header
       (H2 size), a link, inline code, a code block, a list item, a blockquote,
-      an image, and bolded text`,
-      function() {
-
+      an image, and bolded text`, function() {
         assert.notStrictEqual(
           markdownOnLoad,
           'undefined',
@@ -267,7 +258,7 @@ export default function createMarkdownPreviewerTests() {
         assert.isTrue(
           markDownHas.code,
           'write some markdown representing a codeblock, i.e. <pre><code>...' +
-          '</code></pre> '
+            '</code></pre> '
         );
 
         // ol or ul list item
@@ -286,9 +277,9 @@ export default function createMarkdownPreviewerTests() {
         assert.isTrue(
           markDownHas.image,
           'write some markdown representing an <image> '
-          );
+        );
 
-          // bold text
+        // bold text
         assert.isTrue(
           markDownHas.bold,
           'write some markdown representing <strong> text '
@@ -297,9 +288,7 @@ export default function createMarkdownPreviewerTests() {
 
       it(`When my markdown previewer first loads, the default
       markdown in the #editor field should be rendered as HTML in the #preview
-      element`,
-      function() {
-
+      element`, function() {
         triggerChange(markdownOnLoad);
         assert.notStrictEqual(
           preview.innerHTML,
@@ -309,7 +298,7 @@ export default function createMarkdownPreviewerTests() {
         assert.strictEqual(
           preview.innerHTML,
           previewOnLoad,
-          '#editor\'s  markdown does not render correctly on window load '
+          "#editor's  markdown does not render correctly on window load "
         );
         // this could be significantly shortened into one test, however
         // feedback would not be specific
@@ -363,7 +352,8 @@ export default function createMarkdownPreviewerTests() {
         // are actually the ones represented by the markdown:
 
         // find matching H1 element
-        let hasH1 = [].slice.call(document.querySelectorAll('#preview h1'))
+        let hasH1 = [].slice
+          .call(document.querySelectorAll('#preview h1'))
           .some(h1 => {
             let innerHTML = h1.innerHTML.trim();
             return markDownHas.h1Text.some(text => innerHTML === text);
@@ -371,11 +361,12 @@ export default function createMarkdownPreviewerTests() {
         assert.isTrue(
           hasH1,
           '#preview does not contain the H1 element represented by the ' +
-          'markdown in the #editor field '
+            'markdown in the #editor field '
         );
 
         // find matching H2 element
-        let hasH2 = [].slice.call(document.querySelectorAll('#preview h2'))
+        let hasH2 = [].slice
+          .call(document.querySelectorAll('#preview h2'))
           .some(h2 => {
             let innerHTML = h2.innerHTML.trim();
             return markDownHas.h2Text.some(text => innerHTML === text);
@@ -383,15 +374,13 @@ export default function createMarkdownPreviewerTests() {
         assert.isTrue(
           hasH2,
           '#preview does not contain the H2 element represented by the ' +
-          'markdown in the #editor field '
+            'markdown in the #editor field '
         );
-
       });
 
       it(`OPTIONAL BONUS (you do not need to make this test pass):
       My markdown previewer interprets carriage returns and renders them as <br>
-      (line break) elements (HINT: read the Marked.js docs for this one!).`,
-      function() {
+      (line break) elements (HINT: read the Marked.js docs for this one!).`, function() {
         let brCount;
 
         // This markup should produce two <br> elements.
@@ -416,11 +405,11 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-    // END #Tests
+      // END #Tests
     });
 
-  // END Mardown Previewer tests
+    // END Mardown Previewer tests
   });
 
-// END createMarkdownPreviewerTests()
+  // END createMarkdownPreviewerTests()
 }

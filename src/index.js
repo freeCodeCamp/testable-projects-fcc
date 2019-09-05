@@ -72,23 +72,27 @@ const shadow = (function attachShadow() {
 // when the document is fully loaded (jquery required).
 $(document).ready(function initTests() {
   // Alert users about cross-browser compatibility issues.
-  const isBrowserSupported = (/(Chrome|Gecko)\/[\d\.]+/)
-    .test(navigator.userAgent);
+  const isBrowserSupported = /(Chrome|Gecko)\/[\d\.]+/.test(
+    navigator.userAgent
+  );
   if (isBrowserSupported === false) {
     alertOnce(
       'Intro Alert',
       'Test suites are currently optimized for Chrome and Firefox. ' +
-      'There are known issues that we are trying to work through to make ' +
-      'these suites fully cross-browser compatible, but it is a work ' +
-      'in progress. For the best user experience, please use Chrome or ' +
-      'Firefox until these issues are resolved. ' +
-      'Thanks and Happy Coding!'
+        'There are known issues that we are trying to work through to make ' +
+        'these suites fully cross-browser compatible, but it is a work ' +
+        'in progress. For the best user experience, please use Chrome or ' +
+        'Firefox until these issues are resolved. ' +
+        'Thanks and Happy Coding!'
     );
   }
 
   const style = document.createElement('style');
-  style.innerHTML = fCCDefaultStyles +
-    fCCTestUIStyles + mochaModalStyles + fCCTestTogglerStyles;
+  style.innerHTML =
+    fCCDefaultStyles +
+    fCCTestUIStyles +
+    mochaModalStyles +
+    fCCTestTogglerStyles;
   shadow.appendChild(style);
 
   const fCCToggle = document.createElement('div');
@@ -118,8 +122,10 @@ $(document).ready(function initTests() {
   // projectName variable is defined in our example projects so the
   // correct test suite is automatically loaded. This sets default text
   // for <option> text and project indicator in top right corner.
-  if (typeof projectName !== 'undefined' &&
-      projects.hasOwnProperty(projectName)) {
+  if (
+    typeof projectName !== 'undefined' &&
+    projects.hasOwnProperty(projectName)
+  ) {
     testSuiteSelector.disabled = true;
     projectNameLocal = projectName;
   } else {
@@ -142,9 +148,7 @@ $(document).ready(function initTests() {
 
   // If this is the first time loading this project, show test window
   let toggleElement = shadow.querySelector('#fcc_toggle');
-  if (!localStorage.getItem(
-    'fCC_' + projectNameLocal + '_hide'
-    )) {
+  if (!localStorage.getItem('fCC_' + projectNameLocal + '_hide')) {
     toggleElement.checked = false;
   } else {
     // If student has hidden the test window once, keep it hidden.
@@ -160,22 +164,22 @@ $(document).ready(function initTests() {
     report: mochaModal.querySelector('.fcc_test_report'),
     events: {
       start: () => {
-          button.classList.add('fcc_test_btn-executing');
-        },
+        button.classList.add('fcc_test_btn-executing');
+      },
       'test end': ({ tests, total }) => {
-          button.innerHTML = `Testing ${tests}/${total}`;
-        },
-      end: ({ passes, failures, total}) => {
-          button.innerHTML = `Tests ${passes}/${total}`;
-          button.classList.remove('fcc_test_btn-executing');
-          // Adding `.fcc_test_btn-done` for simpler querying by Selenium
-          button.classList.add('fcc_test_btn-done');
-          if (failures) {
-            button.classList.add('fcc_test_btn-error');
-          } else {
-            button.classList.add('fcc_test_btn-success');
-          }
+        button.innerHTML = `Testing ${tests}/${total}`;
+      },
+      end: ({ passes, failures, total }) => {
+        button.innerHTML = `Tests ${passes}/${total}`;
+        button.classList.remove('fcc_test_btn-executing');
+        // Adding `.fcc_test_btn-done` for simpler querying by Selenium
+        button.classList.add('fcc_test_btn-done');
+        if (failures) {
+          button.classList.add('fcc_test_btn-error');
+        } else {
+          button.classList.add('fcc_test_btn-success');
         }
+      }
     }
   };
 
@@ -237,7 +241,7 @@ onkeydown = onkeyup = function(e) {
   // Run tests: Ctrl + Shift + Enter
   if (map[17] && map[16] && map[13]) {
     FCCRerunTests();
-  // Open/close modal: Ctrl + Shift + T.
+    // Open/close modal: Ctrl + Shift + T.
   } else if (map[17] && map[16] && map[84]) {
     const modal = shadow.querySelector('#fcc_test_message-box');
     if (modal.classList.contains('fcc_test_message-box-hidden')) {
@@ -245,7 +249,7 @@ onkeydown = onkeyup = function(e) {
     } else {
       FCCCloseTestModal();
     }
-  // Open/close foldout menu: Ctrl + Shift + O.
+    // Open/close foldout menu: Ctrl + Shift + O.
   } else if (map[17] && map[16] && map[79]) {
     shadow.querySelector('#fcc_toggle').click();
   }
@@ -263,33 +267,23 @@ export function alertOnce(item, message) {
 
 // Hamburger menu transformation
 export function hamburgerTransform() {
-  if (shadow.querySelector('#hamburger_top').classList.contains(
-    'transform_top')
+  if (
+    shadow.querySelector('#hamburger_top').classList.contains('transform_top')
   ) {
-    shadow.querySelector('#hamburger_top').classList.remove(
-      'transform_top'
-    );
-    shadow.querySelector('#hamburger_middle').classList.remove(
-      'transform_middle'
-    );
-    shadow.querySelector('#hamburger_bottom').classList.remove(
-      'transform_bottom'
-    );
+    shadow.querySelector('#hamburger_top').classList.remove('transform_top');
+    shadow
+      .querySelector('#hamburger_middle')
+      .classList.remove('transform_middle');
+    shadow
+      .querySelector('#hamburger_bottom')
+      .classList.remove('transform_bottom');
     // Once the student has hidden the test window, this localStorage variable
     // keeps it hidden until manually toggled.
-    localStorage.setItem(
-      'fCC_' + projectNameLocal + '_hide', true
-    );
+    localStorage.setItem('fCC_' + projectNameLocal + '_hide', true);
   } else {
-    shadow.querySelector('#hamburger_top').classList.add(
-      'transform_top'
-    );
-    shadow.querySelector('#hamburger_middle').classList.add(
-      'transform_middle'
-    );
-    shadow.querySelector('#hamburger_bottom').classList.add(
-      'transform_bottom'
-    );
+    shadow.querySelector('#hamburger_top').classList.add('transform_top');
+    shadow.querySelector('#hamburger_middle').classList.add('transform_middle');
+    shadow.querySelector('#hamburger_bottom').classList.add('transform_bottom');
   }
 }
 
@@ -303,9 +297,7 @@ export function FCCClickOutsideToCloseModal(e) {
 // run tests
 export function FCCRerunTests() {
   const button = shadow.querySelector('#fcc_test_button');
-  button.innerHTML = !projectNameLocal
-    ? 'Load Tests!'
-    : 'Testing';
+  button.innerHTML = !projectNameLocal ? 'Load Tests!' : 'Testing';
   button.title = !projectNameLocal
     ? 'Select test suite from dropdown above'
     : 'CTRL + SHIFT + T';
@@ -320,9 +312,8 @@ export function FCCRerunTests() {
 function loadMarked(callback) {
   if (typeof marked === 'undefined') {
     const markedCDN = document.createElement('script');
-    markedCDN.src = (
-      'https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.0/marked.min.js'
-    );
+    markedCDN.src =
+      'https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.0/marked.min.js';
     markedCDN.onload = callback;
     shadow.appendChild(markedCDN);
   } else {

@@ -5,9 +5,7 @@ import { d3ProjectStackNoAxes } from '../utils/shared-test-strings';
 import { hasUniqueColorsCount } from '../utils/element-utils';
 
 export default function createChoroplethTests() {
-
   describe('#ChoroplethTests', function() {
-
     describe('#Technology Stack', function() {
       it(d3ProjectStackNoAxes, function() {
         return true;
@@ -15,10 +13,8 @@ export default function createChoroplethTests() {
     });
 
     describe('#Content', function() {
-
       it(`My Choropleth should have a title with a corresponding
-      id="title"`,
-      function() {
+      id="title"`, function() {
         assert.isNotNull(
           document.getElementById('title'),
           'Could not find an element with id="title" '
@@ -26,8 +22,7 @@ export default function createChoroplethTests() {
       });
 
       it(`My Choropleth should have a description element with a
-      corresponding id="description"`,
-      function() {
+      corresponding id="description"`, function() {
         assert.isNotNull(
           document.getElementById('description'),
           'Could not find element with id="description" '
@@ -35,8 +30,7 @@ export default function createChoroplethTests() {
       });
 
       it(`My Choropleth should have counties with a corresponding
-      class="county" that represent the data`,
-      function() {
+      class="county" that represent the data`, function() {
         assert.isAbove(
           document.querySelectorAll('.county').length,
           0,
@@ -45,8 +39,7 @@ export default function createChoroplethTests() {
       });
 
       it(`There should be at least 4 different fill colors used for
-      the counties`,
-      function() {
+      the counties`, function() {
         const counties = document.querySelectorAll('.county');
 
         assert.isTrue(
@@ -57,8 +50,7 @@ export default function createChoroplethTests() {
 
       it(`My counties should each have "data-fips" and
       "data-education" properties containing their corresponding fips and
-      education values`,
-      function() {
+      education values`, function() {
         const counties = document.querySelectorAll('.county');
         assert.isAbove(
           counties.length,
@@ -80,16 +72,14 @@ export default function createChoroplethTests() {
       });
 
       it(`My Choropleth should have a county for each provided data
-      point`,
-      function() {
+      point`, function() {
         const counties = document.querySelectorAll('.county');
 
         assert.equal(counties.length, educationData.length);
       });
 
       it(`The counties should have data-fips and data-education
-      values that match the sample data`,
-      function() {
+      values that match the sample data`, function() {
         const counties = document.querySelectorAll('.county');
         const educationDataFips = educationData.map(item => {
           return item.fips;
@@ -113,11 +103,10 @@ export default function createChoroplethTests() {
         for (var j = 0; j < educationData.length; j++) {
           // Test that every value in the sample data is in the Choropleth.
           assert.notEqual(
-            uniqueFipsFromChoropleth.indexOf(
-              educationDataFips[j]),
-              -1,
-              'Choropleth does not contain all fips from sample data '
-            );
+            uniqueFipsFromChoropleth.indexOf(educationDataFips[j]),
+            -1,
+            'Choropleth does not contain all fips from sample data '
+          );
 
           // Test that every value in the Choropleth is in the sample data.
           assert.notEqual(
@@ -147,12 +136,10 @@ export default function createChoroplethTests() {
             'County fips and education data does not match '
           );
         }
-
       });
 
       it(`My Choropleth should have a legend with a corresponding
-      id="legend"`,
-      function() {
+      id="legend"`, function() {
         assert.isNotNull(
           document.getElementById('legend'),
           'Could not find element with id="legend" '
@@ -160,8 +147,7 @@ export default function createChoroplethTests() {
       });
 
       it(`There should be at least 4 different fill colors used for
-      the legend`,
-      function() {
+      the legend`, function() {
         const rects = document.querySelectorAll('#legend rect');
 
         assert.isTrue(
@@ -177,6 +163,5 @@ export default function createChoroplethTests() {
       'data-education',
       'data-education'
     );
-
   });
 }

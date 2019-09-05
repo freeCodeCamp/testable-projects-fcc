@@ -24,36 +24,34 @@
  */
 export const allCSSRulesAsArray = function(styleSheets) {
   // Convert to an array, and then use reduce.
-  return [].slice.call(styleSheets)
-    .reduce(function(prev, styleSheet) {
-
-      // The styleSheet might not contain any rules.
-      try {
-        if (styleSheet.cssRules) {
-          // Convert the list of rules into an array.
-          const rulesAsArray = [].slice.call(styleSheet.cssRules)
-            .filter(rule => (
+  return [].slice.call(styleSheets).reduce(function(prev, styleSheet) {
+    // The styleSheet might not contain any rules.
+    try {
+      if (styleSheet.cssRules) {
+        // Convert the list of rules into an array.
+        const rulesAsArray = [].slice
+          .call(styleSheet.cssRules)
+          .filter(
+            rule =>
               rule.type === CSSRule.STYLE_RULE ||
               rule.type === CSSRule.MEDIA_RULE ||
               rule.type === CSSRule.SUPPORTS_RULE
-            )
           );
-          // Use the spread operator to push each individual element onto the
-          // return array.
-          prev.push(...rulesAsArray);
-        }
-      } catch (error) {
-        // Skip DOMException error due to Chrome complaining about CSSRules
-        // attribute security error.
-        if (!(error instanceof DOMException)) {
-          throw (error);
-        }
+        // Use the spread operator to push each individual element onto the
+        // return array.
+        prev.push(...rulesAsArray);
       }
+    } catch (error) {
+      // Skip DOMException error due to Chrome complaining about CSSRules
+      // attribute security error.
+      if (!(error instanceof DOMException)) {
+        throw error;
+      }
+    }
 
-      return prev;
+    return prev;
   }, []);
 };
-
 
 /*
  * Given a CSS Style Rule it will determine if the rule is one of our internal
@@ -67,11 +65,10 @@ export const allCSSRulesAsArray = function(styleSheets) {
  *
  */
 export const isTestSuiteRule = function(cssStyleRule) {
-  if (typeof cssStyleRule.selectorText !== 'undefined' &&
-    (
-      cssStyleRule.selectorText.includes('fcc_test') ||
-      cssStyleRule.selectorText.includes('mocha')
-    )
+  if (
+    typeof cssStyleRule.selectorText !== 'undefined' &&
+    (cssStyleRule.selectorText.includes('fcc_test') ||
+      cssStyleRule.selectorText.includes('mocha'))
   ) {
     return true;
   }

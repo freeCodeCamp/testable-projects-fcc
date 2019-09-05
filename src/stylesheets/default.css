@@ -62,8 +62,8 @@
   display: block;
   font-size: 2em;
   font-weight: bold;
-  margin-block-start: .67em;
-  margin-block-end: .67em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 .fcc_test_ui h2,
@@ -71,12 +71,13 @@
   display: block;
   font-size: 1.5em;
   font-weight: bold;
-  margin-block-start: .83em;
-  margin-block-end: .83em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
 }
 
 .fcc_test_ui h3,
-.fcc_test_ui section, section h1 {
+.fcc_test_ui section,
+section h1 {
   display: block;
   font-size: 1.17em;
   font-weight: bold;
@@ -155,7 +156,7 @@
 /* hidden elements */
 .fcc_test_ui script,
 .fcc_test_ui style {
-   display: none;
+  display: none;
 }
 
 div.fcc_test_ui {

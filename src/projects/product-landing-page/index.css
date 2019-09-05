@@ -1,6 +1,6 @@
 /** global element styling **/
 
-@import "https://fonts.googleapis.com/css?family=Lato:400,700";
+@import 'https://fonts.googleapis.com/css?family=Lato:400,700';
 
 * {
   margin: 0;
@@ -143,13 +143,13 @@ nav > ul {
   word-wrap: break-word;
 }
 
-#hero input[type="email"] {
+#hero input[type='email'] {
   max-width: 275px;
   width: 100%;
   padding: 5px;
 }
 
-#hero input[type="submit"] {
+#hero input[type='submit'] {
   max-width: 150px;
   width: 100%;
   height: 30px;
@@ -158,7 +158,7 @@ nav > ul {
   background-color: #f1c40f;
 }
 
-#hero input[type="submit"]:hover {
+#hero input[type='submit']:hover {
   background-color: orange;
   transition: background-color 1s;
 }
@@ -235,7 +235,7 @@ nav > ul {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: calc(100%  / 3);
+  width: calc(100% / 3);
   margin: 10px;
   border: 1px solid #000;
   border-radius: 3px;

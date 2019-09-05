@@ -1,6 +1,6 @@
 $padWidth: 100px;
 $padHeight: 80px;
-@import url("https://fonts.googleapis.com/css?family=Russo+One");
+@import url('https://fonts.googleapis.com/css?family=Russo+One');
 
 body {
   font-family: Russo One;
@@ -151,7 +151,7 @@ $contrast: 5% !default;
   cursor: pointer;
 }
 
-[type="range"] {
+[type='range'] {
   -webkit-appearance: none;
   margin: $thumb-height / 2 0;
   width: $track-width;

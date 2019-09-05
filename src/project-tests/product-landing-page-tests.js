@@ -1,11 +1,13 @@
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
-import { allCSSRulesAsArray, isTestSuiteRule, hasMediaQuery } from
-  '../utils/style-sheet-utils';
+import {
+  allCSSRulesAsArray,
+  isTestSuiteRule,
+  hasMediaQuery
+} from '../utils/style-sheet-utils';
 import { assert } from 'chai';
 
 export default function createProductLandingPageTests() {
   describe('#Product Landing Page tests', function() {
-
     describe('#Technology Stack', function() {
       it(responsiveWebDesignStack, function() {
         assert.ok(true);
@@ -13,10 +15,8 @@ export default function createProductLandingPageTests() {
     });
 
     describe('#Content', function() {
-
       it(`My product landing page should have a <header> element with
-      corresponding id="header".`,
-      function() {
+      corresponding id="header".`, function() {
         assert.isNotNull(
           document.getElementById('header'),
           '#header is not defined '
@@ -25,8 +25,7 @@ export default function createProductLandingPageTests() {
 
       it(`I can see an image within the #header element with a
       corresponding id="header-img". A company logo would make a good image
-      here. `,
-      function() {
+      here. `, function() {
         const img = document.getElementById('header-img');
         assert.isNotNull(img, '#header-img is not defined ');
         assert.strictEqual(
@@ -47,12 +46,12 @@ export default function createProductLandingPageTests() {
         assert.include(
           img.src,
           'http',
-          'The src attribute\'s value should be a url (http...) ');
+          "The src attribute's value should be a url (http...) "
+        );
       });
 
       it(`Within the <header> element I can see a <nav> element with
-      corresponding id="nav-bar".'`,
-      function() {
+      corresponding id="nav-bar".'`, function() {
         assert.isNotNull(
           document.getElementById('nav-bar'),
           '#nav-bar is not defined '
@@ -70,19 +69,17 @@ export default function createProductLandingPageTests() {
       });
 
       it(`I can see at least three clickable elements inside the nav
-      element, each with the class "nav-link".`,
-      function() {
+      element, each with the class "nav-link".`, function() {
         assert.isAtLeast(
           document.querySelectorAll('#nav-bar .nav-link').length,
           3,
           'There are not at least 3 elements with a class of "nav-link" ' +
-          'within the #nav-bar element '
+            'within the #nav-bar element '
         );
       });
 
       it(`When I click a .nav-link button in the nav element, I am
-      taken to the corresponding section of the landing page.'`,
-      function() {
+      taken to the corresponding section of the landing page.'`, function() {
         const navLinks = document.querySelectorAll('#nav-bar .nav-link');
         assert.isAtLeast(
           navLinks.length,
@@ -100,14 +97,13 @@ export default function createProductLandingPageTests() {
           assert.isNotNull(
             document.getElementById(linkDestination),
             'The .nav-link with href="' +
-            link.getAttribute('href') +
-            '" is not linked to a corresponding element on the page '
+              link.getAttribute('href') +
+              '" is not linked to a corresponding element on the page '
           );
         });
       });
 
-      it('I can watch an embedded product video with id="video".',
-      function() {
+      it('I can watch an embedded product video with id="video".', function() {
         let video = document.getElementById('video');
         assert.isNotNull(video, '#video is not defined ');
         assert(
@@ -118,7 +114,7 @@ export default function createProductLandingPageTests() {
         // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
         const sourceNode = video.children;
         if (sourceNode.length > 0) {
-          let sourceElement = [...video.children].filter((node) => {
+          let sourceElement = [...video.children].filter(node => {
             return node.tagName === 'SOURCE';
           })[0];
           // If there is a `<source>` element inside the `<video>` element
@@ -135,8 +131,7 @@ export default function createProductLandingPageTests() {
       });
 
       it(`My landing page has a <form> element with a corresponding
-      id="form".'`,
-      function() {
+      id="form".'`, function() {
         assert.isNotNull(
           document.getElementById('form'),
           '#form is not defined '
@@ -149,8 +144,7 @@ export default function createProductLandingPageTests() {
       });
 
       it(`Within the form, there is an <input> field with id="email"
-      where I can enter an email address.`,
-      function() {
+      where I can enter an email address.`, function() {
         assert.isNotNull(
           document.getElementById('email'),
           '#email is not defined '
@@ -168,8 +162,7 @@ export default function createProductLandingPageTests() {
       });
 
       it(`The #email input field should have placeholder text to let
-      the user know what the field is for.`,
-      function() {
+      the user know what the field is for.`, function() {
         const emailElem = document.getElementById('email');
         assert.strictEqual(
           emailElem.hasAttribute('placeholder'),
@@ -184,8 +177,7 @@ export default function createProductLandingPageTests() {
       });
 
       it(`The #email input field uses HTML5 validation to confirm
-      that the entered text is an email address.`,
-      function() {
+      that the entered text is an email address.`, function() {
         const emailElem = document.getElementById('email');
         assert.strictEqual(
           emailElem.type,
@@ -195,13 +187,9 @@ export default function createProductLandingPageTests() {
       });
 
       it(`Within the form, there is a submit <input> with
-      corresponding id="submit".`,
-      function() {
+      corresponding id="submit".`, function() {
         const submitButton = document.getElementById('submit');
-        assert.isNotNull(
-          submitButton,
-          '#submit is not defined '
-        );
+        assert.isNotNull(submitButton, '#submit is not defined ');
         assert.strictEqual(
           document.querySelectorAll('#form #submit').length,
           1,
@@ -222,8 +210,7 @@ export default function createProductLandingPageTests() {
       it(`When I click the #submit element, the email is submitted to
       a static page (use this mock URL:
       https://www.freecodecamp.com/email-submit) that confirms the email address
-      was entered (and that it posted successfully).`,
-      function() {
+      was entered (and that it posted successfully).`, function() {
         const emailElem = document.getElementById('email');
         const formElem = document.getElementById('form');
         assert.strictEqual(
@@ -234,7 +221,7 @@ export default function createProductLandingPageTests() {
         assert.include(
           formElem.action,
           'http',
-          'The action attribute\'s value should be a url (http...) '
+          "The action attribute's value should be a url (http...) "
         );
         assert.strictEqual(
           emailElem.hasAttribute('name'),
@@ -248,21 +235,17 @@ export default function createProductLandingPageTests() {
         );
       });
 
-    // END #Content
+      // END #Content
     });
 
     describe('#Layout', function() {
-
       // TODO: Most of this function should be extracted to a utility that
       // can be reused.
-      it('The navbar should always be at the top of the viewport.',
-      function() {
+      it('The navbar should always be at the top of the viewport.', function() {
         const header = document.getElementById('header');
         const headerChildren = header.children;
         // array of all potential elements serving as a navbar
-        const navbarCandidates = [
-          header, ...headerChildren
-        ];
+        const navbarCandidates = [header, ...headerChildren];
 
         // get the 'top' position value from the element whose value is closest
         // to 0
@@ -274,8 +257,9 @@ export default function createProductLandingPageTests() {
           for (var i = 1; i < candidates.length; i++) {
             // if another candidate has a top value closer to 0, replace the
             // old value
-            var currentCandidatePosition =
-              Math.abs(candidates[i].getBoundingClientRect().top);
+            var currentCandidatePosition = Math.abs(
+              candidates[i].getBoundingClientRect().top
+            );
             if (currentCandidatePosition < candidatePosition) {
               candidatePosition = currentCandidatePosition;
             }
@@ -295,14 +279,13 @@ export default function createProductLandingPageTests() {
           0,
           15,
           '#header or one of its children should be at the top of the ' +
-          'viewport even after scrolling '
+            'viewport even after scrolling '
         );
         window.scroll(0, 0);
       });
 
       it(`My product landing page should have at least one media
-      query.`,
-      function() {
+      query.`, function() {
         assert.isTrue(
           hasMediaQuery(document.styleSheets),
           'No media queries detected '
@@ -310,19 +293,18 @@ export default function createProductLandingPageTests() {
       });
 
       it(`My product landing page should utilize CSS flexbox at least
-      once.`,
-      function() {
+      once.`, function() {
         // Find CSS rules that use flexbox.
         function isRuleUseFlex(rule) {
-            // Eliminate any CSS Rules that are part of our test suite UI.
-            if (isTestSuiteRule(rule)) {
-              return false;
-            }
+          // Eliminate any CSS Rules that are part of our test suite UI.
+          if (isTestSuiteRule(rule)) {
+            return false;
+          }
 
-            return (
-              rule.style.display === 'flex' ||
-              rule.style.display === 'inline-flex'
-            );
+          return (
+            rule.style.display === 'flex' ||
+            rule.style.display === 'inline-flex'
+          );
         }
         function isStyleSheetsUseFlex(styleSheets) {
           return allCSSRulesAsArray(styleSheets).some(rule => {
@@ -336,15 +318,15 @@ export default function createProductLandingPageTests() {
         assert.isTrue(
           isStyleSheetsUseFlex(document.styleSheets),
           'We do not detect a display property set to flex or inline-flex ' +
-          'anywhere in your CSS '
+            'anywhere in your CSS '
         );
       });
 
-    // END #Layout
+      // END #Layout
     });
 
-  // END #ProductLadingPageTests
+    // END #ProductLadingPageTests
   });
 
-// END createProductLandingPageTests()
+  // END createProductLandingPageTests()
 }

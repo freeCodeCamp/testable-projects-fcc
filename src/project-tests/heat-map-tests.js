@@ -6,9 +6,7 @@ import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
 
 export default function createHeatMapTests() {
-
   describe('#HeatMapTests', function() {
-
     describe('#Technology Stack', function() {
       it(d3ProjectStackNoAxes, function() {
         return true;
@@ -16,10 +14,8 @@ export default function createHeatMapTests() {
     });
 
     describe('#Content', function() {
-
       it(`My heat map should have a title with a corresponding
-      id="title".`,
-      function() {
+      id="title".`, function() {
         assert.isNotNull(
           document.getElementById('title'),
           'Could not find an element with id="title" '
@@ -27,8 +23,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have a description with a corresponding
-      id="description".`,
-      function() {
+      id="description".`, function() {
         assert.isNotNull(
           document.getElementById('description'),
           'Could not find an element with id="description" '
@@ -36,8 +31,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have an x-axis with a corresponding
-      id="x-axis".`,
-      function() {
+      id="x-axis".`, function() {
         assert.isNotNull(
           document.getElementById('x-axis'),
           'Could not find an element with id="x-axis" '
@@ -45,8 +39,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have a y-axis with a corresponding
-      id="y-axis".`,
-      function() {
+      id="y-axis".`, function() {
         assert.isNotNull(
           document.getElementById('y-axis'),
           'Could not find an element with id="y-axis" '
@@ -54,8 +47,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have <rect> elements with a class="cell"
-      that represent the data.`,
-      function() {
+      that represent the data.`, function() {
         assert.isAbove(
           document.querySelectorAll('rect.cell').length,
           0,
@@ -64,8 +56,7 @@ export default function createHeatMapTests() {
       });
 
       it(`There should be at least 4 different fill colors used for
-      the cells.`,
-      function() {
+      the cells.`, function() {
         const cells = document.querySelectorAll('rect.cell');
 
         assert.isTrue(
@@ -76,8 +67,7 @@ export default function createHeatMapTests() {
 
       it(`Each cell will have the properties "data-month",
       "data-year", "data-temp" containing their corresponding month, year, and
-      temperature values.`,
-      function() {
+      temperature values.`, function() {
         const cells = document.querySelectorAll('rect.cell');
 
         // Without this assertion, the other assertions will never be reached
@@ -106,9 +96,7 @@ export default function createHeatMapTests() {
       });
 
       it(`The "data-month", "data-year" of each cell should be
-      within the range of the data.`,
-      function() {
-
+      within the range of the data.`, function() {
         const cells = document.querySelectorAll('rect.cell');
 
         // Without this assertion, the other assertions will never be reached
@@ -120,14 +108,14 @@ export default function createHeatMapTests() {
           'Could not find any <rect> elements with a class="cell" '
         );
 
-        cells.forEach((cell) => {
+        cells.forEach(cell => {
           const dataMonth = +cell.getAttribute('data-month');
 
           assert.isAtLeast(dataMonth, 0, 'data-month should be at least 0');
           assert.isAtMost(dataMonth, 11, 'data-month should be at most 11');
         });
 
-        cells.forEach((cell) => {
+        cells.forEach(cell => {
           const dataYear = +cell.getAttribute('data-year');
 
           assert.isAtLeast(dataYear, 1753, 'data-year should be at least 1753');
@@ -136,9 +124,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have cells that align with the
-      corresponding month on the y-axis.`,
-      function() {
-
+      corresponding month on the y-axis.`, function() {
         const axis = document.querySelector('#y-axis');
         const coordAttr = 'y';
         const cellsCollection = document.querySelectorAll('rect.cell');
@@ -159,13 +145,12 @@ export default function createHeatMapTests() {
             dataType,
             shapeAlign
           ),
-          'month values don\'t line up with y locations '
+          "month values don't line up with y locations "
         );
       });
 
       it(`My heat map should have cells that align with the
-      corresponding year on the x-axis.`,
-      function() {
+      corresponding year on the x-axis.`, function() {
         const cellsCollection = document.querySelectorAll('rect.cell');
         const axis = document.querySelector('#x-axis');
         const coordAttr = 'x';
@@ -186,13 +171,12 @@ export default function createHeatMapTests() {
             dataType,
             shapeAlign
           ),
-          'year values don\'t line up with x locations '
+          "year values don't line up with x locations "
         );
       });
 
       it(`My heat map should have multiple tick labels on the y-axis
-      with the full month name.`,
-      function() {
+      with the full month name.`, function() {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
         const months = [
           'january',
@@ -227,8 +211,7 @@ export default function createHeatMapTests() {
       });
 
       it(`My heat map should have multiple tick labels on the x-axis
-      with the years between 1753 and 2015.`,
-      function() {
+      with the years between 1753 and 2015.`, function() {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
 
         // Without this assertion, the test would pass when there are no
@@ -243,29 +226,26 @@ export default function createHeatMapTests() {
           assert.isAtLeast(
             +tickLabel.textContent,
             1753,
-            'X axis labels should contain a year that\'s at least 1753 '
+            "X axis labels should contain a year that's at least 1753 "
           );
 
           assert.isAtMost(
             +tickLabel.textContent,
             2015,
-            'X axis labels should contain a year that\'s at most 2015 '
+            "X axis labels should contain a year that's at most 2015 "
           );
         });
-
       });
 
       it(`My heat map should have a legend with corresponding
-      id="legend".`,
-      function() {
+      id="legend".`, function() {
         assert.isNotNull(
           document.getElementById('legend'),
           'Could not find an element with id="legend" '
         );
       });
 
-      it('My legend should contain <rect> elements.',
-      function() {
+      it('My legend should contain <rect> elements.', function() {
         assert.isAbove(
           document.querySelectorAll('#legend rect').length,
           0,
@@ -274,21 +254,17 @@ export default function createHeatMapTests() {
       });
 
       it(`The <rect> elements in the legend should use at least 4
-      different fill colors`,
-      function() {
-        const legendItems =
-          document.querySelectorAll('#legend rect');
+      different fill colors`, function() {
+        const legendItems = document.querySelectorAll('#legend rect');
 
         assert.isTrue(
           hasUniqueColorsCount(legendItems, 4),
           'There should be four or more fill colors used for the legend '
         );
       });
-
     });
 
     // Tooltip tests.
     testToolTip(document.querySelectorAll('.cell'), 'data-year', 'data-year');
-
   });
 }

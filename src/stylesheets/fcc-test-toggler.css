@@ -9,13 +9,13 @@
   pointer-events: all;
   position: absolute;
   top: 0;
-  transition: .5s;
+  transition: 0.5s;
   width: 320px;
 }
 
 #fcc_toggle:checked ~ #fcc_foldout_menu {
   left: -330px;
-  transition: .5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 
 #fcc_toggle:checked ~ #fcc_test_suite_indicator_wrapper {
