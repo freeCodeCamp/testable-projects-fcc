@@ -1,7 +1,3 @@
-/* global browserMaxWidth, browserMaxHeight, screenshotDir,
-   chromeBinaryPath, firefoxBinaryPath
-*/
-
 /*
  * Automates testing of a testable project. In a nutshell, it does everything
  * you would do if you had to test a testable FCC project manually.
@@ -24,35 +20,39 @@ const path = require('path');
 require('chromedriver');
 require('geckodriver');
 
-const { Builder, By, until } = require('selenium-webdriver');
+const { Builder, By, until, logging } = require('selenium-webdriver');
 
 const chrome = require('selenium-webdriver/chrome');
 const firefox = require('selenium-webdriver/firefox');
+
+const {
+  browserPath,
+  browserMaxWidth,
+  browserMaxHeight,
+  headless,
+  screenshotDir,
+  verbose
+} = require('../setup');
 
 let screenShotUniq = 0;
 
 // If elements don't appear within 1 minute, it's usually an error.
 const elementTimeout = 60000;
 
-// headless mode for chrome and firefox is enabled by default
-let headless = process.env.HEADLESS !== '0';
-
 /**
- * @param {string} browser - name of browser
  * @param {string} name - test name
  * @param {string} URL - URL to test
  *
  * @returns {Promise<{success: boolean, err: string}>} - test result
  */
-exports.doesProjectPassTests = async function(browser, name, URL) {
+exports.doesProjectPassTests = async function(name, URL) {
   // The following functions are defined below instead of outside this function
-  // so we do not have to pass the 'driver' as a function parameter. It makes
-  // the functions easier to use in a 'then' chain.
+  // so we do not have to pass the 'driver' as a function parameter.
 
   // Grab a screenshot and write to disk.
   const saveScreenshot = async (name, type) => {
     const fileName =
-      `test-result-${screenShotUniq}-${browser}-` +
+      `test-result-${screenShotUniq}-` +
       `${name.replace(/[ :]/g, '_')}-${type}.png`;
 
     screenShotUniq++;
@@ -72,6 +72,17 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
       );
     }
   };
+
+  // Locates an element by css selector inside a wrapper.
+  const locateElementByCss = (wrapper, selector) =>
+    By.js(
+      (wrapper, selector) =>
+        (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper).querySelector(
+          selector
+        ),
+      wrapper,
+      selector
+    );
 
   // Locates an element and then clicks it.
   const clickElement = async locator => {
@@ -114,29 +125,19 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
     err = errors.join('\n\n');
   };
 
-  const chromeOptions = new chrome.Options()
-    .addArguments(
-      // Decrease log output, on Windows it's verbose.
-      'log-level=3',
-      // Some of the tests make noise, so turn off the sound.
-      'mute-audio'
-    )
-    .setChromeBinaryPath(chromeBinaryPath);
-
-  let firefoxOptions = new firefox.Options()
-    .setPreference('media.volume_scale', '0.0')
-    .setBinary(firefoxBinaryPath);
-
-  if (headless) {
-    chromeOptions.headless();
-    firefoxOptions.headless();
-  }
+  // provide access to console logs in Chrome
+  const prefs = new logging.Preferences();
+  prefs.setLevel(logging.Type.BROWSER, logging.Level.ALL);
 
   // Create the browser.
   const driver = await new Builder()
-    .forBrowser(browser)
-    .setChromeOptions(chromeOptions)
-    .setFirefoxOptions(firefoxOptions)
+    // It will be replaced with SELENIUM_BROWSER env variable
+    .forBrowser('firefox')
+    .setLoggingPrefs(prefs)
+    .setChromeOptions(chromeOptions())
+    .setChromeService(chromeService())
+    .setFirefoxOptions(firefoxOptions())
+    .setFirefoxService(firefoxService())
     .build();
 
   // If all of the project tests pass, this is set to true.
@@ -145,8 +146,6 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
 
   // Test automation starts here.
   try {
-    // Firefox doesn't have an option to maximize the window
-    // So we set the size here.
     await driver
       .manage()
       .window()
@@ -184,30 +183,17 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
     // and in the jsdocs for `selenium-webdriver/by.js`
 
     await clickElement(
-      By.js(
-        wrapper =>
-          (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper).querySelector(
-            '#fcc_test_message-box-rerun-button'
-          ),
-        wrapper
-      )
+      locateElementByCss(wrapper, '#fcc_test_message-box-rerun-button')
     );
 
     // Wait for 'fcc_test_btn-done' class to be added to the 'Tests' button
     // then click
     const resultElement = await clickElement(
-      By.js(
-        wrapper =>
-          (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper).querySelector(
-            '.fcc_test_btn-done'
-          ),
-        wrapper
-      )
+      locateElementByCss(wrapper, '.fcc_test_btn-done')
     );
 
     success = (await resultElement.getAttribute('class')).includes(
-      'fcc_test_btn-success',
-      0
+      'fcc_test_btn-success'
     );
 
     // Wait for the test results modal. The message box fades in, so we wait for
@@ -215,13 +201,7 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
     await driver
       .wait(
         until.elementLocated(
-          By.js(
-            wrapper =>
-              (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper).querySelector(
-                '.fcc_test_message-box-shown'
-              ),
-            wrapper
-          )
+          locateElementByCss(wrapper, '.fcc_test_message-box-shown')
         ),
         elementTimeout
       )
@@ -243,6 +223,20 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
     }
   }
 
+  if (verbose) {
+    try {
+      // Needed for Chrome. Firefox throws here, will not implement.
+      // https://github.com/mozilla/geckodriver/issues/284
+      await driver
+        .manage()
+        .logs()
+        .get(logging.Type.BROWSER)
+        .then(console.log);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
   // We are done. Close the browser and return with success status.
   try {
     await driver.quit();
@@ -252,3 +246,54 @@ exports.doesProjectPassTests = async function(browser, name, URL) {
 
   return { success, err };
 };
+
+function chromeOptions() {
+  const options = new chrome.Options().addArguments(
+    // Decrease log output, on Windows it's verbose.
+    'log-level=3',
+    // Some of the tests make noise, so turn off the sound.
+    'mute-audio'
+  );
+
+  if (browserPath) {
+    options.setChromeBinaryPath(browserPath);
+  }
+
+  if (headless) {
+    options.headless();
+  }
+
+  return options;
+}
+
+function chromeService() {
+  const service = new chrome.ServiceBuilder();
+  if (verbose) {
+    service.setStdio('inherit');
+  }
+  return service;
+}
+
+function firefoxOptions() {
+  let options = new firefox.Options()
+    .setPreference('media.volume_scale', '0.0')
+    .setPreference('devtools.console.stdout.content', true);
+
+  if (browserPath) {
+    options.setBinary(browserPath);
+  }
+
+  if (headless) {
+    options.headless();
+  }
+
+  return options;
+}
+
+function firefoxService() {
+  const service = new firefox.ServiceBuilder();
+  if (verbose) {
+    service.setStdio('inherit');
+  }
+  return service;
+}

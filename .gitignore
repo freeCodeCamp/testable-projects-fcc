@@ -37,7 +37,6 @@ jspm_packages
 config/server.crt
 config/server.csr
 config/server.key
-test/setup.js
 
 # Optional npm cache directory
 .npm
@@ -50,3 +49,5 @@ test/setup.js
 
 # sass
 .sass-cache/*
+
+.env

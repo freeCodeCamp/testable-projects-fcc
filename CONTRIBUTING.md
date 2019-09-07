@@ -73,23 +73,23 @@ need to be run one time.
 1. You should have already run `yarn` per the forking instructions.
 1. Make sure you have the Chrome browser installed. You should have version
    59.0.3071.115 or later.
-1. You need to configure your test environment by setting up the `test/setup.js`
+1. You need to configure your test environment by setting up the `.env`
    file (see below).
 
-**Configuring your test environment with setup.js**
+**Configuring your test environment with .env**
 
-If you do not already have a `test/setup.js` file, copy the example file to get
+If you do not already have a `.env` file, copy the example file to get
 you started. From the project root directory:
 
 ```sh
-cp test/setup.js.example test/setup.js
+cp sample.env .env
 ```
 
-Now you can edit the `test/setup.js` file and to reflect your environment. It
+Now you can edit the `.env` file and to reflect your environment. It
 is well documented inside the file and the defaults should work but at the very
-least you will have to choose a value for `global.chromeBinaryPath`.
+least you will have to choose a values for `SELENIUM_BROWSER` and `BROWSER_PATH`.
 
-(The `setup.js` file is ignored by git, so you can be sure it won't be
+(The `.env` file is ignored by git, so you can be sure it won't be
 overwritten by other contributers once you have created it).
 
 **Testing using your local bundle.js file**
@@ -128,11 +128,17 @@ export object of the `src/project-tests/index.js` file.
 **Running tests without headless mode**
 
 By default tests run in the headless mode. If you need to see how it works on
-your screen, you need to disable the headless mode. For this run the tests like
-this:
+your screen, you need to disable the headless mode. For this uncomment next line
+in `.env` file:
 
+```sh
+HEADLESS=0
 ```
-HEADLESS=0 yarn test
+
+and run tests:
+
+```sh
+yarn test
 ```
 
 If everything is set up correctly, you should see the following happen
@@ -161,7 +167,7 @@ And then using the `:99` and (-screen) `0` values from above you run the tests
 like this:
 
 ```sh
-DISPLAY=':99.0' HEADLESS=0 yarn test
+DISPLAY=':99.0' yarn test
 ```
 
 The tests will now run on the virtual display without popping up the browser.
@@ -169,7 +175,7 @@ The tests will now run on the virtual display without popping up the browser.
 Running a single test works similarly:
 
 ```sh
-DISPLAY=':99.0' HEADLESS=0 yarn mocha -g 'D3 Tree'
+DISPLAY=':99.0' yarn mocha -g 'D3 Tree'
 ```
 
 **Capturing video of the tests**
@@ -198,13 +204,13 @@ file to reflect what port the develop script uses, or make sure port
 #### Mac Retina display
 
 On Mac Retina displays, the value your system gives you for display is
-double what you need to put in the `test/setup.js` file. For example, if your
+double what you need to put in the `.env` file. For example, if your
 system settings say your resolution is 2880×1800 then you would put the
-following in your `test/setup.js`:
+following in your `.env`:
 
-```js
-global.browserMaxWidth = 1440;
-global.browserMaxHeight = 900;
+```sh
+BROWSER_MAX_WIDTH=1440
+BROWSER_MAX_HEIGHT=900
 ```
 
 #### Dependencies
@@ -224,8 +230,7 @@ only one criteria for merging).
 You can see the success / fail status for Travis directly on the PR itself on
 github, as well as in the README.md file on the main page of the project.
 
-See the `.travis.yml` file and `test/setup.js.travis` for how the tests are
-set up to run on Travis CI.
+See the `.travis.yml` file for how the tests are set up to run on Travis CI.
 
 #### Useful references
 
