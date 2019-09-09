@@ -27,8 +27,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       });
     }
 
-    let statsTemplate =
-      `<ul class="fcc_test_mocha-stats">
+    let statsTemplate = `<ul class="fcc_test_mocha-stats">
         <li class="passes">passes:<em></em></li>
         <li class="failures">failures:<em></em></li>
         <li class="duration">duration:<em></em></li>
@@ -73,10 +72,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
         title.innerText = suite.title;
       } else {
         // suite
-        let el = fragment(
-          '<li class="suite"><h1>%e</h1></li>',
-          suite.title
-        );
+        let el = fragment('<li class="suite"><h1>%e</h1></li>', suite.title);
 
         // container
         stack[0].appendChild(el);
@@ -97,12 +93,15 @@ export default class HtmlReporter extends Mocha.reporters.Base {
     });
 
     runner.on('pass', test => {
-      let markup =
-        `<li class="test pass %e">
+      let markup = `<li class="test pass %e">
           <h2>%e<span class="duration">%ems</span></h2>
         </li>`;
       let el = fragment(
-        markup, test.speed, this.numberingTestTitle(test.title), test.duration);
+        markup,
+        test.speed,
+        this.numberingTestTitle(test.title),
+        test.duration
+      );
       this.addCodeToggle(el, test.body);
       appendToStack(el);
       updateStats();
@@ -113,7 +112,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
         `<li class="test fail">
           <h2>%e</h2>
         </li>`,
-        this.numberingTestTitle(test.title),
+        this.numberingTestTitle(test.title)
       );
       let err = test.err;
       let message;
@@ -138,9 +137,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
           fragment('<div class="html-error">%s</div>', test.err.htmlMessage)
         );
       } else {
-        el.appendChild(
-          fragment('<pre class="error">%e</pre>', message)
-        );
+        el.appendChild(fragment('<pre class="error">%e</pre>', message));
       }
 
       this.addCodeToggle(el, test.body);
@@ -164,7 +161,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
     };
 
     let updateStats = () => {
-      let percent = (stats.tests / stats.total * 100);
+      let percent = (stats.tests / stats.total) * 100;
       if (progress) {
         progress.update(percent).draw(ctx);
       }
@@ -175,7 +172,6 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       failures.innerText = stats.failures;
       duration.innerText = (ms / 1000).toFixed(2);
     };
-
   }
 
   numberingTestTitle(title) {

@@ -1,7 +1,7 @@
 dist: trusty
 language: node_js
 node_js:
-  - "lts/*"
+  - 'lts/*'
 cache:
   yarn: true
   directories:
@@ -9,17 +9,26 @@ cache:
 jobs:
   include:
     - stage: pretest
+      name: Pretest
       before_script: skip
       script:
         - commitlint-travis
         - yarn lint
       after_failure: skip
     - stage: test
-      env: BROWSER=chrome
+      name: Chrome
+      env:
+        - SELENIUM_BROWSER=chrome
+        - BROWSER_PATH=/usr/bin/google-chrome-stable
+        - SCREENSHOT_DIR=travis-screenshots
       addons:
         chrome: stable
     - stage: test
-      env: BROWSER=firefox
+      name: Firefox
+      env:
+        - SELENIUM_BROWSER=firefox
+        - BROWSER_PATH=firefox
+        - SCREENSHOT_DIR=travis-screenshots
       addons:
         firefox: latest
     - stage: deploy
@@ -32,10 +41,13 @@ jobs:
         skip_cleanup: true
         script: bash deploy.sh
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.12.3
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
   - export PATH=$HOME/.yarn/bin:$PATH
   # Codecs needed for Firefox to play audio.
-  - if [[ "$BROWSER" == "firefox" ]]; then sudo apt-get install -y -qq ubuntu-restricted-addons; fi
+  - |
+    if [[ "$SELENIUM_BROWSER" == "firefox" ]]; then
+      sudo apt-get install -y -qq ubuntu-restricted-addons;
+    fi
 before_script:
   - |
     if [ $HEADLESS -eq 0 ]; then
@@ -45,9 +57,8 @@ before_script:
       # Same as what we specified for Xvfb.
       export DISPLAY=:99.0
     fi
-  # Build budle.js
+  # Build bundle.js and projects
   - yarn build
-  - cp test/setup.js.travis test/setup.js
   # Increase the shared memory mountpoint. Chrome or something in the tests is
   # taking up more shared memory than is available which causes tests to fail.
   # See https://github.com/SeleniumHQ/docker-selenium/issues/431

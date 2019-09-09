@@ -12,7 +12,7 @@ please add them to the list:
 */
 
 .fcc_test_report {
-  font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 20px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin: 20px 40px;
 }
 
@@ -42,14 +42,14 @@ please add them to the list:
 
 .fcc_test_report .suite .suite h1 {
   margin-top: 0;
-  font-size:.8em;
+  font-size: 0.8em;
 }
 
 .fcc_test_report .hidden {
   display: none;
 }
 
-.fcc_test_report h2{
+.fcc_test_report h2 {
   font-size: 12px;
   font-weight: 400;
   cursor: pointer;
@@ -59,8 +59,8 @@ please add them to the list:
   margin-left: 15px;
 }
 
-.fcc_test_report .test{
-  margin-left:15px;
+.fcc_test_report .test {
+  margin-left: 15px;
   overflow: hidden;
 }
 
@@ -69,10 +69,10 @@ please add them to the list:
   font-family: arial, sans-serif;
 }
 .fcc_test_report .test.pass.medium .duration {
-  background:#c09853;
+  background: #c09853;
 }
 .fcc_test_report .test.pass.slow .duration {
-  background:#b94a48;
+  background: #b94a48;
 }
 
 .fcc_test_report .test::before {
@@ -91,7 +91,7 @@ please add them to the list:
   margin-left: 5px;
   padding: 2px 5px;
   color: #fff;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.2);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
 .fcc_test_report .test.pass.fast .duration {
@@ -146,7 +146,7 @@ please add them to the list:
   max-height: none;
 }
 .fcc_test_report .test pre {
-  font: 12px/1.5 monaco,monospace;
+  font: 12px/1.5 monaco, monospace;
   margin: 5px;
   padding: 15px;
   border: 1px solid #eee;
@@ -233,7 +233,7 @@ please add them to the list:
   color: #2f6fad;
 }
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 480px) {
   .fcc_test_report {
     margin: 20px 0;
   }
@@ -252,7 +252,7 @@ please add them to the list:
   right: 0;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.8);
-  transition: all .5s;
+  transition: all 0.5s;
   z-index: 100;
   overflow: auto;
 }
@@ -271,7 +271,7 @@ please add them to the list:
 
 div.fcc_test_message-box-content {
   position: relative;
-  color: black ;
+  color: black;
   background-color: white;
   top: 10vh;
   width: 80%;
@@ -284,7 +284,7 @@ div.fcc_test_message-box-content {
 }
 
 .fcc_test_message-box-header,
-.fcc_test_message-box-footer{
+.fcc_test_message-box-footer {
   position: relative;
   flex: none;
   box-sizing: border-box;
@@ -293,7 +293,7 @@ div.fcc_test_message-box-content {
 }
 
 .fcc_test_message-box-header {
-  border-bottom: 1px solid rgb(229,229,229);
+  border-bottom: 1px solid rgb(229, 229, 229);
 }
 
 .fcc_test_message-box-header .fcc_test_title {
@@ -315,7 +315,7 @@ div.fcc_test_message-box-body {
 }
 
 .fcc_test_message-box-footer {
-  border-top: 1px solid rgb(229,229,229);
+  border-top: 1px solid rgb(229, 229, 229);
   height: 70px;
 }
 
@@ -324,11 +324,11 @@ div.fcc_test_message-box-body {
   cursor: pointer;
   color: black;
   background-color: white;
-  border: 1px solid rgb(229,229,229);
+  border: 1px solid rgb(229, 229, 229);
   border-radius: 4px;
   padding: 10px 20px;
   margin-bottom: 10px;
-  transition: all .3s;
+  transition: all 0.3s;
   line-height: 30px;
   height: auto;
 }

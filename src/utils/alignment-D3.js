@@ -5,11 +5,7 @@ import {
   getShapePosition
 } from '../utils/alignment-D3-support';
 
-export function _getSurroundingTicks(
-  value,
-  ticks,
-  normalTickOrder
-) {
+export function _getSurroundingTicks(value, ticks, normalTickOrder) {
   let leftIndex = 0;
   let rightIndex = ticks.length;
 
@@ -18,8 +14,10 @@ export function _getSurroundingTicks(
     let midIndex = Math.floor((leftIndex + rightIndex) / 2);
     if (ticks[midIndex] === value) {
       leftIndex = rightIndex = midIndex + 1;
-    } else if (normalTickOrder && ticks[midIndex] > value ||
-        !normalTickOrder && ticks[midIndex] < value) {
+    } else if (
+      (normalTickOrder && ticks[midIndex] > value) ||
+      (!normalTickOrder && ticks[midIndex] < value)
+    ) {
       rightIndex = midIndex;
     } else {
       leftIndex = midIndex + 1;
@@ -55,9 +53,8 @@ export function areShapesAlignedWithTicks(
   // get either 'x' or 'y' in case of 'cx' or 'cy'
   const coord = dimension.match(/c/g) ? dimension.split('c')[1] : dimension;
 
-  let tickValues = [].map.call(
-    ticksCollection,
-    tick => getTickValue(tick, dataType)
+  let tickValues = [].map.call(ticksCollection, tick =>
+    getTickValue(tick, dataType)
   );
   const normalValueOrder = tickValues[tickValues.length - 1] > tickValues[0];
 
@@ -107,7 +104,7 @@ export function areShapesAlignedWithTicks(
 
       // If shape is positioned between the two ticks plus or minus 3px
       // A leeway is necessary for this code to work on all chart types.
-      if ( prevPos - 3 <= pos && pos <= nextPos + 3 ) {
+      if (prevPos - 3 <= pos && pos <= nextPos + 3) {
         aligned++;
       }
     }

@@ -14,7 +14,7 @@ function getElements(elementIds) {
 export function clickButtonsById(buttonIds) {
   const keys = getElements(buttonIds);
   keys.forEach(key => {
-    if (key && (typeof key.click === 'function')) {
+    if (key && typeof key.click === 'function') {
       key.click();
     }
   });
@@ -23,7 +23,6 @@ export function clickButtonsById(buttonIds) {
 // Determines if a collection of HTML elements has at least the specified number
 // of unique colors.
 export function hasUniqueColorsCount(elements, numberOfColors) {
-
   let uniqueColors = [];
 
   // Use a loop instead of 'foreach' so we can return early.
@@ -33,22 +32,22 @@ export function hasUniqueColorsCount(elements, numberOfColors) {
     // Make sure the color contains an actual value instead of something like
     // null or undefined.
     // If the current color isn't in the uniqueColors arr, push it.
-    if (color && (uniqueColors.indexOf(color) === -1)) {
+    if (color && uniqueColors.indexOf(color) === -1) {
       uniqueColors.push(color);
     }
 
     if (uniqueColors.length >= numberOfColors) {
       return true;
     }
-
   }
 
   return false;
 }
 
 export function getInputValue(element) {
-  return element.nodeName.toLowerCase() === 'input' ?
-    element.value : element.innerText;
+  return element.nodeName.toLowerCase() === 'input'
+    ? element.value
+    : element.innerText;
 }
 
 export function decodeHtml(html) {

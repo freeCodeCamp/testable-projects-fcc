@@ -16,11 +16,10 @@
 
 // Selenium wrapper for Mocha testing. You can also add the following if
 // needed: after, afterEach, before, beforeEach, and xit.
-import { describe, it } from 'selenium-webdriver/testing';
-import { assert } from 'chai';
+const { assert } = require('chai');
 
-import tests from '../src/project-tests';
-import { doesProjectPassTests } from './automate/automate-utils';
+const tests = require('../src/project-tests').default;
+const { doesProjectPassTests } = require('./automate/automate-utils');
 
 // Mocha or Selenium is creating more than the max default of 10 events
 // emitters, so we increase the default max here.
@@ -32,19 +31,16 @@ describe('Projects Tests', function() {
 
   Object.keys(tests).forEach(function(key) {
     let test = tests[key];
-    global.browsers.forEach(browser =>
-      it(`Project "${test.name}" in ${browser} should pass all tests`, () =>
-        doesProjectPassTests(browser, test.name, test.URL).then(
-          ({success, err}) =>
-            assert.isOk(
-              success,
-`Project "${test.name}" in ${browser} did not pass all tests.
+    it(`Project "${test.name}" should pass all tests`, () =>
+      doesProjectPassTests(test.name, test.URL).then(({ success, err }) =>
+        assert.isOk(
+          success,
+          `Project "${test.name}" did not pass all tests.
 
 ${err}
 
 See screenshot for more details.`
-            )
-        ))
-    );
+        )
+      ));
   });
 });
