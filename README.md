@@ -10,7 +10,7 @@ A CDN loaded test-suite for testing the freecodecamp.com Certification waypoint 
 ### What is this, you ask?
 
 - This repo is a part of the FreeCodeCamp.com curriculum expansion, and represents our front end testable projects, err... project.
-- Our goal is to make every waypoint project, which each correspond to different sections of the curriculum, fully testable using a TDD-like methodology - such that our campers will have predefined test cases, which start out failing, and that they must make pass.
+- Our goal is to make every waypoint project, which each correspond to different sections of the curriculum, fully testable using a TDD(Test-driven development)-like methodology - such that our campers will have predefined test cases, which start out failing, and that they must make pass.
 - This codebase is the test suite, and individual sets of test cases for each of these projects.
 - We are serving the tests via CDN (see below), which can easily be imported into any of our projects, whether they are developed locally, on CodePen (as our example projects are), or anywhere else.
 - You can see examples of these projects here: http://codepen.io/collection/npZPmR
@@ -26,7 +26,7 @@ test _camper project code_.
 
 As such, this project should be seen as more of a feature, than as automated
 testing. The feature mostly includes automated testing for the students to
-run, but it does have a UI, and the tests do not run against our code.
+run, but it does have a UI(User Interface), and the tests do not run against our code.
 
 So how do we make sure this feature, used by millions of campers, actually works
 in production? The confusing answer is that we need to test this feature, which
