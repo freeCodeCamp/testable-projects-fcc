@@ -17,3 +17,4 @@ then
   git push https://"$CDN_USER":"$CDN_API_KEY"@github.com/"$CDN_REPO_SLUG" master
 fi
 popd
+
