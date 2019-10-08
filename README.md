@@ -68,3 +68,5 @@ For all the details about automatically testing this project, please see the
 
 - First and foremost is [@Weezlo](https://github.com/Weezlo), thanks for getting us started! And to [@no-stack-dub-sack](https://github.com/no-stack-dub-sack), [@tchaffee](https://github.com/tchaffee) & [@tbushman](https://github.com/tbushman) for seeing it through the rest of the way! Also [@Christian-Paul](https://github.com/Christian-Paul) & [@paycoguy](https://github.com/paycoguy) for coming up with reliable ways to test D3, and [@bonham000](https://github.com/bonham000) for helping us to get this all bundled up nicely in one sweet little package.
 - All tests developed by [@Weezlo](https://github.com/Weezlo) & [@no-stack-dub-sack](https://github.com/no-stack-dub-sack) except for the D3 projects developed by [@Christian-Paul](https://github.com/Christian-Paul) & [@paycoguy](https://github.com/paycoguy), with countless refinements to all projects by [@tbushman](https://github.com/tbushman) & [@tchaffee](https://github.com/tchaffee).
+
+All right Reserved 2019
