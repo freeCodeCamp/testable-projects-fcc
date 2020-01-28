@@ -209,8 +209,7 @@ export default function createProductLandingPageTests() {
 
       it(`When I click the #submit element, the email is submitted to
       a static page (use this mock URL:
-      https://www.freecodecamp.com/email-submit) that confirms the email address
-      was entered (and that it posted successfully).`, function() {
+      https://www.freecodecamp.com/email-submit).`, function() {
         const emailElem = document.getElementById('email');
         const formElem = document.getElementById('form');
         assert.strictEqual(
