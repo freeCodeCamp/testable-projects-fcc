@@ -291,9 +291,9 @@ export default function createPomodoroClockTests() {
         );
       });
 
-      it(`When I click the element with the id of "break-decrement" and then with the
-        id of "break-increment", both times element with the id "time-left" stays unchanged 
-        (time stays equal to the value of the element with the id "session-length")`, async function() {
+      it(`When I click the elements with the id of "break-decrement" and "break-increment" at 
+      the same time, the time indicated by the element with the id, "time-left", remains unchanged 
+      and equal to the value of the element with the id, "session-length".`, async function() {
         clickButtonsById([breakMin, breakPlus]);
 
         await timeout(1500);
