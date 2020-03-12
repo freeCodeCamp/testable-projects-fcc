@@ -291,6 +291,29 @@ export default function createPomodoroClockTests() {
         );
       });
 
+      it(`When I click the elements with the id of "break-decrement" and "break-increment" at 
+      the same time, the time indicated by the element with the id, "time-left", remains unchanged 
+      and equal to the value of the element with the id, "session-length".`, async function() {
+        clickButtonsById([breakMin, breakPlus]);
+
+        await timeout(1500);
+
+        const timeLeftMins = getMinutes(
+          document.getElementById('time-left').innerText
+        );
+        const sessionLength = getInputValue(
+          document.getElementById('session-length')
+        );
+
+        assert.strictEqual(
+          timeLeftMins,
+          sessionLength,
+          'id="time-left" element has been changed'
+        );
+
+        resetTimer();
+      });
+
       it(`When I click the element with the id of "break-decrement",
       the value within id="break-length" decrements by a value of 1, and I can
       see the updated value.`, function() {
