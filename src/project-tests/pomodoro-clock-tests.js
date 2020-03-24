@@ -200,7 +200,7 @@ export default function createPomodoroClockTests() {
 
       it(`I can see an element with corresponding id="time-left".
       NOTE: Paused or running, the value in this field should always be
-      displayed in mm:ss format (i.e. 25:00).`, function() {
+      displayed in mm:ss format (i.e. 25:00).`, async function() {
         const target = document.getElementById('time-left');
         assert.isNotNull(target);
         assert.strictEqual(
@@ -210,6 +210,8 @@ export default function createPomodoroClockTests() {
         );
         // Set session length to 60
         clickButtonsById(Array(35).fill(seshPlus));
+        // wait for 1.5 seconds to allow any re-renders to catch up
+        await timeout(1500);
         assert.strictEqual(
           getMinutes(target.innerText),
           '60',
