@@ -57,6 +57,28 @@ export default function createSurveyFormTests() {
         );
       });
 
+      it('I can see <label> elements with the correct "for" attributes.', function() {
+        assert.strictEqual(
+          document.querySelector('#name-label').getAttribute('for') === 'name',
+          true,
+          'The label with "id=name-label" should have a "for" attribute set to "name"'
+        );
+
+        assert.strictEqual(
+          document.querySelector('#email-label').getAttribute('for') ===
+            'email',
+          true,
+          'The label with "id=email-label" should have a "for" attribute set to "email"'
+        );
+
+        assert.strictEqual(
+          document.querySelector('#number-label').getAttribute('for') ===
+            'number',
+          true,
+          'The label with "id=number-label" should have a "for" attribute set to "number"'
+        );
+      });
+
       it(`Inside the form element, I am required to enter my name
       in a field with id="name". If I do not enter a name I will see an HTML5
       validation error.`, function() {
