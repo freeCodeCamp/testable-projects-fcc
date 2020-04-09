@@ -168,8 +168,10 @@ d3.json(url, function(error, data) {
     .style('font-size', '20px')
     .text("35 Fastest times up Alpe d'Huez");
 
-  var legend = svg
-    .selectAll('.legend')
+  var legendContainer = svg.append('g').attr('id', 'legend');
+
+  var legend = legendContainer
+    .selectAll('#legend')
     .data(color.domain())
     .enter()
     .append('g')
