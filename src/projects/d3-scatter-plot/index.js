@@ -175,8 +175,7 @@ d3.json(url, function(error, data) {
     .data(color.domain())
     .enter()
     .append('g')
-    .attr('class', 'legend')
-    .attr('id', 'legend')
+    .attr('class', 'legend-label')
     .attr('transform', function(d, i) {
       return 'translate(0,' + (height / 2 - i * 20) + ')';
     });
