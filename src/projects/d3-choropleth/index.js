@@ -20,10 +20,7 @@ var tooltip = body
 
 var path = d3.geoPath();
 
-var x = d3
-  .scaleLinear()
-  .domain([2.6, 75.1])
-  .rangeRound([600, 860]);
+var x = d3.scaleLinear().domain([2.6, 75.1]).rangeRound([600, 860]);
 
 var color = d3
   .scaleThreshold()
@@ -38,7 +35,7 @@ var g = svg
 
 g.selectAll('rect')
   .data(
-    color.range().map(function(d) {
+    color.range().map(function (d) {
       d = color.invertExtent(d);
       if (d[0] === null) {
         d[0] = x.domain()[0];
@@ -52,13 +49,13 @@ g.selectAll('rect')
   .enter()
   .append('rect')
   .attr('height', 8)
-  .attr('x', function(d) {
+  .attr('x', function (d) {
     return x(d[0]);
   })
-  .attr('width', function(d) {
+  .attr('width', function (d) {
     return x(d[1]) - x(d[0]);
   })
-  .attr('fill', function(d) {
+  .attr('fill', function (d) {
     return color(d[0]);
   });
 
@@ -74,7 +71,7 @@ g.call(
   d3
     .axisBottom(x)
     .tickSize(13)
-    .tickFormat(function(x) {
+    .tickFormat(function (x) {
       return Math.round(x) + '%';
     })
     .tickValues(color.domain())
@@ -105,11 +102,11 @@ function ready(error, us, education) {
     .enter()
     .append('path')
     .attr('class', 'county')
-    .attr('data-fips', function(d) {
+    .attr('data-fips', function (d) {
       return d.id;
     })
-    .attr('data-education', function(d) {
-      var result = education.filter(function(obj) {
+    .attr('data-education', function (d) {
+      var result = education.filter(function (obj) {
         return obj.fips === d.id;
       });
       if (result[0]) {
@@ -119,8 +116,8 @@ function ready(error, us, education) {
       console.log('could find data for: ', d.id);
       return 0;
     })
-    .attr('fill', function(d) {
-      var result = education.filter(function(obj) {
+    .attr('fill', function (d) {
+      var result = education.filter(function (obj) {
         return obj.fips === d.id;
       });
       if (result[0]) {
@@ -130,11 +127,11 @@ function ready(error, us, education) {
       return color(0);
     })
     .attr('d', path)
-    .on('mouseover', function(d) {
+    .on('mouseover', function (d) {
       tooltip.style('opacity', 0.9);
       tooltip
-        .html(function() {
-          var result = education.filter(function(obj) {
+        .html(function () {
+          var result = education.filter(function (obj) {
             return obj.fips === d.id;
           });
           if (result[0]) {
@@ -150,8 +147,8 @@ function ready(error, us, education) {
           // could not find a matching fips id in the data
           return 0;
         })
-        .attr('data-education', function() {
-          var result = education.filter(function(obj) {
+        .attr('data-education', function () {
+          var result = education.filter(function (obj) {
             return obj.fips === d.id;
           });
           if (result[0]) {
@@ -163,14 +160,14 @@ function ready(error, us, education) {
         .style('left', d3.event.pageX + 10 + 'px')
         .style('top', d3.event.pageY - 28 + 'px');
     })
-    .on('mouseout', function() {
+    .on('mouseout', function () {
       tooltip.style('opacity', 0);
     });
 
   svg
     .append('path')
     .datum(
-      topojson.mesh(us, us.objects.states, function(a, b) {
+      topojson.mesh(us, us.objects.states, function (a, b) {
         return a !== b;
       })
     )

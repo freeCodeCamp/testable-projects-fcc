@@ -3,7 +3,7 @@ import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 
 // DRUM MACHINE TESTS:
 export default function createDrumMachineTests() {
-  describe('#Drum Machine tests', function() {
+  describe('#Drum Machine tests', function () {
     // vars:
     const drumPads = document.querySelectorAll('.drum-pad');
     const audioElements = document.querySelectorAll('.drum-pad .clip');
@@ -39,20 +39,20 @@ export default function createDrumMachineTests() {
       __triggerEvent(el, 'mouseup', 0);
     }
 
-    describe('#Technology Stack', function() {
-      it(frontEndLibrariesStack, function() {
+    describe('#Technology Stack', function () {
+      it(frontEndLibrariesStack, function () {
         return true;
       });
     });
 
-    describe('#Tests', function() {
-      after(function() {
-        audioElements.forEach(function(el) {
+    describe('#Tests', function () {
+      after(function () {
+        audioElements.forEach(function (el) {
           el.pause();
         });
       });
       it(`I should be able to see an outer container with a
-      corresponding id="drum-machine" that contains all other elements`, function() {
+      corresponding id="drum-machine" that contains all other elements`, function () {
         assert.isNotNull(document.getElementById('drum-machine'));
         assert(
           document.querySelectorAll(
@@ -64,7 +64,7 @@ export default function createDrumMachineTests() {
       });
 
       it(`Within #drum-machine I can see an element with
-      corresponding id="display".`, function() {
+      corresponding id="display".`, function () {
         assert.isNotNull(document.getElementById('display'));
       });
 
@@ -72,11 +72,11 @@ export default function createDrumMachineTests() {
       elements, each with a class name of "drum-pad", a unique id that describes
       the audio clip the drum pad will be set up to trigger, and an inner text
       that corresponds to one of the following keys on the keyboard: Q, W, E, A,
-      S, D, Z, X, C. The drum pads MUST be in this order.`, function() {
+      S, D, Z, X, C. The drum pads MUST be in this order.`, function () {
         // using .isAtLeast() and .includeMembers() in this challenge so that
         // users have the freedom to add more than 9 drum pads
         let drumPadInnerText = [];
-        drumPads.forEach(pad => {
+        drumPads.forEach((pad) => {
           drumPadInnerText.push(pad.innerText.replace(/\s/g, ''));
           assert.strictEqual(
             pad.hasAttribute('id'),
@@ -102,13 +102,13 @@ export default function createDrumMachineTests() {
       it(`Within each .drum-pad, there should be an HTML5 <audio>
       element which has a src attribute pointing to an audio clip, a class name
       of "clip", and an id corresponding to the inner text of its parent
-      .drum-pad (e.g. id="Q", id="W", id="E" etc.).`, function() {
+      .drum-pad (e.g. id="Q", id="W", id="E" etc.).`, function () {
         assert.isAtLeast(
           audioElements.length,
           9,
           'Each .drum-pad should have a child element with the class of "clip" '
         );
-        audioElements.forEach(el => {
+        audioElements.forEach((el) => {
           assert.strictEqual(
             el.nodeName,
             'AUDIO',
@@ -134,13 +134,13 @@ export default function createDrumMachineTests() {
       });
 
       it(`When I click on a .drum-pad element, the audio clip
-      contained in its child <audio> element should be triggered.`, function() {
+      contained in its child <audio> element should be triggered.`, function () {
         assert.isAtLeast(
           audioElements.length,
           9,
           'Audio elements do not exist '
         );
-        audioElements.forEach(el => {
+        audioElements.forEach((el) => {
           el.pause();
           __triggerClickEventCaller(el.parentElement);
           assert.isFalse(
@@ -158,7 +158,7 @@ export default function createDrumMachineTests() {
       .drum-pad, the audio clip contained in its child <audio> element should be
       triggered (e.g. pressing the Q key should trigger the drum pad which
       contains the string "Q", pressing the W key should trigger the drum pad
-      which contains the string "W", etc.).`, function() {
+      which contains the string "W", etc.).`, function () {
         const keyCodes = [81, 87, 69, 65, 83, 68, 90, 88, 67];
         assert.isAtLeast(
           audioElements.length,
@@ -181,9 +181,9 @@ export default function createDrumMachineTests() {
 
       it(`When a .drum-pad is triggered, a string describing the
       associated audio clip is displayed as the inner text of the #display
-      element (each string must be unique).`, function() {
+      element (each string must be unique).`, function () {
         let displayText = [];
-        drumPads.forEach(pad => {
+        drumPads.forEach((pad) => {
           __triggerClickEventCaller(pad);
           displayText.push(document.getElementById('display').innerText);
         });

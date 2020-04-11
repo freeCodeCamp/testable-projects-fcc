@@ -63,11 +63,11 @@ function triggerMouseEvent(area, mouseEvent) {
   Mouses over random areas to see if a tooltip appears.
 */
 export function testToolTip(areas, toolTipDataName, areaDataName) {
-  describe('#TooltipTests', function() {
+  describe('#TooltipTests', function () {
     it(
       'I can mouse over an area and see a tooltip with a corresponding ' +
         'id="tooltip" which displays more information about the area ',
-      async function() {
+      async function () {
         const firstRequestTimeout = 500;
         const secondRequestTimeout = 2000;
 
@@ -112,7 +112,7 @@ export function testToolTip(areas, toolTipDataName, areaDataName) {
     );
 
     it(`My tooltip should have a "${toolTipDataName}" property that corresponds
-    to the "${areaDataName}" of the active area.`, async function() {
+    to the "${areaDataName}" of the active area.`, async function () {
       const randomIndex = getRandomIndex(areas.length);
       const randomArea = areas[randomIndex];
 

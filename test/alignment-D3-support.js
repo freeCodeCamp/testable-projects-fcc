@@ -15,9 +15,9 @@ import jsdom from 'jsdom';
 
 const { JSDOM } = jsdom;
 
-describe('D3 Alignment support tests', function() {
-  describe('getTickPosition function', function() {
-    it('should get a position of a tick element', function() {
+describe('D3 Alignment support tests', function () {
+  describe('getTickPosition function', function () {
+    it('should get a position of a tick element', function () {
       const dom = new JSDOM(`
         <g class="tick" transform="translate(0,16.5)">
           <line x2="-10" y2="0"></line>
@@ -30,24 +30,24 @@ describe('D3 Alignment support tests', function() {
       assert.equal(position.y, 0);
     });
 
-    it('should throw an error if there is no line element', function() {
+    it('should throw an error if there is no line element', function () {
       const dom = new JSDOM(`
         <g class="tick">
         </g>`);
 
       const tick = dom.window.document.querySelector('.tick');
 
-      assert.throws(function() {
+      assert.throws(function () {
         getTickPosition(tick);
       }, Error);
     });
   });
 
-  describe('getShapePosition function', function() {
+  describe('getShapePosition function', function () {
     it(
       'should return the center position of a rectangle, taking the width ' +
         'and height into account',
-      function() {
+      function () {
         const dom = new JSDOM(`
         <rect class="cell" x="2" y="4" width="5" height="33">
         </rect>`);

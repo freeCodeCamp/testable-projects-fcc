@@ -31,7 +31,7 @@
 <!-- If you're unsure about any of these, don't hesitate to ask in the Help Contributors room linked above. We're here to help! -->
 
 - [ ] Tested changes locally.
-  <!-- replace XXX with an issue # -->
+<!-- replace XXX with an issue # -->
 - [ ] Closes currently open issue: Closes #XXX
 
 #### Description
