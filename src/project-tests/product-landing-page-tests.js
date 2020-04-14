@@ -43,11 +43,6 @@ export default function createProductLandingPageTests() {
           true,
           '#header-img must have a src attribute '
         );
-        assert.include(
-          img.src,
-          'http',
-          "The src attribute's value should be a url (http...) "
-        );
       });
 
       it(`Within the <header> element I can see a <nav> element with
