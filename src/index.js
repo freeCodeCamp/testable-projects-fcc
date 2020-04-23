@@ -71,6 +71,24 @@ const shadow = (function attachShadow() {
 // Create the tests UI, init mocha and look for the project name
 // when the document is fully loaded (jquery required).
 $(document).ready(function initTests() {
+  // Alert users about blocking third-party cookies.
+  // Blocking third-party cookies blocks localStorage, which we depend on.
+  try {
+    localStorage.setItem('fccTest', 'fccTest');
+    localStorage.removeItem('fccTest');
+  } catch (e) {
+    /* eslint no-alert: "off" */
+    alert(
+      'Test suites depend on access to localStorage. ' +
+        'Please enable third-party cookies in the browser. ' +
+        'See documentation for your browser for instructions ' +
+        'on how to enable third-party cookies. ' +
+        'Thanks and Happy Coding!'
+    );
+    // Return to avoid throwing an error from trying to access localStorage later
+    return;
+  }
+
   // Alert users about cross-browser compatibility issues.
   const isBrowserSupported = /(Chrome|Gecko)\/[\d\.]+/.test(
     navigator.userAgent
