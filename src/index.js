@@ -79,7 +79,7 @@ $(document).ready(function initTests() {
   } catch (e) {
     /* eslint no-alert: "off" */
     alert(
-      'Test suites depends on access to localStorage. ' +
+      'Test suites depend on access to localStorage. ' +
         'Please enable third-party cookies in the browser. ' +
         'See documentation for your browser for instructions ' +
         'on how to enable third-party cookies. ' +
