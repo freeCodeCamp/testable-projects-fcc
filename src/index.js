@@ -188,7 +188,7 @@ $(document).ready(function initTests() {
         button.innerHTML = `Testing ${tests}/${total}`;
       },
       end: ({ passes, failures, total }) => {
-        button.innerHTML = `Tests ${passes}/${total}`;
+        button.innerHTML = `${passes}/${total} Passed`;
         button.classList.remove('fcc_test_btn-executing');
         // Adding `.fcc_test_btn-done` for simpler querying by Selenium
         button.classList.add('fcc_test_btn-done');
