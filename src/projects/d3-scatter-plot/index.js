@@ -47,26 +47,26 @@ var svg = d3
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-d3.json(url, function(error, data) {
+d3.json(url, function (error, data) {
   if (error) {
     throw error;
   }
-  data.forEach(function(d) {
+  data.forEach(function (d) {
     d.Place = +d.Place;
     var parsedTime = d.Time.split(':');
     d.Time = new Date(Date.UTC(1970, 0, 1, 0, parsedTime[0], parsedTime[1]));
   });
 
   x.domain([
-    d3.min(data, function(d) {
+    d3.min(data, function (d) {
       return d.Year - 1;
     }),
-    d3.max(data, function(d) {
+    d3.max(data, function (d) {
       return d.Year + 1;
     })
   ]);
   y.domain(
-    d3.extent(data, function(d) {
+    d3.extent(data, function (d) {
       return d.Time;
     })
   );
@@ -112,22 +112,22 @@ d3.json(url, function(error, data) {
     .append('circle')
     .attr('class', 'dot')
     .attr('r', 6)
-    .attr('cx', function(d) {
+    .attr('cx', function (d) {
       return x(d.Year);
     })
-    .attr('cy', function(d) {
+    .attr('cy', function (d) {
       return y(d.Time);
     })
-    .attr('data-xvalue', function(d) {
+    .attr('data-xvalue', function (d) {
       return d.Year;
     })
-    .attr('data-yvalue', function(d) {
+    .attr('data-yvalue', function (d) {
       return d.Time.toISOString();
     })
-    .style('fill', function(d) {
+    .style('fill', function (d) {
       return color(d.Doping !== '');
     })
-    .on('mouseover', function(d) {
+    .on('mouseover', function (d) {
       div.style('opacity', 0.9);
       div.attr('data-year', d.Year);
       div
@@ -145,7 +145,7 @@ d3.json(url, function(error, data) {
         .style('left', d3.event.pageX + 'px')
         .style('top', d3.event.pageY - 28 + 'px');
     })
-    .on('mouseout', function() {
+    .on('mouseout', function () {
       div.style('opacity', 0);
     });
 
@@ -176,7 +176,7 @@ d3.json(url, function(error, data) {
     .enter()
     .append('g')
     .attr('class', 'legend-label')
-    .attr('transform', function(d, i) {
+    .attr('transform', function (d, i) {
       return 'translate(0,' + (height / 2 - i * 20) + ')';
     });
 
@@ -193,7 +193,7 @@ d3.json(url, function(error, data) {
     .attr('y', 9)
     .attr('dy', '.35em')
     .style('text-anchor', 'end')
-    .text(function(d) {
+    .text(function (d) {
       if (d) {
         return 'Riders with doping allegations';
       } else {

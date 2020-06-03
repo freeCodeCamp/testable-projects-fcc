@@ -130,7 +130,7 @@ $(document).ready(function initTests() {
 
   // Populate a test suite selector
   const testSuiteSelector = shadow.querySelector('#test-suite-selector');
-  Object.keys(projects).forEach(key => {
+  Object.keys(projects).forEach((key) => {
     const testOption = document.createElement('option');
     testOption.value = key;
     testOption.innerHTML = projects[key].name;
@@ -244,7 +244,7 @@ export function FCCCloseTestModal() {
 }
 
 // Close modal on ESC press.
-$(document).keyup(function(e) {
+$(document).keyup(function (e) {
   e = e || window.event;
   if (e.keyCode === 27) {
     FCCCloseTestModal();
@@ -253,7 +253,7 @@ $(document).keyup(function(e) {
 
 const map = [];
 /* exported onkeydown, onkeyup */
-onkeydown = onkeyup = function(e) {
+onkeydown = onkeyup = function (e) {
   e = e || window.event;
   map[e.keyCode] = e.type === 'keydown';
   // Run tests: Ctrl + Shift + Enter
@@ -351,7 +351,7 @@ function FCCInitTestRunner() {
 }
 
 // Polyfill for enabling NodeList.forEach() method - IE, Edge, Safari.
-(function() {
+(function () {
   if (typeof NodeList.prototype.forEach !== 'function') {
     NodeList.prototype.forEach = Array.prototype.forEach;
   }

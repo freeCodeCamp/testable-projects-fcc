@@ -5,16 +5,16 @@ import { d3ProjectStack } from '../utils/shared-test-strings';
 import { hasUniqueColorsCount } from '../utils/element-utils';
 
 export default function createTreeMapTests() {
-  describe('#TreeMapTests', function() {
-    describe('#Technology Stack', function() {
-      it(d3ProjectStack, function() {
+  describe('#TreeMapTests', function () {
+    describe('#Technology Stack', function () {
+      it(d3ProjectStack, function () {
         return true;
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`My tree map should have a title with a corresponding
-      id="title"`, function() {
+      id="title"`, function () {
         assert.isNotNull(
           document.getElementById('title'),
           'Could not find element with id="title" '
@@ -22,7 +22,7 @@ export default function createTreeMapTests() {
       });
 
       it(`My tree map should have a description with a corresponding
-      id="description"`, function() {
+      id="description"`, function () {
         assert.isNotNull(
           document.getElementById('description'),
           'Could not find element with id="description" '
@@ -30,7 +30,7 @@ export default function createTreeMapTests() {
       });
 
       it(`My tree map should have <rect> elements with a
-      corresponding class="tile" that represent the data`, function() {
+      corresponding class="tile" that represent the data`, function () {
         assert.isAbove(
           document.querySelectorAll('rect.tile').length,
           0,
@@ -39,7 +39,7 @@ export default function createTreeMapTests() {
       });
 
       it(`There should be at least 2 different fill colors used for
-      the tiles`, function() {
+      the tiles`, function () {
         const tiles = document.querySelectorAll('rect.tile');
 
         assert.isTrue(
@@ -50,7 +50,7 @@ export default function createTreeMapTests() {
 
       it(`Each tile should have the properties "data-name",
       "data-category",  and "data-value" containing their corresponding name,
-      category, and value`, function() {
+      category, and value`, function () {
         const tiles = document.querySelectorAll('rect.tile');
         assert.isAbove(
           tiles.length,
@@ -58,7 +58,7 @@ export default function createTreeMapTests() {
           'Could not find any elements with a class="tile"'
         );
 
-        tiles.forEach(tile => {
+        tiles.forEach((tile) => {
           assert.isNotNull(
             tile.getAttribute('data-name'),
             "Could not find property 'data-name' in tile"
@@ -75,7 +75,7 @@ export default function createTreeMapTests() {
       });
 
       it(` The area of each tile should correspond to the data-value
-      amount: tiles with a larger data-value should have a bigger area.`, function() {
+      amount: tiles with a larger data-value should have a bigger area.`, function () {
         const tilesCollection = document.querySelectorAll('rect.tile');
         let category;
         let tilesByCategory = {};
@@ -91,7 +91,7 @@ export default function createTreeMapTests() {
         const tiles = [].slice.call(tilesCollection);
 
         // Group tiles by category.
-        tiles.forEach(tile => {
+        tiles.forEach((tile) => {
           category = tile.getAttribute('data-category');
           if (!tilesByCategory[category]) {
             tilesByCategory[category] = [];
@@ -106,7 +106,7 @@ export default function createTreeMapTests() {
           if (Object.prototype.hasOwnProperty.call(tilesByCategory, key)) {
             category = tilesByCategory[key];
 
-            category.sort(function(tile1, tile2) {
+            category.sort(function (tile1, tile2) {
               var tile1Value = tile1.getAttribute('data-value');
               var tile2Value = tile2.getAttribute('data-value');
               return tile1Value - tile2Value;
@@ -141,7 +141,7 @@ export default function createTreeMapTests() {
       });
 
       it(`My tree map should have a legend with corresponding
-      id="legend"`, function() {
+      id="legend"`, function () {
         assert.isNotNull(
           document.getElementById('legend'),
           'Could not find element with id="legend" '
@@ -149,7 +149,7 @@ export default function createTreeMapTests() {
       });
 
       it(`My legend should have <rect> elements with a
-      corresponding class="legend-item"`, function() {
+      corresponding class="legend-item"`, function () {
         assert.isAbove(
           document.querySelectorAll('#legend rect.legend-item').length,
           0,
@@ -158,7 +158,7 @@ export default function createTreeMapTests() {
       });
 
       it(`The <rect> elements in the legend should use at least 2 
-      different fill colors`, function() {
+      different fill colors`, function () {
         const legendItems = document.querySelectorAll(
           '#legend rect.legend-item'
         );

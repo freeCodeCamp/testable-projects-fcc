@@ -8,12 +8,12 @@ export function testHorizontallyCentered(elName, window) {
 }
 
 function getElements(elementIds) {
-  return elementIds.map(elementId => document.getElementById(elementId));
+  return elementIds.map((elementId) => document.getElementById(elementId));
 }
 
 export function clickButtonsById(buttonIds) {
   const keys = getElements(buttonIds);
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (key && typeof key.click === 'function') {
       key.click();
     }

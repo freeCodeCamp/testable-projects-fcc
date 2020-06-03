@@ -143,7 +143,7 @@ function callback(error, data) {
   console.log('data: ', data);
 
   if (!error) {
-    data.monthlyVariance.forEach(function(val) {
+    data.monthlyVariance.forEach(function (val) {
       val.month -= 1;
     });
 
@@ -180,7 +180,7 @@ function callback(error, data) {
       .tip()
       .attr('class', 'd3-tip')
       .attr('id', 'tooltip')
-      .html(function(d) {
+      .html(function (d) {
         return d;
       })
       .direction('n')
@@ -204,7 +204,7 @@ function callback(error, data) {
       .axis()
       .scale(yScale)
       .tickValues(yScale.domain())
-      .tickFormat(function(month) {
+      .tickFormat(function (month) {
         var date = new Date(0);
         date.setUTCMonth(month);
         return d3.time.format.utc('%B')(date);
@@ -232,7 +232,7 @@ function callback(error, data) {
     var xScale = d3.scale
       .ordinal()
       .domain(
-        data.monthlyVariance.map(function(val) {
+        data.monthlyVariance.map(function (val) {
           return val.year;
         })
       )
@@ -241,12 +241,12 @@ function callback(error, data) {
       .axis()
       .scale(xScale)
       .tickValues(
-        xScale.domain().filter(function(year) {
+        xScale.domain().filter(function (year) {
           // set ticks to years divisible by 10
           return year % 10 === 0;
         })
       )
-      .tickFormat(function(year) {
+      .tickFormat(function (year) {
         var date = new Date(0);
         date.setUTCFullYear(year);
         return d3.time.format.utc('%Y')(date);
@@ -276,7 +276,7 @@ function callback(error, data) {
     var legendWidth = 400;
     var legendHeight = 300 / legendColors.length;
 
-    var variance = data.monthlyVariance.map(function(val) {
+    var variance = data.monthlyVariance.map(function (val) {
       return val.variance;
     });
     var minTemp = data.baseTemperature + Math.min.apply(null, variance);
@@ -285,7 +285,7 @@ function callback(error, data) {
     var legendThreshold = d3.scale
       .threshold()
       .domain(
-        (function(min, max, count) {
+        (function (min, max, count) {
           var array = [];
           var step = (max - min) / count;
           var base = min;
@@ -327,7 +327,7 @@ function callback(error, data) {
       .append('g')
       .selectAll('rect')
       .data(
-        legendThreshold.range().map(function(color) {
+        legendThreshold.range().map(function (color) {
           var d = legendThreshold.invertExtent(color);
           if (d[0] === null) {
             d[0] = legendX.domain()[0];
@@ -340,15 +340,15 @@ function callback(error, data) {
       )
       .enter()
       .append('rect')
-      .style('fill', function(d) {
+      .style('fill', function (d) {
         return legendThreshold(d[0]);
       })
       .attr({
-        x: function(d) {
+        x: function (d) {
           return legendX(d[0]);
         },
         y: 0,
-        width: function(d) {
+        width: function (d) {
           return legendX(d[1]) - legendX(d[0]);
         },
         height: legendHeight
@@ -369,33 +369,33 @@ function callback(error, data) {
       .enter()
       .append('rect')
       .attr('class', 'cell')
-      .attr('data-month', function(d) {
+      .attr('data-month', function (d) {
         return d.month;
       })
-      .attr('data-year', function(d) {
+      .attr('data-year', function (d) {
         return d.year;
       })
-      .attr('data-temp', function(d) {
+      .attr('data-temp', function (d) {
         return data.baseTemperature + d.variance;
       })
       .attr({
-        x: function(d) {
+        x: function (d) {
           return xScale(d.year);
         },
-        y: function(d) {
+        y: function (d) {
           return yScale(d.month);
         },
-        width: function(d) {
+        width: function (d) {
           return xScale.rangeBand(d.year);
         },
-        height: function(d) {
+        height: function (d) {
           return yScale.rangeBand(d.month);
         }
       })
-      .attr('fill', function(d) {
+      .attr('fill', function (d) {
         return legendThreshold(data.baseTemperature + d.variance);
       })
-      .on('mouseover', function(d) {
+      .on('mouseover', function (d) {
         var date = new Date(d.year, d.month);
         var str =
           "<span class='date'>" +

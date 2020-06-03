@@ -4,7 +4,7 @@ const ENABLE = 2;
 const WARNING = 1;
 const DISABLE = 0;
 
-const validTypes = types.map(type => type.value);
+const validTypes = types.map((type) => type.value);
 const validScopes = scopes;
 const scopeValidationLevel = allowCustomScopes ? WARNING : ENABLE;
 

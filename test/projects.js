@@ -25,11 +25,11 @@ const { doesProjectPassTests } = require('./automate/automate-utils');
 // emitters, so we increase the default max here.
 require('events').EventEmitter.defaultMaxListeners = 20;
 
-describe('Projects Tests', function() {
+describe('Projects Tests', function () {
   // Mocha timeout. Two minutes should be enough for every page we test.
   this.timeout(120000);
 
-  Object.keys(tests).forEach(function(key) {
+  Object.keys(tests).forEach(function (key) {
     let test = tests[key];
     it(`Project "${test.name}" should pass all tests`, () =>
       doesProjectPassTests(test.name, test.URL).then(({ success, err }) =>
