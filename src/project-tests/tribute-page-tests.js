@@ -7,16 +7,16 @@ export default function createTributePageTests() {
     return window.getComputedStyle(el).getPropertyValue(prop);
   }
 
-  describe('#Tribute Page tests', function() {
-    describe('#Technology Stack', function() {
-      it(responsiveWebDesignStack, function() {
+  describe('#Tribute Page tests', function () {
+    describe('#Technology Stack', function () {
+      it(responsiveWebDesignStack, function () {
         assert.ok(true);
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`My tribute page should have an element with corresponding
-      id="main", which contains all other elements.`, function() {
+      id="main", which contains all other elements.`, function () {
         assert.isNotNull(document.getElementById('main'));
         assert(
           document.querySelectorAll(
@@ -29,7 +29,7 @@ export default function createTributePageTests() {
 
       it(`I should see an element with corresponding id="title",
       which contains a string (i.e. text) that describes the subject of the
-      tribute page (e.g. "Dr. Norman Borlaug").`, function() {
+      tribute page (e.g. "Dr. Norman Borlaug").`, function () {
         assert.isNotNull(document.getElementById('title'));
         const titleText = document.getElementById('title').innerText;
         assert.isAbove(
@@ -40,12 +40,12 @@ export default function createTributePageTests() {
       });
 
       it(`I should see either a <figure> or <div> element with corresponding
-      id="img-div".`, function() {
+      id="img-div".`, function () {
         assert.isNotNull(document.getElementById('img-div'));
       });
 
       it(`Within the "img-div" element, I should see an <img> element
-      with a corresponding id="image".`, function() {
+      with a corresponding id="image".`, function () {
         assert.isNotNull(document.getElementById('image'));
         assert.strictEqual(
           $('#img-div').find('#image').length,
@@ -56,7 +56,7 @@ export default function createTributePageTests() {
 
       it(`Within the "img-div" element, I should see either a <figcaption>
       or <div> element with a corresponding id="img-caption" that contains
-      textual content describing the image shown in "img-div".`, function() {
+      textual content describing the image shown in "img-div".`, function () {
         assert.isNotNull(document.getElementById('img-caption'));
         assert.strictEqual(
           $('#img-div').find('#img-caption').length,
@@ -74,7 +74,7 @@ export default function createTributePageTests() {
 
       it(`I should see an element with a corresponding
       id="tribute-info", which contains textual content describing the subject
-      of the tribute page.`, function() {
+      of the tribute page.`, function () {
         assert.isNotNull(document.getElementById('tribute-info'));
         const infoContents = document.getElementById('tribute-info').innerText;
         assert.isAbove(
@@ -88,7 +88,7 @@ export default function createTributePageTests() {
       id="tribute-link", which links to an outside site that contains additional
       information about the subject of the tribute page. HINT: You must give
       your element an attribute of target and set it to "_blank" in order for
-      your link to open in a new tab (i.e. target="_blank").`, function() {
+      your link to open in a new tab (i.e. target="_blank").`, function () {
         const tributeLink = document.getElementById('tribute-link');
         assert.isNotNull(tributeLink);
         assert(
@@ -111,9 +111,9 @@ export default function createTributePageTests() {
       // END #Content
     });
 
-    describe('#Layout', function() {
+    describe('#Layout', function () {
       it(`The <img> element should responsively resize, relative to
-      the width of its parent element, without exceeding its original size.`, function() {
+      the width of its parent element, without exceeding its original size.`, function () {
         const img = document.getElementById('image');
         const maxWidthValue = getPropValue(img, 'max-width');
         const displayValue = getPropValue(img, 'display');
@@ -148,7 +148,7 @@ export default function createTributePageTests() {
       });
 
       it(`The <img> element should be centered within its parent
-      element.`, function() {
+      element.`, function () {
         const img = document.getElementById('image'),
           imgParent = document.getElementById('image').parentElement,
           imgLeft = img.getBoundingClientRect().left,

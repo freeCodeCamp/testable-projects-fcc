@@ -2,15 +2,15 @@ import { assert } from 'chai';
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 
 export default function createSurveyFormTests() {
-  describe('Survey Form tests', function() {
-    describe('#Technology Stack', function() {
-      it(responsiveWebDesignStack, function() {
+  describe('Survey Form tests', function () {
+    describe('#Technology Stack', function () {
+      it(responsiveWebDesignStack, function () {
         assert.ok(true);
       });
     });
 
-    describe('#Content', function() {
-      it('I can see a title with id="title" in H1 sized text.', function() {
+    describe('#Content', function () {
+      it('I can see a title with id="title" in H1 sized text.', function () {
         const title = document.getElementById('title');
         assert.isNotNull(title, 'There should be an element with id="title" ');
         assert.strictEqual(
@@ -26,7 +26,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`I can see a short explanation with id="description" in P
-      sized text.`, function() {
+      sized text.`, function () {
         const description = document.getElementById('description');
         assert.isNotNull(
           description,
@@ -44,7 +44,7 @@ export default function createSurveyFormTests() {
         );
       });
 
-      it('I can see a <form> with id="survey-form".', function() {
+      it('I can see a <form> with id="survey-form".', function () {
         const form = document.getElementById('survey-form');
         assert.isNotNull(
           form,
@@ -59,7 +59,7 @@ export default function createSurveyFormTests() {
 
       it(`Inside the form element, I am required to enter my name
       in a field with id="name". If I do not enter a name I will see an HTML5
-      validation error.`, function() {
+      validation error.`, function () {
         const name = document.getElementById('name');
         assert.isNotNull(
           name,
@@ -80,7 +80,7 @@ export default function createSurveyFormTests() {
 
       it(`Inside the form element, I am required to enter an email
       in a field with id="email". If I do not enter an email I will see an
-      HTML5 validation error.`, function() {
+      HTML5 validation error.`, function () {
         const email = document.getElementById('email');
         assert.isNotNull(
           email,
@@ -95,7 +95,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`If I enter an email that is not formatted correctly, I will
-      see an HTML5 validation error.`, function() {
+      see an HTML5 validation error.`, function () {
         const email = document.getElementById('email');
         assert.strictEqual(
           email.type,
@@ -105,7 +105,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`Inside the form, I can enter a number in a field with
-      id="number".`, function() {
+      id="number".`, function () {
         const number = document.getElementById('number');
         assert.isNotNull(
           number,
@@ -119,7 +119,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`If I enter non-numbers in the number input, I will see an
-      HTML5 validation error.`, function() {
+      HTML5 validation error.`, function () {
         const number = document.getElementById('number');
         assert.strictEqual(
           number.type,
@@ -129,7 +129,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`If I enter numbers outside the range of the number input, I
-      will see an HTML5 validation error.'`, function() {
+      will see an HTML5 validation error.'`, function () {
         const number = document.getElementById('number');
         assert.isNotNaN(
           parseInt(number.min, 10),
@@ -144,7 +144,7 @@ export default function createSurveyFormTests() {
       it(`For the name, email, and number input fields inside the
       form I can see corresponding labels that describe the purpose of each
       field with the following ids: id="name-label", id="email-label", and
-      id="number-label".`, function() {
+      id="number-label".`, function () {
         const nameLabel = document.getElementById('name-label');
         const emailLabel = document.getElementById('email-label');
         const numberLabel = document.getElementById('number-label');
@@ -200,7 +200,7 @@ export default function createSurveyFormTests() {
 
       it(`For the name, email, and number input fields, I can see
       placeholder text that gives me a description or instructions for each
-      field.'`, function() {
+      field.'`, function () {
         assert.strictEqual(
           document.getElementById('name').hasAttribute('placeholder'),
           true,
@@ -237,7 +237,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`Inside the form element, I can select an option from a
-      dropdown that has corresponding id="dropdown".'`, function() {
+      dropdown that has corresponding id="dropdown".'`, function () {
         const dropdown = document.getElementById('dropdown');
         const dropdownTag = dropdown.tagName;
         let inputSibling = null;
@@ -270,7 +270,7 @@ export default function createSurveyFormTests() {
 
       it(`Inside the form element, I can select a field from one or
       more groups of radio buttons. Each group should be grouped using the name
-      attribute. Each radio button must have a value attribute.`, function() {
+      attribute. Each radio button must have a value attribute.`, function () {
         let groups;
         // [].slice.call converts to array.
         const radioButtons = [].slice.call(
@@ -326,7 +326,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`Inside the form element, I can select several fields from a
-      series of checkboxes, each of which must have a value attribute.`, function() {
+      series of checkboxes, each of which must have a value attribute.`, function () {
         const checkboxes = document.querySelectorAll(
           '#survey-form input[type="checkbox"]'
         );
@@ -345,7 +345,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`Inside the form element, I am presented with a <textarea>
-      at the end for additional comments.'`, function() {
+      at the end for additional comments.'`, function () {
         const textareas = document.getElementsByTagName('textarea');
         assert.isAtLeast(
           textareas.length,
@@ -360,7 +360,7 @@ export default function createSurveyFormTests() {
       });
 
       it(`Inside the form element, I am presented with a button with
-      id="submit" to submit all my inputs.`, function() {
+      id="submit" to submit all my inputs.`, function () {
         const button = document.getElementById('submit');
         assert.isNotNull(button, 'There should be a button with id="submit" ');
         if (button.nodeName === 'INPUT') {

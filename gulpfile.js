@@ -29,7 +29,7 @@ const buildPath = process.env.BUILD_PATH || './build/pages';
 function js(projectPath) {
   return pipeline(
     gulp.src(projectPath + '/**/*.{js,jsx}'),
-    babel(babelOptions).on('error', err => {
+    babel(babelOptions).on('error', (err) => {
       const message = err.toString();
       process.stderr.write(`${message}\n`);
       this.emit('end');
@@ -60,12 +60,12 @@ function getData(stream) {
   return new Promise((resolve, reject) => {
     let result;
     stream
-      .on('data', data => {
+      .on('data', (data) => {
         result = data;
       })
-      .on('error', err => reject(err))
+      .on('error', (err) => reject(err))
       .on('end', () => resolve(result));
-  }).then(data => (data ? data.contents.toString() : ''));
+  }).then((data) => (data ? data.contents.toString() : ''));
 }
 
 async function buildProjectFromDirectory(projectPath, cb) {
@@ -73,7 +73,7 @@ async function buildProjectFromDirectory(projectPath, cb) {
     const projectName = projectPath.split(path.sep).reverse()[0];
     const title = `FCC: ${projectName
       .split('-')
-      .map(word => word[0].toUpperCase() + word.slice(1))
+      .map((word) => word[0].toUpperCase() + word.slice(1))
       .join(' ')}`;
 
     const _js = getData(js(projectPath));
@@ -121,7 +121,7 @@ function build() {
   return pipeline(
     gulp.src(`${projectsPath}/*`),
     buildProject(),
-    gulp.dest(file => `${buildPath}/${file.projectName}`),
+    gulp.dest((file) => `${buildPath}/${file.projectName}`),
     noop
   );
 }
@@ -137,7 +137,7 @@ function watchProjects() {
       { read: false }
     ),
     through2.obj((file, _, cb) => buildProjectFromDirectory(file.dirname, cb)),
-    gulp.dest(file => `${buildPath}/${file.projectName}`),
+    gulp.dest((file) => `${buildPath}/${file.projectName}`),
     noop
   );
 }

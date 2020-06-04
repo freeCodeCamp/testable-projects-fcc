@@ -71,6 +71,24 @@ const shadow = (function attachShadow() {
 // Create the tests UI, init mocha and look for the project name
 // when the document is fully loaded (jquery required).
 $(document).ready(function initTests() {
+  // Alert users about blocking third-party cookies.
+  // Blocking third-party cookies blocks localStorage, which we depend on.
+  try {
+    localStorage.setItem('fccTest', 'fccTest');
+    localStorage.removeItem('fccTest');
+  } catch (e) {
+    /* eslint no-alert: "off" */
+    alert(
+      'Test suites depend on access to localStorage. ' +
+        'Please enable third-party cookies in the browser. ' +
+        'See documentation for your browser for instructions ' +
+        'on how to enable third-party cookies. ' +
+        'Thanks and Happy Coding!'
+    );
+    // Return to avoid throwing an error from trying to access localStorage later
+    return;
+  }
+
   // Alert users about cross-browser compatibility issues.
   const isBrowserSupported = /(Chrome|Gecko)\/[\d\.]+/.test(
     navigator.userAgent
@@ -112,7 +130,7 @@ $(document).ready(function initTests() {
 
   // Populate a test suite selector
   const testSuiteSelector = shadow.querySelector('#test-suite-selector');
-  Object.keys(projects).forEach(key => {
+  Object.keys(projects).forEach((key) => {
     const testOption = document.createElement('option');
     testOption.value = key;
     testOption.innerHTML = projects[key].name;
@@ -226,7 +244,7 @@ export function FCCCloseTestModal() {
 }
 
 // Close modal on ESC press.
-$(document).keyup(function(e) {
+$(document).keyup(function (e) {
   e = e || window.event;
   if (e.keyCode === 27) {
     FCCCloseTestModal();
@@ -235,7 +253,7 @@ $(document).keyup(function(e) {
 
 const map = [];
 /* exported onkeydown, onkeyup */
-onkeydown = onkeyup = function(e) {
+onkeydown = onkeyup = function (e) {
   e = e || window.event;
   map[e.keyCode] = e.type === 'keydown';
   // Run tests: Ctrl + Shift + Enter
@@ -333,7 +351,7 @@ function FCCInitTestRunner() {
 }
 
 // Polyfill for enabling NodeList.forEach() method - IE, Edge, Safari.
-(function() {
+(function () {
   if (typeof NodeList.prototype.forEach !== 'function') {
     NodeList.prototype.forEach = Array.prototype.forEach;
   }

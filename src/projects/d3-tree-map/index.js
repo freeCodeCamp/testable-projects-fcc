@@ -51,28 +51,25 @@ var svg = d3.select('#tree-map'),
   width = +svg.attr('width'),
   height = +svg.attr('height');
 
-var fader = function(color) {
+var fader = function (color) {
     return d3.interpolateRgb(color, '#fff')(0.2);
   },
   color = d3.scaleOrdinal(d3.schemeCategory20.map(fader));
 
-var treemap = d3
-  .treemap()
-  .size([width, height])
-  .paddingInner(1);
+var treemap = d3.treemap().size([width, height]).paddingInner(1);
 
-d3.json(DATASET.FILE_PATH, function(error, data) {
+d3.json(DATASET.FILE_PATH, function (error, data) {
   if (error) {
     throw error;
   }
 
   var root = d3
     .hierarchy(data)
-    .eachBefore(function(d) {
+    .eachBefore(function (d) {
       d.data.id = (d.parent ? d.parent.data.id + '.' : '') + d.data.name;
     })
     .sum(sumBySize)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return b.height - a.height || b.value - a.value;
     });
 
@@ -84,35 +81,35 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
     .enter()
     .append('g')
     .attr('class', 'group')
-    .attr('transform', function(d) {
+    .attr('transform', function (d) {
       return 'translate(' + d.x0 + ',' + d.y0 + ')';
     });
 
   cell
     .append('rect')
-    .attr('id', function(d) {
+    .attr('id', function (d) {
       return d.data.id;
     })
     .attr('class', 'tile')
-    .attr('width', function(d) {
+    .attr('width', function (d) {
       return d.x1 - d.x0;
     })
-    .attr('height', function(d) {
+    .attr('height', function (d) {
       return d.y1 - d.y0;
     })
-    .attr('data-name', function(d) {
+    .attr('data-name', function (d) {
       return d.data.name;
     })
-    .attr('data-category', function(d) {
+    .attr('data-category', function (d) {
       return d.data.category;
     })
-    .attr('data-value', function(d) {
+    .attr('data-value', function (d) {
       return d.data.value;
     })
-    .attr('fill', function(d) {
+    .attr('fill', function (d) {
       return color(d.data.category);
     })
-    .on('mousemove', function(d) {
+    .on('mousemove', function (d) {
       console.log('mouseover');
       tooltip.style('opacity', 0.9);
       tooltip
@@ -128,7 +125,7 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
         .style('left', d3.event.pageX + 10 + 'px')
         .style('top', d3.event.pageY - 28 + 'px');
     })
-    .on('mouseout', function() {
+    .on('mouseout', function () {
       tooltip.style('opacity', 0);
     });
 
@@ -136,23 +133,23 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
     .append('text')
     .attr('class', 'tile-text')
     .selectAll('tspan')
-    .data(function(d) {
+    .data(function (d) {
       return d.data.name.split(/(?=[A-Z][^A-Z])/g);
     })
     .enter()
     .append('tspan')
     .attr('x', 4)
-    .attr('y', function(d, i) {
+    .attr('y', function (d, i) {
       return 13 + i * 10;
     })
-    .text(function(d) {
+    .text(function (d) {
       return d;
     });
 
-  var categories = root.leaves().map(function(nodes) {
+  var categories = root.leaves().map(function (nodes) {
     return nodes.data.category;
   });
-  categories = categories.filter(function(category, index, self) {
+  categories = categories.filter(function (category, index, self) {
     return self.indexOf(category) === index;
   });
   var legend = d3.select('#legend');
@@ -172,7 +169,7 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
     .data(categories)
     .enter()
     .append('g')
-    .attr('transform', function(d, i) {
+    .attr('transform', function (d, i) {
       return (
         'translate(' +
         (i % legendElemsPerRow) * LEGEND_H_SPACING +
@@ -188,7 +185,7 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
     .attr('width', LEGEND_RECT_SIZE)
     .attr('height', LEGEND_RECT_SIZE)
     .attr('class', 'legend-item')
-    .attr('fill', function(d) {
+    .attr('fill', function (d) {
       return color(d);
     });
 
@@ -196,7 +193,7 @@ d3.json(DATASET.FILE_PATH, function(error, data) {
     .append('text')
     .attr('x', LEGEND_RECT_SIZE + LEGEND_TEXT_X_OFFSET)
     .attr('y', LEGEND_RECT_SIZE + LEGEND_TEXT_Y_OFFSET)
-    .text(function(d) {
+    .text(function (d) {
       return d;
     });
 });

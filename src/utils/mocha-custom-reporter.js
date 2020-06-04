@@ -20,7 +20,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
     stats.total = runner.total;
     stats.testNumber = 0;
     if (reporterOptions.events) {
-      Object.keys(reporterOptions.events).forEach(type => {
+      Object.keys(reporterOptions.events).forEach((type) => {
         runner.on(type, (...args) => {
           reporterOptions.events[type](stats, ...args);
         });
@@ -63,7 +63,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
 
     title.innerText = '';
 
-    runner.on('suite', suite => {
+    runner.on('suite', (suite) => {
       if (suite.root) {
         return;
       }
@@ -82,7 +82,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       }
     });
 
-    runner.on('suite end', suite => {
+    runner.on('suite end', (suite) => {
       if (suite.root) {
         updateStats();
         return;
@@ -92,7 +92,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       }
     });
 
-    runner.on('pass', test => {
+    runner.on('pass', (test) => {
       let markup = `<li class="test pass %e">
           <h2>%e<span class="duration">%ems</span></h2>
         </li>`;
@@ -107,7 +107,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       updateStats();
     });
 
-    runner.on('fail', test => {
+    runner.on('fail', (test) => {
       let el = fragment(
         `<li class="test fail">
           <h2>%e</h2>
@@ -145,7 +145,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       updateStats();
     });
 
-    runner.on('pending', test => {
+    runner.on('pending', (test) => {
       let el = fragment(
         '<li class="test pass pending"><h2>%e</h2></li>',
         this.numberingTestTitle(test.title)
@@ -154,7 +154,7 @@ export default class HtmlReporter extends Mocha.reporters.Base {
       updateStats();
     });
 
-    let appendToStack = el => {
+    let appendToStack = (el) => {
       if (stack[0]) {
         stack[0].appendChild(el);
       }

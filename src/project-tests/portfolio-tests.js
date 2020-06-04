@@ -5,21 +5,21 @@ import { hasMediaQuery } from '../utils/style-sheet-utils';
 import { timeout } from '../utils/threading';
 
 export default function createPortfolioTests() {
-  describe('#Portfolio tests', function() {
-    describe('#Technology Stack', function() {
-      it(responsiveWebDesignStack, function() {
+  describe('#Portfolio tests', function () {
+    describe('#Technology Stack', function () {
+      it(responsiveWebDesignStack, function () {
         return true;
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`My portfolio should have a Welcome section with an id of
-      "welcome-section".`, function() {
+      "welcome-section".`, function () {
         assert.isNotNull(document.getElementById('welcome-section'));
       });
 
       it(`The welcome section should have an h1 element that contains
-      text.`, function() {
+      text.`, function () {
         assert.isAbove(
           document.querySelectorAll('#welcome-section h1').length,
           0,
@@ -35,12 +35,12 @@ export default function createPortfolioTests() {
       });
 
       it(`My portfolio should have a projects section with an id of
-      "projects".`, function() {
+      "projects".`, function () {
         assert.isNotNull(document.getElementById('projects'));
       });
 
       it(`The projects section should contain at least one element
-      with a class of "project-tile" to hold a project.`, function() {
+      with a class of "project-tile" to hold a project.`, function () {
         assert.isAbove(
           document.querySelectorAll('#projects .project-tile').length,
           0
@@ -48,25 +48,25 @@ export default function createPortfolioTests() {
       });
 
       it(`The projects section should contain at least one link to a
-      project.`, function() {
+      project.`, function () {
         assert.isAbove(document.querySelectorAll('#projects a').length, 0);
       });
 
-      it('My portfolio should have a navbar with an id of "navbar".', function() {
+      it('My portfolio should have a navbar with an id of "navbar".', function () {
         const navbar = document.getElementById('navbar');
 
         assert.isNotNull(navbar);
       });
 
       it(`The navbar should contain at least one link that I can
-      click on to navigate to different sections of the page.`, async function() {
+      click on to navigate to different sections of the page.`, async function () {
         // We need a longer timeout for this test. 11 seconds
         // is enough to test about 10 nav links.
         this.timeout(11000);
 
         // Filter links by location hash (don't click external links)
         const links = Array.from(document.querySelectorAll('#navbar a')).filter(
-          nav => (nav.getAttribute('href') || '').substr(0, 1) === '#'
+          (nav) => (nav.getAttribute('href') || '').substr(0, 1) === '#'
         );
 
         assert.isAbove(
@@ -121,7 +121,7 @@ export default function createPortfolioTests() {
       });
 
       it(`My portfolio should have a link with an id of
-      "profile-link", which opens my GitHub or FCC profile in a new tab.`, function() {
+      "profile-link", which opens my GitHub or FCC profile in a new tab.`, function () {
         const profileLink = document.getElementById('profile-link');
 
         assert.isNotNull(profileLink);
@@ -144,8 +144,8 @@ export default function createPortfolioTests() {
       // END #Content
     });
 
-    describe('#Layout', function() {
-      it('My portfolio should have at least one media query.', function() {
+    describe('#Layout', function () {
+      it('My portfolio should have at least one media query.', function () {
         assert.isTrue(
           hasMediaQuery(document.styleSheets),
           'No media queries detected '
@@ -153,7 +153,7 @@ export default function createPortfolioTests() {
       });
 
       it(`The height of the welcome section should be equal to the
-      height of the viewport.`, function() {
+      height of the viewport.`, function () {
         assert.approximately(
           document.getElementById('welcome-section').offsetHeight,
           window.innerHeight,
@@ -163,7 +163,7 @@ export default function createPortfolioTests() {
         );
       });
 
-      it('The navbar should always be at the top of the viewport.', async function() {
+      it('The navbar should always be at the top of the viewport.', async function () {
         const navbar = document.getElementById('navbar');
         assert.approximately(
           navbar.getBoundingClientRect().top,

@@ -5,28 +5,28 @@ import { testToolTip } from '../utils/global-D3-tests';
 import { d3ProjectStack } from '../utils/shared-test-strings';
 
 export default function createScatterPlotTests() {
-  describe('#ScatterPlotTests', function() {
+  describe('#ScatterPlotTests', function () {
     const MIN_YEAR = 1990;
     const MAX_YEAR = 2020;
     const MIN_MINUTES = 36;
     const MAX_MINUTES = 40;
 
-    describe('#Technology Stack', function() {
-      it(d3ProjectStack, function() {
+    describe('#Technology Stack', function () {
+      it(d3ProjectStack, function () {
         return true;
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`I can see a title element that has a corresponding
-      id="title".`, function() {
+      id="title".`, function () {
         assert.isNotNull(
           document.getElementById('title'),
           'Could not find element with id="title" '
         );
       });
 
-      it('I can see an x-axis that has a corresponding id="x-axis".', function() {
+      it('I can see an x-axis that has a corresponding id="x-axis".', function () {
         assert.isNotNull(
           document.getElementById('x-axis'),
           'There should be an element with id="x-axis" '
@@ -38,7 +38,7 @@ export default function createScatterPlotTests() {
         );
       });
 
-      it('I can see a y-axis that has a corresponding id="y-axis".', function() {
+      it('I can see a y-axis that has a corresponding id="y-axis".', function () {
         assert.isNotNull(
           document.getElementById('y-axis'),
           'There should be an element with id="y-axis" '
@@ -51,7 +51,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see dots, that each have a class of "dot", which
-      represent the data being plotted.`, function() {
+      represent the data being plotted.`, function () {
         assert.isAbove(
           document.querySelectorAll('circle.dot').length,
           0,
@@ -60,7 +60,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`Each dot should have the properties "data-xvalue" and
-      "data-yvalue" containing their corresponding x and y values.`, function() {
+      "data-yvalue" containing their corresponding x and y values.`, function () {
         const dots = document.getElementsByClassName('dot');
         assert.isAbove(
           dots.length,
@@ -83,7 +83,7 @@ export default function createScatterPlotTests() {
       it(`The data-xvalue and data-yvalue of each dot should be
       within the range of the actual data and in the correct data format. For
       data-xvalue, integers (full years) or Date objects are acceptable for test
-      evaluation. For data-yvalue (minutes), use Date objects. `, function() {
+      evaluation. For data-yvalue (minutes), use Date objects. `, function () {
         const MIN_X_VALUE = MIN_YEAR;
         const MAX_X_VALUE = MAX_YEAR;
 
@@ -96,7 +96,7 @@ export default function createScatterPlotTests() {
           'there are no elements with the class of "dot" '
         );
 
-        dots.forEach(dot => {
+        dots.forEach((dot) => {
           var xYear = new Date(dot.getAttribute('data-xvalue'));
           assert.isAtLeast(
             xYear.getFullYear(),
@@ -127,7 +127,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`The data-xvalue and its corresponding dot should align
-      with the corresponding point/value on the x-axis.`, function() {
+      with the corresponding point/value on the x-axis.`, function () {
         const axis = document.querySelector('#x-axis');
         const coordAttr = 'cx';
         const dotsCollection = document.querySelectorAll('.dot');
@@ -150,7 +150,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`The data-yvalue and its corresponding dot should align
-      with the corresponding point/value on the y-axis.`, function() {
+      with the corresponding point/value on the y-axis.`, function () {
         const axis = document.querySelector('#y-axis');
         const coordAttr = 'cy';
         const dotsCollection = document.querySelectorAll('.dot');
@@ -173,14 +173,14 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see multiple tick labels on the y-axis with "%M:%S"
-      time format.`, function() {
+      time format.`, function () {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
         assert.isAbove(
           yAxisTickLabels.length,
           0,
           'Could not find tick labels on the y axis '
         );
-        yAxisTickLabels.forEach(label => {
+        yAxisTickLabels.forEach((label) => {
           // match "%M:%S" d3 time format
           assert.match(
             label.textContent,
@@ -191,14 +191,14 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see multiple tick labels on the x-axis that show the
-      year.`, function() {
+      year.`, function () {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
         assert.isAbove(
           xAxisTickLabels.length,
           0,
           'Could not find tick labels on the x axis '
         );
-        xAxisTickLabels.forEach(label => {
+        xAxisTickLabels.forEach((label) => {
           // match check if this is a year
           assert.match(
             label.textContent,
@@ -209,7 +209,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see that the range of the x-axis labels are within
-      the range of the actual x-axis data.`, function() {
+      the range of the actual x-axis data.`, function () {
         const xAxisTickLabels = document.querySelectorAll('#x-axis .tick');
         const MIN_YEAR = 1994;
         const MAX_YEAR = 2016;
@@ -219,7 +219,7 @@ export default function createScatterPlotTests() {
           'Could not find tick labels on the x axis '
         );
 
-        xAxisTickLabels.forEach(label => {
+        xAxisTickLabels.forEach((label) => {
           assert.isAtLeast(
             +label.textContent,
             MIN_YEAR,
@@ -234,7 +234,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see that the range of the y-axis labels are within
-      the range of the actual y-axis data.`, function() {
+      the range of the actual y-axis data.`, function () {
         const yAxisTickLabels = document.querySelectorAll('#y-axis .tick');
         const MIN_TIME = new Date(0, 0, 0, 0, MIN_MINUTES, 0, 0);
         const MAX_TIME = new Date(0, 0, 0, 0, MAX_MINUTES, 0, 0);
@@ -243,7 +243,7 @@ export default function createScatterPlotTests() {
           0,
           'Could not find tick labels on the y axis '
         );
-        yAxisTickLabels.forEach(label => {
+        yAxisTickLabels.forEach((label) => {
           var timeArr = label.textContent.split(':');
           var mins = timeArr[0];
           var secs = timeArr[1];
@@ -262,7 +262,7 @@ export default function createScatterPlotTests() {
       });
 
       it(`I can see a legend containing descriptive text that has
-      id="legend".`, function() {
+      id="legend".`, function () {
         assert.isNotNull(
           document.getElementById('legend'),
           'There should be an element with id="legend" '

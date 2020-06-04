@@ -6,16 +6,16 @@ import $ from 'jquery';
 import { d3ProjectStack } from '../utils/shared-test-strings';
 
 export default function createBarChartTests() {
-  describe('#BarChartTests', function() {
-    describe('#Technology Stack', function() {
-      it(d3ProjectStack, function() {
+  describe('#BarChartTests', function () {
+    describe('#Technology Stack', function () {
+      it(d3ProjectStack, function () {
         return true;
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`My chart should have a title with a corresponding
-      id="title"`, function() {
+      id="title"`, function () {
         assert.isNotNull(
           document.getElementById('title'),
           'Could not find element with id="title" '
@@ -23,7 +23,7 @@ export default function createBarChartTests() {
       });
 
       it(`My Chart should have a <g> element x-axis with a 
-      corresponding id="x-axis"`, function() {
+      corresponding id="x-axis"`, function () {
         assert.isAbove(
           document.querySelectorAll('g#x-axis').length,
           0,
@@ -32,7 +32,7 @@ export default function createBarChartTests() {
       });
 
       it(`My Chart should have a <g> element y-axis with a 
-      corresponding id="y-axis"`, function() {
+      corresponding id="y-axis"`, function () {
         assert.isAbove(
           document.querySelectorAll('g#y-axis').length,
           0,
@@ -41,7 +41,7 @@ export default function createBarChartTests() {
       });
 
       it(`Both axes should contain multiple tick labels, each with 
-      the corresponding class="tick" `, function() {
+      the corresponding class="tick" `, function () {
         assert.isAbove(
           $('#x-axis .tick').length,
           1,
@@ -55,7 +55,7 @@ export default function createBarChartTests() {
       });
 
       it(`My Chart should have a <rect> element for each data point 
-      with a corresponding class="bar" displaying the data`, function() {
+      with a corresponding class="bar" displaying the data`, function () {
         assert.isAbove(
           document.querySelectorAll('rect.bar').length,
           0,
@@ -69,7 +69,7 @@ export default function createBarChartTests() {
       });
 
       it(`Each bar should have the properties "data-date" and
-      "data-gdp" containing date and GDP values`, function() {
+      "data-gdp" containing date and GDP values`, function () {
         const bars = document.querySelectorAll('rect.bar');
 
         assert.isAtLeast(
@@ -78,7 +78,7 @@ export default function createBarChartTests() {
           'no <rect> elements with the class of "bar" are detected '
         );
 
-        bars.forEach(function(bar) {
+        bars.forEach(function (bar) {
           assert.isNotNull(
             bar.getAttribute('data-date'),
             'Could not find property "data-date" in bar '
@@ -91,11 +91,11 @@ export default function createBarChartTests() {
       });
 
       it(`The bar elements' "data-date" properties should match the 
-      order of the provided data`, function(done) {
+      order of the provided data`, function (done) {
         $.getJSON(
           'https://raw.githubusercontent.com/FreeCodeCamp/' +
             'ProjectReferenceData/master/GDP-data.json',
-          function(res) {
+          function (res) {
             try {
               const bars = document.querySelectorAll('rect.bar');
               assert.isAtLeast(
@@ -103,7 +103,7 @@ export default function createBarChartTests() {
                 1,
                 'no <rect> elements with the class of "bar" are detected '
               );
-              bars.forEach(function(bar, i) {
+              bars.forEach(function (bar, i) {
                 var currentBarDate = bar.getAttribute('data-date');
                 assert.equal(
                   currentBarDate,
@@ -121,11 +121,11 @@ export default function createBarChartTests() {
       });
 
       it(`The bar elements' "data-gdp" properties should match the 
-      order of the provided data`, function(done) {
+      order of the provided data`, function (done) {
         $.getJSON(
           'https://raw.githubusercontent.com/FreeCodeCamp/' +
             'ProjectReferenceData/master/GDP-data.json',
-          function(res) {
+          function (res) {
             try {
               const bars = document.querySelectorAll('rect.bar');
               assert.isAtLeast(
@@ -133,7 +133,7 @@ export default function createBarChartTests() {
                 1,
                 'no <rect> elements with the class of "bar" are detected '
               );
-              bars.forEach(function(bar, i) {
+              bars.forEach(function (bar, i) {
                 var currentBarGdp = bar.getAttribute('data-gdp');
                 assert.equal(
                   currentBarGdp,
@@ -151,7 +151,7 @@ export default function createBarChartTests() {
       });
 
       it(`Each bar element's height should accurately represent the 
-      data's corresponding GDP`, function() {
+      data's corresponding GDP`, function () {
         const bars = document.querySelectorAll('rect.bar');
         // get the ratio of the first data point to the height of the first bar
         const firstRatio =
@@ -161,7 +161,7 @@ export default function createBarChartTests() {
         with its corresponding data point using the first ratio */
         /* this test completely validates the bars, but isn\'t very useful to
         the user, so data-date and data-gdp tests were added for clarity */
-        bars.forEach(function(bar) {
+        bars.forEach(function (bar) {
           var dataValue = bar.getAttribute('data-gdp');
           var barHeight = bar.getAttribute('height');
           var ratio = parseFloat(dataValue) / parseFloat(barHeight);
@@ -174,7 +174,7 @@ export default function createBarChartTests() {
       });
 
       it(`The data-date attribute and its corresponding bar element 
-      should align with the corresponding value on the x-axis.`, function() {
+      should align with the corresponding value on the x-axis.`, function () {
         const axis = document.querySelector('#x-axis');
         const coordAttr = 'x';
         const barsCollection = document.querySelectorAll('.bar');
@@ -206,7 +206,7 @@ export default function createBarChartTests() {
       });
 
       it(`The data-gdp attribute and its corresponding bar element 
-      should align with the corresponding value on the y-axis.`, function() {
+      should align with the corresponding value on the y-axis.`, function () {
         const axis = document.querySelector('#y-axis');
         const coordAttr = 'y';
         const barsCollection = document.querySelectorAll('.bar');

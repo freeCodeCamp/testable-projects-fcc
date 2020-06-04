@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = function(env = {}) {
+module.exports = function (env = {}) {
   const __DEV__ = env.production ? false : true;
   const outputPath = path.join(__dirname, 'build/testable-projects-fcc/v1');
   return {

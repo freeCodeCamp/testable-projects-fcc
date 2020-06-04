@@ -5,7 +5,7 @@ import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { decodeHtml } from '../utils/element-utils';
 
 export default function createMarkdownPreviewerTests() {
-  describe('Markdown Previewer tests', function() {
+  describe('Markdown Previewer tests', function () {
     // Save the values of the editor and preview.
     const editor = document.getElementById('editor');
     const preview = document.getElementById('preview');
@@ -38,7 +38,7 @@ export default function createMarkdownPreviewerTests() {
     function findMarkdownMatches(markdown) {
       const renderer = new marked.Renderer();
 
-      renderer.heading = function(text, level) {
+      renderer.heading = function (text, level) {
         text = decodeHtml(text);
         if (level === 1) {
           markDownHas.h1 = true;
@@ -50,37 +50,37 @@ export default function createMarkdownPreviewerTests() {
         return '';
       };
 
-      renderer.code = function() {
+      renderer.code = function () {
         markDownHas.code = true;
         return '';
       };
 
-      renderer.link = function() {
+      renderer.link = function () {
         markDownHas.link = true;
         return '';
       };
 
-      renderer.codespan = function() {
+      renderer.codespan = function () {
         markDownHas.inlineCode = true;
         return '';
       };
 
-      renderer.listitem = function() {
+      renderer.listitem = function () {
         markDownHas.listItem = true;
         return '';
       };
 
-      renderer.blockquote = function() {
+      renderer.blockquote = function () {
         markDownHas.blockquote = true;
         return '';
       };
 
-      renderer.image = function() {
+      renderer.image = function () {
         markDownHas.image = true;
         return '';
       };
 
-      renderer.strong = function() {
+      renderer.strong = function () {
         markDownHas.bold = true;
         return '';
       };
@@ -141,15 +141,15 @@ export default function createMarkdownPreviewerTests() {
       editor.dispatchEvent(eventJS);
     }
 
-    describe('#Technology Stack', function() {
-      it(frontEndLibrariesStack, function() {
+    describe('#Technology Stack', function () {
+      it(frontEndLibrariesStack, function () {
         return true;
       });
     });
 
-    describe('#Tests', function() {
+    describe('#Tests', function () {
       it(`I can see a <textarea> element with corresponding
-      id="editor"`, function() {
+      id="editor"`, function () {
         assert.isNotNull(editor, '#editor is not defined ');
         assert.strictEqual(
           editor.nodeName,
@@ -158,12 +158,12 @@ export default function createMarkdownPreviewerTests() {
         );
       });
 
-      it('I can see an element with corresponding id="preview"', function() {
+      it('I can see an element with corresponding id="preview"', function () {
         assert.isNotNull(preview, '#preview is not defined ');
       });
 
       it(`When I enter text into the #editor element, the #preview
-      element is updated as I type to display the content of the textarea`, function() {
+      element is updated as I type to display the content of the textarea`, function () {
         // initial triggerChange is to enable writability and configurability
         // for the textarea Object.
         triggerChange('');
@@ -179,7 +179,7 @@ export default function createMarkdownPreviewerTests() {
       it(`When I enter GitHub flavored markdown into the #editor
       element, the text is rendered as HTML in the #preview element as I type
       (Hint: You don't need to parse Markdown yourself - you can import the
-      Marked library for this: https://cdnjs.com/libraries/marked)`, function() {
+      Marked library for this: https://cdnjs.com/libraries/marked)`, function () {
         const error =
           'The markdown in #editor is not being interpreted ' +
           'correctly and/or rendered into #preview ';
@@ -218,7 +218,7 @@ export default function createMarkdownPreviewerTests() {
       the #editor field should contain valid markdown that represents at least
       one of each of the following elements: a header (H1 size), a sub header
       (H2 size), a link, inline code, a code block, a list item, a blockquote,
-      an image, and bolded text`, function() {
+      an image, and bolded text`, function () {
         assert.notStrictEqual(
           markdownOnLoad,
           'undefined',
@@ -288,7 +288,7 @@ export default function createMarkdownPreviewerTests() {
 
       it(`When my markdown previewer first loads, the default
       markdown in the #editor field should be rendered as HTML in the #preview
-      element`, function() {
+      element`, function () {
         triggerChange(markdownOnLoad);
         assert.notStrictEqual(
           preview.innerHTML,
@@ -354,9 +354,9 @@ export default function createMarkdownPreviewerTests() {
         // find matching H1 element
         let hasH1 = [].slice
           .call(document.querySelectorAll('#preview h1'))
-          .some(h1 => {
+          .some((h1) => {
             let innerHTML = h1.innerHTML.trim();
-            return markDownHas.h1Text.some(text => innerHTML === text);
+            return markDownHas.h1Text.some((text) => innerHTML === text);
           });
         assert.isTrue(
           hasH1,
@@ -367,9 +367,9 @@ export default function createMarkdownPreviewerTests() {
         // find matching H2 element
         let hasH2 = [].slice
           .call(document.querySelectorAll('#preview h2'))
-          .some(h2 => {
+          .some((h2) => {
             let innerHTML = h2.innerHTML.trim();
-            return markDownHas.h2Text.some(text => innerHTML === text);
+            return markDownHas.h2Text.some((text) => innerHTML === text);
           });
         assert.isTrue(
           hasH2,
@@ -380,7 +380,7 @@ export default function createMarkdownPreviewerTests() {
 
       it(`OPTIONAL BONUS (you do not need to make this test pass):
       My markdown previewer interprets carriage returns and renders them as <br>
-      (line break) elements (HINT: read the Marked.js docs for this one!).`, function() {
+      (line break) elements (HINT: read the Marked.js docs for this one!).`, function () {
         let brCount;
 
         // This markup should produce two <br> elements.
