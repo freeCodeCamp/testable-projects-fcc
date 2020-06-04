@@ -53,7 +53,7 @@ export function areShapesAlignedWithTicks(
   // get either 'x' or 'y' in case of 'cx' or 'cy'
   const coord = dimension.match(/c/g) ? dimension.split('c')[1] : dimension;
 
-  let tickValues = [].map.call(ticksCollection, tick =>
+  let tickValues = [].map.call(ticksCollection, (tick) =>
     getTickValue(tick, dataType)
   );
   const normalValueOrder = tickValues[tickValues.length - 1] > tickValues[0];
@@ -68,7 +68,7 @@ export function areShapesAlignedWithTicks(
 
   let tickPositions = [].map.call(
     ticksCollection,
-    tick => getTickPosition(tick)[coord]
+    (tick) => getTickPosition(tick)[coord]
   );
   const normalPositionOrder = tickPositions[1] > tickPositions[0];
   // positionIncrement may be positive or negative based on axis sort order
@@ -79,7 +79,7 @@ export function areShapesAlignedWithTicks(
     tickPositions[tickPositions.length - 1] + positionIncrement
   ];
 
-  shapeCollection.forEach(function(shape) {
+  shapeCollection.forEach(function (shape) {
     let pos = getShapePosition(shape, dimension, positionType);
     let val = getShapeValue(shape, dataAttribute, dataType);
     // index is initially off (either -1 or ticksCollection.length), then

@@ -32,7 +32,7 @@ function getQuotes() {
     },
     url:
       'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json',
-    success: function(jsonQuotes) {
+    success: function (jsonQuotes) {
       if (typeof jsonQuotes === 'string') {
         quotesData = JSON.parse(jsonQuotes);
         console.log('quotesData');
@@ -69,12 +69,12 @@ function getQuote() {
       '&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button'
   );
 
-  $('.quote-text').animate({ opacity: 0 }, 500, function() {
+  $('.quote-text').animate({ opacity: 0 }, 500, function () {
     $(this).animate({ opacity: 1 }, 500);
     $('#text').text(randomQuote.quote);
   });
 
-  $('.quote-author').animate({ opacity: 0 }, 500, function() {
+  $('.quote-author').animate({ opacity: 0 }, 500, function () {
     $(this).animate({ opacity: 1 }, 500);
     $('#author').html(randomQuote.author);
   });
@@ -95,7 +95,7 @@ function getQuote() {
   );
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   getQuotes().then(() => {
     getQuote();
   });

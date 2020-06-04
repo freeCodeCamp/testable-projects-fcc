@@ -30,7 +30,7 @@ var svgContainer = d3
 
 d3.json(
   'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json',
-  function(e, data) {
+  function (e, data) {
     svgContainer
       .append('text')
       .attr('transform', 'rotate(-90)')
@@ -45,7 +45,7 @@ d3.json(
       .text('More Information: http://www.bea.gov/national/pdf/nipaguid.pdf')
       .attr('class', 'info');
 
-    var years = data.data.map(function(item) {
+    var years = data.data.map(function (item) {
       var quarter;
       var temp = item[0].substring(5, 7);
 
@@ -62,7 +62,7 @@ d3.json(
       return item[0].substring(0, 4) + ' ' + quarter;
     });
 
-    var yearsDate = data.data.map(function(item) {
+    var yearsDate = data.data.map(function (item) {
       return new Date(item[0]);
     });
 
@@ -81,7 +81,7 @@ d3.json(
       .attr('id', 'x-axis')
       .attr('transform', 'translate(60, 400)');
 
-    var GDP = data.data.map(function(item) {
+    var GDP = data.data.map(function (item) {
       return item[1];
     });
 
@@ -89,19 +89,13 @@ d3.json(
 
     var gdpMax = d3.max(GDP);
 
-    var linearScale = d3
-      .scaleLinear()
-      .domain([0, gdpMax])
-      .range([0, height]);
+    var linearScale = d3.scaleLinear().domain([0, gdpMax]).range([0, height]);
 
-    scaledGDP = GDP.map(function(item) {
+    scaledGDP = GDP.map(function (item) {
       return linearScale(item);
     });
 
-    var yAxisScale = d3
-      .scaleLinear()
-      .domain([0, gdpMax])
-      .range([height, 0]);
+    var yAxisScale = d3.scaleLinear().domain([0, gdpMax]).range([height, 0]);
 
     var yAxis = d3.axisLeft(yAxisScale);
 
@@ -116,26 +110,26 @@ d3.json(
       .data(scaledGDP)
       .enter()
       .append('rect')
-      .attr('data-date', function(d, i) {
+      .attr('data-date', function (d, i) {
         return data.data[i][0];
       })
-      .attr('data-gdp', function(d, i) {
+      .attr('data-gdp', function (d, i) {
         return data.data[i][1];
       })
       .attr('class', 'bar')
-      .attr('x', function(d, i) {
+      .attr('x', function (d, i) {
         return xScale(yearsDate[i]);
       })
-      .attr('y', function(d) {
+      .attr('y', function (d) {
         return height - d;
       })
       .attr('width', barWidth)
-      .attr('height', function(d) {
+      .attr('height', function (d) {
         return d;
       })
       .style('fill', '#33adff')
       .attr('transform', 'translate(60, 0)')
-      .on('mouseover', function(d, i) {
+      .on('mouseover', function (d, i) {
         overlay
           .transition()
           .duration(0)
@@ -145,10 +139,7 @@ d3.json(
           .style('left', i * barWidth + 0 + 'px')
           .style('top', height - d + 'px')
           .style('transform', 'translateX(60px)');
-        tooltip
-          .transition()
-          .duration(200)
-          .style('opacity', 0.9);
+        tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip
           .html(
             years[i] +
@@ -162,15 +153,9 @@ d3.json(
           .style('top', height - 100 + 'px')
           .style('transform', 'translateX(60px)');
       })
-      .on('mouseout', function() {
-        tooltip
-          .transition()
-          .duration(200)
-          .style('opacity', 0);
-        overlay
-          .transition()
-          .duration(200)
-          .style('opacity', 0);
+      .on('mouseout', function () {
+        tooltip.transition().duration(200).style('opacity', 0);
+        overlay.transition().duration(200).style('opacity', 0);
       });
   }
 );

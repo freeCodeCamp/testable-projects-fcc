@@ -45,7 +45,7 @@ const elementTimeout = 60000;
  *
  * @returns {Promise<{success: boolean, err: string}>} - test result
  */
-exports.doesProjectPassTests = async function(name, URL) {
+exports.doesProjectPassTests = async function (name, URL) {
   // The following functions are defined below instead of outside this function
   // so we do not have to pass the 'driver' as a function parameter.
 
@@ -64,7 +64,7 @@ exports.doesProjectPassTests = async function(name, URL) {
         path.join(screenshotDir, fileName),
         base64Data,
         'base64',
-        err => {
+        (err) => {
           if (err) {
             console.warn(err);
           }
@@ -85,7 +85,7 @@ exports.doesProjectPassTests = async function(name, URL) {
     );
 
   // Locates an element and then clicks it.
-  const clickElement = async locator => {
+  const clickElement = async (locator) => {
     const element = await driver.wait(
       until.elementLocated(locator),
       elementTimeout
@@ -98,17 +98,17 @@ exports.doesProjectPassTests = async function(name, URL) {
   // Waits for an element to have opacity of 1. Helps for waiting for elements
   // that fade in. Returns the element when the opacity reaches '1' so that
   // this can be chained with other promises.
-  const waitOpacity = element =>
+  const waitOpacity = (element) =>
     driver.wait(() =>
       element
         .getCssValue('opacity')
-        .then(opacity => (opacity === '1' ? element : false))
+        .then((opacity) => (opacity === '1' ? element : false))
     );
 
-  const collectErrors = async wrapper => {
+  const collectErrors = async (wrapper) => {
     const elements = await driver.wait(
       By.js(
-        wrapper =>
+        (wrapper) =>
           (wrapper.shadowRoot ? wrapper.shadowRoot : wrapper).querySelectorAll(
             '.test.fail'
           ),
@@ -146,15 +146,12 @@ exports.doesProjectPassTests = async function(name, URL) {
 
   // Test automation starts here.
   try {
-    await driver
-      .manage()
-      .window()
-      .setRect({
-        x: 0,
-        y: 0,
-        width: browserMaxWidth,
-        height: browserMaxHeight
-      });
+    await driver.manage().window().setRect({
+      x: 0,
+      y: 0,
+      width: browserMaxWidth,
+      height: browserMaxHeight
+    });
 
     // Get the specified URL.
     await driver.get(`${URL}`);
@@ -227,11 +224,7 @@ exports.doesProjectPassTests = async function(name, URL) {
     try {
       // Needed for Chrome. Firefox throws here, will not implement.
       // https://github.com/mozilla/geckodriver/issues/284
-      await driver
-        .manage()
-        .logs()
-        .get(logging.Type.BROWSER)
-        .then(console.log);
+      await driver.manage().logs().get(logging.Type.BROWSER).then(console.log);
     } catch (error) {
       console.warn(error);
     }

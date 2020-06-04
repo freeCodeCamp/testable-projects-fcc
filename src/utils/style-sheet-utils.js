@@ -22,9 +22,9 @@
  * See https://developer.mozilla.org/en-US/docs/Web/API/CSSRuleList
  *
  */
-export const allCSSRulesAsArray = function(styleSheets) {
+export const allCSSRulesAsArray = function (styleSheets) {
   // Convert to an array, and then use reduce.
-  return [].slice.call(styleSheets).reduce(function(prev, styleSheet) {
+  return [].slice.call(styleSheets).reduce(function (prev, styleSheet) {
     // The styleSheet might not contain any rules.
     try {
       if (styleSheet.cssRules) {
@@ -32,7 +32,7 @@ export const allCSSRulesAsArray = function(styleSheets) {
         const rulesAsArray = [].slice
           .call(styleSheet.cssRules)
           .filter(
-            rule =>
+            (rule) =>
               rule.type === CSSRule.STYLE_RULE ||
               rule.type === CSSRule.MEDIA_RULE ||
               rule.type === CSSRule.SUPPORTS_RULE
@@ -64,7 +64,7 @@ export const allCSSRulesAsArray = function(styleSheets) {
  * See https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleRule
  *
  */
-export const isTestSuiteRule = function(cssStyleRule) {
+export const isTestSuiteRule = function (cssStyleRule) {
   if (
     typeof cssStyleRule.selectorText !== 'undefined' &&
     (cssStyleRule.selectorText.includes('fcc_test') ||
@@ -89,7 +89,7 @@ export function hasMediaQuery(styleSheets) {
     for (let rule of rules) {
       if (
         rule.type === CSSRule.MEDIA_RULE &&
-        !allCSSRulesAsArray([rule]).some(rule => isTestSuiteRule(rule))
+        !allCSSRulesAsArray([rule]).some((rule) => isTestSuiteRule(rule))
       ) {
         // found media query
         return true;

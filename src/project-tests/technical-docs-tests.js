@@ -3,13 +3,13 @@ import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 import { hasMediaQuery } from '../utils/style-sheet-utils';
 
 export default function createTechnicalDocsPageTests() {
-  const classArray = className => {
+  const classArray = (className) => {
     return Array.from(document.getElementsByClassName(className));
   };
 
-  const sharedHeaderTest = classQty => {
+  const sharedHeaderTest = (classQty) => {
     let firstChildHeaderQty = classArray('main-section').filter(
-      el => el.firstElementChild.nodeName === 'HEADER'
+      (el) => el.firstElementChild.nodeName === 'HEADER'
     );
     assert.strictEqual(
       firstChildHeaderQty.length,
@@ -19,17 +19,17 @@ export default function createTechnicalDocsPageTests() {
     );
   };
 
-  describe('Technical Documentation Page tests', function() {
-    describe('#Technology Stack', function() {
-      it(responsiveWebDesignStack, function() {
+  describe('Technical Documentation Page tests', function () {
+    describe('#Technology Stack', function () {
+      it(responsiveWebDesignStack, function () {
         return true;
       });
     });
 
-    describe('#Content', function() {
+    describe('#Content', function () {
       it(`I can see a <main> element with a corresponding
       id="main-doc", which contains the page's main content (technical
-      documentation).`, function() {
+      documentation).`, function () {
         assert.isNotNull(
           document.getElementById('main-doc'),
           "There is no element with an id of 'main-doc' "
@@ -43,10 +43,10 @@ export default function createTechnicalDocsPageTests() {
 
       it(`Within the #main-doc ( <main> ) element, I can see several
       <section> elements, each with a class of "main-section". There should be
-      a minimum of 5.`, function() {
+      a minimum of 5.`, function () {
         let classQty = classArray('main-section').length;
         let typeQty = classArray('main-section').filter(
-          el => el.nodeName === 'SECTION'
+          (el) => el.nodeName === 'SECTION'
         );
         assert.isAbove(
           document.querySelectorAll('#main-doc .main-section').length,
@@ -74,10 +74,10 @@ export default function createTechnicalDocsPageTests() {
 
       it(`The first element within each .main-section should be a
       <header> element which contains text that describes the topic of that
-      section.`, function() {
+      section.`, function () {
         let classQty = classArray('main-section').length;
         let mustContainText = classArray('main-section').filter(
-          el => el.firstElementChild.innerText.length > 0
+          (el) => el.firstElementChild.innerText.length > 0
         );
         assert.isAbove(
           classQty,
@@ -99,7 +99,7 @@ export default function createTechnicalDocsPageTests() {
       include special characters if there are special characters in
       the respective <header> innerText. (e.g. The <section> that contains the
       header, "JavaScript & Java", should have a corresponding
-      id="JavaScript_&_Java").`, function() {
+      id="JavaScript_&_Java").`, function () {
         const mainSections = classArray('main-section');
         assert.isAbove(
           mainSections.length,
@@ -109,7 +109,7 @@ export default function createTechnicalDocsPageTests() {
 
         sharedHeaderTest(mainSections.length);
 
-        const headerText = mainSections.map(el => {
+        const headerText = mainSections.map((el) => {
           assert.isAbove(
             el.firstElementChild.innerText.length,
             0,
@@ -123,7 +123,7 @@ export default function createTechnicalDocsPageTests() {
             .toUpperCase();
         });
 
-        const mainSectionIDs = mainSections.map(el => {
+        const mainSectionIDs = mainSections.map((el) => {
           assert.strictEqual(
             el.hasAttribute('id'),
             true,
@@ -133,7 +133,7 @@ export default function createTechnicalDocsPageTests() {
         });
 
         const remainder = headerText.filter(
-          str => mainSectionIDs.indexOf(str) === -1
+          (str) => mainSectionIDs.indexOf(str) === -1
         );
         assert.strictEqual(
           remainder.length,
@@ -146,7 +146,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`The .main-section elements should contain at least 10 <p>
-      elements total (not each).`, function() {
+      elements total (not each).`, function () {
         assert.isAtLeast(
           document.querySelectorAll('.main-section p').length,
           10,
@@ -156,7 +156,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`The .main-section elements should contain at least 5 <code>
-      elements total (not each).`, function() {
+      elements total (not each).`, function () {
         assert.isAtLeast(
           document.querySelectorAll('.main-section code').length,
           5,
@@ -166,7 +166,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`The .main-section elements should contain at least 5 <li>
-      items total (not each).`, function() {
+      items total (not each).`, function () {
         assert.isAtLeast(
           document.querySelectorAll('.main-section li').length,
           5,
@@ -176,7 +176,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`I can see a <nav> element with a corresponding
-      id="navbar".`, function() {
+      id="navbar".`, function () {
         assert.isNotNull(
           document.getElementById('navbar'),
           "There is no element with the id of 'navbar'."
@@ -190,7 +190,7 @@ export default function createTechnicalDocsPageTests() {
 
       it(`The navbar element should contain one <header> element
       which contains text that describes the topic of the technical
-      documentation.`, function() {
+      documentation.`, function () {
         assert.strictEqual(
           document.getElementById('navbar').getElementsByTagName('header')
             .length,
@@ -201,14 +201,14 @@ export default function createTechnicalDocsPageTests() {
 
       it(`Additionally, the navbar should contain link (<a>) elements
       with the class of "nav-link". There should be one for every element with
-      the class "main-section".`, function() {
+      the class "main-section".`, function () {
         const mainSectionQty = document.querySelectorAll(
           '#main-doc .main-section'
         ).length;
         const navLinkQty = document.querySelectorAll('#navbar .nav-link')
           .length;
         const typeQty = classArray('nav-link').filter(
-          el => el.nodeName === 'A'
+          (el) => el.nodeName === 'A'
         );
         assert.isAbove(
           navLinkQty,
@@ -231,12 +231,12 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`The <header> element in the navbar must come before any
-      link (<a>) elements in the navbar.`, function() {
+      link (<a>) elements in the navbar.`, function () {
         const navLinks = document.querySelectorAll('#navbar a.nav-link');
         const header = document.querySelectorAll('#navbar header').item(0);
         let allAbove = true;
 
-        navLinks.forEach(navLink => {
+        navLinks.forEach((navLink) => {
           /* eslint no-bitwise: ["error", { "allow": ["&"] }] */
           if (
             !(
@@ -259,22 +259,22 @@ export default function createTechnicalDocsPageTests() {
       it(`Each element with the class of "nav-link" should contain
       text that corresponds to the <header> text within each <section> (e.g. if
       you have a "Hello world" section/header, your navbar should have an
-      element which contains the text "Hello world").`, function() {
+      element which contains the text "Hello world").`, function () {
         assert.isAbove(
           classArray('nav-link').length,
           0,
           'No elements with the class "nav-link" have been defined '
         );
-        const headerText = classArray('main-section').map(el =>
+        const headerText = classArray('main-section').map((el) =>
           el.firstElementChild.innerText.trim().toUpperCase()
         );
-        const linkText = classArray('nav-link').map(el =>
+        const linkText = classArray('nav-link').map((el) =>
           el.innerText.trim().toUpperCase()
         );
         // use indexOf instead of matching index for index, in case for some
         // reason they have them out of order
         const remainder = headerText.filter(
-          str => linkText.indexOf(str) === -1
+          (str) => linkText.indexOf(str) === -1
         );
         assert.strictEqual(
           remainder.length,
@@ -290,22 +290,22 @@ export default function createTechnicalDocsPageTests() {
       to the corresponding section of the "main-doc" element (e.g. If I click on
       a "nav-link" element that contains the text "Hello world", the page
       navigates to a <section> element that has that id and contains the
-      corresponding <header>.`, function() {
+      corresponding <header>.`, function () {
         const navLinkQty = document.getElementsByClassName('nav-link').length;
         assert.isAbove(
           navLinkQty,
           0,
           'No elements with the class "nav-link" have been defined '
         );
-        const hasHref = classArray('nav-link').filter(el =>
+        const hasHref = classArray('nav-link').filter((el) =>
           el.hasAttribute('href')
         );
-        const hrefValues = classArray('nav-link').map(el =>
+        const hrefValues = classArray('nav-link').map((el) =>
           el.getAttribute('href')
         );
-        const mainSectionIDs = classArray('main-section').map(el => el.id);
+        const mainSectionIDs = classArray('main-section').map((el) => el.id);
         const missingHrefValues = mainSectionIDs.filter(
-          str => hrefValues.indexOf('#' + str) === -1
+          (str) => hrefValues.indexOf('#' + str) === -1
         );
         assert.strictEqual(
           hasHref.length,
@@ -326,12 +326,12 @@ export default function createTechnicalDocsPageTests() {
       // END #Content
     });
 
-    describe('#Layout', function() {
+    describe('#Layout', function () {
       it(`On regular sized devices (laptops, desktops), the element
       with id="navbar" should be shown on the left half of the screen. It should
       always be visible to the user and should remain stationary. You may need
       to enlarge the viewport or zoom out to ensure the navbar doesn't scroll
-      with the page content.`, function() {
+      with the page content.`, function () {
         const windowWidth =
           document.documentElement.clientWidth || window.innerWidth;
         const windowHeight =
@@ -370,7 +370,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`My Technical Documentation page should use at least one
-      media query.`, function() {
+      media query.`, function () {
         assert.isTrue(
           hasMediaQuery(document.styleSheets),
           'No media queries detected '
