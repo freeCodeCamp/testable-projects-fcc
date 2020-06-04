@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 language: node_js
 node_js:
   - 'lts/*'
@@ -17,13 +17,13 @@ jobs:
       after_failure: skip
     - stage: test
       name: Chrome
-      addons:
-        chrome: stable
       env:
         - SELENIUM_BROWSER=chrome
         - BROWSER_PATH=/usr/bin/google-chrome-stable
         - DETECT_CHROMEDRIVER_VERSION=true
         - SCREENSHOT_DIR=travis-screenshots
+      addons:
+        chrome: stable
     - stage: test
       name: Firefox
       env:
