@@ -20,6 +20,7 @@ jobs:
       env:
         - SELENIUM_BROWSER=chrome
         - BROWSER_PATH=/usr/bin/google-chrome-stable
+        - DETECT_CHROMEDRIVER_VERSION=true npm install chromedriver
         - SCREENSHOT_DIR=travis-screenshots
       addons:
         chrome: stable
