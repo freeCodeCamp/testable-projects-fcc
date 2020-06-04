@@ -46,26 +46,26 @@ const accurateInterval = function(fn, time) {
 class TimerLengthControl extends React.Component {
   render() {
     return (
-      <div className='length-control'>
+      <div className="length-control">
         <div id={this.props.titleID}>{this.props.title}</div>
         <button
-          className='btn-level'
+          className="btn-level"
           id={this.props.minID}
           onClick={this.props.onClick}
-          value='-'
-          >
-          <i className='fa fa-arrow-down fa-2x' />
+          value="-"
+        >
+          <i className="fa fa-arrow-down fa-2x" />
         </button>
-        <div className='btn-level' id={this.props.lengthID}>
+        <div className="btn-level" id={this.props.lengthID}>
           {this.props.length}
         </div>
         <button
-          className='btn-level'
+          className="btn-level"
           id={this.props.addID}
           onClick={this.props.onClick}
-          value='+'
-          >
-          <i className='fa fa-arrow-up fa-2x' />
+          value="+"
+        >
+          <i className="fa fa-arrow-up fa-2x" />
         </button>
       </div>
     );
@@ -219,54 +219,54 @@ class Timer extends React.Component {
   render() {
     return (
       <div>
-        <div className='main-title'>Pomodoro Clock</div>
+        <div className="main-title">Pomodoro Clock</div>
         <TimerLengthControl
-          addID='break-increment'
+          addID="break-increment"
           length={this.state.brkLength}
-          lengthID='break-length'
-          minID='break-decrement'
+          lengthID="break-length"
+          minID="break-decrement"
           onClick={this.setBrkLength}
-          title='Break Length'
-          titleID='break-label'
+          title="Break Length"
+          titleID="break-label"
         />
         <TimerLengthControl
-          addID='session-increment'
+          addID="session-increment"
           length={this.state.seshLength}
-          lengthID='session-length'
-          minID='session-decrement'
+          lengthID="session-length"
+          minID="session-decrement"
           onClick={this.setSeshLength}
-          title='Session Length'
-          titleID='session-label'
+          title="Session Length"
+          titleID="session-label"
         />
-        <div className='timer' style={this.state.alarmColor}>
-          <div className='timer-wrapper'>
-            <div id='timer-label'>{this.state.timerType}</div>
-            <div id='time-left'>{this.clockify()}</div>
+        <div className="timer" style={this.state.alarmColor}>
+          <div className="timer-wrapper">
+            <div id="timer-label">{this.state.timerType}</div>
+            <div id="time-left">{this.clockify()}</div>
           </div>
         </div>
-        <div className='timer-control'>
-          <button id='start_stop' onClick={this.timerControl}>
-            <i className='fa fa-play fa-2x' />
-            <i className='fa fa-pause fa-2x' />
+        <div className="timer-control">
+          <button id="start_stop" onClick={this.timerControl}>
+            <i className="fa fa-play fa-2x" />
+            <i className="fa fa-pause fa-2x" />
           </button>
-          <button id='reset' onClick={this.reset}>
-            <i className='fa fa-refresh fa-2x' />
+          <button id="reset" onClick={this.reset}>
+            <i className="fa fa-refresh fa-2x" />
           </button>
         </div>
-        <div className='author'>
+        <div className="author">
           {' '}
           Designed and Coded by <br />
-          <a href='https://goo.gl/6NNLMG' target='_blank'>
+          <a href="https://goo.gl/6NNLMG" target="_blank">
             Peter Weinberg
           </a>
         </div>
         <audio
-          id='beep'
-          preload='auto'
+          id="beep"
+          preload="auto"
           ref={audio => {
             this.audioBeep = audio;
           }}
-          src='https://goo.gl/65cBl1'
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
         />
       </div>
     );
