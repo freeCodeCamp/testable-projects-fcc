@@ -206,6 +206,7 @@ $(document).ready(function initTests() {
     fullTrace: true
   });
   mocha.reporter(fccMochaReporter, reporterOptions);
+  mocha.cleanReferencesAfterRun(false);
 });
 
 // UTILITY FUNCTIONS:
