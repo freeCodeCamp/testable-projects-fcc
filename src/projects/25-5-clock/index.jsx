@@ -16,7 +16,7 @@
 
 // PROJECTOR SELECTOR FOR EXTERNAL TEST SCRIPT:
 // eslint-disable-next-line no-unused-vars
-const projectName = 'pomodoro-clock';
+const projectName = '25-5-clock';
 
 // Accurate_Interval.js
 // Thanks Squeege! For the elegant answer provided to this question:
@@ -24,16 +24,16 @@ const projectName = 'pomodoro-clock';
 // Github: https://gist.github.com/Squeegy/1d99b3cd81d610ac7351
 // Slightly modified to accept 'normal' interval/timeout format (func, time).
 
-const accurateInterval = function(fn, time) {
+const accurateInterval = function (fn, time) {
   var cancel, nextAt, timeout, wrapper;
   nextAt = new Date().getTime() + time;
   timeout = null;
-  wrapper = function() {
+  wrapper = function () {
     nextAt += time;
     timeout = setTimeout(wrapper, nextAt - new Date().getTime());
     return fn();
   };
-  cancel = function() {
+  cancel = function () {
     return clearTimeout(timeout);
   };
   timeout = setTimeout(wrapper, nextAt - new Date().getTime());
@@ -219,7 +219,7 @@ class Timer extends React.Component {
   render() {
     return (
       <div>
-        <div className="main-title">Pomodoro Clock</div>
+        <div className="main-title">25 + 5 Clock</div>
         <TimerLengthControl
           addID="break-increment"
           length={this.state.brkLength}
@@ -263,7 +263,7 @@ class Timer extends React.Component {
         <audio
           id="beep"
           preload="auto"
-          ref={audio => {
+          ref={(audio) => {
             this.audioBeep = audio;
           }}
           src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"

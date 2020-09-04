@@ -3,7 +3,7 @@ import { clickButtonsById, getInputValue } from '../utils/element-utils';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { timeout } from '../utils/threading';
 
-export default function createPomodoroClockTests() {
+export default function create25Plus5ClockTests() {
   const breakMin = 'break-decrement';
   const breakPlus = 'break-increment';
   const seshMin = 'session-decrement';
@@ -93,7 +93,7 @@ export default function createPomodoroClockTests() {
   // faster (delay is forced to 30ms)
   // The problem is that we still don't know if it's acceptable to use this
   // hack, because it implies forcing the campers to use setTimeout and
-  // setInterval functions to measure time in their pomodoro.
+  // setInterval functions to measure time in their 25 + 5 clock.
   // In cases where hacking does not work, we wait for the timer
   // as much time as is usually required for it.
   const savedSetTimeout = window.setTimeout;
@@ -114,7 +114,7 @@ export default function createPomodoroClockTests() {
   }
 
   // Test suite
-  describe('#Pomodoro Clock tests', function () {
+  describe('#25 + 5 Clock tests', function () {
     beforeEach(function () {
       resetTimer();
     });
@@ -241,7 +241,7 @@ export default function createPomodoroClockTests() {
         // decrement session and break length
         clickButtonsById(Array(60).fill(seshMin));
         clickButtonsById(Array(60).fill(breakMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         // wait while timer reaches 00:00
@@ -267,7 +267,7 @@ export default function createPomodoroClockTests() {
         );
 
         // wait another 1.5 seconds to be sure value has not changed
-        // (pomodoro is stopped)
+        // (25 + 5 clock is stopped)
         await timeout(1500);
 
         assert.strictEqual(
@@ -289,7 +289,7 @@ export default function createPomodoroClockTests() {
         assert.strictEqual(
           secondsAfterAWhile,
           secondsAfterReset,
-          'Pomodoro has paused but time continued elapsing'
+          '25 + 6 has paused but time continued elapsing'
         );
       });
 
@@ -406,7 +406,7 @@ export default function createPomodoroClockTests() {
       "time-left" should display the remaining time in mm:ss format
       (decrementing by a value of 1 and updating the display every 1000ms).`, async function () {
         this.timeout(2500);
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         const secondsBefore = getSeconds(
@@ -424,14 +424,14 @@ export default function createPomodoroClockTests() {
         assert.isAbove(
           +secondsAfter,
           +secondsBefore,
-          'Pomodoro has started but time displayed is not changing '
+          '25 + 5 clock has started but time displayed is not changing '
         );
       });
 
       it(`If the timer is running and I click the element with
       id="start_stop", the countdown should pause.`, async function () {
         this.timeout(4000);
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         const secondsBefore = getSeconds(
@@ -448,10 +448,10 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           secondsAfter,
           secondsBefore,
-          'Pomodoro has started but time displayed is not changing'
+          '25 + 5 has started but time displayed is not changing'
         );
 
-        // Pause the pomodoro
+        // Pause the 25 + 5 clock
         clickButtonsById([startStop]);
 
         // wait another 1.5 seconds to be sure value has not changed
@@ -464,7 +464,7 @@ export default function createPomodoroClockTests() {
         assert.strictEqual(
           secondsAfterPause,
           secondsAfter,
-          'Pomodoro has paused but time continued elapsing'
+          '25 + 5 clock has paused but time continued elapsing'
         );
       });
 
@@ -472,7 +472,7 @@ export default function createPomodoroClockTests() {
       id="start_stop", the countdown should resume running from the point at
       which it was paused.`, async function () {
         this.timeout(6000);
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         const secondsBefore = getSeconds(
@@ -489,10 +489,10 @@ export default function createPomodoroClockTests() {
         assert.notStrictEqual(
           secondsAfter,
           secondsBefore,
-          'Pomodoro has started but time displayed is not changing'
+          '25 + 5 clock has started but time displayed is not changing'
         );
 
-        // Pause the pomodoro
+        // Pause the 25 + 5 clock
         clickButtonsById([startStop]);
 
         // wait another 1.5 seconds to be sure value has not changed
@@ -505,10 +505,10 @@ export default function createPomodoroClockTests() {
         assert.strictEqual(
           secondsAfterPause,
           secondsAfter,
-          'Pomodoro has paused but time continued elapsing'
+          '25 + 5 clock has paused but time continued elapsing'
         );
 
-        // Resume the pomodoro
+        // Resume the 25 + 5 clock
         clickButtonsById([startStop]);
 
         // wait another 1.5 seconds to be sure time is decrementing again
@@ -521,7 +521,7 @@ export default function createPomodoroClockTests() {
         assert.isBelow(
           +secondsAfterResume,
           +secondsAfterPause,
-          'Pomodoro has resumed but displayed time is not changing '
+          '25 + 5 clock has resumed but displayed time is not changing '
         );
       });
 
@@ -532,7 +532,7 @@ export default function createPomodoroClockTests() {
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         let tLabelA = document.getElementById('timer-label').innerHTML;
@@ -568,7 +568,7 @@ export default function createPomodoroClockTests() {
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         let sessionLabel = document.getElementById('timer-label').innerHTML;
@@ -605,7 +605,7 @@ export default function createPomodoroClockTests() {
         // decrement session length and break length to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
         clickButtonsById(Array(60).fill(breakMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         await timerHasReachedZero();
@@ -633,7 +633,7 @@ export default function createPomodoroClockTests() {
         // decrement session length and break length to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
         clickButtonsById(Array(60).fill(breakMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         await timerHasReachedZero();
@@ -681,7 +681,7 @@ export default function createPomodoroClockTests() {
         hackGlobalTimerFunctions();
         // decrement session time to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
-        // start the pomodoro
+        // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
         await timerHasReachedZero();
@@ -745,7 +745,7 @@ export default function createPomodoroClockTests() {
       });
       // END #Audio
     });
-    // END #PomodoroClockTests
+    // END #25Plus5ClockTests
   });
-  // END createPomodoroClockTests()
+  // END create25Plus5ClockTests()
 }
