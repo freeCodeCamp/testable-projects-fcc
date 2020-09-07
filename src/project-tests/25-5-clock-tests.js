@@ -289,7 +289,7 @@ export default function create25Plus5ClockTests() {
         assert.strictEqual(
           secondsAfterAWhile,
           secondsAfterReset,
-          '25 + 6 has paused but time continued elapsing'
+          '25 + 5 has paused but time continued elapsing'
         );
       });
 
