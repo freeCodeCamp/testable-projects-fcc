@@ -8,7 +8,7 @@ import createTechnicalDocsPageTests from './technical-docs-tests';
 import createRandomQuoteMachineTests from './quote-machine-tests';
 import createMarkdownPreviewerTests from './markdown-previewer-tests';
 import createDrumMachineTests from './drum-machine-tests';
-import createPomodoroClockTests from './pomodoro-clock-tests';
+import create25Plus5ClockTests from './25-5-clock-tests';
 import createCalculatorTests from './calculator-tests';
 import createBarChartTests from './bar-chart-tests';
 import createScatterPlotTests from './scatter-plot-tests';
@@ -70,11 +70,11 @@ export default {
     codepen: 'https://codepen.io/freeCodeCamp/pen/MJyNMd',
     test: createDrumMachineTests
   },
-  'pomodoro-clock': {
-    name: 'Pomodoro Clock',
-    URL: projectsPath + '/pomodoro-clock/index.html',
+  '25-5-clock': {
+    name: '25 + 5 Clock',
+    URL: projectsPath + '/25-5-clock/index.html',
     codepen: 'https://codepen.io/freeCodeCamp/pen/XpKrrW',
-    test: createPomodoroClockTests
+    test: create25Plus5ClockTests
   },
   'javascript-calculator': {
     name: 'Javascript Calculator',
