@@ -149,9 +149,7 @@ And here. | Okay. | I think we get it.
 
 1. And there are numbererd lists too.
 1. Use just 1s if you want!
-1. But the list goes on...
-- Even if you use dashes or asterisks.
-* And last but not least, let's not forget embedded images:
+1. And last but not least, let's not forget embedded images:
 
 ![React Logo w/ Text](https://goo.gl/Umyytc)
 `;
