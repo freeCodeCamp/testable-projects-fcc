@@ -19,7 +19,7 @@
   text-align: left;
 }
 
-#fcc_foldout_menu_inner #fcc_report-bug {
+#fcc_foldout_menu_inner #fcc_ask-for-help {
   display: block;
   cursor: pointer;
 }
@@ -66,7 +66,7 @@ button.fcc_test_btn-success {
   background-color: rgba(81, 211, 81, 0.9);
 }
 
-#fcc_report-bug {
+#fcc_ask-for-help {
   font-size: 12px;
 }
 
