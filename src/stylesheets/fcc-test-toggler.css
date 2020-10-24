@@ -1,10 +1,9 @@
 #fcc_foldout_menu {
-  background-color: rgba(255, 255, 204, 0.9);
+  background-color: var(--secondary-color);
   border: 0px solid #fff;
   border-radius: 0px 0px 5px 0px;
   box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
   font-family: Noto Sans, arial, sans-serif;
-  height: 210px;
   left: 0;
   pointer-events: all;
   position: absolute;
@@ -56,16 +55,19 @@
 .transform_top {
   opacity: 1;
   transform: rotate(45deg) translate(-1px, -1px);
+  background-color: var(--gray-00) !important;
 }
 
 .transform_middle {
   opacity: 0;
   transform: rotate(0deg) scale(0.2, 0.2);
+  background-color: var(--gray-00) !important;
 }
 
 .transform_bottom {
   opacity: 1;
   transform: rotate(-45deg);
+  background-color: var(--gray-00) !important;
 }
 
 .fcc_hamburger {
@@ -73,10 +75,10 @@
   width: 25px;
   height: 4px;
   display: block;
-  background: darkgreen !important;
+  background: var(--primary-background);
   border-radius: 5px !important;
   transform-origin: 4px 0px;
-  transition: transform 0.4s ease, opacity 0.55s ease;
+  transition: all 0.5s ease;
   left: unset;
 }
 

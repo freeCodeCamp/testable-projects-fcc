@@ -30,6 +30,7 @@ import fCCTestSuiteSkeleton from './utils/fcc-test-suite-skeleton.html';
 import fCCTestTogglerSkeleton from './utils/fcc-test-toggler-skeleton.html';
 import mochaModalSkeleton from './utils/mocha-modal-skeleton.html';
 import fCCDefaultStyles from './stylesheets/default.css';
+import fCCCssVariables from './stylesheets/variables.css';
 import fCCTestUIStyles from './stylesheets/fcc-test-ui.css';
 import mochaModalStyles from './stylesheets/mocha-modal.css';
 import fCCTestTogglerStyles from './stylesheets/fcc-test-toggler.css';
@@ -108,13 +109,14 @@ $(document).ready(function initTests() {
   const style = document.createElement('style');
   style.innerHTML =
     fCCDefaultStyles +
+    fCCCssVariables +
     fCCTestUIStyles +
     mochaModalStyles +
     fCCTestTogglerStyles;
   shadow.appendChild(style);
 
   const fCCToggle = document.createElement('div');
-  fCCToggle.className = 'fcc_test_ui';
+  fCCToggle.className = 'fcc_test_ui fcc_variables fcc_dark_palette';
   fCCToggle.innerHTML = fCCTestTogglerSkeleton;
   shadow.appendChild(fCCToggle);
 
@@ -124,7 +126,7 @@ $(document).ready(function initTests() {
   fCCToggle.appendChild(testFrameBody);
 
   const mochaModal = document.createElement('div');
-  mochaModal.className = 'fcc_test_ui';
+  mochaModal.className = 'fcc_test_ui fcc_variables fcc_dark_palette';
   mochaModal.innerHTML = mochaModalSkeleton;
   shadow.appendChild(mochaModal);
 

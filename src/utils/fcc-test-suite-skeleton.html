@@ -1,45 +1,54 @@
 <div id="fcc_foldout_menu_inner">
-  <label for="test-suite-selector">Select Test Suite:</label>
-  <select
-    name="Test Suite Selector"
-    id="test-suite-selector"
-    onchange="FCC_Global.selectProject(this.value)"
-  >
-    <option id="placeholder" value="">- - -</option>
-  </select>
-  <div id="fcc_test_buttons_wrapper">
-    <button
-      id="fcc_test_message-box-rerun-button"
-      type="button"
-      class="fcc_foldout_button"
-      title="CTRL + SHIFT + ENTER"
-      onclick="FCC_Global.FCCRerunTests()"
-    >
-      Run Tests
-    </button>
-    <button
-      id="fcc_test_button"
-      type="button"
-      class="fcc_foldout_button fcc_test_btn-default"
-      title="CTRL + SHIFT + T"
-      onclick="FCC_Global.FCCOpenTestModal()"
-    >
-      Tests
-    </button>
+  <div id="fcc_test_suite_nav">
+    <span>&nbsp;</span>
+    <span>LOGO</span>
+    <span>theme</span>
   </div>
-  <div id="fcc_legend_wrapper">
-    <div class="fcc_legend key"></div>
-    <span class="fcc_legend">Test(s) Failed</span>
-    <div class="fcc_legend key"></div>
-    <span class="fcc_legend">Tests Passed</span>
-    <div class="fcc_legend key"></div>
-    <span class="fcc_legend">Tests Executing</span>
+  <div>
+    <label for="test-suite-selector">Select Test Suite:</label>
+    <select
+      name="Test Suite Selector"
+      id="test-suite-selector"
+      onchange="FCC_Global.selectProject(this.value)"
+    >
+      <option id="placeholder" value="">- - -</option>
+    </select>
   </div>
-  <span id="fcc_ask-for-help"
-    ><a
+  <div class="fcc-flex-evenly">
+    <div id="fcc_test_buttons_wrapper">
+      <button
+        id="fcc_test_message-box-rerun-button"
+        type="button"
+        class="fcc_foldout_button"
+        title="CTRL + SHIFT + ENTER"
+        onclick="FCC_Global.FCCRerunTests()"
+      >
+        Run Tests
+      </button>
+      <button
+        id="fcc_test_button"
+        type="button"
+        class="fcc_foldout_button fcc_test_btn-default"
+        title="CTRL + SHIFT + T"
+        onclick="FCC_Global.FCCOpenTestModal()"
+      >
+        Tests
+      </button>
+    </div>
+    <div id="fcc_legend_wrapper">
+      <div class="fcc_legend key"></div>
+      <span class="fcc_legend">Test(s) Failed</span>
+      <div class="fcc_legend key"></div>
+      <span class="fcc_legend">Tests Passed</span>
+      <div class="fcc_legend key"></div>
+      <span class="fcc_legend">Tests Executing</span>
+    </div>
+  </div>
+  <div id="fcc_ask-for-help">
+    <a
       href="https://forum.freecodecamp.org/c/curriculum-help/certification-projects/"
       target="_blank"
       >Ask For Help</a
     >
-  </span>
+  </div>
 </div>
