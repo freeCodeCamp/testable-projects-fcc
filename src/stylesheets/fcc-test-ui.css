@@ -3,12 +3,12 @@
   justify-content: space-between;
   flex-direction: column;
   padding: 30px 10px 10px;
+  align-items: center;
 }
 
 #fcc_test_suite_nav {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
 }
 
 /* theme toggler switch styles 
@@ -94,8 +94,8 @@
   border-color: rgb(169, 169, 169);
   font-size: 12px;
   flex: 1 100%;
-  margin: 10px 15px;
-  text-align: left;
+  margin: 10px auto;
+  text-align: center;
 }
 
 #fcc-test-buttons-wrapper {
@@ -103,13 +103,13 @@
   justify-content: space-evenly;
 }
 
-#fcc_foldout_menu_inner #fcc_ask-for-help {
+#fcc_foldout_menu_inner {
   display: block;
   cursor: pointer;
 }
 
 button.fcc_foldout_button {
-  background-color: rgba(50, 50, 50, 0.75);
+  background-color: var(--gray-75);
   border: none;
   border-radius: 4px;
   box-shadow: 1px 1px 4px black;
@@ -119,7 +119,7 @@ button.fcc_foldout_button {
   display: block;
   font-size: 15px;
   height: 20px;
-  margin: 0 5px 10px;
+  margin: auto;
   padding: 10px;
   text-align: center;
   width: 110px;
@@ -135,7 +135,7 @@ button.fcc_foldout_button {
 }
 
 button.fcc_test_btn-default {
-  background-color: rgba(128, 128, 128, 0.7);
+  background-color: var(--gray-45);
 }
 
 button.fcc_test_btn-executing {
@@ -152,11 +152,13 @@ button.fcc_test_btn-success {
 
 #fcc_ask-for-help {
   font-size: 12px;
+  cursor: pointer;
+  margin: auto;
 }
 
 #fcc_legend_wrapper {
   width: 125px;
-  text-align: left;
+  text-align: right;
   font-size: 15px;
   padding: 5px 0;
 }
@@ -165,7 +167,7 @@ button.fcc_test_btn-success {
   height: 15px;
   margin-top: 6px;
   font-size: 12px;
-  color: black;
+  color: var(--secondary-color);
 }
 
 div.fcc_legend.key {
@@ -196,4 +198,19 @@ div.fcc_test_ui {
   position: fixed;
   left: 0;
   top: 0;
+}
+
+#fcc_test_buttons_wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+#fcc_below_buttons_wrapper {
+  display: flex;
+  flex-direction: row;
+  cursor: default;
+}
+
+#fcc_logo_link {
+  cursor: pointer;
 }

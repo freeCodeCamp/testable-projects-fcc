@@ -108,8 +108,8 @@ $(document).ready(function initTests() {
 
   const style = document.createElement('style');
   style.innerHTML =
-    fCCDefaultStyles +
     fCCCssVariables +
+    fCCDefaultStyles +
     fCCTestUIStyles +
     mochaModalStyles +
     fCCTestTogglerStyles;
