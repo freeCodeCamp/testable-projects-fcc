@@ -298,6 +298,9 @@ export function hamburgerTransform() {
     shadow
       .querySelector('#hamburger_bottom')
       .classList.remove('transform_bottom');
+    shadow
+      .querySelector('#fcc_foldout_toggler_background')
+      .classList.remove('hidden');
     // Once the student has hidden the test window, this localStorage variable
     // keeps it hidden until manually toggled.
     localStorage.setItem('fCC_' + projectNameLocal + '_hide', true);
@@ -305,6 +308,9 @@ export function hamburgerTransform() {
     shadow.querySelector('#hamburger_top').classList.add('transform_top');
     shadow.querySelector('#hamburger_middle').classList.add('transform_middle');
     shadow.querySelector('#hamburger_bottom').classList.add('transform_bottom');
+    shadow
+      .querySelector('#fcc_foldout_toggler_background')
+      .classList.add('hidden');
   }
 }
 

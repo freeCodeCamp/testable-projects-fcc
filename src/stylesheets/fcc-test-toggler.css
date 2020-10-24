@@ -49,7 +49,7 @@
   position: absolute;
   top: -13px;
   left: -7px;
-  z-index: -1;
+  z-index: -2;
 }
 
 .transform_top {
@@ -116,4 +116,8 @@
   border-radius: 5px;
   box-shadow: 1px 1px 10px rgba(128, 128, 128, 0.6);
   font-family: Noto Sans, arial, sans-serif;
+}
+
+.hidden {
+  display: none;
 }

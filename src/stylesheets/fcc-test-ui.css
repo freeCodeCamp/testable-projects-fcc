@@ -4,6 +4,7 @@
   flex-direction: column;
   padding: 30px 10px 10px;
   align-items: center;
+  z-index: 0;
 }
 
 #fcc_test_suite_nav {
@@ -110,8 +111,7 @@
 
 button.fcc_foldout_button {
   background-color: var(--gray-75);
-  border: none;
-  border-radius: 4px;
+  border: 3px solid var(--secondary-color);
   box-shadow: 1px 1px 4px black;
   box-sizing: content-box;
   color: white;
@@ -160,7 +160,8 @@ button.fcc_test_btn-success {
   width: 125px;
   text-align: right;
   font-size: 15px;
-  padding: 5px 0;
+  padding: 10px;
+  margin: auto;
 }
 
 #fcc_legend_wrapper span {
@@ -213,4 +214,11 @@ div.fcc_test_ui {
 
 #fcc_logo_link {
   cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 100px;
+}
+
+#fcc_test_selector_wrapper {
+  margin-top: 5px;
 }
