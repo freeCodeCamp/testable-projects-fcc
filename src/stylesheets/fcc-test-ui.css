@@ -158,7 +158,7 @@ button.fcc_test_btn-success {
 
 #fcc_legend_wrapper {
   width: 125px;
-  text-align: right;
+  text-align: left;
   font-size: 15px;
   padding: 10px;
   margin: auto;
@@ -221,4 +221,12 @@ div.fcc_test_ui {
 
 #fcc_test_selector_wrapper {
   margin-top: 5px;
+}
+
+select {
+  background-color: var(--theme-color) !important;
+}
+
+option {
+  background-color: var(--theme-color) !important;
 }
