@@ -218,7 +218,7 @@ div.fcc_test_ui {
   cursor: pointer;
   position: absolute;
   top: 10px;
-  left: 100px;
+  left: 60px;
 }
 
 #fcc_test_selector_wrapper {
@@ -231,4 +231,8 @@ select {
 
 option {
   background-color: var(--theme-color) !important;
+}
+
+a {
+  text-decoration: none;
 }
