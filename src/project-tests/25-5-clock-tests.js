@@ -728,20 +728,32 @@ export default function create25Plus5ClockTests() {
       clicked.`, function () {
         // Call document.getElementById('beep') each time to overcome framework
         // cache
-        document.getElementById('beep').play();
-        resetTimer();
+        var playPromise = document.getElementById('beep').play();
+        if (playPromise) {
+          playPromise
+            .then(() => {
+              // Automatic playback started!
+              console.log('audio played auto');
 
-        assert.isTrue(
-          document.getElementById('beep').paused,
-          'Audio element was not stopped when reset was clicked.'
-        );
+              resetTimer();
 
-        assert.strictEqual(
-          document.getElementById('beep').currentTime,
-          0,
-          'Audio element was not rewound when reset was clicked. HINT: use ' +
-            'the currentTime property of the audio element to rewind.'
-        );
+              assert.isTrue(
+                document.getElementById('beep').paused,
+                'Audio element was not stopped when reset was clicked.'
+              );
+
+              assert.strictEqual(
+                document.getElementById('beep').currentTime,
+                0,
+                'Audio element was not rewound when reset was clicked. HINT: use ' +
+                  'the currentTime property of the audio element to rewind.'
+              );
+            })
+            .catch((error) => {
+              // Auto-play was prevented
+              console.log('playback prevented', { error });
+            });
+        };
       });
       // END #Audio
     });
