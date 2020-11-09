@@ -53,6 +53,11 @@ button.fcc_foldout_button {
   width: 110px;
 }
 
+button.fcc_foldout_button:hover {
+  background-color: var(--primary-color);
+  color: var(--primary-background);
+}
+
 #fcc_test_message-box-rerun-button:hover {
   color: var(--primary-background);
   background-color: white;
