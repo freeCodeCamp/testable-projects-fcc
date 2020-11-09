@@ -135,6 +135,7 @@ div.fcc_test_ui {
 #fcc_test_buttons_wrapper {
   display: flex;
   flex-direction: row;
+  margin-top: 20px;
 }
 
 #fcc_below_buttons_wrapper {
