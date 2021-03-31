@@ -109,5 +109,8 @@
       "commit-msg": "commitlint -e",
       "pre-commit": "lint-staged"
     }
+  },
+  "mocha": {
+    "require": "@babel/register"
   }
 }
