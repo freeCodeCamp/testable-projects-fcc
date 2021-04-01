@@ -1,9 +1,9 @@
-name: Selenium Tests
+name: Node.js CI
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: Test
+  selenium-tests:
+    name: Selenium Tests
     runs-on: ubuntu-18.04
 
     strategy:
