@@ -245,7 +245,9 @@ function chromeOptions() {
     // Decrease log output, on Windows it's verbose.
     'log-level=3',
     // Some of the tests make noise, so turn off the sound.
-    'mute-audio'
+    'mute-audio',
+    // Run in no-sandbox mode to prevent errors in Docker container / GH Actions
+    'no-sandbox'
   );
 
   if (browserPath) {
