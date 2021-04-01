@@ -1,0 +1,73 @@
+name: Deploy to CDN Repo
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+
+jobs:
+  deploy:
+    name: Deploy
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout Source Files
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Yarn
+        run: |
+          npm install -g yarn
+
+      - name: Get yarn Cache Directory Path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Dependencies
+        run: |
+          yarn install
+
+      - name: Build bundle.js and Projects
+        run: |
+          # Build bundle.js and projects
+          yarn build
+
+      - name: Deploy
+        env:
+          CDN_USER: ${{ secrets.CDN_USER }}
+          CDN_API_KEY: ${{ secrets.CDN_API_KEY }}
+          CDN_REPO_SLUG: ${{ secrets.CDN_REPO_SLUG }}
+        run: |
+          if [ -n "$CDN_API_KEY" ] && \
+            git log -1 --name-only -m --pretty='format:' | grep -q '^src/'
+          then
+            git clone https://github.com/"$CDN_REPO_SLUG"
+
+            # Copy build files to local CDN repo
+            cp -r --parents build/testable-projects-fcc/* cdn/
+
+            # Commit and push changes to CDN repo
+            cd cdn/
+            git add .
+            git -c user.name="$CDN_USER" -c user.email='camperbot@users.noreply.github.com' \
+              commit -m 'chore(travis-CI): update testable-projects-fcc bundle'
+            git push https://"$CDN_USER":"$CDN_API_KEY"@github.com/"$CDN_REPO_SLUG" master
+          fi
