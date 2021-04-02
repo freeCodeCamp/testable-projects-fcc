@@ -94,7 +94,7 @@ export default function createTechnicalDocsPageTests() {
       });
 
       it(`Each <section> element with the class of "main-section"
-      should also have an id comprised of the <header> innerText 
+      should also have an id comprised of the <header> innerText
       contained within it, with underscores in place of spaces. The id may
       include special characters if there are special characters in
       the respective <header> innerText. (e.g. The <section> that contains the
@@ -344,24 +344,24 @@ export default function createTechnicalDocsPageTests() {
         var navbar = document.getElementById('navbar');
         // navbar should be in top-left quadrant
         // navbar on left side
-        assert.isBelow(
+        assert.isAtMost(
           navbar.getBoundingClientRect().left,
           windowWidth / 2 - navbar.getBoundingClientRect().width,
           'Left of bounding rectangle is not correct.'
         );
         // navbar above middle
-        assert.isBelow(
+        assert.isAtMost(
           navbar.getBoundingClientRect().top,
           windowHeight / 2,
           'Top of bounding rectangle is not correct.'
         );
         window.scroll(0, 1000);
-        assert.isBelow(
+        assert.isAtMost(
           navbar.getBoundingClientRect().left,
           windowWidth / 2 - navbar.getBoundingClientRect().width,
           'After scroll: Left of bounding rectangle is not correct.'
         );
-        assert.isBelow(
+        assert.isAtMost(
           navbar.getBoundingClientRect().top,
           windowHeight / 2,
           'After scroll: Top of bounding rectangle is not correct.'
