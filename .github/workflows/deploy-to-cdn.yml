@@ -45,7 +45,6 @@ jobs:
 
       - name: Build bundle.js and Projects
         run: |
-          # Build bundle.js and projects
           yarn build
 
       - name: Deploy
