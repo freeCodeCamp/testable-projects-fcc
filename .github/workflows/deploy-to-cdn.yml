@@ -49,8 +49,8 @@ jobs:
 
       - name: Deploy
         env:
-          CDN_USER: ${{ secrets.CDN_USER }}
-          CDN_API_KEY: ${{ secrets.CDN_API_KEY }}
+          CDN_REPO_USER: ${{ secrets.CDN_REPO_USER }}
+          CDN_REPO_PASSWORD: ${{ secrets.CDN_REPO_PASSWORD }}
           CDN_REPO_SLUG: ${{ secrets.CDN_REPO_SLUG }}
         run: |
           if [ -n "$CDN_API_KEY" ] && \
@@ -67,8 +67,8 @@ jobs:
             if [ -n "$(git status --porcelain)" ]
             then
               git add .
-              git -c user.name="$CDN_USER" -c user.email='camperbot@users.noreply.github.com' \
+              git -c user.name="$CDN_REPO_USER" -c user.email='camperbot@users.noreply.github.com' \
                 commit -m 'chore(travis-CI): update testable-projects-fcc bundle'
-              git push https://"$CDN_USER":"$CDN_API_KEY"@github.com/"$CDN_REPO_SLUG" master
+              git push https://"$CDN_REPO_USER":"$CDN_REPO_PASSWORD"@github.com/"$CDN_REPO_SLUG" master
             fi
           fi
