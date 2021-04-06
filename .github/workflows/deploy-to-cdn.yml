@@ -53,7 +53,7 @@ jobs:
           CDN_REPO_PASSWORD: ${{ secrets.CDN_REPO_PASSWORD }}
           CDN_REPO_SLUG: ${{ secrets.CDN_REPO_SLUG }}
         run: |
-          if [ -n "$CDN_API_KEY" ] && \
+          if [ -n "$CDN_REPO_PASSWORD" ] && \
             git log -1 --name-only -m --pretty='format:' | grep -q '^src/'
           then
             git clone https://github.com/"$CDN_REPO_SLUG"
