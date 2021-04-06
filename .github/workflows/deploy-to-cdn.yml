@@ -1,14 +1,13 @@
 name: Deploy to CDN Repo
 on:
-  pull_request:
+  push:
     branches:
-      - master
-    types: [closed]
+      - main
 
 jobs:
   deploy:
     name: Deploy
-    if: github.event.pull_request.merged == true
+    if: github.repository == 'freeCodeCamp/testable-projects-fcc'
     runs-on: ubuntu-18.04
 
     strategy:
