@@ -111,11 +111,12 @@ export default function createRandomQuoteMachineTests() {
       it(`When the #new-quote button is clicked, my quote machine
       should fetch a new quote and display it in the #text element.`, function () {
         let prevText;
+        const newQuoteBtn = document.getElementById('new-quote');
 
         this.timeout(requestTimeout);
 
         prevText = document.getElementById('text').innerText;
-        document.getElementById('new-quote').click();
+        newQuoteBtn.click();
 
         return new Promise((resolve) => {
           const intervalId = setInterval(() => {
@@ -123,19 +124,22 @@ export default function createRandomQuoteMachineTests() {
             if (newText !== prevText) {
               clearInterval(intervalId);
               resolve();
+            } else {
+              newQuoteBtn.click();
             }
-          }, 500);
+          }, 1000);
         });
       });
 
       it(`My quote machine should fetch the new quote's author when
       the #new-quote button is clicked and display it in the #author element.`, function () {
         let prevAuth;
+        const newQuoteBtn = document.getElementById('new-quote');
 
         this.timeout(requestTimeout);
 
         prevAuth = document.getElementById('author').innerText;
-        document.getElementById('new-quote').click();
+        newQuoteBtn.click();
 
         return new Promise((resolve) => {
           const intervalId = setInterval(() => {
@@ -143,8 +147,10 @@ export default function createRandomQuoteMachineTests() {
             if (newAuth !== prevAuth) {
               clearInterval(intervalId);
               resolve();
+            } else {
+              newQuoteBtn.click();
             }
-          }, 500);
+          }, 1000);
         });
       });
 
