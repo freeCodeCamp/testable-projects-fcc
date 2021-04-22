@@ -69,6 +69,6 @@ jobs:
               git add .
               git -c user.name="$CDN_REPO_USER" -c user.email='camperbot@users.noreply.github.com' \
                 commit -m 'chore(travis-CI): update testable-projects-fcc bundle'
-              git push https://"$CDN_REPO_USER":"$CDN_REPO_PASSWORD"@github.com/"$CDN_REPO_SLUG" master
+              git push https://"$CDN_REPO_USER":"$CDN_REPO_PASSWORD"@github.com/"$CDN_REPO_SLUG" main
             fi
           fi
