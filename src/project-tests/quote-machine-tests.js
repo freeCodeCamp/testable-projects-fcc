@@ -78,34 +78,46 @@ export default function createRandomQuoteMachineTests() {
 
       it(`On first load, my quote machine displays a random quote in
       the element with id="text".`, function () {
+        const text = document.getElementById('text');
+
         this.timeout(requestTimeout);
-        // Check every half second if the test passes. If we don't ever detect
-        // the success condition, the test will fail by timing out.
-        return new Promise((resolve) => {
-          const intervalId = setInterval(() => {
-            const text = document.getElementById('text');
-            if (text.innerText.length > 0) {
-              console.log('Clearing interval ' + intervalId);
-              clearInterval(intervalId);
-              resolve();
-            }
-          }, 500);
-        });
+
+        if (text) {
+          // Check every half second if the test passes. If we don't ever detect
+          // the success condition, the test will fail by timing out.
+          return new Promise((resolve) => {
+            const intervalId = setInterval(() => {
+              if (text.innerText.length > 0) {
+                console.log('Clearing interval ' + intervalId);
+                clearInterval(intervalId);
+                resolve();
+              }
+            }, 500);
+          });
+        } else {
+          return false;
+        }
       });
 
       it(`On first load, my quote machine displays the random quote's
       author in the element with id="author".`, function () {
+        const author = document.getElementById('author');
+
         this.timeout(requestTimeout);
-        return new Promise((resolve) => {
-          const intervalId = setInterval(() => {
-            const author = document.getElementById('author');
-            if (author.innerText.length > 0) {
-              console.log('Clearing interval ' + intervalId);
-              clearInterval(intervalId);
-              resolve();
-            }
-          }, 500);
-        });
+
+        if (author) {
+          return new Promise((resolve) => {
+            const intervalId = setInterval(() => {
+              if (author.innerText.length > 0) {
+                console.log('Clearing interval ' + intervalId);
+                clearInterval(intervalId);
+                resolve();
+              }
+            }, 500);
+          });
+        } else {
+          return false;
+        }
       });
 
       it(`When the #new-quote button is clicked, my quote machine
@@ -118,17 +130,21 @@ export default function createRandomQuoteMachineTests() {
         prevText = document.getElementById('text').innerText;
         newQuoteBtn.click();
 
-        return new Promise((resolve) => {
-          const intervalId = setInterval(() => {
-            const newText = document.getElementById('text').innerText;
-            if (newText !== prevText) {
-              clearInterval(intervalId);
-              resolve();
-            } else {
-              newQuoteBtn.click();
-            }
-          }, 1000);
-        });
+        if (prevText) {
+          return new Promise((resolve) => {
+            const intervalId = setInterval(() => {
+              const newText = document.getElementById('text').innerText;
+              if (newText !== prevText) {
+                clearInterval(intervalId);
+                resolve();
+              } else {
+                newQuoteBtn.click();
+              }
+            }, 1000);
+          });
+        } else {
+          return false;
+        }
       });
 
       it(`My quote machine should fetch the new quote's author when
@@ -141,17 +157,21 @@ export default function createRandomQuoteMachineTests() {
         prevAuth = document.getElementById('author').innerText;
         newQuoteBtn.click();
 
-        return new Promise((resolve) => {
-          const intervalId = setInterval(() => {
-            const newAuth = document.getElementById('author').innerText;
-            if (newAuth !== prevAuth) {
-              clearInterval(intervalId);
-              resolve();
-            } else {
-              newQuoteBtn.click();
-            }
-          }, 1000);
-        });
+        if (prevAuth) {
+          return new Promise((resolve) => {
+            const intervalId = setInterval(() => {
+              const newAuth = document.getElementById('author').innerText;
+              if (newAuth !== prevAuth) {
+                clearInterval(intervalId);
+                resolve();
+              } else {
+                newQuoteBtn.click();
+              }
+            }, 1000);
+          });
+        } else {
+          return false;
+        }
       });
 
       it(`I can tweet the current quote by clicking on the
