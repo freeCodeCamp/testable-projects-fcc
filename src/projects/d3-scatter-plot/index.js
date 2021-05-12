@@ -54,7 +54,7 @@ d3.json(url, function (error, data) {
   data.forEach(function (d) {
     d.Place = +d.Place;
     var parsedTime = d.Time.split(':');
-    d.Time = new Date(Date.UTC(1970, 0, 1, 0, parsedTime[0], parsedTime[1]));
+    d.Time = new Date(1970, 0, 1, 0, parsedTime[0], parsedTime[1]);
   });
 
   x.domain([
