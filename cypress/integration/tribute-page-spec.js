@@ -45,5 +45,4 @@ describe('tribute page test', () => {
   });
 
   // TODO: #Layout test
-
 });
