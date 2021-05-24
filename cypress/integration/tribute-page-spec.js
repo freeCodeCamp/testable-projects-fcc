@@ -1,7 +1,7 @@
 /* global cy */
 
 describe('tribute page test', () => {
-  it('should be possible to visit', () => {
+  it('Should be possible to visit', () => {
     cy.visit('/tribute-page');
   });
 
@@ -45,4 +45,5 @@ describe('tribute page test', () => {
   });
 
   // TODO: #Layout test
+
 });

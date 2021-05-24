@@ -78,6 +78,8 @@
     "prettier": "prettier \"**/*.{md,css,scss,yaml,yml,html}\"",
     "pretest": "yarn lint",
     "test": "mocha",
+    "cy:dev:test": "cypress run",
+    "cy:dev:watch": "cypress open",
     "serve": "live-server build",
     "start": "run-p start:* serve",
     "start:projects-tests": "webpack --watch",
