@@ -1,10 +1,10 @@
-/* globals marked, React, ReactDOM */
+/* globals marked, Prism, React, ReactDOM */
 /* eslint-disable react/prop-types, no-nested-ternary */
 
 // View a more complex version of this project with custom toolbar here:
 // https://codepen.io/no_stack_dub_sack/pen/JbPZvm?editors=0110
 
-// coded by @no-stack-dub-sack (github) / @no_stack_sub_sack (codepen)
+// coded by @no-stack-dub-sack (github) / @no_stack_sub_sack (Codepen)
 
 // eslint-disable-next-line no-unused-vars
 const projectName = 'markdown-previewer';
@@ -14,10 +14,14 @@ marked.setOptions({
   breaks: true
 });
 
-// INSERTS target="_blank" INTO HREF TAGS (required for codepen links)
+// INSERTS target="_blank" INTO HREF TAGS (required for Codepen links)
 const renderer = new marked.Renderer();
-renderer.link = function(href, title, text) {
+renderer.link = function (href, title, text) {
   return `<a target="_blank" href="${href}">${text}` + '</a>';
+};
+// Use Prism for code highlighting
+renderer.code = function (code) {
+  return `<pre><code class="language-javascript">${code}` + `</code></pre>\n`;
 };
 
 class App extends React.Component {
@@ -47,28 +51,31 @@ class App extends React.Component {
       previewMaximized: !this.state.previewMaximized
     });
   }
+  componentDidUpdate() {
+    Prism.highlightAll();
+  }
   render() {
     const classes = this.state.editorMaximized
       ? ['editorWrap maximized', 'previewWrap hide', 'fa fa-compress']
       : this.state.previewMaximized
-        ? ['editorWrap hide', 'previewWrap maximized', 'fa fa-compress']
-        : ['editorWrap', 'previewWrap', 'fa fa-arrows-alt'];
+      ? ['editorWrap hide', 'previewWrap maximized', 'fa fa-compress']
+      : ['editorWrap', 'previewWrap', 'fa fa-arrows-alt'];
     return (
       <div>
         <div className={classes[0]}>
           <Toolbar
             icon={classes[2]}
             onClick={this.handleEditorMaximize}
-            text='Editor'
+            text="Editor"
           />
           <Editor markdown={this.state.markdown} onChange={this.handleChange} />
         </div>
-        <div className='converter' />
+        <div className="converter" />
         <div className={classes[1]}>
           <Toolbar
             icon={classes[2]}
             onClick={this.handlePreviewMaximize}
-            text='Previewer'
+            text="Previewer"
           />
           <Preview markdown={this.state.markdown} />
         </div>
@@ -77,34 +84,34 @@ class App extends React.Component {
   }
 }
 
-const Toolbar = props => {
+const Toolbar = (props) => {
   return (
-    <div className='toolbar'>
-      <i className='fa fa-free-code-camp' title='no-stack-dub-sack' />
+    <div className="toolbar">
+      <i className="fa fa-free-code-camp" title="no-stack-dub-sack" />
       {props.text}
       <i className={props.icon} onClick={props.onClick} />
     </div>
   );
 };
 
-const Editor = props => {
+const Editor = (props) => {
   return (
     <textarea
-      id='editor'
+      id="editor"
       onChange={props.onChange}
-      type='text'
+      type="text"
       value={props.markdown}
     />
   );
 };
 
-const Preview = props => {
+const Preview = (props) => {
   return (
     <div
       dangerouslySetInnerHTML={{
         __html: marked(props.markdown, { renderer: renderer })
       }}
-      id='preview'
+      id="preview"
     />
   );
 };
@@ -147,11 +154,11 @@ And here. | Okay. | I think we get it.
         - That look like this.
 
 
-1. And there are numbererd lists too.
+1. And there are numbered lists too.
 1. Use just 1s if you want!
 1. And last but not least, let's not forget embedded images:
 
-![React Logo w/ Text](https://goo.gl/Umyytc)
+![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
 `;
 
 ReactDOM.render(<App />, document.getElementById('app'));
