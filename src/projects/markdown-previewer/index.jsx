@@ -11,17 +11,16 @@ const projectName = 'markdown-previewer';
 
 // ALLOWS LINE BREAKS WITH RETURN BUTTON
 marked.setOptions({
-  breaks: true
+  breaks: true,
+  highlight: function (code) {
+    return Prism.highlight(code, Prism.languages.javascript, 'javascript');
+  }
 });
 
 // INSERTS target="_blank" INTO HREF TAGS (required for Codepen links)
 const renderer = new marked.Renderer();
 renderer.link = function (href, title, text) {
-  return `<a target="_blank" href="${href}">${text}` + '</a>';
-};
-// Use Prism for code highlighting
-renderer.code = function (code) {
-  return `<pre><code class="language-javascript">${code}` + `</code></pre>\n`;
+  return `<a target="_blank" href="${href}">${text}</a>`;
 };
 
 class App extends React.Component {
@@ -50,9 +49,6 @@ class App extends React.Component {
     this.setState({
       previewMaximized: !this.state.previewMaximized
     });
-  }
-  componentDidUpdate() {
-    Prism.highlightAll();
   }
   render() {
     const classes = this.state.editorMaximized
@@ -138,7 +134,7 @@ Or _italic_.
 Or... wait for it... **_both!_**
 And feel free to go crazy ~~crossing stuff out~~.
 
-There's also [links](https://www.freecodecamp.com), and
+There's also [links](https://www.freecodecamp.org), and
 > Block Quotes!
 
 And if you want to get really crazy, even tables:
