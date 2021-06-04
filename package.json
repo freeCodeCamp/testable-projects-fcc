@@ -59,7 +59,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.0.5",
     "pug": "^3.0.0",
-    "selenium-webdriver": "4.0.0-beta.2",
+    "selenium-webdriver": "4.0.0-beta.3",
     "through2": "3.0.1",
     "vinyl": "2.2.0",
     "webpack": "4.43.0",
