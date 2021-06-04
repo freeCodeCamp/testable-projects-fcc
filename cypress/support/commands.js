@@ -1,25 +1,36 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+/* global cy Cypress */
+
+Cypress.Commands.add('createProjectFixtures', () => {
+  cy.task('createProjectPaths');
+});
+
+Cypress.Commands.add('checkProjectTests', (projectPath) => {
+  cy.visit(projectPath);
+
+  cy.get('#fcc_test_suite_wrapper')
+    .shadow()
+    .find('#fcc_test_message-box-rerun-button')
+    .click();
+
+  cy.get('#fcc_test_suite_wrapper')
+    .shadow()
+    .find('.fcc_test_btn-done', { timeout: 60000 })
+    .click();
+
+  cy.get('#fcc_test_suite_wrapper')
+    .shadow()
+    .then(($wrapper) => {
+      if ($wrapper.find('.test.fail').length) {
+        cy.wrap($wrapper)
+          .find('.test.fail')
+          .each(($el) => {
+            const text = $el.get(0).innerText;
+            cy.task('log', text);
+          })
+          .then(() => {
+            // fail Cypress test
+            throw new Error();
+          });
+      }
+    });
+});

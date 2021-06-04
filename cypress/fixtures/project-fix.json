@@ -1,0 +1,19 @@
+{
+  "projects": {
+    "25-5-clock": "/25-5-clock",
+    "d3-bar-chart": "/d3-bar-chart",
+    "d3-choropleth": "/d3-choropleth",
+    "d3-heat-map": "/d3-heat-map",
+    "d3-scatter-plot": "/d3-scatter-plot",
+    "d3-tree-map": "/d3-tree-map",
+    "drum-machine": "/drum-machine",
+    "javascript-calculator": "/javascript-calculator",
+    "markdown-previewer": "/markdown-previewer",
+    "portfolio": "/portfolio",
+    "product-landing-page": "/product-landing-page",
+    "random-quote-machine": "/random-quote-machine",
+    "survey-form": "/survey-form",
+    "technical-documentation-page": "/technical-documentation-page",
+    "tribute-page": "/tribute-page"
+  }
+}
