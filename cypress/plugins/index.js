@@ -2,7 +2,7 @@
 const { writeFileSync, readdirSync } = require('fs');
 const path = require('path');
 
-function createProjectFixtures() {
+export function createProjectFixtures() {
   const projectDir = readdirSync(
     path.join(__dirname, '../../src/projects'),
     'utf-8'

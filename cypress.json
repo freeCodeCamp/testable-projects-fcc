@@ -1,3 +1,7 @@
 {
-    "baseUrl": "http://127.0.0.1:8080/pages"
+    "baseUrl": "http://127.0.0.1:8080/pages",
+    "retries": {
+        "runMode": 3,
+        "openMode": 0
+    }
 }
