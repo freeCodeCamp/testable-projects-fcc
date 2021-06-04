@@ -34,7 +34,7 @@
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "chromedriver": "90.0.1",
-    "commitizen": "4.1.2",
+    "commitizen": "4.2.4",
     "css-loader": "3.5.3",
     "cz-customizable": "6.2.0",
     "dotenv": "8.2.0",
