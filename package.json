@@ -43,7 +43,7 @@
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-prefer-object-spread": "1.2.1",
     "eslint-plugin-prettier": "3.4.0",
-    "eslint-plugin-react": "7.20.0",
+    "eslint-plugin-react": "7.24.0",
     "geckodriver": "1.22.3",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
