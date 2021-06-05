@@ -19,7 +19,7 @@
     "@babel/runtime": "^7.10.2",
     "chai": "^4.2.0",
     "jquery": "^3.5.1",
-    "mocha": "^7.2.0"
+    "mocha": "^8.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
