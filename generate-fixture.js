@@ -1,3 +1,3 @@
-const { createProjectFixtures } = require('./cypress/plugins/index')
+const { createProjectFixtures } = require('./cypress/plugins/index');
 
 createProjectFixtures();
