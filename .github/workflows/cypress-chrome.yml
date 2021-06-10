@@ -1,8 +1,6 @@
 name: Cypress push and pull
 
-on:
-  push:
-  pull:
+on: [push, pull_request]
 
 jobs:
   cypress-run:
