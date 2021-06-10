@@ -36,6 +36,7 @@
     "chromedriver": "90.0.1",
     "commitizen": "4.2.4",
     "css-loader": "3.6.0",
+    "cypress": "^7.3.0",
     "cz-customizable": "6.3.0",
     "dotenv": "8.6.0",
     "eslint": "7.28.0",
