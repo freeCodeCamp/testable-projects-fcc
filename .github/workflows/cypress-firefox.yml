@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-18.04
   steps:
 
-  name: update test fixture
-  run: nmp run pre:cy:genfix
+    name: update test fixture
+    run: nmp run pre:cy:genfix
 
-  name: Cypress run
-  uses: actions/checkout@v2
-  uses: cypress-io/github-action@v2
-  with:
-    build: npm run serve
-    wait-on: http://127.0.0.1:8080
-    wait-on-timeout: 1200
-    browser: firefox
+    name: Cypress run
+    uses: actions/checkout@v2
+    uses: cypress-io/github-action@v2
+    with:
+      build: npm run serve
+      wait-on: http://127.0.0.1:8080
+      wait-on-timeout: 1200
+      browser: firefox
