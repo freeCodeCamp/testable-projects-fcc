@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   cypress-run:
-    name: Test
+    name: chrome
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
