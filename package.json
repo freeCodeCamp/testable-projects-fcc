@@ -79,7 +79,7 @@
     "prettier": "prettier \"**/*.{md,css,scss,yaml,yml,html}\"",
     "pretest": "yarn lint",
     "test": "mocha",
-    "pre:cy:genfix": "node ./generate-fixtue.js",
+    "pre:cy:genfix": "node ./generate-fixture.js",
     "cy:dev:test": "cypress run",
     "cy:dev:watch": "cypress open",
     "serve": "live-server build",
