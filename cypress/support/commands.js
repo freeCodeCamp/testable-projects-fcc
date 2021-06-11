@@ -1,9 +1,5 @@
 /* global cy Cypress */
 
-Cypress.Commands.add('createProjectFixtures', () => {
-  cy.task('createProjectPaths');
-});
-
 Cypress.Commands.add('checkProjectTests', (projectPath) => {
   cy.visit(projectPath);
 
