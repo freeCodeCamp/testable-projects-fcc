@@ -16,7 +16,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: npm run serve
+          start: npm run serve
           wait-on: http://127.0.0.1:8080
           wait-on-timeout: 1200
           browser: firefox
