@@ -14,7 +14,7 @@ function createProjectFixtures() {
     if (project === 'local-test' || project === 'index.pug') {
       return;
     }
-    projectObject.projects[project] = '/' + project;
+    projectObject.projects[project] = '/pages/' + project;
   });
 
   writeFileSync(
