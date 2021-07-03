@@ -55,7 +55,7 @@
     "jsdom": "16.6.0",
     "lint-staged": "10.5.4",
     "live-server": "1.2.1",
-    "node-sass": "4.14.1",
+    "node-sass": "6.0.1",
     "npm-run-all": "4.1.5",
     "prettier": "2.0.5",
     "pug": "^3.0.0",
