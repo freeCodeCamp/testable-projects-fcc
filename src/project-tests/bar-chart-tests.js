@@ -181,7 +181,7 @@ export default function createBarChartTests() {
         const ticksCollection = axis.querySelectorAll('.tick');
         const shapeAttr = 'data-date';
         // options are 'minute', 'month', 'thousand', and 'year'
-        const dataType = 'year';
+        const dataType = 'year' || Date;
         // what vertex of shape to measure against the axis
         // options are 'topLeft' and 'center'
         const shapeAlign = 'topLeft';
