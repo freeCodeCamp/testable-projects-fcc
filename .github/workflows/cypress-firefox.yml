@@ -10,9 +10,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Yarn
-        run: |
-          npm install -g yarn
 
       - name: Get yarn Cache Directory Path
         id: yarn-cache-dir-path
@@ -42,4 +39,3 @@ jobs:
           # wait-on-timeout: 1200
           browser: firefox
           headless: true
-
