@@ -18,7 +18,9 @@ import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-
+/* global Cypress */
+/* eslint-disable no-unused-vars */
+/* eslint-disable handle-callback-err */
 Cypress.on('uncaught:exception', (err, runnable) => {
-    return false;
+  return false;
 });

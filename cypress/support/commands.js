@@ -24,9 +24,8 @@ Cypress.Commands.add('checkProjectTests', (projectPath) => {
             cy.task('log', text).then((result) => {
               // fail Cypress test
               throw new Error('Error: ' + result);
-            });;
-          })
-          
+            });
+          });
       }
     });
 });
