@@ -10,10 +10,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Yarn
-        run: |
-          npm install -g yarn
-
       - name: Get yarn Cache Directory Path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -28,7 +24,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          yarn install && apt update && apt install -y firefox libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+          yarn install
 
       - name: update test fixture
         run: yarn pre:cy:genfix
@@ -39,7 +35,5 @@ jobs:
           build: yarn build
           start: yarn start
           wait-on: http://127.0.0.1:8080
-          # wait-on-timeout: 1200
           browser: chrome
           headless: true
-
