@@ -1,6 +1,11 @@
 /* global cy Cypress */
 
 Cypress.Commands.add('checkProjectTests', (projectPath) => {
+  cy.viewport(
+    Number(process.env.BROWSER_MAX_WIDTH) || 1600,
+    Number(process.env.BROWSER_MAX_HEIGHT) || 900
+  );
+
   cy.visit(projectPath);
 
   // Wait for the page to finish loading. In some cases, just for example the
