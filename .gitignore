@@ -23,6 +23,7 @@ coverage
 # Cypress.io
 cypress/videos
 cypress/screenshots
+cypress/fixtures/project-fix.json
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt

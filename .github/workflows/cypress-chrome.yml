@@ -27,7 +27,7 @@ jobs:
           yarn install
 
       - name: update test fixture
-        run: yarn pre:cy:genfix
+        run: yarn cy:gen:fix
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
