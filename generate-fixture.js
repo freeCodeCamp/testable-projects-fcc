@@ -1,4 +1,4 @@
-const { writeFileSync, readdirSync } = require('fs');
+const { writeFileSync, readdirSync, mkdir } = require('fs');
 const path = require('path');
 
 function createProjectFixtures() {
@@ -8,6 +8,12 @@ function createProjectFixtures() {
   );
 
   let projectObject = {};
+
+  mkdir(path.join(__dirname, './cypress/fixtures/'), (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
   projectDir.forEach((project) => {
     // Remove excessive files
