@@ -7,14 +7,14 @@ function createProjectFixtures() {
     'utf-8'
   );
 
-  let projectObject = { projects: {} };
+  let projectObject = {};
 
   projectDir.forEach((project) => {
     // Remove excessive files
     if (project === 'local-test' || project === 'index.pug') {
       return;
     }
-    projectObject.projects[project] = '/pages/' + project;
+    projectObject[project] = '/pages/' + project;
   });
 
   writeFileSync(
