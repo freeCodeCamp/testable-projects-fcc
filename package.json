@@ -45,7 +45,7 @@
     "eslint-plugin-prefer-object-spread": "1.2.1",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
-    "geckodriver": "1.22.3",
+    "geckodriver": "2.0.1",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
     "gulp-concat": "2.6.1",
