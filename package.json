@@ -33,7 +33,7 @@
     "@freecodecamp/eslint-config": "2.0.2",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
-    "chromedriver": "91.0.1",
+    "chromedriver": "92.0.0",
     "commitizen": "4.2.4",
     "css-loader": "3.6.0",
     "cypress": "8.1.0",
