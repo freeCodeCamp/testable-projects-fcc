@@ -97,7 +97,7 @@ export default function createRandomQuoteMachineTests() {
             });
           });
         } else {
-          assert.fail('element with id="text" not found');
+          assert.exists(text, 'element with id="text" not found');
         }
       });
 
@@ -120,7 +120,7 @@ export default function createRandomQuoteMachineTests() {
             });
           });
         } else {
-          assert.fail('element with id="author" not found');
+          assert.exists(author, 'element with id="author" not found');
         }
       });
 
