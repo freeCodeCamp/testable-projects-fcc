@@ -79,6 +79,14 @@ export default function createRandomQuoteMachineTests() {
       it(`On first load, my quote machine displays a random quote in
       the element with id="text".`, function () {
         const text = document.getElementById('text');
+        assert.isNotNull(text, '#text is not defined ');
+
+        const textContentLength = text.innerText.length;
+        assert.isAbove(
+          textContentLength,
+          0,
+          'element with id="text" should contain a random quote'
+        );
 
         this.timeout(requestTimeout);
 
@@ -96,14 +104,20 @@ export default function createRandomQuoteMachineTests() {
               }, 500);
             });
           });
-        } else {
-          assert.exists(text, 'element with id="text" not found');
         }
       });
 
       it(`On first load, my quote machine displays the random quote's
       author in the element with id="author".`, function () {
         const author = document.getElementById('author');
+        assert.isNotNull(author, '#author is not defined ');
+
+        const authorContentLength = author.innerText.length;
+        assert.isAbove(
+          authorContentLength,
+          0,
+          'element with id="author" should contain an authors name'
+        );
 
         this.timeout(requestTimeout);
 
@@ -119,20 +133,27 @@ export default function createRandomQuoteMachineTests() {
               }, 500);
             });
           });
-        } else {
-          assert.exists(author, 'element with id="author" not found');
         }
       });
 
       it(`When the #new-quote button is clicked, my quote machine
       should fetch a new quote and display it in the #text element.`, function () {
         let prevText;
+
         const newQuoteBtn = document.getElementById('new-quote');
+        newQuoteBtn.click();
 
         this.timeout(requestTimeout);
 
+        const text = document.getElementById('text');
+        assert.isNotNull(text, '#text is not defined ');
+
         prevText = document.getElementById('text').innerText;
-        newQuoteBtn.click();
+        assert.isAbove(
+          prevText.length,
+          0,
+          'element with id="text" should contain a random quote'
+        );
 
         if (prevText) {
           assert(() => {
@@ -155,12 +176,21 @@ export default function createRandomQuoteMachineTests() {
       it(`My quote machine should fetch the new quote's author when
       the #new-quote button is clicked and display it in the #author element.`, function () {
         let prevAuth;
+
         const newQuoteBtn = document.getElementById('new-quote');
+        newQuoteBtn.click();
 
         this.timeout(requestTimeout);
 
+        const author = document.getElementById('author');
+        assert.isNotNull(author, '#author is not defined ');
+
         prevAuth = document.getElementById('author').innerText;
-        newQuoteBtn.click();
+        assert.isAbove(
+          prevAuth.length,
+          0,
+          'element with id="author" should contain an authors name'
+        );
 
         if (prevAuth) {
           assert(() => {
