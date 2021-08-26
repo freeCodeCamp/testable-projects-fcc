@@ -87,7 +87,7 @@
     "start:projects-tests": "webpack --watch",
     "start:projects": "gulp",
     "build": "run-p build:*",
-    "build:projects-tests": "webpack --env.production",
+    "build:projects-tests": "webpack --env production",
     "build:projects": "gulp build"
   },
   "config": {
