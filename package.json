@@ -64,7 +64,7 @@
     "through2": "4.0.2",
     "vinyl": "2.2.1",
     "webpack": "4.46.0",
-    "webpack-cli": "3.3.12",
+    "webpack-cli": "4.8.0",
     "webpack-dev-server": "4.0.0"
   },
   "scripts": {
@@ -87,7 +87,7 @@
     "start:projects-tests": "webpack --watch",
     "start:projects": "gulp",
     "build": "run-p build:*",
-    "build:projects-tests": "webpack --env.production",
+    "build:projects-tests": "webpack --env production",
     "build:projects": "gulp build"
   },
   "config": {
