@@ -7,11 +7,9 @@ const Vinyl = require('vinyl');
 const concat = require('gulp-concat');
 const watch = require('gulp-watch');
 const babel = require('gulp-babel');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('node-sass'));
 
 const pug = require('pug');
-
-sass.compiler = require('node-sass');
 
 const compileHtml = pug.compileFile('./src/projects/index.pug');
 
