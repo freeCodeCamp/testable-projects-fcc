@@ -349,7 +349,9 @@ function callback(data) {
     })
     .attr('x', (d) => legendX(d[0]))
     .attr('y', 0)
-    .attr('width', (d) => legendX(d[1]) - legendX(d[0]))
+    .attr('width', (d) =>
+      d[0] && d[1] ? legendX(d[1]) - legendX(d[0]) : legendX(null)
+    )
     .attr('height', legendHeight);
 
   legend
@@ -384,7 +386,6 @@ function callback(data) {
       return legendThreshold(data.baseTemperature + d.variance);
     })
     .on('mouseover', function (event, d) {
-      console.log(this);
       var date = new Date(d.year, d.month);
       var str =
         "<span class='date'>" +
