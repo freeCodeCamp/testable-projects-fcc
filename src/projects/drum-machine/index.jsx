@@ -191,13 +191,13 @@ class DrumPad extends React.Component {
   render() {
     return (
       <div
-        className='drum-pad'
+        className="drum-pad"
         id={this.props.clipId}
         onClick={this.playSound}
         style={this.state.padStyle}
-        >
+      >
         <audio
-          className='clip'
+          className="clip"
           id={this.props.keyTrigger}
           src={this.props.clip}
         />
@@ -230,7 +230,7 @@ class PadBank extends React.Component {
       padBank = this.props.currentPadBank.map((drumObj, i, padBankArr) => {
         return (
           <DrumPad
-            clip='#'
+            clip="#"
             clipId={padBankArr[i].id}
             keyCode={padBankArr[i].keyCode}
             keyTrigger={padBankArr[i].keyTrigger}
@@ -240,7 +240,7 @@ class PadBank extends React.Component {
         );
       });
     }
-    return <div className='pad-bank'>{padBank}</div>;
+    return <div className="pad-bank">{padBank}</div>;
   }
 }
 
@@ -322,12 +322,12 @@ class App extends React.Component {
           };
     {
       const clips = [].slice.call(document.getElementsByClassName('clip'));
-      clips.forEach(sound => {
+      clips.forEach((sound) => {
         sound.volume = this.state.sliderVal;
       });
     }
     return (
-      <div className='inner-container' id='drum-machine'>
+      <div className="inner-container" id="drum-machine">
         <PadBank
           clipVolume={this.state.sliderVal}
           currentPadBank={this.state.currentPadBank}
@@ -335,33 +335,33 @@ class App extends React.Component {
           updateDisplay={this.displayClipName}
         />
 
-        <div className='logo'>
-          <div className='inner-logo '>{'FCC' + String.fromCharCode(160)}</div>
-          <i className='inner-logo fa fa-free-code-camp' />
+        <div className="logo">
+          <div className="inner-logo ">{'FCC' + String.fromCharCode(160)}</div>
+          <i className="inner-logo fa fa-free-code-camp" />
         </div>
 
-        <div className='controls-container'>
-          <div className='control'>
+        <div className="controls-container">
+          <div className="control">
             <p>Power</p>
-            <div className='select' onClick={this.powerControl}>
-              <div className='inner' style={powerSlider} />
+            <div className="select" onClick={this.powerControl}>
+              <div className="inner" style={powerSlider} />
             </div>
           </div>
-          <p id='display'>{this.state.display}</p>
-          <div className='volume-slider'>
+          <p id="display">{this.state.display}</p>
+          <div className="volume-slider">
             <input
-              max='1'
-              min='0'
+              max="1"
+              min="0"
               onChange={this.adjustVolume}
-              step='0.01'
-              type='range'
+              step="0.01"
+              type="range"
               value={this.state.sliderVal}
             />
           </div>
-          <div className='control'>
+          <div className="control">
             <p>Bank</p>
-            <div className='select' onClick={this.selectBank}>
-              <div className='inner' style={bankSlider} />
+            <div className="select" onClick={this.selectBank}>
+              <div className="inner" style={bankSlider} />
             </div>
           </div>
         </div>
