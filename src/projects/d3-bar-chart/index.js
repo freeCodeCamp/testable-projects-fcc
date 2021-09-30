@@ -29,8 +29,9 @@ var svgContainer = d3
   .attr('height', height + 60);
 
 d3.json(
-  'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json',
-  function (e, data) {
+  'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
+)
+  .then((data) => {
     svgContainer
       .append('text')
       .attr('transform', 'rotate(-90)')
@@ -127,9 +128,14 @@ d3.json(
       .attr('height', function (d) {
         return d;
       })
+      .attr('index', (d, i) => i)
       .style('fill', '#33adff')
       .attr('transform', 'translate(60, 0)')
-      .on('mouseover', function (d, i) {
+      .on('mouseover', function (event, d) {
+        // d or datum is the height of the
+        // current rect
+        var i = this.getAttribute('index');
+
         overlay
           .transition()
           .duration(0)
@@ -157,5 +163,5 @@ d3.json(
         tooltip.transition().duration(200).style('opacity', 0);
         overlay.transition().duration(200).style('opacity', 0);
       });
-  }
-);
+  })
+  .catch((e) => console.log(e));

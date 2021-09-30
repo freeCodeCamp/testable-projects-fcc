@@ -53,7 +53,7 @@ g.selectAll('rect')
     return x(d[0]);
   })
   .attr('width', function (d) {
-    return x(d[1]) - x(d[0]);
+    return d[0] && d[1] ? x(d[1]) - x(d[0]) : x(null);
   })
   .attr('fill', function (d) {
     return color(d[0]);
@@ -84,16 +84,11 @@ const EDUCATION_FILE =
 const COUNTY_FILE =
   'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json';
 
-d3.queue()
-  .defer(d3.json, COUNTY_FILE)
-  .defer(d3.json, EDUCATION_FILE)
-  .await(ready);
+Promise.all([d3.json(COUNTY_FILE), d3.json(EDUCATION_FILE)])
+  .then((data) => ready(data[0], data[1]))
+  .catch((err) => console.log(err));
 
-function ready(error, us, education) {
-  if (error) {
-    throw error;
-  }
-
+function ready(us, education) {
   svg
     .append('g')
     .attr('class', 'counties')
@@ -127,7 +122,7 @@ function ready(error, us, education) {
       return color(0);
     })
     .attr('d', path)
-    .on('mouseover', function (d) {
+    .on('mouseover', function (event, d) {
       tooltip.style('opacity', 0.9);
       tooltip
         .html(function () {
@@ -157,8 +152,8 @@ function ready(error, us, education) {
           // could not find a matching fips id in the data
           return 0;
         })
-        .style('left', d3.event.pageX + 10 + 'px')
-        .style('top', d3.event.pageY - 28 + 'px');
+        .style('left', event.pageX + 10 + 'px')
+        .style('top', event.pageY - 28 + 'px');
     })
     .on('mouseout', function () {
       tooltip.style('opacity', 0);
