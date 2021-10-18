@@ -122,14 +122,14 @@ const bankTwo = [
 
 const activeStyle = {
   backgroundColor: 'orange',
-  boxShadow: '0 3px orange',
-  height: 77,
+  boxShadow: '0 -3px orange',
   marginTop: 13
 };
 
 const inactiveStyle = {
   backgroundColor: 'grey',
   marginTop: 10,
+  marginBottom: 3,
   boxShadow: '3px 3px 5px black'
 };
 
@@ -172,7 +172,6 @@ class DrumPad extends React.Component {
     } else {
       this.setState({
         padStyle: {
-          height: 77,
           marginTop: 13,
           backgroundColor: 'grey',
           boxShadow: '0 3px grey'

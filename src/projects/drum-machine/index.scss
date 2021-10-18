@@ -26,7 +26,6 @@ body {
   background-color: lighten(grey, 20%);
   .pad-bank {
     width: $padWidth * 3 + 32;
-    height: $padHeight * 3 + 32;
     display: inline-block;
     margin: 20px;
     .drum-pad {
