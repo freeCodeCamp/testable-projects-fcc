@@ -205,8 +205,8 @@ export default function createTechnicalDocsPageTests() {
         const mainSectionQty = document.querySelectorAll(
           '#main-doc .main-section'
         ).length;
-        const navLinkQty = document.querySelectorAll('#navbar .nav-link')
-          .length;
+        const navLinkQty =
+          document.querySelectorAll('#navbar .nav-link').length;
         const typeQty = classArray('nav-link').filter(
           (el) => el.nodeName === 'A'
         );

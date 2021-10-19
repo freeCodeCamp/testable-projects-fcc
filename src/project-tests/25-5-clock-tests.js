@@ -253,8 +253,8 @@ export default function create25Plus5ClockTests() {
         await timeout(1500);
 
         resetTimer();
-        const timerLabelAfterReset = document.getElementById('timer-label')
-          .innerText;
+        const timerLabelAfterReset =
+          document.getElementById('timer-label').innerText;
         const secondsAfterReset = getSeconds(
           document.getElementById('time-left').innerText
         );

@@ -63,8 +63,8 @@ export default function createTributePageTests() {
           1,
           'Element is not a child of id="img-div" '
         );
-        const captionContents = document.getElementById('img-caption')
-          .innerText;
+        const captionContents =
+          document.getElementById('img-caption').innerText;
         assert.isAbove(
           captionContents.length,
           0,
