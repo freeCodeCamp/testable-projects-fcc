@@ -32,7 +32,7 @@
     "@commitlint/travis-cli": "13.2.1",
     "@freecodecamp/eslint-config": "2.0.2",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "chromedriver": "94.0.0",
     "commitizen": "4.2.4",
     "css-loader": "3.6.0",
