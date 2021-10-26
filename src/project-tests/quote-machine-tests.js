@@ -139,9 +139,7 @@ export default function createRandomQuoteMachineTests() {
       it(`When the #new-quote button is clicked, my quote machine
       should fetch a new quote and display it in the #text element.`, function () {
         let prevText;
-
         const newQuoteBtn = document.getElementById('new-quote');
-        newQuoteBtn.click();
 
         this.timeout(requestTimeout);
 
@@ -149,6 +147,8 @@ export default function createRandomQuoteMachineTests() {
         assert.isNotNull(text, '#text is not defined ');
 
         prevText = document.getElementById('text').innerText;
+        newQuoteBtn.click();
+
         assert.isAbove(
           prevText.length,
           0,
@@ -176,9 +176,7 @@ export default function createRandomQuoteMachineTests() {
       it(`My quote machine should fetch the new quote's author when
       the #new-quote button is clicked and display it in the #author element.`, function () {
         let prevAuth;
-
         const newQuoteBtn = document.getElementById('new-quote');
-        newQuoteBtn.click();
 
         this.timeout(requestTimeout);
 
@@ -186,6 +184,8 @@ export default function createRandomQuoteMachineTests() {
         assert.isNotNull(author, '#author is not defined ');
 
         prevAuth = document.getElementById('author').innerText;
+        newQuoteBtn.click();
+
         assert.isAbove(
           prevAuth.length,
           0,
