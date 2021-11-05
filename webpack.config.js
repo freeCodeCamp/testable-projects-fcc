@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = function (env = {}) {
   const __DEV__ = env.production ? false : true;
@@ -32,6 +33,20 @@ module.exports = function (env = {}) {
           loader: 'html-loader'
         }
       ]
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer']
+      }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser'
+      })
+    ],
+    resolve: {
+      fallback: {
+        path: require.resolve('path-browserify'),
+        util: require.resolve('util/')
+      }
     }
   };
 };
