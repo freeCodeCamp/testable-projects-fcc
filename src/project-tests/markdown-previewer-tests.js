@@ -33,9 +33,14 @@ export default function createMarkdownPreviewerTests() {
       bold: false
     };
 
+    const libraryVersion = typeof marked;
+    if (libraryVersion !== 'undefined') {
+      findMarkdownMatches(markdownOnLoad || '', libraryVersion);
+    }
+
     // Parse the editor value using markedjs and override some of the renderers
     // so we can easily detect what markup was used.
-    function findMarkdownMatches(markdown) {
+    function findMarkdownMatches(markdown, libraryVersion) {
       const renderer = new marked.Renderer();
 
       renderer.heading = function (text, level) {
@@ -85,13 +90,11 @@ export default function createMarkdownPreviewerTests() {
         return '';
       };
 
-      marked(markdown, { renderer });
-    }
-
-    // At the beginning of the project, the Camper will might not have added
-    // the markedjs library yet.
-    if (typeof marked === 'function') {
-      findMarkdownMatches(markdownOnLoad || '');
+      if (libraryVersion === 'function') {
+        marked(markdown, { renderer });
+      } else if (libraryVersion === 'object') {
+        marked.parse(markdown, { renderer });
+      }
     }
 
     // As of React 15.6, we need a workaround that allows continued use of

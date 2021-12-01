@@ -332,7 +332,7 @@ function loadMarked(callback) {
   if (typeof marked === 'undefined') {
     const markedCDN = document.createElement('script');
     markedCDN.src =
-      'https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.0/marked.min.js';
+      'https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js';
     markedCDN.onload = callback;
     shadow.appendChild(markedCDN);
   } else {
