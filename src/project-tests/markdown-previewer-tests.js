@@ -1,5 +1,4 @@
-/* global marked */
-
+import { marked } from 'marked';
 import { assert } from 'chai';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { decodeHtml } from '../utils/element-utils';
@@ -88,9 +87,7 @@ export default function createMarkdownPreviewerTests() {
       marked(markdown, { renderer });
     }
 
-    // At the beginning of the project, the Camper will might not have added
-    // the markedjs library yet.
-    if (typeof marked === 'function') {
+    if (marked) {
       findMarkdownMatches(markdownOnLoad || '');
     }
 

@@ -321,23 +321,7 @@ export function FCCRerunTests() {
     ? 'Select test suite from dropdown above'
     : 'CTRL + SHIFT + T';
   button.className = 'fcc_foldout_button fcc_test_btn-default';
-  if (projectNameLocal === 'markdown-previewer') {
-    loadMarked(FCCInitTestRunner);
-  } else {
-    FCCInitTestRunner();
-  }
-}
-
-function loadMarked(callback) {
-  if (typeof marked === 'undefined') {
-    const markedCDN = document.createElement('script');
-    markedCDN.src =
-      'https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.0/marked.min.js';
-    markedCDN.onload = callback;
-    shadow.appendChild(markedCDN);
-  } else {
-    callback();
-  }
+  FCCInitTestRunner();
 }
 
 // Init tests.
