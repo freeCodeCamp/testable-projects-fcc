@@ -186,7 +186,7 @@ export default function createProductLandingPageTests() {
         );
       });
 
-      it(`Within the form, there is a submit <input> with
+      it(`Within the form, there is a submit button with
       corresponding id="submit".`, function () {
         const submitButton = document.getElementById('submit');
         assert.isNotNull(submitButton, '#submit is not defined ');
@@ -195,15 +195,15 @@ export default function createProductLandingPageTests() {
           1,
           '#submit should be a child of the #form element '
         );
-        assert.strictEqual(
-          submitButton.nodeName,
-          'INPUT',
-          '#submit should be an <input> element '
+        assert(
+          submitButton.nodeName === 'BUTTON' ||
+            submitButton.nodeName === 'INPUT',
+          '#submit should be an <input> or <button> element '
         );
         assert.strictEqual(
           submitButton.type,
           'submit',
-          'The #submit element input type is incorrect '
+          'The #submit element type attribute is incorrect '
         );
       });
 
