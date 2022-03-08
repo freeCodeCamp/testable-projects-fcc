@@ -1,12 +1,3 @@
 {
-  "labels": ["renovate"],
-  "extends": ["config:base"],
-  "branchConcurrentLimit": 20,
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    }
-  ]
+  "extends": ["github>freecodecamp/renovate-config"]
 }
