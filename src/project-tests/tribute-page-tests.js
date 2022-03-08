@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import $ from 'jquery';
 import { responsiveWebDesignStack } from '../utils/shared-test-strings';
 
 export default function createTributePageTests() {
@@ -47,9 +46,8 @@ export default function createTributePageTests() {
       it(`Within the "img-div" element, I should see an <img> element
       with a corresponding id="image".`, function () {
         assert.isNotNull(document.getElementById('image'));
-        assert.strictEqual(
-          $('#img-div').find('#image').length,
-          1,
+        assert.isNotNull(
+          document.querySelector('#img-div #image'),
           'Element is not a child of id="img-div" '
         );
       });
@@ -58,9 +56,8 @@ export default function createTributePageTests() {
       or <div> element with a corresponding id="img-caption" that contains
       textual content describing the image shown in "img-div".`, function () {
         assert.isNotNull(document.getElementById('img-caption'));
-        assert.strictEqual(
-          $('#img-div').find('#img-caption').length,
-          1,
+        assert.isNotNull(
+          document.querySelector('#img-div #img-caption'),
           'Element is not a child of id="img-div" '
         );
         const captionContents =

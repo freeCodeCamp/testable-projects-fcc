@@ -1,22 +1,25 @@
 import { assert } from 'chai';
-import $ from 'jquery';
-
 import { timeout } from './threading';
 
 function isToolTipHidden(tooltip) {
-  // jQuery's :hidden selector checks if the element or its parents have a
-  // display of none, a type of hidden, or height/width set to 0.
-  // If the element is hidden with opacity=0 or visibility=hidden, jQuery's
-  // :hidden will return false because it takes up space in the DOM.
-  // This test combines jQuery's :hidden with tests for opacity and visibility
-  // to cover most use cases (z-index and potentially others are not tested).
-  let style = window.getComputedStyle(tooltip, null);
+  // Test for width or height of 0
+  // code is taken from https://github.com/jquery/jquery/blob/main/src/css/hiddenVisibleSelectors.js
+  // this code is a replacement for jquery .is(':hidden').
+  // Test for opacity: 0, visibility: hidden, and display: none
+  // z-index and potentially others are not tested
+  const { display, opacity, visibility } = window.getComputedStyle(
+    tooltip,
+    null
+  );
   return (
-    $(tooltip).is(':hidden') ||
-    style.opacity === '0' ||
-    style.visibility === 'hidden' ||
-    // It is needed only for svg, jQuery does not support it.
-    style.display === 'none'
+    !(
+      tooltip.offsetWidth ||
+      tooltip.offsetHeight ||
+      tooltip.getClientRects().length
+    ) ||
+    opacity === '0' ||
+    visibility === 'hidden' ||
+    display === 'none'
   );
 }
 

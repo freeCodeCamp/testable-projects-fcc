@@ -21,7 +21,6 @@
  and one for the Mocha modal (mocha-modal.css)
 */
 
-import $ from 'jquery';
 import chai from 'chai';
 import 'mocha/mocha';
 import fccMochaReporter from './utils/mocha-custom-reporter';
@@ -69,8 +68,8 @@ const shadow = (function attachShadow() {
 })();
 
 // Create the tests UI, init mocha and look for the project name
-// when the document is fully loaded (jquery required).
-$(document).ready(function initTests() {
+// when the document is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
   // Alert users about blocking third-party cookies.
   // Blocking third-party cookies blocks localStorage, which we depend on.
   try {
@@ -245,9 +244,8 @@ export function FCCCloseTestModal() {
 }
 
 // Close modal on ESC press.
-$(document).keyup(function (e) {
-  e = e || window.event;
-  if (e.keyCode === 27) {
+document.addEventListener('keyup', ({ key }) => {
+  if (key === 'Escape') {
     FCCCloseTestModal();
   }
 });

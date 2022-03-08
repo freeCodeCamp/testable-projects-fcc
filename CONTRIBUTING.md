@@ -17,10 +17,8 @@
 
 ### For fixing project test suite bugs / adding new project test suites
 
-- All tests suites should use only existing dependencies (Mocha, Chai, jQuery).
+- All tests suites should use only existing dependencies (Mocha, Chai).
 - We are using Chai's `assert` library.
-- Wherever possible, try to avoid using jQuery in your tests, if there is a simple and easy JS equivalent that should take precedence.
-- If you do use jQuery as a fallback, you must import `jQuery` into your test suite file before exporting your test function.
 - **BREAKING CHANGES:**
   - Please test all of your changes against example projects for whatever project you are working on. If the changes you make cause the example project to fail any tests, this is considered a breaking change, as it could cause other Campers' past solutions to fail. This should, in general, be avoided once freeCodeCamp is no longer in beta, as we do not want to break too many past projects. If you feel that this is a change that is ABSOLUTELY NECESSARY, please discuss this with @no-stack-dub-sack or @QuincyLarson.
   - If the new freeCodeCamp curriculum is still in beta and you make a breaking change, but please be sure to include in your PR a forked version of the official project with updated code that passes all new and existing tests. Advise one of the above people so that the official project can be changed accordingly if your changes are accepted.

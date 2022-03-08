@@ -2,7 +2,6 @@ import { areShapesAlignedWithTicks } from '../utils/alignment-D3';
 
 import { assert } from 'chai';
 import { testToolTip } from '../utils/global-D3-tests';
-import $ from 'jquery';
 import { d3ProjectStack } from '../utils/shared-test-strings';
 
 export default function createBarChartTests() {
@@ -43,12 +42,12 @@ export default function createBarChartTests() {
       it(`Both axes should contain multiple tick labels, each with 
       the corresponding class="tick" `, function () {
         assert.isAbove(
-          $('#x-axis .tick').length,
+          document.querySelectorAll('#x-axis .tick').length,
           1,
           'There are not enough tick labels on the x-axis '
         );
         assert.isAbove(
-          $('#y-axis .tick').length,
+          document.querySelectorAll('#y-axis .tick').length,
           1,
           'There are not enough tick labels on the y-axis '
         );
@@ -91,63 +90,55 @@ export default function createBarChartTests() {
       });
 
       it(`The bar elements' "data-date" properties should match the 
-      order of the provided data`, function (done) {
-        $.getJSON(
-          'https://raw.githubusercontent.com/FreeCodeCamp/' +
-            'ProjectReferenceData/master/GDP-data.json',
-          function (res) {
-            try {
-              const bars = document.querySelectorAll('rect.bar');
-              assert.isAtLeast(
-                bars.length,
-                1,
-                'no <rect> elements with the class of "bar" are detected '
-              );
-              bars.forEach(function (bar, i) {
-                var currentBarDate = bar.getAttribute('data-date');
-                assert.equal(
-                  currentBarDate,
-                  res.data[i][0],
-                  'Bars should have date data in the same order as the ' +
-                    'provided data '
-                );
-              });
-              done();
-            } catch (e) {
-              done(e);
-            }
-          }
+      order of the provided data`, async function () {
+        const res = await fetch(
+          'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
         );
+
+        if (res.ok) {
+          const json = await res.json();
+          const bars = document.querySelectorAll('rect.bar');
+          assert.isAtLeast(
+            bars.length,
+            1,
+            'no <rect> elements with the class of "bar" are detected '
+          );
+          bars.forEach(function (bar, i) {
+            const currentBarDate = bar.getAttribute('data-date');
+            assert.equal(
+              currentBarDate,
+              json.data[i][0],
+              'Bars should have date data in the same order as the ' +
+                'provided data '
+            );
+          });
+        }
       });
 
       it(`The bar elements' "data-gdp" properties should match the 
-      order of the provided data`, function (done) {
-        $.getJSON(
-          'https://raw.githubusercontent.com/FreeCodeCamp/' +
-            'ProjectReferenceData/master/GDP-data.json',
-          function (res) {
-            try {
-              const bars = document.querySelectorAll('rect.bar');
-              assert.isAtLeast(
-                bars.length,
-                1,
-                'no <rect> elements with the class of "bar" are detected '
-              );
-              bars.forEach(function (bar, i) {
-                var currentBarGdp = bar.getAttribute('data-gdp');
-                assert.equal(
-                  currentBarGdp,
-                  res.data[i][1],
-                  'Bars should have gdp data in the same order as the ' +
-                    'provided data '
-                );
-              });
-              done();
-            } catch (e) {
-              done(e);
-            }
-          }
+      order of the provided data`, async function () {
+        const res = await fetch(
+          'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
         );
+
+        if (res.ok) {
+          const json = await res.json();
+          const bars = document.querySelectorAll('rect.bar');
+          assert.isAtLeast(
+            bars.length,
+            1,
+            'no <rect> elements with the class of "bar" are detected '
+          );
+          bars.forEach(function (bar, i) {
+            const currentBarGdp = bar.getAttribute('data-gdp');
+            assert.equal(
+              currentBarGdp,
+              json.data[i][1],
+              'Bars should have gdp data in the same order as the ' +
+                'provided data '
+            );
+          });
+        }
       });
 
       it(`Each bar element's height should accurately represent the 
@@ -162,9 +153,9 @@ export default function createBarChartTests() {
         /* this test completely validates the bars, but isn\'t very useful to
         the user, so data-date and data-gdp tests were added for clarity */
         bars.forEach(function (bar) {
-          var dataValue = bar.getAttribute('data-gdp');
-          var barHeight = bar.getAttribute('height');
-          var ratio = parseFloat(dataValue) / parseFloat(barHeight);
+          const dataValue = bar.getAttribute('data-gdp');
+          const barHeight = bar.getAttribute('height');
+          const ratio = parseFloat(dataValue) / parseFloat(barHeight);
           assert.equal(
             firstRatio.toFixed(3),
             ratio.toFixed(3),
