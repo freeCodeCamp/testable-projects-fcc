@@ -3,6 +3,12 @@ export function testHorizontallyCentered(elName, window) {
   const centeredElementBounds = centeredElement.getBoundingClientRect();
   const leftGap = centeredElementBounds.left;
   const rightGap = window.innerWidth - centeredElementBounds.right;
+
+  // a full-width element should not be considered as centered
+  if (!(window.innerWidth - centeredElementBounds.width > 25)) {
+    return false;
+  }
+
   // allow for scrollbar width
   return Math.abs(leftGap - rightGap) < 20;
 }
