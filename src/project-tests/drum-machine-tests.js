@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
+import { timeout } from '../utils/threading';
 
 // DRUM MACHINE TESTS:
 export default function createDrumMachineTests() {
@@ -181,15 +182,19 @@ export default function createDrumMachineTests() {
 
       it(`When a .drum-pad is triggered, a string describing the
       associated audio clip is displayed as the inner text of the #display
-      element (each string must be unique).`, function () {
+      element (each string must be unique).`, async function () {
         let displayText = [];
-        drumPads.forEach((pad) => {
+
+        for (const pad of drumPads) {
           __triggerClickEventCaller(pad);
+          await timeout(10);
           displayText.push(document.getElementById('display').innerText);
-        });
+        }
+
         displayText = displayText.filter(
           (str, i) => displayText[0] === displayText[i]
         );
+
         assert.isTrue(
           displayText.length === 1,
           'Each time a drum pad is triggered, a unique string should ' +
