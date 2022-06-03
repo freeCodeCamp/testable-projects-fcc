@@ -1,6 +1,10 @@
 import { assert } from 'chai';
-import { clickButtonsById, getInputValue } from '../utils/element-utils';
+import {
+  clickButtonsByIdWithDelay,
+  getInputValue
+} from '../utils/element-utils';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
+import { timeout } from '../utils/threading';
 
 export default function createCalculatorTests() {
   const _1 = 'one';
@@ -21,14 +25,18 @@ export default function createCalculatorTests() {
   const _eq = 'equals';
   const _dec = 'decimal';
 
+  const DELAY = 200;
+  const CLICK_DELAY = 10;
+
   function clearDisplay() {
     if (document.getElementById('clear')) {
-      clickButtonsById([_AC]);
+      clickButtonsByIdWithDelay([_AC], CLICK_DELAY);
     }
   }
 
+  // React 18 fix: Keep beforeEach callback async.
   describe('Calculator tests', function () {
-    beforeEach(function () {
+    beforeEach(async function () {
       clearDisplay();
     });
 
@@ -154,8 +162,12 @@ export default function createCalculatorTests() {
 
       it(`At any time, pressing the clear button clears the input
       and output values, and returns the calculator to its initialized state; 0
-      should be shown in the element with the id of "display"`, function () {
-        clickButtonsById([_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC]);
+      should be shown in the element with the id of "display"`, async function () {
+        clickButtonsByIdWithDelay(
+          [_5, _x, _1, _plus, _5, _plus, _9, _2, _eq, _AC],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '0',
@@ -164,8 +176,9 @@ export default function createCalculatorTests() {
       });
 
       it(`As I input numbers, I should be able to see my input in
-      the element with the id of "display"`, function () {
-        clickButtonsById([_1, _2, _3]);
+      the element with the id of "display"`, async function () {
+        clickButtonsByIdWithDelay([_1, _2, _3], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '123',
@@ -175,8 +188,12 @@ export default function createCalculatorTests() {
 
       it(`In any order, I should be able to add, subtract, multiply
       and divide a chain of numbers of any length, and when I hit "=", the
-      correct result should be shown in the element with the id of "display"`, function () {
-        clickButtonsById([_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq]);
+      correct result should be shown in the element with the id of "display"`, async function () {
+        clickButtonsByIdWithDelay(
+          [_3, _plus, _5, _x, _6, _min, _2, _div, _4, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert(
           getInputValue(document.getElementById('display')) === '32.5' ||
             getInputValue(document.getElementById('display')) === '11.5',
@@ -185,7 +202,8 @@ export default function createCalculatorTests() {
           (formula vs. immediate execution) `
         );
         clearDisplay();
-        clickButtonsById([_5, _min, _9, _plus, _5, _eq]);
+        clickButtonsByIdWithDelay([_5, _min, _9, _plus, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert(
           getInputValue(document.getElementById('display')) === '1',
           'The expression 5 - 9 + 5 should produce a result of 1 '
@@ -193,8 +211,9 @@ export default function createCalculatorTests() {
       });
 
       it(`When inputting numbers, my calculator should not allow a
-      number to begin with multiple zeros.`, function () {
-        clickButtonsById([_0, _0, _0]);
+      number to begin with multiple zeros.`, async function () {
+        clickButtonsByIdWithDelay([_0, _0, _0], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '0',
@@ -204,15 +223,18 @@ export default function createCalculatorTests() {
 
       it(`When the decimal element is clicked, a "." should append to
       the currently displayed value; two "." in one number should not be
-      accepted`, function () {
-        clickButtonsById([_5, _dec, _dec, _0]);
+      accepted`, async function () {
+        clickButtonsByIdWithDelay([_5, _dec, _dec, _0], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '5.0',
           'An input of "5 . . 0" should display 5.0 '
         );
         clearDisplay();
-        clickButtonsById([_5, _dec, _5, _dec, _5]);
+        await timeout(DELAY);
+        clickButtonsByIdWithDelay([_5, _dec, _5, _dec, _5], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '5.55',
@@ -221,29 +243,42 @@ export default function createCalculatorTests() {
       });
 
       it(`I should be able to perform any operation (+, -, *, /) on
-      numbers containing decimal points`, function () {
-        clickButtonsById([_1, _0, _dec, _5, _min, _5, _dec, _5, _eq]);
+      numbers containing decimal points`, async function () {
+        clickButtonsByIdWithDelay(
+          [_1, _0, _dec, _5, _min, _5, _dec, _5, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '5',
           'The expression "10.5 - 5.5" should produce an output of "5" '
         );
         clearDisplay();
-        clickButtonsById([_5, _x, _5, _dec, _5, _eq]);
+        clickButtonsByIdWithDelay([_5, _x, _5, _dec, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '27.5',
           'The expression "5 * 5.5" should produce an output of "27.5" '
         );
         clearDisplay();
-        clickButtonsById([_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq]);
+        clickButtonsByIdWithDelay(
+          [_1, _0, _dec, _5, _plus, _5, _dec, _5, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '16',
           'The expression "10.5 + 5.5" should produce an output of "16" '
         );
         clearDisplay();
-        clickButtonsById([_1, _0, _div, _2, _dec, _5, _eq]);
+        clickButtonsByIdWithDelay(
+          [_1, _0, _div, _2, _dec, _5, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '4',
@@ -253,22 +288,25 @@ export default function createCalculatorTests() {
 
       it(`If 2 or more operators are entered consecutively, the
       operation performed should be the last operator entered (excluding
-      the negative (-) sign.`, function () {
-        clickButtonsById([_5, _x, _min, _5, _eq]);
+      the negative (-) sign.`, async function () {
+        clickButtonsByIdWithDelay([_5, _x, _min, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '-25',
           'The sequence "5 * - 5" = should produce an output of "-25" '
         );
         clearDisplay();
-        clickButtonsById([_5, _x, _min, _plus, _5, _eq]);
+        clickButtonsByIdWithDelay([_5, _x, _min, _plus, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '10',
           'The sequence "5 * - + 5" = should produce an output of "10" '
         );
         clearDisplay();
-        clickButtonsById([_5, _plus, _plus, _5, _eq]);
+        clickButtonsByIdWithDelay([_5, _plus, _plus, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '10',
@@ -278,15 +316,23 @@ export default function createCalculatorTests() {
 
       it(`Pressing an operator immediately following "=" should
       start a new calculation that operates on the result of the previous
-      evaluation`, function () {
-        clickButtonsById([_5, _min, _2, _eq, _div, _2, _eq]);
+      evaluation`, async function () {
+        clickButtonsByIdWithDelay(
+          [_5, _min, _2, _eq, _div, _2, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '1.5',
           'The sequence "5 - 2 = / 2 =" should produce an output of "1.5" '
         );
         clearDisplay();
-        clickButtonsById([_5, _plus, _5, _eq, _plus, _3, _eq]);
+        clickButtonsByIdWithDelay(
+          [_5, _plus, _5, _eq, _plus, _3, _eq],
+          CLICK_DELAY
+        );
+        await timeout(DELAY);
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '13',
@@ -297,8 +343,9 @@ export default function createCalculatorTests() {
       it(`My calculator should have several decimal places of
       precision when it comes to rounding (note that there is no exact
       standard, but you should be able to handle calculations like "2 / 7" with
-      reasonable precision to at least 4 decimal places)`, function () {
-        clickButtonsById([_2, _div, _7, _eq]);
+      reasonable precision to at least 4 decimal places)`, async function () {
+        clickButtonsByIdWithDelay([_2, _div, _7, _eq], CLICK_DELAY);
+        await timeout(DELAY);
         assert.isOk(
           /0?\.2857\d*/.test(getInputValue(document.getElementById('display'))),
           'The expression "2 / 7" should produce an output number with at ' +

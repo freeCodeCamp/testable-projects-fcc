@@ -1,3 +1,5 @@
+import { timeout } from './threading';
+
 export function testHorizontallyCentered(elName, window) {
   const centeredElement = window.document.getElementById(elName);
   const centeredElementBounds = centeredElement.getBoundingClientRect();
@@ -15,6 +17,16 @@ export function testHorizontallyCentered(elName, window) {
 
 function getElements(elementIds) {
   return elementIds.map((elementId) => document.getElementById(elementId));
+}
+
+export async function clickButtonsByIdWithDelay(buttonIds, delay = 0) {
+  const keys = getElements(buttonIds);
+  for (const key of keys) {
+    if (key && typeof key.click === 'function') {
+      key.click();
+      await timeout(delay);
+    }
+  }
 }
 
 export function clickButtonsById(buttonIds) {
