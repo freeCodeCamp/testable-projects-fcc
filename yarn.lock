@@ -3161,7 +3161,7 @@ colorette@^2.0.14:
   resolved "https://registry.npmjs.org/colorette/-/colorette-2.0.15.tgz"
   integrity sha512-lIFQhufWaVvwi4wOlX9Gx5b0Nmw3XAZ8HzHNH9dfxhe+JaKNTmX6QLk4o7UHyI+tUY8ClvyfaHUm5bf61O3psA==
 
-colors@^1.1.2, colors@latest:
+colors@1.4.0, colors@^1.1.2:
   version "1.4.0"
   resolved "https://registry.npmjs.org/colors/-/colors-1.4.0.tgz"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
@@ -6863,13 +6863,13 @@ listr2@^3.12.2, listr2@^3.8.3:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
-live-server@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/live-server/-/live-server-1.2.1.tgz"
-  integrity sha512-Yn2XCVjErTkqnM3FfTmM7/kWy3zP7+cEtC7x6u+wUzlQ+1UW3zEYbbyJrc0jNDwiMDZI0m4a0i3dxlGHVyXczw==
+live-server@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/live-server/-/live-server-1.2.2.tgz#20b4fe5c2ca886faa61813310e28680804f48dad"
+  integrity sha512-t28HXLjITRGoMSrCOv4eZ88viHaBVIjKjdI5PO92Vxlu+twbk6aE0t7dVIaz6ZWkjPilYFV6OSdMYl9ybN2B4w==
   dependencies:
     chokidar "^2.0.4"
-    colors latest
+    colors "1.4.0"
     connect "^3.6.6"
     cors latest
     event-stream "3.3.4"
