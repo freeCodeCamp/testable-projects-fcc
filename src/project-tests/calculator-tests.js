@@ -336,7 +336,7 @@ export default function createCalculatorTests() {
         assert.strictEqual(
           getInputValue(document.getElementById('display')),
           '13',
-          'The sequence "5 + 3 = + 3 =" should produce an output of "13" '
+          'The sequence "5 + 5 = + 3 =" should produce an output of "13" '
         );
       });
 
