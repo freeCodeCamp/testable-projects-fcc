@@ -1,5 +1,7 @@
 import { assert } from 'chai';
-import { clickButtonsById, getInputValue } from '../utils/element-utils';
+import { clickButtonsById,
+  clickButtonsByIdWithDelay,
+  getInputValue } from '../utils/element-utils';
 import { frontEndLibrariesStack } from '../utils/shared-test-strings';
 import { timeout } from '../utils/threading';
 
@@ -14,18 +16,29 @@ export default function create25Plus5ClockTests() {
     document.getElementById('timer-label') &&
     document.getElementById('timer-label').innerText;
 
-  function resetTimer() {
+  async function resetTimer() {
     clickButtonsById([reset]);
+    await timeout(200);
   }
   // The regex checks for correct time format ([mm]mm:ss)
   const timerRe = new RegExp(/^(\d{2,4})[\.:,\/](\d{2})$/);
 
   function getMinutes(str) {
-    return timerRe.exec(str)[1];
+    const match = timerRe.exec(str);
+    if (match){
+      return match[1];
+    } else {
+      throw new Error(`Bad time string ${str}`);
+    }
   }
 
   function getSeconds(str) {
-    return timerRe.exec(str)[2];
+    const match = timerRe.exec(str);
+    if (match){
+      return match[2];
+    } else {
+      throw new Error(`Bad time string ${str}`);
+    }
   }
   /* eslint-enable max-len*/
 
@@ -115,16 +128,16 @@ export default function create25Plus5ClockTests() {
 
   // Test suite
   describe('#25 + 5 Clock tests', function () {
-    beforeEach(function () {
-      resetTimer();
+    beforeEach(async function () {
+      await resetTimer();
     });
 
     afterEach(function () {
       restoreGlobalTimerFunctions();
     });
 
-    after(function () {
-      resetTimer();
+    after(async function () {
+      await resetTimer();
       restoreGlobalTimerFunctions();
     });
 
@@ -178,7 +191,8 @@ export default function create25Plus5ClockTests() {
       });
 
       it(`I can see an element, with corresponding
-      id="session-length", which by default displays a value of 25.`, function () {
+      id="session-length", which by default displays a value of 25.`,
+      function () {
         const sessionLength = document.getElementById('session-length');
         assert.strictEqual(
           getInputValue(sessionLength),
@@ -209,9 +223,9 @@ export default function create25Plus5ClockTests() {
           'time-left is not formatted correctly'
         );
         // Set session length to 60
-        clickButtonsById(Array(35).fill(seshPlus));
-        // wait for 1.5 seconds to allow any re-renders to catch up
-        await timeout(1500);
+        await clickButtonsByIdWithDelay(Array(35).fill(seshPlus), 3);
+        // wait for 0.5 seconds to allow any re-renders to catch up
+        await timeout(500);
         assert.strictEqual(
           getMinutes(target.innerText),
           '60',
@@ -234,13 +248,14 @@ export default function create25Plus5ClockTests() {
       it(`When I click the element with the id of "reset", any
       running timer should be stopped, the value within id="break-length" should
       return to 5, the value within id="session-length" should return to 25, and
-      the element with id="time-left" should reset to it's default state.`, async function () {
+      the element with id="time-left" should reset to it's default state.`,
+      async function () {
         this.timeout(100000);
 
         hackGlobalTimerFunctions();
         // decrement session and break length
-        clickButtonsById(Array(60).fill(seshMin));
-        clickButtonsById(Array(60).fill(breakMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
+        await clickButtonsByIdWithDelay(Array(60).fill(breakMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
@@ -252,7 +267,7 @@ export default function create25Plus5ClockTests() {
         // see if every default value is reset
         await timeout(1500);
 
-        resetTimer();
+        await resetTimer();
         const timerLabelAfterReset =
           document.getElementById('timer-label').innerText;
         const secondsAfterReset = getSeconds(
@@ -295,14 +310,15 @@ export default function create25Plus5ClockTests() {
 
       it(`When I click the element with the id of "break-decrement",
       the value within id="break-length" decrements by a value of 1, and I can
-      see the updated value.`, function () {
-        clickButtonsById([breakMin, breakMin, breakMin, breakMin]);
+      see the updated value.`, async function () {
+        await clickButtonsByIdWithDelay(
+          [breakMin, breakMin, breakMin, breakMin], 5);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '1'
         );
-        resetTimer();
-        clickButtonsById([breakMin]);
+        await resetTimer();
+        await clickButtonsByIdWithDelay([breakMin], 5);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '4'
@@ -311,14 +327,14 @@ export default function create25Plus5ClockTests() {
 
       it(`When I click the element with the id of "break-increment",
       the value within id="break-length" increments by a value of 1, and I can
-      see the updated value.`, function () {
-        clickButtonsById(Array(4).fill(breakPlus));
+      see the updated value.`, async function () {
+        await clickButtonsByIdWithDelay(Array(4).fill(breakPlus), 5);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '9'
         );
-        resetTimer();
-        clickButtonsById([breakPlus]);
+        await resetTimer();
+        await clickButtonsByIdWithDelay([breakPlus], 10);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '6'
@@ -327,14 +343,14 @@ export default function create25Plus5ClockTests() {
 
       it(`When I click the element with the id of
       "session-decrement", the value within id="session-length" decrements by a
-      value of 1, and I can see the updated value.`, function () {
-        clickButtonsById(Array(4).fill(seshMin));
+      value of 1, and I can see the updated value.`, async function () {
+        await clickButtonsByIdWithDelay(Array(4).fill(seshMin), 5);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '21'
         );
-        resetTimer();
-        clickButtonsById([seshMin]);
+        await resetTimer();
+        await clickButtonsByIdWithDelay([seshMin], 10);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '24'
@@ -343,14 +359,14 @@ export default function create25Plus5ClockTests() {
 
       it(`When I click the element with the id of
       "session-increment", the value within id="session-length" increments by a
-      value of 1, and I can see the updated value.`, function () {
-        clickButtonsById(Array(4).fill(seshPlus));
+      value of 1, and I can see the updated value.`, async function () {
+        await clickButtonsByIdWithDelay(Array(4).fill(seshPlus), 5);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '29'
         );
-        resetTimer();
-        clickButtonsById([seshPlus]);
+        await resetTimer();
+        await clickButtonsByIdWithDelay([seshPlus], 10);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '26'
@@ -358,15 +374,15 @@ export default function create25Plus5ClockTests() {
       });
 
       it(`I should not be able to set a session or break length to
-      <= 0.`, function () {
-        clickButtonsById(Array(10).fill(breakMin));
+      <= 0.`, async function () {
+        await clickButtonsByIdWithDelay(Array(10).fill(breakMin), 3);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '1',
           'Value in element with id of "break-length" is less than 1.'
         );
-        resetTimer();
-        clickButtonsById(Array(30).fill(seshMin));
+        await resetTimer();
+        await clickButtonsByIdWithDelay(Array(30).fill(seshMin), 10);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '1',
@@ -375,15 +391,15 @@ export default function create25Plus5ClockTests() {
       });
 
       it(`I should not be able to set a session or break length to
-      > 60.`, function () {
-        clickButtonsById(Array(60).fill(breakPlus));
+      > 60.`, async function () {
+        await clickButtonsByIdWithDelay(Array(60).fill(breakPlus), 3);
         assert.strictEqual(
           getInputValue(document.getElementById('break-length')),
           '60',
           'Value in element with id of "break-length" is greater than 60.'
         );
-        resetTimer();
-        clickButtonsById(Array(40).fill(seshPlus));
+        await resetTimer();
+        await clickButtonsByIdWithDelay(Array(40).fill(seshPlus), 3);
         assert.strictEqual(
           getInputValue(document.getElementById('session-length')),
           '60',
@@ -394,8 +410,8 @@ export default function create25Plus5ClockTests() {
       it(`When I first click the element with id="start_stop", the
       timer should begin running from the value currently displayed in
       id="session-length", even if the value has been incremented or
-      decremented from the original value of 25.`, function () {
-        clickButtonsById([startStop]);
+      decremented from the original value of 25.`, async function () {
+        await clickButtonsByIdWithDelay([startStop], 10);
         assert.strictEqual(
           getMinutes(document.getElementById('time-left').innerText),
           getInputValue(document.getElementById('session-length'))
@@ -404,7 +420,8 @@ export default function create25Plus5ClockTests() {
 
       it(`If the timer is running, the element with the id of
       "time-left" should display the remaining time in mm:ss format
-      (decrementing by a value of 1 and updating the display every 1000ms).`, async function () {
+      (decrementing by a value of 1 and updating the display every 1000ms).`,
+      async function () {
         this.timeout(2500);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
@@ -527,11 +544,12 @@ export default function create25Plus5ClockTests() {
 
       it(`When a session countdown reaches zero (NOTE: timer MUST
       reach 00:00), and a new countdown begins, the element with the id of
-      "timer-label" should display a string indicating a break has begun.`, async function () {
+      "timer-label" should display a string indicating a break has begun.`,
+      async function () {
         this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
-        clickButtonsById(Array(60).fill(seshMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
@@ -563,11 +581,12 @@ export default function create25Plus5ClockTests() {
 
       it(`When a session countdown reaches zero (NOTE: timer MUST
       reach 00:00), a new break countdown should begin, counting down from the
-      value currently displayed in the id="break-length" element.`, async function () {
+      value currently displayed in the id="break-length" element.`,
+      async function () {
         this.timeout(100000);
         hackGlobalTimerFunctions();
         // we decrement session time to the minimum (1 minute)
-        clickButtonsById(Array(60).fill(seshMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
@@ -599,12 +618,14 @@ export default function create25Plus5ClockTests() {
 
       it(`When a break countdown reaches zero (NOTE: timer MUST reach
       00:00), and a new countdown begins, the element with the id of
-      "timer-label" should display a string indicating a session has begun.`, async function () {
+      "timer-label" should display a string indicating a session has begun.`,
+      async function () {
         this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
         clickButtonsById(Array(60).fill(seshMin));
-        clickButtonsById(Array(60).fill(breakMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
+        await clickButtonsByIdWithDelay(Array(60).fill(breakMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
@@ -627,12 +648,13 @@ export default function create25Plus5ClockTests() {
 
       it(`When a break countdown reaches zero (NOTE: timer MUST
       reach 00:00), a new session countdown should begin, counting down from
-      the value currently displayed in the id="session-length" element.`, async function () {
+      the value currently displayed in the id="session-length" element.`,
+      async function () {
         this.timeout(200000);
         hackGlobalTimerFunctions();
         // decrement session length and break length to the minimum (1 minute)
-        clickButtonsById(Array(60).fill(seshMin));
-        clickButtonsById(Array(60).fill(breakMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
+        await clickButtonsByIdWithDelay(Array(60).fill(breakMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
@@ -670,7 +692,8 @@ export default function create25Plus5ClockTests() {
     describe('#Audio', function () {
       it(`When a countdown reaches zero (NOTE: timer MUST reach
       00:00), a sound indicating that time is up should play. This should
-      utilize an HTML5 <audio> tag and have a corresponding id="beep".`, async function () {
+      utilize an HTML5 <audio> tag and have a corresponding id="beep".`,
+      async function () {
         this.timeout(100000);
 
         assert.isNotNull(
@@ -680,7 +703,7 @@ export default function create25Plus5ClockTests() {
 
         hackGlobalTimerFunctions();
         // decrement session time to the minimum (1 minute)
-        clickButtonsById(Array(60).fill(seshMin));
+        await clickButtonsByIdWithDelay(Array(60).fill(seshMin), 3);
         // start the 25 + 5 clock
         clickButtonsById([startStop]);
 
