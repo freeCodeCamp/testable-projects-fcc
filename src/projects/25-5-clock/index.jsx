@@ -194,6 +194,7 @@ class Timer extends React.Component {
     });
   }
   clockify() {
+    if (this.state.timer < 0) return "00:00";
     let minutes = Math.floor(this.state.timer / 60);
     let seconds = this.state.timer - minutes * 60;
     seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -273,4 +274,5 @@ class Timer extends React.Component {
   }
 }
 
-ReactDOM.render(<Timer />, document.getElementById('app'));
+const root = ReactDOM.createRoot(document.getElementById('app'));
+root.render(<Timer />)
