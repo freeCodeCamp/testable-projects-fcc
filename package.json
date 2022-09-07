@@ -37,7 +37,7 @@
     "commitizen": "4.2.5",
     "css-loader": "3.6.0",
     "cypress": "8.7.0",
-    "cz-customizable": "6.9.1",
+    "cz-customizable": "6.9.2",
     "dotenv": "10.0.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.5.0",
