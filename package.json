@@ -22,9 +22,9 @@
     "mocha": "^9.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.19.6",
+    "@babel/core": "7.20.2",
     "@babel/plugin-transform-runtime": "7.19.6",
-    "@babel/preset-env": "7.19.4",
+    "@babel/preset-env": "7.20.2",
     "@babel/preset-react": "7.18.6",
     "@babel/register": "7.18.9",
     "@commitlint/cli": "13.2.1",
@@ -32,7 +32,7 @@
     "@commitlint/travis-cli": "13.2.1",
     "@freecodecamp/eslint-config": "2.0.2",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.5",
+    "babel-loader": "8.3.0",
     "chromedriver": "94.0.0",
     "commitizen": "4.2.5",
     "css-loader": "3.6.0",
