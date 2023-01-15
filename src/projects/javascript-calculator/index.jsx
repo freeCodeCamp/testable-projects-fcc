@@ -13,6 +13,7 @@ const projectName = 'javascript-calculator';
 
 // VARS:
 const isOperator = /[x/+‑]/,
+  startsWithOperator = /^[x+-/]/,
   endsWithOperator = /[x+‑/]$/,
   endsWithNegativeSign = /\d[x/+‑]{1}‑$/,
   clearStyle = { background: '#ac3939' },
@@ -52,6 +53,17 @@ class Calculator extends React.Component {
   }
 
   handleEvaluate() {
+    // check if expression starts with operator
+    if((this.state.prevVal === '' || startsWithOperator.test(this.state.prevVal) ) && startsWithOperator.test(this.state.formula)) {
+      this.setState({
+        currentVal: 'Invalid Expression',
+        prevVal: '0',
+        formula: ''
+      });
+      setTimeout(() => this.setState({ currentVal: this.state.prevVal }), 1000);
+      return;
+    } 
+
     if (!this.state.currentVal.includes('Limit')) {
       let expression = this.state.formula;
       while (endsWithOperator.test(expression)) {

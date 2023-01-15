@@ -340,6 +340,34 @@ export default function createCalculatorTests() {
         );
       });
 
+      // test for invalid input
+      it(`If input begins with an operator other than -, the input is
+      invalid and should be handled appropriately`, async function () {
+        clickButtonsByIdWithDelay([_plus, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
+        assert.strictEqual(
+          getInputValue(document.getElementById('display')),
+          'Invalid Expression',
+          'The sequence "+ 5 =" should produce an output of "Invalid Expression" '
+        );
+        clearDisplay();
+        clickButtonsByIdWithDelay([_x, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
+        assert.strictEqual(
+          getInputValue(document.getElementById('display')),
+          'Invalid Expression',
+          'The sequence "* 5 =" should produce an output of "Invalid Expression" '
+        );
+        clearDisplay();
+        clickButtonsByIdWithDelay([_div, _5, _eq], CLICK_DELAY);
+        await timeout(DELAY);
+        assert.strictEqual(
+          getInputValue(document.getElementById('display')),
+          'Invalid Expression',
+          'The sequence "/ 5 =" should produce an output of "Invalid Expression" '
+        );
+      });
+
       it(`My calculator should have several decimal places of
       precision when it comes to rounding (note that there is no exact
       standard, but you should be able to handle calculations like "2 / 7" with
