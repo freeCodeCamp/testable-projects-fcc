@@ -3,13 +3,13 @@ const path = require('path');
 
 function createProjectFixtures() {
   const projectDir = readdirSync(
-    path.join(__dirname, './src/projects'),
+    path.join(__dirname, 'src', 'projects'),
     'utf-8'
   );
 
   let projectObject = {};
 
-  mkdir(path.join(__dirname, './cypress/fixtures/'), (err) => {
+  mkdir(path.join(__dirname, 'cypress', 'fixtures'), (err) => {
     if (err) {
       console.error(err);
     }
@@ -24,7 +24,7 @@ function createProjectFixtures() {
   });
 
   writeFileSync(
-    path.join('./cypress/fixtures/project-fix.json'),
+    path.join(__dirname, 'cypress', 'fixtures', 'project-fix.json'),
     JSON.stringify(projectObject, null, 2)
   );
 
