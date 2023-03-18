@@ -1,18 +1,31 @@
-name: Cypress push and pull
+name: Run E2E tests
 
 on: [push, pull_request]
 
 jobs:
-  cypress-run:
-    name: firefox
-    runs-on: ubuntu-18.04
+  e2e-test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        browser: [firefox, chrome]
+        node-version: [14.x]
+
     steps:
-      - name: Checkout
+      - name: Checkout Source Files
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Yarn
+        run: |
+          npm install -g yarn
 
       - name: Get yarn Cache Directory Path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3
         # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -27,6 +40,7 @@ jobs:
           yarn install
 
       - name: Downgrade Firefox
+        if: matrix.browser == 'firefox'
         run: |
           curl https://ftp.mozilla.org/pub/firefox/releases/101.0/linux-x86_64/en-US/firefox-101.0.tar.bz2 --output firefox-101.0.tar.bz2
           tar -xjf firefox-101.0.tar.bz2
@@ -43,5 +57,5 @@ jobs:
           build: yarn build
           start: yarn start
           wait-on: http://127.0.0.1:8080
-          browser: firefox
+          browser: ${{ matrix.browser }}
           headless: true
