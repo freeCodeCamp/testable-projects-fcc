@@ -1,9 +1,8 @@
 name: Deploy to CDN Repo
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  schedule:
+    - cron: '25 0/12 * * 1-5' # Build once every 12 hours, starting at 25 minutes past the hour (UTC)
 
 jobs:
   deploy:
@@ -87,5 +86,5 @@ jobs:
         uses: juliangruber/approve-pull-request-action@6b8b2f82d50cea1e4329bcdfe940a6ceccbe528e # v2
         with:
           github-token: ${{ secrets.CDN_REPO_USER_PAT }}
-          repository: 'freeCodeCamp/cdn'
+          repo: 'freeCodeCamp/cdn'
           number: ${{ steps.cpr.outputs.pull-request-number }}
