@@ -60,7 +60,7 @@ jobs:
           cp -r --parents build/testable-projects-fcc/* cdn/
 
       - name: Create a Pull Request to CDN Repo
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54 # v4
         id: cpr
         with:
           token: ${{ secrets.CDN_REPO_USER_PAT }}
@@ -75,7 +75,7 @@ jobs:
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v2
+        uses: peter-evans/enable-pull-request-automerge@684fed02ccc9b5eefcf7d40b65b3cd44255bd5bc # v2
         with:
           token: ${{ secrets.CDN_REPO_USER_PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
@@ -83,7 +83,7 @@ jobs:
       
       - name: Auto approve
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: juliangruber/approve-pull-request-action@v2
+        uses: juliangruber/approve-pull-request-action@6b8b2f82d50cea1e4329bcdfe940a6ceccbe528e # v2
         with:
           github-token: ${{ secrets.CDN_REPO_USER_PAT }}
           number: ${{ steps.cpr.outputs.pull-request-number }}
