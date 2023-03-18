@@ -53,6 +53,7 @@ jobs:
           repository: 'freeCodeCamp/cdn'
           token: ${{ secrets.CDN_REPO_USER_PAT }}
           path: cdn
+          depth: 1
       
       - name: Copy bundle.js and Projects
         run: |
@@ -71,7 +72,6 @@ jobs:
           branch: 'chore/update-testable-projects-fcc'
           path: cdn
           delete-branch: true
-          draft: true
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
