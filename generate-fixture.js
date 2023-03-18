@@ -24,7 +24,7 @@ function createProjectFixtures() {
   });
 
   writeFileSync(
-    path.join(__dirname, 'cypress', 'fixtures', 'projects.json'),
+    path.join(__dirname, 'cypress', 'fixtures', 'project-fix.json'),
     JSON.stringify(projectObject, null, 2)
   );
 
