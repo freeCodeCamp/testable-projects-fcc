@@ -85,6 +85,6 @@ jobs:
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: juliangruber/approve-pull-request-action@6b8b2f82d50cea1e4329bcdfe940a6ceccbe528e # v2
         with:
-          github-token: ${{ secrets.CDN_REPO_USER_PAT }}
+          github-token: ${{ secrets.CDN_REPO_APPROVER_PAT }}
           repo: 'freeCodeCamp/cdn'
           number: ${{ steps.cpr.outputs.pull-request-number }}
