@@ -60,7 +60,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.8.4",
     "pug": "3.0.2",
-    "selenium-webdriver": "4.8.1",
+    "selenium-webdriver": "4.8.2",
     "through2": "4.0.2",
     "vinyl": "2.2.1",
     "webpack": "4.46.0",
